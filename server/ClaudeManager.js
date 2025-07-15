@@ -19,7 +19,7 @@ class ClaudeManager {
       const {
         maxTokens = 1024,
         temperature = 0.7,
-        systemPrompt = null,
+        systemPrompt = "You are a general-purpose assistant capable of all sorts of creative tasks and problem-solving. For things you can't do, you have access to tools.",
         conversationHistory = [],
         tools = []
       } = options;
@@ -51,8 +51,11 @@ class ClaudeManager {
         requestParams.tools = tools;
       }
 
+      //DEBUG --
+      console.log("[DEBUG]: Message to Claude: ", message);
+
       const response = await this.client.messages.create(requestParams);
-      
+
       return {
         success: true,
         content: response.content, // Return full content array, not just first text block
