@@ -19,34 +19,24 @@ class SaveTaskResults {
     }
   }
 
-  saveTaskResults(taskId, results) {
+  saveBatchResults(batchResults) {
     try {
-      let existingData = {};
-      
-      // Read existing file if it exists
-      if (fs.existsSync(this.jsonFilePath)) {
-        const fileContent = fs.readFileSync(this.jsonFilePath, 'utf8');
-        existingData = JSON.parse(fileContent);
-      }
-      
-      // Initialize structure if needed
-      if (!existingData.tasks) {
-        existingData.tasks = {};
-      }
-      
-      // Add/update task results
-      existingData.tasks[taskId] = {
-        ...results,
-        savedAt: new Date().toISOString()
+      const batchData = {
+        batchInfo: {
+          totalItems: batchResults.length,
+          startedAt: new Date().toISOString(),
+          workflowName: process.env.WORKFLOW_NAME
+        },
+        items: batchResults
       };
       
-      // Write back to file
-      fs.writeFileSync(this.jsonFilePath, JSON.stringify(existingData, null, 2));
+      // Write batch results to file
+      fs.writeFileSync(this.jsonFilePath, JSON.stringify(batchData, null, 2));
       
-      console.log(`💾 Task ${taskId} results saved to: ${path.basename(this.jsonFilePath)}`);
+      console.log(`💾 Batch results for ${batchResults.length} items saved to: ${path.basename(this.jsonFilePath)}`);
       
     } catch (error) {
-      console.error(`❌ Failed to save task ${taskId} results:`, error.message);
+      console.error(`❌ Failed to save batch results:`, error.message);
       throw error;
     }
   }

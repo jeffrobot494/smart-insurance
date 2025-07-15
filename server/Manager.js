@@ -3,7 +3,7 @@ require('./load-env');
 
 const path = require('path');
 const { readWorkflow } = require('./workflowReader');
-const WorkflowTaskManager = require('./workflowTaskManager');
+const WorkflowManager = require('./WorkflowManager');
 const SaveTaskResults = require('./SaveTaskResults');
 const CLIInputParser = require('./CLIInputParser');
 
@@ -36,7 +36,7 @@ async function run(workflowFilename = null, userInputs = {}) {
     // Set workflow name in environment for SaveTaskResults
     process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
     
-    const taskManager = new WorkflowTaskManager(workflowData);
+    const taskManager = new WorkflowManager(workflowData);
     
     // Execute the workflow with user inputs
     const results = await taskManager.executeWorkflow(userInputs);

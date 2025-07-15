@@ -20,6 +20,9 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // Always convert to array
+    const inputArray = Array.isArray(input) ? input : [input];
+
     // Add .json extension if not present
     const workflowFile = workflowname.endsWith('.json') ? workflowname : `${workflowname}.json`;
 
@@ -28,12 +31,12 @@ router.post('/', async (req, res) => {
       success: true,
       message: 'Workflow execution started',
       workflowname,
-      input,
+      inputCount: inputArray.length,
       status: 'started'
     });
 
     // Execute workflow asynchronously (fire and forget)
-    run(workflowFile, { input })
+    run(workflowFile, { input: inputArray })
       .then(results => {
         console.log(`Workflow ${workflowname} completed successfully`);
         // Results are automatically saved by SaveTaskResults.js
