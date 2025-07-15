@@ -1,0 +1,54 @@
+const express = require('express');
+const router = express.Router();
+const { run } = require('../Manager');
+
+// POST /api/workflow
+router.post('/', async (req, res) => {
+  try {
+    const { workflowname, input } = req.body;
+
+    // Validate required fields
+    if (!workflowname) {
+      return res.status(400).json({ 
+        error: 'workflowname is required' 
+      });
+    }
+
+    if (!input) {
+      return res.status(400).json({ 
+        error: 'input is required' 
+      });
+    }
+
+    // Add .json extension if not present
+    const workflowFile = workflowname.endsWith('.json') ? workflowname : `${workflowname}.json`;
+
+    // Send immediate response
+    res.status(202).json({
+      success: true,
+      message: 'Workflow execution started',
+      workflowname,
+      input,
+      status: 'started'
+    });
+
+    // Execute workflow asynchronously (fire and forget)
+    run(workflowFile, { input })
+      .then(results => {
+        console.log(`Workflow ${workflowname} completed successfully`);
+        // Results are automatically saved by SaveTaskResults.js
+      })
+      .catch(error => {
+        console.error(`Workflow ${workflowname} failed:`, error.message);
+      });
+
+  } catch (error) {
+    console.error('Workflow startup error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+module.exports = router;

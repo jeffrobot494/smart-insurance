@@ -14,6 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 const healthcheckRoutes = require('./routes/healthcheck');
 app.use('/api/health', healthcheckRoutes);
 
+const workflowRoutes = require('./routes/workflow');
+app.use('/api/workflow', workflowRoutes);
+
 // Default route
 app.get('/', (req, res) => {
   res.json({ 
