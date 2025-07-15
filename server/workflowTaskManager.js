@@ -1,5 +1,7 @@
 const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
+const MCPServerManager = require('./MCPServerManager');
+const ToolManager = require('./ToolManager');
 
 class WorkflowTaskManager {
   constructor(workflowData) {
@@ -8,6 +10,17 @@ class WorkflowTaskManager {
     this.currentIndex = 0;
     this.resultsSaver = new SaveTaskResults();
     
+    // Initialize MCP servers and tool manager
+    this.mcpServerManager = null;
+    this.toolManager = null;
+  }
+
+  async initializeTools() {
+    if (!this.mcpServerManager) {
+      this.mcpServerManager = new MCPServerManager();
+      await this.mcpServerManager.initialize();
+      this.toolManager = new ToolManager(this.mcpServerManager);
+    }
   }
 
   getCurrentTask() {
@@ -39,6 +52,9 @@ class WorkflowTaskManager {
   }
 
   async executeWorkflow(userInputs = {}) {
+    // Initialize tools before executing workflow
+    await this.initializeTools();
+    
     // Initialize results with user inputs so first task can access them
     const results = { ...userInputs };
     
@@ -63,6 +79,7 @@ class WorkflowTaskManager {
       try {
         // Create and run TaskExecution
         const execution = new TaskExecution(task);
+        execution.setToolManager(this.toolManager);
         const result = await execution.run(inputs);
         
         if (result.success) {
@@ -93,6 +110,12 @@ class WorkflowTaskManager {
     console.log('📊 Final results:', results);
     
     return results;
+  }
+
+  cleanup() {
+    if (this.mcpServerManager) {
+      this.mcpServerManager.cleanup();
+    }
   }
 }
 

@@ -152,15 +152,23 @@ class TaskExecution {
   }
 
   async executeTool(toolName, parameters) {
-    // Placeholder - we'll need to implement actual tool execution
-    // This would call web search, crawling, etc. based on toolName
-    throw new Error(`Tool execution not implemented: ${toolName}`);
+    if (!this.toolManager) {
+      throw new Error('ToolManager not available. Ensure TaskExecution is configured with a ToolManager.');
+    }
+    
+    return await this.toolManager.callTool(toolName, parameters);
   }
 
   getAvailableTools() {
-    // Return available tools for this task
-    // This would need to be configured based on what tools are available
-    return [];
+    if (!this.toolManager) {
+      return [];
+    }
+    
+    return this.toolManager.getAvailableTools();
+  }
+
+  setToolManager(toolManager) {
+    this.toolManager = toolManager;
   }
 }
 

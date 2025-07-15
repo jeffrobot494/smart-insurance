@@ -1,16 +1,29 @@
 {
-  "name": "server",
+  "name": "smart-insurance-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automated PE firm research using Claude and Playwright MCP server",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node Manager.js",
+    "server": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
-  }
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@modelcontextprotocol/sdk": "^1.15.0",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.0",
+    "express": "^4.21.2",
+    "openai": "^5.9.0"
+  },
+  "keywords": [
+    "pe",
+    "private-equity",
+    "research",
+    "automation",
+    "claude",
+    "playwright",
+    "mcp"
+  ],
+  "author": "",
+  "license": "ISC"
 }

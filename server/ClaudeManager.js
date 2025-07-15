@@ -20,7 +20,8 @@ class ClaudeManager {
         maxTokens = 1024,
         temperature = 0.7,
         systemPrompt = null,
-        conversationHistory = []
+        conversationHistory = [],
+        tools = []
       } = options;
 
       // Build messages array
@@ -45,11 +46,16 @@ class ClaudeManager {
         requestParams.system = systemPrompt;
       }
 
+      // Add tools if provided
+      if (tools && tools.length > 0) {
+        requestParams.tools = tools;
+      }
+
       const response = await this.client.messages.create(requestParams);
       
       return {
         success: true,
-        content: response.content[0].text,
+        content: response.content, // Return full content array, not just first text block
         usage: response.usage,
         model: response.model,
         stopReason: response.stop_reason
