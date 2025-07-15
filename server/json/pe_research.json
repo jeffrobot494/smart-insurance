@@ -1,0 +1,40 @@
+{
+    "workflow": {
+      "name": "PE Firm Research",
+      "description": "Research workflow to find portfolio companies of a private equity firm",
+      "tasks": [
+        {
+          "id": 1,
+          "name": "FindDomain",
+          "outputKey": "domain",
+          "instructions": "Find the website domain for the given private equity firm name. Return just the domain URL (e.g., 'www.example.com'). Use web search to find their official website.",
+          "inputKeys": ["name"],
+          "dependencies": []
+        },
+        {
+          "id": 2,
+          "name": "MapDomain", 
+          "outputKey": "sitemap",
+          "instructions": "Create a sitemap of all pages on the given domain. Use web crawling tools to discover all accessible pages. Return an array of URLs found on the website.",
+          "inputKeys": ["domain"],
+          "dependencies": ["find_domain"]
+        },
+        {
+          "id": 3,
+          "name": "FindPortfolioPage",
+          "outputKey": "portfolio_pages", 
+          "instructions": "Analyze the sitemap and identify which pages are most likely to contain information about portfolio companies. Look for URLs containing words like 'portfolio', 'investments', 'companies', 'holdings'. Return an array of the most relevant URLs.",
+          "inputKeys": ["sitemap"],
+          "dependencies": ["map_domain"]
+        },
+        {
+          "id": 4,
+          "name": "ExtractCompanies",
+          "outputKey": "portfolio_companies",
+          "instructions": "Visit the portfolio pages and extract the names of portfolio companies. Look for company names, logos, and descriptions. Return an array of company names as strings.",
+          "inputKeys": ["portfolio_pages", "domain"],
+          "dependencies": ["find_portfolio_page"]
+        }
+      ]
+    }
+  }

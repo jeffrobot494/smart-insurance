@@ -1,0 +1,32 @@
+{
+  "name": "pe-research-automation",
+  "version": "1.0.0",
+  "description": "Automated PE firm research using Claude and Playwright MCP server",
+  "main": "pe-research-automation.js",
+  "scripts": {
+    "start": "node pe-research-automation.js",
+    "research": "node pe-research-automation.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@modelcontextprotocol/sdk": "^1.15.0",
+    "child_process": "^1.0.2",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.0",
+    "fs": "^0.0.1-security",
+    "openai": "^5.9.0",
+    "path": "^0.12.7",
+    "readline": "^1.3.0"
+  },
+  "keywords": [
+    "pe",
+    "private-equity",
+    "research",
+    "automation",
+    "claude",
+    "playwright",
+    "mcp"
+  ],
+  "author": "",
+  "license": "ISC"
+}

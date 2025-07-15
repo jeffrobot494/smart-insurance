@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__puppeteer-local__browser_init",
+      "Bash(ls:*)",
+      "Bash(npm install:*)",
+      "Bash(cp:*)",
+      "Bash(npx:*)",
+      "Bash(find:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "puppeteer-browser"
+  ]
+}

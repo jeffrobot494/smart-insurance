@@ -1,0 +1,19 @@
+HEALTH INSURANCE APP QUESTIONS
+1) Q: Can we use perplexity to find the companies these companies own?
+A: Perplexity Deep Research is fucking CRUSHING it. Way better than trying to scrape ourselves. Which also is probably less up to date.
+
+2) Is there a tool we can use to get the labor results? apparently the API works? I thought it was down or something... If the API works, and gets us all the info we need, we are fucking golden. 
+
+3) How do we get the company's EIN? Probably a basic perplexity search. Or maybe our Deep Research can get us the EIN at the same time. 
+Look up name and EIN in the Form 5500 2023.csv
+
+-----> PROCESS <-----
+
+1) Enter PE firm name
+2) Perplexity Deep Research returns all active portfolio companies
+3) For each company, get EIN from data set
+4) 
+
+Get 2024, 2023, 2022 data sets. Search all data sets company, return latest.
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=

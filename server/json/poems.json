@@ -1,0 +1,32 @@
+{
+    "workflow": {
+      "name": "Poetry",
+      "description": "Write lines of a poem that rhyme",
+      "tasks": [
+        {
+            "id": 1,
+            "name": "Line 1",
+            "outputKey": "line1",
+            "instructions": "Write the first line of a love poem",
+            "inputKeys": [],
+            "dependencies": []
+        },
+        {
+            "id": 2,
+            "name": "Line 2",
+            "outputKey": "line2",
+            "instructions": "Write the second line of the love poem",
+            "inputKeys": ["line1"],
+            "dependencies": []
+        },
+        {
+            "id": 1,
+            "name": "Line 3",
+            "outputKey": "line3",
+            "instructions": "Write the last line of the love poem",
+            "inputKeys": ["line2"],
+            "dependencies": []
+        }
+      ]
+    }
+  }

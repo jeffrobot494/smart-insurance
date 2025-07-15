@@ -1,0 +1,21 @@
+Create a Sandbox Testing Environment for Claude to Test Playwright and Firecrawl MCP servers, and Claude's ability to accomplish our PE Research Task
+
+User gives claude tasks, and the program loops with Claude's tool requests and tool results until Claude has completed the task. 
+The User gives specific requirements for success.
+The program uses a command line interface.
+Claude does not wait for user input or interaction between steps or tool uses.
+A success requirement might look like, "You've found ten company names" if the task was "Find a list of software developers in the US."
+Claude has access to two MCP servers: playwright-mcp and firecrawl-mcp-server
+The playwright mcp server is at "C:\Users\jeffr\OneDrive\Documents\playwright-mcp"
+The firecrawl mcp server is at "C:\Users\jeffr\OneDrive\Documents\firecrawl-mcp-server"
+When Claude is given a task, he first breaks it down into steps, where each step is something that can be accomplished with a single tool use/response from the API. After the user gives Claude his task, Claude breaks the task down into likely steps and presents those steps to the user, then waits for the user's approval before he begins. 
+The steps are stored in a list and given to Claude with each prompt.
+For example, if the task is, "Go to perplexity.ai and use it's research mode to find a complete list of portfolio companies for American Discovery Capital, then return the list."
+The steps for this might look like:
+"1. Open a browser and navigate to www.perplexity.ai"
+"2. Take a snapshot of the page"
+"3. Choose research mode"
+"4. Enter the search query and press enter"
+"5. Take snapshots until the snapshot indicates that the research is complete"
+"6. Use firecrawl to crawl the page and gather the research results"
+"7. Parse the research results and return the list of companies to the user."
