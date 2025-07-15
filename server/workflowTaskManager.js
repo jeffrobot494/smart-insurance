@@ -38,8 +38,9 @@ class WorkflowTaskManager {
     this.currentIndex = 0;
   }
 
-  async executeWorkflow() {
-    const results = {};
+  async executeWorkflow(userInputs = {}) {
+    // Initialize results with user inputs so first task can access them
+    const results = { ...userInputs };
     
     console.log(`📋 Found ${this.getAllTasks().length} tasks to execute\n`);
     

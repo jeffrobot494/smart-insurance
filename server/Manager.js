@@ -5,34 +5,54 @@ const path = require('path');
 const { readWorkflow } = require('./workflowReader');
 const WorkflowTaskManager = require('./workflowTaskManager');
 const SaveTaskResults = require('./SaveTaskResults');
+const CLIInputParser = require('./CLIInputParser');
 
-async function run() {
+async function run(workflowFilename = null, userInputs = {}) {
   try {
-    // Get workflow filename from command line argument
-    const workflowFilename = process.argv[2];
+    const cliParser = new CLIInputParser();
     
-    if (!workflowFilename) {
-      console.error('❌ Please specify a workflow filename');
-      console.log('Usage: node Manager.js <workflow-filename>');
-      console.log('Example: node Manager.js workflow.json');
+    // Get workflow filename from parameter or command line argument
+    const filename = workflowFilename || cliParser.getWorkflowFilename();
+    
+    // If called from command line, parse additional arguments as user inputs
+    if (!workflowFilename && Object.keys(userInputs).length === 0) {
+      userInputs = cliParser.parseUserInputs();
+    }
+    
+    if (!filename) {
+      cliParser.showUsage();
       process.exit(1);
     }
     
-    console.log(`🚀 Starting workflow execution for: ${workflowFilename}`);
+    console.log(`🚀 Starting workflow execution for: ${filename}`);
     
-    const workflowData = readWorkflow(workflowFilename);
+    // Log user inputs if provided
+    if (Object.keys(userInputs).length > 0) {
+      console.log('📥 User inputs provided:', userInputs);
+    }
+    
+    const workflowData = readWorkflow(filename);
     
     // Set workflow name in environment for SaveTaskResults
     process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
     
     const taskManager = new WorkflowTaskManager(workflowData);
     
-    // Execute the workflow
-    const results = await taskManager.executeWorkflow();
+    // Execute the workflow with user inputs
+    const results = await taskManager.executeWorkflow(userInputs);
+    
+    return results;
     
   } catch (error) {
     console.error('💥 Workflow execution failed:', error.message);
+    throw error;
   }
 }
 
-run().catch(console.error);
+// Export the run function for use in web app
+module.exports = { run };
+
+// If called directly from command line, run with no user inputs
+if (require.main === module) {
+  run().catch(console.error);
+}
