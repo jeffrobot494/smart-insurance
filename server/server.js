@@ -2,8 +2,8 @@
 const express = require('express');
 const path = require('path');
 require('./utils/load-env'); // Load environment variables
-const MCPServerManager = require('./MCPServerManager');
-const ToolManager = require('./ToolManager');
+const MCPServerManager = require('./mcp/MCPServerManager');
+const ToolManager = require('./workflow/ToolManager');
 
 const app = express();
 const PORT = process.env.PORT || 3000;

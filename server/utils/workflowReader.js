@@ -3,7 +3,7 @@ const path = require('path');
 
 function readWorkflow(filename = 'workflow.json') {
   try {
-    const workflowPath = path.join(__dirname, 'json', filename);
+    const workflowPath = path.join(__dirname, '..', 'json', filename);
     const fileContent = fs.readFileSync(workflowPath, 'utf8');
     const workflow = JSON.parse(fileContent);
     return workflow;

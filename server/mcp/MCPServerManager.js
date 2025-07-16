@@ -10,8 +10,8 @@ class MCPServerManager {
     this.isInitialized = false;
     
     // Paths to local mcp directory
-    this.FIRECRAWL_MCP_PATH = path.join(__dirname, 'mcp', 'firecrawl');
-    this.PERPLEXITY_MCP_PATH = path.join(__dirname, 'mcp', 'perplexity');
+    this.FIRECRAWL_MCP_PATH = path.join(__dirname, 'firecrawl');
+    this.PERPLEXITY_MCP_PATH = path.join(__dirname, 'perplexity');
   }
 
   async initialize() {

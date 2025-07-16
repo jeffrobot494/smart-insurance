@@ -4,7 +4,7 @@ const path = require('path');
 class SaveTaskResults {
   constructor() {
     // Load JSON file path from environment variable
-    const outputDir = process.env.WORKFLOW_OUTPUT_DIR || path.join(__dirname, 'json', 'output');
+    const outputDir = process.env.WORKFLOW_OUTPUT_DIR || path.join(__dirname, '..', 'json', 'output');
     const workflowName = process.env.WORKFLOW_NAME || 'workflow';
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     
