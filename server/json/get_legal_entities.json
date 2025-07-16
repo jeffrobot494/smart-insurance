@@ -1,0 +1,15 @@
+{
+    "workflow": {
+      "name": "Get Legal Entities",
+      "description": "Use perplexity to get legal entity name",
+      "tasks": [
+        {
+            "id": 1,
+            "name": "Search",
+            "outputKey": "legal_name",
+            "instructions": "Use perplexity search to find the legal entity name this company files Department of Labor documents under. It could be a parent company, or it could be a different name entirely.",
+            "inputKeys": ["input"]
+        }
+      ]
+    }
+  }

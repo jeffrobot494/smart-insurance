@@ -1,0 +1,15 @@
+{
+    "workflow": {
+      "name": "Math",
+      "description": "Test multiple input result extraction",
+      "tasks": [
+        {
+            "id": 1,
+            "name": "addition",
+            "outputKey": "sum",
+            "instructions": "Add the input plus 10 and return the result. Your response should contain ONLY the sum of the two numbers.",
+            "inputKeys": ["input"]
+        }
+      ]
+    }
+  }

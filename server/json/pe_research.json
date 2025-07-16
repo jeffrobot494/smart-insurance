@@ -27,7 +27,7 @@
         {
           "id": 4,
           "name": "ExtractCompanies",
-          "instructions": "Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. Return only the list of names.",
+          "instructions": "Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. Return ONLY the name of the firm then the list of company names and zero commentary. Like this: American Discovery Capital: Bubba Gump Shrimp, Nintendo of America, Peeboy Food Cans, etc",
           "inputKeys": ["portfolio_pages", "domain"],
           "outputKey": "portfolio_companies"
         }

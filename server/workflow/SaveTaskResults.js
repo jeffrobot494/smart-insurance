@@ -21,11 +21,21 @@ class SaveTaskResults {
 
   saveBatchResults(batchResults) {
     try {
+      // Extract final results from all items
+      const finalResults = [];
+      for (const item of batchResults) {
+        const taskIds = Object.keys(item.tasks).map(id => parseInt(id));
+        const finalTaskId = Math.max(...taskIds);
+        const finalTask = item.tasks[finalTaskId];
+        finalResults.push(finalTask?.result || null);
+      }
+      
       const batchData = {
         batchInfo: {
           totalItems: batchResults.length,
           startedAt: new Date().toISOString(),
-          workflowName: process.env.WORKFLOW_NAME
+          workflowName: process.env.WORKFLOW_NAME,
+          results: finalResults  // Array of final results
         },
         items: batchResults
       };

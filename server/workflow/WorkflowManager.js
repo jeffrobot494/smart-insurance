@@ -2,9 +2,7 @@ const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
 
 class WorkflowManager {
-  constructor(workflowData, toolManager) {
-    this.workflowData = workflowData;
-    this.tasks = workflowData.workflow.tasks;
+  constructor(toolManager) {
     this.currentIndex = 0;
     this.resultsSaver = new SaveTaskResults();
     this.toolManager = toolManager; // Use injected ToolManager
@@ -39,11 +37,18 @@ class WorkflowManager {
     this.currentIndex = 0;
   }
 
-  async executeWorkflow(userInputs = {}) {
+  async executeWorkflow(workflowData, userInputs = {}) {
+    this.workflowData = workflowData;
+    if (!this.workflowData) {
+      throw new Error('workflorData must be provided to WorkflowManager');
+    }
+
     if (!this.toolManager) {
       throw new Error('ToolManager must be provided to WorkflowManager');
     }
     
+    this.tasks = workflowData.workflow.tasks;
+
     // userInputs.input is always an array
     const inputList = userInputs.input || [];
     const allResults = [];

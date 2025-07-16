@@ -37,6 +37,7 @@ router.post('/', async (req, res) => {
 
     // Execute workflow asynchronously (fire and forget)
     run(workflowFile, { input: inputArray })
+    /*
       .then(results => {
         console.log(`Workflow ${workflowname} completed successfully`);
         // Results are automatically saved by SaveTaskResults.js
@@ -44,7 +45,7 @@ router.post('/', async (req, res) => {
       .catch(error => {
         console.error(`Workflow ${workflowname} failed:`, error.message);
       });
-
+*/
   } catch (error) {
     console.error('Workflow startup error:', error);
     res.status(500).json({
