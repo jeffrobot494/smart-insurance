@@ -1,27 +1,15 @@
 const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
-const MCPServerManager = require('./MCPServerManager');
-const ToolManager = require('./ToolManager');
 
 class WorkflowManager {
-  constructor(workflowData) {
+  constructor(workflowData, toolManager) {
     this.workflowData = workflowData;
     this.tasks = workflowData.workflow.tasks;
     this.currentIndex = 0;
     this.resultsSaver = new SaveTaskResults();
-    
-    // Initialize MCP servers and tool manager
-    this.mcpServerManager = null;
-    this.toolManager = null;
+    this.toolManager = toolManager; // Use injected ToolManager
   }
 
-  async initializeTools() {
-    if (!this.mcpServerManager) {
-      this.mcpServerManager = new MCPServerManager();
-      await this.mcpServerManager.initialize();
-      this.toolManager = new ToolManager(this.mcpServerManager);
-    }
-  }
 
   getCurrentTask() {
     if (this.currentIndex < this.tasks.length) {
@@ -52,7 +40,9 @@ class WorkflowManager {
   }
 
   async executeWorkflow(userInputs = {}) {
-    await this.initializeTools();
+    if (!this.toolManager) {
+      throw new Error('ToolManager must be provided to WorkflowManager');
+    }
     
     // userInputs.input is always an array
     const inputList = userInputs.input || [];
@@ -125,11 +115,6 @@ class WorkflowManager {
     return allResults;
   }
 
-  cleanup() {
-    if (this.mcpServerManager) {
-      this.mcpServerManager.cleanup();
-    }
-  }
 }
 
 module.exports = WorkflowManager;

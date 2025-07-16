@@ -1,4 +1,4 @@
-const ClaudeManager = require('./ClaudeManager');
+const ClaudeManager = require('../ClaudeManager');
 
 class TaskExecution {
   constructor(task) {

@@ -1,10 +1,16 @@
 //server.js
 const express = require('express');
 const path = require('path');
-require('./load-env'); // Load environment variables
+require('./utils/load-env'); // Load environment variables
+const MCPServerManager = require('./MCPServerManager');
+const ToolManager = require('./ToolManager');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Global MCP instances
+let globalMCPManager = null;
+let globalToolManager = null;
 
 // Middleware
 app.use(express.json());
@@ -37,10 +43,42 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Smart Insurance Workflow Engine server running on port ${PORT}`);
-  console.log(`Health check available at: http://localhost:${PORT}/api/health`);
+// Initialize MCP servers and start server
+async function startServer() {
+  try {
+    // Initialize MCP servers once
+    console.log('🔄 Initializing MCP servers...');
+    globalMCPManager = new MCPServerManager();
+    await globalMCPManager.initialize();
+    globalToolManager = new ToolManager(globalMCPManager);
+    
+    console.log('✅ MCP servers ready');
+    
+    app.listen(PORT, () => {
+      console.log(`Smart Insurance Workflow Engine server running on port ${PORT}`);
+      console.log(`Health check available at: http://localhost:${PORT}/api/health`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to initialize MCP servers:', error);
+    process.exit(1);
+  }
+}
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('🛑 Shutting down server...');
+  if (globalMCPManager) {
+    await globalMCPManager.cleanup();
+  }
+  process.exit(0);
 });
 
-module.exports = app;
+// Export function to get global ToolManager
+function getToolManager() {
+  return globalToolManager;
+}
+
+module.exports = { app, getToolManager };
+
+// Start the server
+startServer();

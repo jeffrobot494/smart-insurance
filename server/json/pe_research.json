@@ -6,34 +6,30 @@
         {
           "id": 1,
           "name": "FindDomain",
-          "outputKey": "domain",
           "instructions": "Find the website domain for the given private equity firm name. Return just the domain URL (e.g., 'www.example.com'). Use web search to find their official website. Respond with only the domain name.",
-          "inputKeys": ["name"],
-          "dependencies": []
+          "inputKeys": ["input"],
+          "outputKey": "domain"
         },
         {
           "id": 2,
           "name": "MapDomain", 
-          "outputKey": "sitemap",
           "instructions": "Create a sitemap of all pages on the given domain. Use web crawling tools to discover all accessible pages. Once you have the list of URLs, make a final response that is only the URLs.",
           "inputKeys": ["domain"],
-          "dependencies": ["find_domain"]
+          "outputKey": "sitemap"
         },
         {
           "id": 3,
           "name": "FindPortfolioPage",
-          "outputKey": "portfolio_pages", 
           "instructions": "Analyze the sitemap and identify which pages are most likely to contain information about portfolio companies. Look for URLs containing words like 'portfolio', 'investments', 'companies', 'holdings'. Respond with only the relevant URLs.",
           "inputKeys": ["sitemap"],
-          "dependencies": ["map_domain"]
+          "outputKey": "portfolio_pages"
         },
         {
           "id": 4,
           "name": "ExtractCompanies",
-          "outputKey": "portfolio_companies",
           "instructions": "Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. Return only the list of names.",
           "inputKeys": ["portfolio_pages", "domain"],
-          "dependencies": ["find_portfolio_page"]
+          "outputKey": "portfolio_companies"
         }
       ]
     }

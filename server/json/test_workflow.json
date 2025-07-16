@@ -1,0 +1,24 @@
+{
+    "workflow": {
+      "name": "Test",
+      "description": "Google scrape",
+      "tasks": [
+        {
+            "id": 1,
+            "name": "scrape",
+            "outputKey": "scrape_results",
+            "instructions": "Scrape the input website and respond with the results of the scrape.",
+            "inputKeys": ["input"],
+            "dependencies": []
+        },
+        {
+          "id": 2,
+          "name": "count",
+          "outputKey": "count_results",
+          "instructions": "Count how many times the word 'the' appears on the website.",
+          "inputKeys": ["scrape_results"],
+          "dependencies": []
+      }
+      ]
+    }
+  }

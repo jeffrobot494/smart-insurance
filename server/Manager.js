@@ -1,11 +1,12 @@
 // Load environment variables from .env file
-require('./load-env');
+require('./utils/load-env');
 
 const path = require('path');
-const { readWorkflow } = require('./workflowReader');
-const WorkflowManager = require('./WorkflowManager');
-const SaveTaskResults = require('./SaveTaskResults');
-const CLIInputParser = require('./CLIInputParser');
+const { readWorkflow } = require('./utils/workflowReader');
+const WorkflowManager = require('./workflow/WorkflowManager');
+const SaveTaskResults = require('./workflow/SaveTaskResults');
+const CLIInputParser = require('./utils/CLIInputParser');
+// Remove circular dependency - will get ToolManager dynamically
 
 async function run(workflowFilename = null, userInputs = {}) {
   try {
@@ -36,7 +37,14 @@ async function run(workflowFilename = null, userInputs = {}) {
     // Set workflow name in environment for SaveTaskResults
     process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
     
-    const taskManager = new WorkflowManager(workflowData);
+    // Get global ToolManager dynamically to avoid circular dependency
+    const { getToolManager } = require('./server');
+    const toolManager = getToolManager();
+    if (!toolManager) {
+      throw new Error('ToolManager not available. Ensure server is running.');
+    }
+    
+    const taskManager = new WorkflowManager(workflowData, toolManager);
     
     // Execute the workflow with user inputs
     const results = await taskManager.executeWorkflow(userInputs);
