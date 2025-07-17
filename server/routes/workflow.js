@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { run } = require('../Manager');
+const { run, run2, run3 } = require('../Manager');
 
 // POST /api/workflow
 router.post('/', async (req, res) => {
@@ -54,5 +54,45 @@ router.post('/', async (req, res) => {
     });
   }
 });
+
+// POST /api/workflow/2
+router.post('/2/', async (req, res) => {
+  try {
+
+    // Send immediate response
+    res.status(202).json({
+      success: true,
+      message: 'Workflow execution 2 started',
+      status: 'started'
+    });
+
+    // Execute workflow asynchronously (fire and forget)
+    run2();
+
+  } catch (error) {
+    console.error('Workflow startup error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+router.get('/3/', async (req, res) => {
+  try{
+    res.status(202).json({
+      success:true,
+      message: 'Data extraction started'
+    })
+    run3();
+  } catch (error) {
+    console.error('Data Extraction startup error:', error);
+    res.status(500).json({
+      successs:false,
+      error: error.message
+    })
+  }
+});
+
 
 module.exports = router;

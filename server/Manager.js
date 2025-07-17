@@ -2,59 +2,161 @@
 require('./utils/load-env');
 
 const path = require('path');
+const fs = require('fs');
 const { readWorkflow } = require('./utils/workflowReader');
 const WorkflowManager = require('./workflow/WorkflowManager');
 const SaveTaskResults = require('./workflow/SaveTaskResults');
 const CLIInputParser = require('./utils/CLIInputParser');
-// Remove circular dependency - will get ToolManager dynamically
+const OutputFileManager = require('./utils/OutputFileManager');
+const ResultsParser = require('./utils/ResultsParser');
+const DataExtractionService = require('./data-extraction/DataExtractionService');
 
-async function run(workflowFilename = null, userInputs = {}) {
-  try {
-    const filename = workflowFilename || cliParser.getWorkflowFilename();
-    console.log(`🚀 Starting workflow execution for: ${filename}`);
-    // Log user inputs if provided
-    if (Object.keys(userInputs).length > 0) {
-      console.log('📥 User inputs provided:', userInputs);
+class Manager {
+  constructor() {
+    this.taskManager = null;
+    this.outputManager = new OutputFileManager();
+    this.parser = new ResultsParser();
+    this.dataExtractionService = new DataExtractionService();
+  }
+
+  /**
+   * Initialize the shared TaskManager instance
+   */
+  async initializeTaskManager() {
+    if (!this.taskManager) {
+      // Get global ToolManager dynamically to avoid circular dependency
+      const { getToolManager } = require('./server');
+      const toolManager = getToolManager();
+      if (!toolManager) {
+        throw new Error('ToolManager not available. Ensure server is running.');
+      }
+      this.taskManager = new WorkflowManager(toolManager);
+      console.log('🔧 TaskManager initialized');
     }
-    const workflowData = readWorkflow(filename);
-    // Set workflow name in environment for SaveTaskResults
-    process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
-    // Get global ToolManager dynamically to avoid circular dependency
-    const { getToolManager } = require('./server');
-    const toolManager = getToolManager();
-    if (!toolManager) {
-      throw new Error('ToolManager not available. Ensure server is running.');
+  }
+
+  /**
+   * First workflow - PE research
+   */
+  async run(workflowFilename = null, userInputs = {}) {
+    try {
+      await this.initializeTaskManager();
+
+      const cliParser = new CLIInputParser();
+      const filename = workflowFilename || cliParser.getWorkflowFilename();
+      
+      console.log(`🚀 Starting workflow execution for: ${filename}`);
+      
+      // Log user inputs if provided
+      if (Object.keys(userInputs).length > 0) {
+        console.log('📥 User inputs provided:', userInputs);
+      }
+      
+      const workflowData = readWorkflow(filename);
+      
+      // Set workflow name in environment for SaveTaskResults
+      process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
+
+      // Execute the workflow with user inputs
+      const results = await this.taskManager.executeWorkflow(workflowData, userInputs);
+      
+      console.log('✅ First workflow completed');
+      return results;
+
+    } catch (error) {
+      console.error('💥 Workflow execution failed:', error.message);
+      throw error;
     }
-    const taskManager = new WorkflowManager(toolManager);
+  }
 
-    // Execute the workflow with user inputs
-    const results = await taskManager.executeWorkflow(workflowData, userInputs);
-    //return results;
+  /**
+   * Second workflow - Legal entity extraction
+   */
+  async run2() {
+    try {
+      await this.initializeTaskManager();
 
-    //Second workflow --SKIPPING THIS WORKFLOW FOR NOW, MAY COME BACK TO IT.
-    //Take the results from the first workflow, which is a list of companies, and use them as the input for a second workflow
-    //the output/input includes the name of the firm. We'll need to perform an operation on it so that it includes the name of the firm with each company, like so:
-    //[PE firm: American Discovery Capital, portfolio company: American Pain Consortium]
-    //A list that includes the firm name and the company name is what will be sent to the second workflow.
-    //the second workflow is verify_companies.json
-    //This workflow verifies the company is current/active
+      console.log('\n🔗 Starting third workflow: Legal entity extraction');
+      
+      // 1. Parse companies from most recent output file
+      const outputDir = path.join(__dirname, 'json', 'output');
+      const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir);
+      const firstWorkflowResults = JSON.parse(fs.readFileSync(mostRecentFile, 'utf8'));
+      const companyNames = this.parser.parseCompaniesFromResults(firstWorkflowResults);
+      
+      // Validate parsed companies
+      if (!this.parser.validateCompanies(companyNames)) {
+        console.warn('⚠️ Company parsing validation failed, but continuing with workflow');
+      }
+      
+      // 2. Load and execute legal entities workflow
+      const getLegalEntitiesWorkflow = readWorkflow('get_legal_entities.json');
+      
+      // Set workflow name in environment for SaveTaskResults
+      process.env.WORKFLOW_NAME = getLegalEntitiesWorkflow.workflow.name.replace(/\s+/g, '_').toLowerCase();
+      
+      console.log(`🏢 Executing legal entities workflow for ${companyNames.length} companies`);
+      
+      // Pass company names as individual items in the input array
+      // WorkflowManager will process each company name separately
+      const legal_names = await this.taskManager.executeWorkflow(getLegalEntitiesWorkflow, { input: companyNames });
+      
+      // 3. Log results
+      console.log('\n📋 Legal entity extraction completed:');
+      console.log('Legal names:', legal_names);
+      
+      return {
+        companyNames,
+        legalEntities: legal_names 
+      };
+      
+    } catch (error) {
+      console.error('💥 Workflow execution failed:', error.message);
+      throw error;
+    }
+  }
 
-    //Third workflow -- Get the legal entity names for these companies
-    //Take the results from the first workflow output, which is a list of companies, and use them as input for the third workflow
-    //the third workflow is get_legal_entities.json
-    //1. Parse the companies from the first workflow output stored in "./output" into a "companyNames" array/list. 
-    //1a. We always want to take the most recent output file.
-    //2. Execute a new workflow: const legal_names = await taskManager.executeWorkflow(getLegalEntitiesWorkflow, companyNames)
-    //3. Console.log("Legal names: ", legal_names);
-    
-  } catch (error) {
-    console.error('💥 Workflow execution failed:', error.message);
-    throw error;
+  async run3(){
+    //parse legal names from workflow 2 output
+    const legalNames = "SMARTBUG LLC";
+    this.dataExtractionService.extractData(legalNames);
+  }
+
+  /**
+   * Combined workflow execution (both workflows in sequence)
+   */
+  async runBoth(workflowFilename = null, userInputs = {}) {
+    try {
+      console.log('🚀 Starting combined workflow execution');
+      
+      // Run first workflow
+      const firstResults = await this.run(workflowFilename, userInputs);
+      
+      // Run second workflow (uses output from first)
+      const secondResults = await this.run2();
+      
+      return {
+        firstWorkflow: firstResults,
+        secondWorkflow: secondResults
+      };
+      
+    } catch (error) {
+      console.error('💥 Combined workflow execution failed:', error.message);
+      throw error;
+    }
   }
 }
 
-// Export the run function for use in web app
-module.exports = { run };
+// Create a singleton instance
+const manager = new Manager();
+
+// Export functions that use the singleton
+const run = (workflowFilename = null, userInputs = {}) => manager.run(workflowFilename, userInputs);
+const run2 = () => manager.run2();
+const runBoth = (workflowFilename = null, userInputs = {}) => manager.runBoth(workflowFilename, userInputs);
+const run3 = () => manager.run3();
+
+module.exports = { run, run2, runBoth, run3, Manager };
 
 // If called directly from command line, run with no user inputs
 if (require.main === module) {

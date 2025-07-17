@@ -7,7 +7,7 @@
             "id": 1,
             "name": "Search",
             "outputKey": "legal_name",
-            "instructions": "Use perplexity search to find the legal entity name this company files Department of Labor documents under. It could be a parent company, or it could be a different name entirely.",
+            "instructions": "Use perplexity search to find the legal entity name this company files Department of Labor documents under. It could be a parent company, or it could be a different name entirely. Return ONLY the original name of the company and the legal name. Like this: Bubba Gump Shrimp, BUBBA GUMP LLC.",
             "inputKeys": ["input"]
         }
       ]
