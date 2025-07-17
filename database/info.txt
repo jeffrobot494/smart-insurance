@@ -1,0 +1,13 @@
+DATABASE_PUBLIC_URL=postgresql://postgres:fRGLgOdlVXjHFmuQefcBAyiRIZUtvRmq@shuttle.proxy.rlwy.net:24543/railway
+DATABASE_URL=postgresql://postgres:fRGLgOdlVXjHFmuQefcBAyiRIZUtvRmq@postgres.railway.internal:5432/railway
+PGDATA=/var/lib/postgresql/data/pgdata
+PGDATABASE=railway4
+PGHOST=postgres.railway.internal
+PGPASSWORD=fRGLgOdlVXjHFmuQefcBAyiRIZUtvRmq
+PGPORT=54324
+PGUSER=postgres
+POSTGRES_DB=railway
+POSTGRES_PASSWORD=fRGLgOdlVXjHFmuQefcBAyiRIZUtvRmq
+POSTGRES_USER=postgres
+RAILWAY_DEPLOYMENT_DRAINING_SECONDS=60
+SSL_CERT_DAYS=820

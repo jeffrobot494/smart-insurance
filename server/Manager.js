@@ -129,6 +129,7 @@ class Manager {
     const results = this.extractor.extractResults(mostRecentFile);
 
     console.log('Extracted results:', results);
+    this.dataExtractionService.extractData(results);
     return results;
   }
 

@@ -1,0 +1,15 @@
+{
+    "workflow": {
+      "name": "Verify Companies",
+      "description": "Verify that each of these companies is a current portfolio company for the given private equity firm",
+      "tasks": [
+        {
+            "id": 1,
+            "name": "addition",
+            "outputKey": "yes/no",
+            "instructions": "Use perplexity search to whether the private equity firm is currently, actively invested in the portfolio company.",
+            "inputKeys": ["input"]
+        }
+      ]
+    }
+  }

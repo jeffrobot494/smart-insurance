@@ -3,4 +3,4 @@ server/node_modules/
 client/node_modules/
 .env
 server/.env
-server/data/f5500/*.csv
+server/data/*.csv

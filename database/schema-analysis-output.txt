@@ -1,0 +1,904 @@
+📊 CSV Schema Analysis Tool
+==================================================
+
+🔍 Analyzing f_5500_2022_latest.csv...
+📋 File: f_5500_2022_latest.csv
+📊 Rows: 243,034
+📑 Columns: 136
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - SPONS_DFE_EIN (spons_dfe_ein) -> INTEGER
+  - ADMIN_EIN (admin_ein) -> TEXT
+  - LAST_RPT_SPONS_EIN (last_rpt_spons_ein) -> TEXT
+  - LAST_RPT_PLAN_NUM (last_rpt_plan_num) -> TEXT
+
+🔍 Searchable Columns:
+  - PLAN_NAME (plan_name) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - LAST_RPT_PLAN_NAME (last_rpt_plan_name) -> TEXT
+
+📝 Suggested SQL for form_5500_records:
+CREATE TABLE form_5500_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_plan_year_begin_date DATE NOT NULL,
+  form_tax_prd DATE NOT NULL,
+  type_plan_entity_cd INTEGER NOT NULL,
+  type_dfe_plan_entity_cd TEXT,
+  initial_filing_ind INTEGER NOT NULL,
+  amended_ind INTEGER,
+  final_filing_ind INTEGER NOT NULL,
+  short_plan_yr_ind INTEGER NOT NULL,
+  collective_bargain_ind INTEGER NOT NULL,
+  f5558_application_filed_ind INTEGER NOT NULL,
+  ext_automatic_ind INTEGER,
+  dfvc_program_ind INTEGER,
+  ext_special_ind INTEGER,
+  ext_special_text TEXT,
+  plan_name VARCHAR(255) NOT NULL,
+  spons_dfe_pn INTEGER NOT NULL,
+  plan_eff_date DATE NOT NULL,
+  sponsor_dfe_name VARCHAR(255) NOT NULL,
+  spons_dfe_dba_name TEXT,
+  spons_dfe_care_of_name VARCHAR(255),
+  spons_dfe_mail_us_address1 VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_address2 TEXT,
+  spons_dfe_mail_us_city VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_state VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_zip INTEGER NOT NULL,
+  spons_dfe_mail_foreign_addr1 TEXT,
+  spons_dfe_mail_foreign_addr2 TEXT,
+  spons_dfe_mail_foreign_city TEXT,
+  spons_dfe_mail_forgn_prov_st TEXT,
+  spons_dfe_mail_foreign_cntry TEXT,
+  spons_dfe_mail_forgn_postal_cd TEXT,
+  spons_dfe_loc_us_address1 VARCHAR(255),
+  spons_dfe_loc_us_address2 TEXT,
+  spons_dfe_loc_us_city VARCHAR(255),
+  spons_dfe_loc_us_state VARCHAR(255),
+  spons_dfe_loc_us_zip INTEGER,
+  spons_dfe_loc_foreign_address1 TEXT,
+  spons_dfe_loc_foreign_address2 TEXT,
+  spons_dfe_loc_foreign_city TEXT,
+  spons_dfe_loc_forgn_prov_st TEXT,
+  spons_dfe_loc_foreign_cntry TEXT,
+  spons_dfe_loc_forgn_postal_cd TEXT,
+  spons_dfe_ein INTEGER NOT NULL,
+  spons_dfe_phone_num BIGINT NOT NULL,
+  business_code INTEGER NOT NULL,
+  admin_name TEXT,
+  admin_care_of_name TEXT,
+  admin_us_address1 TEXT,
+  admin_us_address2 TEXT,
+  admin_us_city TEXT,
+  admin_us_state TEXT,
+  admin_us_zip TEXT,
+  admin_foreign_address1 TEXT,
+  admin_foreign_address2 TEXT,
+  admin_foreign_city TEXT,
+  admin_foreign_prov_state TEXT,
+  admin_foreign_cntry TEXT,
+  admin_foreign_postal_cd TEXT,
+  admin_ein TEXT,
+  admin_phone_num TEXT,
+  last_rpt_spons_name TEXT,
+  last_rpt_spons_ein TEXT,
+  last_rpt_plan_num TEXT,
+  admin_signed_date DATE NOT NULL,
+  admin_signed_name VARCHAR(255) NOT NULL,
+  spons_signed_date DATE,
+  spons_signed_name VARCHAR(255),
+  dfe_signed_date TEXT,
+  dfe_signed_name TEXT,
+  tot_partcp_boy_cnt INTEGER NOT NULL,
+  tot_active_partcp_cnt INTEGER NOT NULL,
+  rtd_sep_partcp_rcvg_cnt INTEGER,
+  rtd_sep_partcp_fut_cnt INTEGER,
+  subtl_act_rtd_sep_cnt INTEGER NOT NULL,
+  benef_rcvg_bnft_cnt INTEGER,
+  tot_act_rtd_sep_benef_cnt INTEGER,
+  partcp_account_bal_cnt INTEGER,
+  sep_partcp_partl_vstd_cnt INTEGER,
+  contrib_emplrs_cnt TEXT,
+  type_pension_bnft_code VARCHAR(255),
+  type_welfare_bnft_code VARCHAR(255),
+  funding_insurance_ind INTEGER NOT NULL,
+  funding_sec412_ind INTEGER,
+  funding_trust_ind INTEGER NOT NULL,
+  funding_gen_asset_ind INTEGER,
+  benefit_insurance_ind INTEGER NOT NULL,
+  benefit_sec412_ind INTEGER,
+  benefit_trust_ind INTEGER NOT NULL,
+  benefit_gen_asset_ind INTEGER,
+  sch_r_attached_ind INTEGER NOT NULL,
+  sch_mb_attached_ind INTEGER NOT NULL,
+  sch_sb_attached_ind INTEGER NOT NULL,
+  sch_h_attached_ind INTEGER NOT NULL,
+  sch_i_attached_ind INTEGER NOT NULL,
+  sch_a_attached_ind INTEGER NOT NULL,
+  num_sch_a_attached_cnt INTEGER,
+  sch_c_attached_ind INTEGER NOT NULL,
+  sch_d_attached_ind INTEGER NOT NULL,
+  sch_g_attached_ind INTEGER NOT NULL,
+  filing_status VARCHAR(255) NOT NULL,
+  date_received DATE NOT NULL,
+  valid_admin_signature VARCHAR(255) NOT NULL,
+  valid_dfe_signature TEXT,
+  valid_sponsor_signature VARCHAR(255),
+  admin_phone_num_foreign TEXT,
+  spons_dfe_phone_num_foreign TEXT,
+  admin_name_same_spon_ind INTEGER NOT NULL,
+  admin_address_same_spon_ind TEXT,
+  preparer_name TEXT,
+  preparer_firm_name TEXT,
+  preparer_us_address1 TEXT,
+  preparer_us_address2 TEXT,
+  preparer_us_city TEXT,
+  preparer_us_state TEXT,
+  preparer_us_zip TEXT,
+  preparer_foreign_address1 TEXT,
+  preparer_foreign_address2 TEXT,
+  preparer_foreign_city TEXT,
+  preparer_foreign_prov_state TEXT,
+  preparer_foreign_cntry TEXT,
+  preparer_foreign_postal_cd TEXT,
+  preparer_phone_num TEXT,
+  preparer_phone_num_foreign TEXT,
+  tot_act_partcp_boy_cnt INTEGER NOT NULL,
+  subj_m1_filing_req_ind INTEGER,
+  compliance_m1_filing_req_ind TEXT,
+  m1_receipt_confirmation_code TEXT,
+  admin_manual_signed_date TEXT,
+  admin_manual_signed_name TEXT,
+  last_rpt_plan_name TEXT,
+  spons_manual_signed_date TEXT,
+  spons_manual_signed_name TEXT,
+  dfe_manual_signed_date TEXT,
+  dfe_manual_signed_name TEXT,
+  adopted_plan_perm_sec_act INTEGER
+);
+
+-- Indexes
+CREATE INDEX idx_form_5500_records_ack_id ON form_5500_records(ack_id);
+CREATE INDEX idx_form_5500_records_plan_name ON form_5500_records(plan_name);
+CREATE INDEX idx_form_5500_records_sponsor_dfe_name ON form_5500_records(sponsor_dfe_name);
+CREATE INDEX idx_form_5500_records_spons_dfe_ein ON form_5500_records(spons_dfe_ein);
+CREATE INDEX idx_form_5500_records_admin_ein ON form_5500_records(admin_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_spons_ein ON form_5500_records(last_rpt_spons_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_num ON form_5500_records(last_rpt_plan_num);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_name ON form_5500_records(last_rpt_plan_name);
+CREATE INDEX idx_form_5500_records_year ON form_5500_records(year);
+
+
+==================================================
+
+🔍 Analyzing f_5500_2023_latest.csv...
+📋 File: f_5500_2023_latest.csv
+📊 Rows: 224,255
+📑 Columns: 140
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - SPONS_DFE_EIN (spons_dfe_ein) -> INTEGER
+  - ADMIN_EIN (admin_ein) -> TEXT
+  - LAST_RPT_SPONS_EIN (last_rpt_spons_ein) -> INTEGER
+  - LAST_RPT_PLAN_NUM (last_rpt_plan_num) -> INTEGER
+
+🔍 Searchable Columns:
+  - PLAN_NAME (plan_name) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - LAST_RPT_PLAN_NAME (last_rpt_plan_name) -> VARCHAR(255)
+
+📝 Suggested SQL for form_5500_records:
+CREATE TABLE form_5500_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_plan_year_begin_date DATE NOT NULL,
+  form_tax_prd DATE NOT NULL,
+  type_plan_entity_cd INTEGER NOT NULL,
+  type_dfe_plan_entity_cd TEXT,
+  initial_filing_ind TEXT,
+  amended_ind TEXT,
+  final_filing_ind TEXT,
+  short_plan_yr_ind TEXT,
+  collective_bargain_ind TEXT,
+  f5558_application_filed_ind TEXT,
+  ext_automatic_ind TEXT,
+  dfvc_program_ind TEXT,
+  ext_special_ind TEXT,
+  ext_special_text TEXT,
+  plan_name VARCHAR(255) NOT NULL,
+  spons_dfe_pn INTEGER NOT NULL,
+  plan_eff_date DATE NOT NULL,
+  sponsor_dfe_name VARCHAR(255) NOT NULL,
+  spons_dfe_dba_name TEXT,
+  spons_dfe_care_of_name TEXT,
+  spons_dfe_mail_us_address1 VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_address2 TEXT,
+  spons_dfe_mail_us_city VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_state VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_zip INTEGER NOT NULL,
+  spons_dfe_mail_foreign_addr1 TEXT,
+  spons_dfe_mail_foreign_addr2 TEXT,
+  spons_dfe_mail_foreign_city TEXT,
+  spons_dfe_mail_forgn_prov_st TEXT,
+  spons_dfe_mail_foreign_cntry TEXT,
+  spons_dfe_mail_forgn_postal_cd TEXT,
+  spons_dfe_loc_us_address1 TEXT,
+  spons_dfe_loc_us_address2 TEXT,
+  spons_dfe_loc_us_city TEXT,
+  spons_dfe_loc_us_state TEXT,
+  spons_dfe_loc_us_zip TEXT,
+  spons_dfe_loc_foreign_address1 TEXT,
+  spons_dfe_loc_foreign_address2 TEXT,
+  spons_dfe_loc_foreign_city TEXT,
+  spons_dfe_loc_forgn_prov_st TEXT,
+  spons_dfe_loc_foreign_cntry TEXT,
+  spons_dfe_loc_forgn_postal_cd TEXT,
+  spons_dfe_ein INTEGER NOT NULL,
+  spons_dfe_phone_num BIGINT NOT NULL,
+  business_code INTEGER NOT NULL,
+  admin_name TEXT,
+  admin_care_of_name TEXT,
+  admin_us_address1 TEXT,
+  admin_us_address2 TEXT,
+  admin_us_city TEXT,
+  admin_us_state TEXT,
+  admin_us_zip TEXT,
+  admin_foreign_address1 TEXT,
+  admin_foreign_address2 TEXT,
+  admin_foreign_city TEXT,
+  admin_foreign_prov_state TEXT,
+  admin_foreign_cntry TEXT,
+  admin_foreign_postal_cd TEXT,
+  admin_ein TEXT,
+  admin_phone_num TEXT,
+  last_rpt_spons_name VARCHAR(255),
+  last_rpt_spons_ein INTEGER,
+  last_rpt_plan_num INTEGER,
+  admin_signed_date TEXT,
+  admin_signed_name TEXT,
+  spons_signed_date TEXT,
+  spons_signed_name TEXT,
+  dfe_signed_date TEXT,
+  dfe_signed_name TEXT,
+  tot_partcp_boy_cnt INTEGER NOT NULL,
+  tot_active_partcp_cnt INTEGER NOT NULL,
+  rtd_sep_partcp_rcvg_cnt INTEGER NOT NULL,
+  rtd_sep_partcp_fut_cnt INTEGER NOT NULL,
+  subtl_act_rtd_sep_cnt INTEGER NOT NULL,
+  benef_rcvg_bnft_cnt TEXT,
+  tot_act_rtd_sep_benef_cnt TEXT,
+  partcp_account_bal_cnt TEXT,
+  sep_partcp_partl_vstd_cnt TEXT,
+  contrib_emplrs_cnt INTEGER NOT NULL,
+  type_pension_bnft_code TEXT,
+  type_welfare_bnft_code VARCHAR(255) NOT NULL,
+  funding_insurance_ind INTEGER,
+  funding_sec412_ind TEXT,
+  funding_trust_ind TEXT,
+  funding_gen_asset_ind INTEGER,
+  benefit_insurance_ind INTEGER,
+  benefit_sec412_ind TEXT,
+  benefit_trust_ind TEXT,
+  benefit_gen_asset_ind INTEGER,
+  sch_r_attached_ind TEXT,
+  sch_mb_attached_ind TEXT,
+  sch_sb_attached_ind TEXT,
+  sch_h_attached_ind TEXT,
+  sch_i_attached_ind TEXT,
+  sch_a_attached_ind INTEGER,
+  num_sch_a_attached_cnt TEXT,
+  sch_c_attached_ind TEXT,
+  sch_d_attached_ind TEXT,
+  sch_g_attached_ind TEXT,
+  filing_status VARCHAR(255) NOT NULL,
+  date_received DATE NOT NULL,
+  valid_admin_signature TEXT,
+  valid_dfe_signature TEXT,
+  valid_sponsor_signature TEXT,
+  admin_phone_num_foreign TEXT,
+  spons_dfe_phone_num_foreign TEXT,
+  admin_name_same_spon_ind INTEGER NOT NULL,
+  admin_address_same_spon_ind TEXT,
+  preparer_name TEXT,
+  preparer_firm_name TEXT,
+  preparer_us_address1 TEXT,
+  preparer_us_address2 TEXT,
+  preparer_us_city TEXT,
+  preparer_us_state TEXT,
+  preparer_us_zip TEXT,
+  preparer_foreign_address1 TEXT,
+  preparer_foreign_address2 TEXT,
+  preparer_foreign_city TEXT,
+  preparer_foreign_prov_state TEXT,
+  preparer_foreign_cntry TEXT,
+  preparer_foreign_postal_cd TEXT,
+  preparer_phone_num TEXT,
+  preparer_phone_num_foreign TEXT,
+  tot_act_partcp_boy_cnt INTEGER NOT NULL,
+  subj_m1_filing_req_ind INTEGER NOT NULL,
+  compliance_m1_filing_req_ind TEXT,
+  m1_receipt_confirmation_code TEXT,
+  admin_manual_signed_date DATE NOT NULL,
+  admin_manual_signed_name VARCHAR(255) NOT NULL,
+  last_rpt_plan_name VARCHAR(255),
+  spons_manual_signed_date TEXT,
+  spons_manual_signed_name TEXT,
+  dfe_manual_signed_date TEXT,
+  dfe_manual_signed_name TEXT,
+  adopted_plan_perm_sec_act TEXT,
+  partcp_account_bal_cnt_boy TEXT,
+  sch_dcg_attached_ind TEXT,
+  num_sch_dcg_attached_cnt TEXT,
+  sch_mep_attached_ind TEXT
+);
+
+-- Indexes
+CREATE INDEX idx_form_5500_records_ack_id ON form_5500_records(ack_id);
+CREATE INDEX idx_form_5500_records_plan_name ON form_5500_records(plan_name);
+CREATE INDEX idx_form_5500_records_sponsor_dfe_name ON form_5500_records(sponsor_dfe_name);
+CREATE INDEX idx_form_5500_records_spons_dfe_ein ON form_5500_records(spons_dfe_ein);
+CREATE INDEX idx_form_5500_records_admin_ein ON form_5500_records(admin_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_spons_ein ON form_5500_records(last_rpt_spons_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_num ON form_5500_records(last_rpt_plan_num);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_name ON form_5500_records(last_rpt_plan_name);
+CREATE INDEX idx_form_5500_records_year ON form_5500_records(year);
+
+
+==================================================
+
+🔍 Analyzing f_5500_2024_latest.csv...
+📋 File: f_5500_2024_latest.csv
+📊 Rows: 33,249
+📑 Columns: 140
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - SPONS_DFE_EIN (spons_dfe_ein) -> INTEGER
+  - ADMIN_EIN (admin_ein) -> TEXT
+  - LAST_RPT_SPONS_EIN (last_rpt_spons_ein) -> TEXT
+  - LAST_RPT_PLAN_NUM (last_rpt_plan_num) -> TEXT
+
+🔍 Searchable Columns:
+  - PLAN_NAME (plan_name) -> VARCHAR(255)
+  - SPONSOR_DFE_NAME (sponsor_dfe_name) -> VARCHAR(255)
+  - LAST_RPT_PLAN_NAME (last_rpt_plan_name) -> TEXT
+
+📝 Suggested SQL for form_5500_records:
+CREATE TABLE form_5500_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_plan_year_begin_date DATE NOT NULL,
+  form_tax_prd DATE NOT NULL,
+  type_plan_entity_cd INTEGER NOT NULL,
+  type_dfe_plan_entity_cd TEXT,
+  initial_filing_ind INTEGER,
+  amended_ind INTEGER,
+  final_filing_ind INTEGER,
+  short_plan_yr_ind INTEGER,
+  collective_bargain_ind INTEGER,
+  f5558_application_filed_ind INTEGER,
+  ext_automatic_ind INTEGER,
+  dfvc_program_ind INTEGER,
+  ext_special_ind INTEGER,
+  ext_special_text TEXT,
+  plan_name VARCHAR(255) NOT NULL,
+  spons_dfe_pn INTEGER NOT NULL,
+  plan_eff_date DATE NOT NULL,
+  sponsor_dfe_name VARCHAR(255) NOT NULL,
+  spons_dfe_dba_name TEXT,
+  spons_dfe_care_of_name TEXT,
+  spons_dfe_mail_us_address1 VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_address2 TEXT,
+  spons_dfe_mail_us_city VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_state VARCHAR(255) NOT NULL,
+  spons_dfe_mail_us_zip INTEGER NOT NULL,
+  spons_dfe_mail_foreign_addr1 TEXT,
+  spons_dfe_mail_foreign_addr2 TEXT,
+  spons_dfe_mail_foreign_city TEXT,
+  spons_dfe_mail_forgn_prov_st TEXT,
+  spons_dfe_mail_foreign_cntry TEXT,
+  spons_dfe_mail_forgn_postal_cd TEXT,
+  spons_dfe_loc_us_address1 VARCHAR(255),
+  spons_dfe_loc_us_address2 TEXT,
+  spons_dfe_loc_us_city VARCHAR(255),
+  spons_dfe_loc_us_state VARCHAR(255),
+  spons_dfe_loc_us_zip INTEGER,
+  spons_dfe_loc_foreign_address1 TEXT,
+  spons_dfe_loc_foreign_address2 TEXT,
+  spons_dfe_loc_foreign_city TEXT,
+  spons_dfe_loc_forgn_prov_st TEXT,
+  spons_dfe_loc_foreign_cntry TEXT,
+  spons_dfe_loc_forgn_postal_cd TEXT,
+  spons_dfe_ein INTEGER NOT NULL,
+  spons_dfe_phone_num BIGINT NOT NULL,
+  business_code INTEGER NOT NULL,
+  admin_name TEXT,
+  admin_care_of_name TEXT,
+  admin_us_address1 TEXT,
+  admin_us_address2 TEXT,
+  admin_us_city TEXT,
+  admin_us_state TEXT,
+  admin_us_zip TEXT,
+  admin_foreign_address1 TEXT,
+  admin_foreign_address2 TEXT,
+  admin_foreign_city TEXT,
+  admin_foreign_prov_state TEXT,
+  admin_foreign_cntry TEXT,
+  admin_foreign_postal_cd TEXT,
+  admin_ein TEXT,
+  admin_phone_num TEXT,
+  last_rpt_spons_name TEXT,
+  last_rpt_spons_ein TEXT,
+  last_rpt_plan_num TEXT,
+  admin_signed_date DATE,
+  admin_signed_name VARCHAR(255),
+  spons_signed_date DATE,
+  spons_signed_name VARCHAR(255),
+  dfe_signed_date TEXT,
+  dfe_signed_name TEXT,
+  tot_partcp_boy_cnt INTEGER NOT NULL,
+  tot_active_partcp_cnt INTEGER NOT NULL,
+  rtd_sep_partcp_rcvg_cnt INTEGER,
+  rtd_sep_partcp_fut_cnt INTEGER,
+  subtl_act_rtd_sep_cnt INTEGER NOT NULL,
+  benef_rcvg_bnft_cnt INTEGER,
+  tot_act_rtd_sep_benef_cnt INTEGER,
+  partcp_account_bal_cnt TEXT,
+  sep_partcp_partl_vstd_cnt INTEGER,
+  contrib_emplrs_cnt INTEGER,
+  type_pension_bnft_code VARCHAR(255),
+  type_welfare_bnft_code VARCHAR(255),
+  funding_insurance_ind INTEGER,
+  funding_sec412_ind INTEGER,
+  funding_trust_ind INTEGER,
+  funding_gen_asset_ind INTEGER,
+  benefit_insurance_ind INTEGER,
+  benefit_sec412_ind INTEGER,
+  benefit_trust_ind INTEGER,
+  benefit_gen_asset_ind INTEGER,
+  sch_r_attached_ind INTEGER,
+  sch_mb_attached_ind INTEGER,
+  sch_sb_attached_ind INTEGER,
+  sch_h_attached_ind INTEGER,
+  sch_i_attached_ind INTEGER,
+  sch_a_attached_ind INTEGER,
+  num_sch_a_attached_cnt TEXT,
+  sch_c_attached_ind INTEGER,
+  sch_d_attached_ind INTEGER,
+  sch_g_attached_ind INTEGER,
+  filing_status VARCHAR(255) NOT NULL,
+  date_received DATE NOT NULL,
+  valid_admin_signature VARCHAR(255),
+  valid_dfe_signature TEXT,
+  valid_sponsor_signature VARCHAR(255),
+  admin_phone_num_foreign TEXT,
+  spons_dfe_phone_num_foreign TEXT,
+  admin_name_same_spon_ind INTEGER NOT NULL,
+  admin_address_same_spon_ind TEXT,
+  preparer_name TEXT,
+  preparer_firm_name TEXT,
+  preparer_us_address1 TEXT,
+  preparer_us_address2 TEXT,
+  preparer_us_city TEXT,
+  preparer_us_state TEXT,
+  preparer_us_zip TEXT,
+  preparer_foreign_address1 TEXT,
+  preparer_foreign_address2 TEXT,
+  preparer_foreign_city TEXT,
+  preparer_foreign_prov_state TEXT,
+  preparer_foreign_cntry TEXT,
+  preparer_foreign_postal_cd TEXT,
+  preparer_phone_num TEXT,
+  preparer_phone_num_foreign TEXT,
+  tot_act_partcp_boy_cnt INTEGER NOT NULL,
+  subj_m1_filing_req_ind INTEGER,
+  compliance_m1_filing_req_ind TEXT,
+  m1_receipt_confirmation_code TEXT,
+  admin_manual_signed_date DATE,
+  admin_manual_signed_name VARCHAR(255),
+  last_rpt_plan_name TEXT,
+  spons_manual_signed_date TEXT,
+  spons_manual_signed_name TEXT,
+  dfe_manual_signed_date TEXT,
+  dfe_manual_signed_name TEXT,
+  adopted_plan_perm_sec_act INTEGER,
+  partcp_account_bal_cnt_boy TEXT,
+  sch_dcg_attached_ind INTEGER,
+  num_sch_dcg_attached_cnt TEXT,
+  sch_mep_attached_ind INTEGER
+);
+
+-- Indexes
+CREATE INDEX idx_form_5500_records_ack_id ON form_5500_records(ack_id);
+CREATE INDEX idx_form_5500_records_plan_name ON form_5500_records(plan_name);
+CREATE INDEX idx_form_5500_records_sponsor_dfe_name ON form_5500_records(sponsor_dfe_name);
+CREATE INDEX idx_form_5500_records_spons_dfe_ein ON form_5500_records(spons_dfe_ein);
+CREATE INDEX idx_form_5500_records_admin_ein ON form_5500_records(admin_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_spons_ein ON form_5500_records(last_rpt_spons_ein);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_num ON form_5500_records(last_rpt_plan_num);
+CREATE INDEX idx_form_5500_records_last_rpt_plan_name ON form_5500_records(last_rpt_plan_name);
+CREATE INDEX idx_form_5500_records_year ON form_5500_records(year);
+
+
+==================================================
+
+🔍 Analyzing F_SCH_A_2022_latest.csv...
+📋 File: F_SCH_A_2022_latest.csv
+📊 Rows: 338,828
+📑 Columns: 90
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - FORM_ID (form_id) -> INTEGER
+  - SCH_A_PLAN_NUM (sch_a_plan_num) -> INTEGER
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_EIN (ins_carrier_ein) -> INTEGER
+
+🔍 Searchable Columns:
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_NAME (ins_carrier_name) -> VARCHAR(255)
+
+📝 Suggested SQL for schedule_a_records:
+CREATE TABLE schedule_a_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_id INTEGER NOT NULL,
+  sch_a_plan_year_begin_date DATE NOT NULL,
+  sch_a_plan_year_end_date DATE NOT NULL,
+  sch_a_plan_num INTEGER NOT NULL,
+  sch_a_ein INTEGER NOT NULL,
+  ins_carrier_name VARCHAR(255) NOT NULL,
+  ins_carrier_ein INTEGER NOT NULL,
+  ins_carrier_naic_code INTEGER NOT NULL,
+  ins_contract_num VARCHAR(255) NOT NULL,
+  ins_prsn_covered_eoy_cnt INTEGER NOT NULL,
+  ins_policy_from_date DATE NOT NULL,
+  ins_policy_to_date DATE NOT NULL,
+  ins_broker_comm_tot_amt INTEGER,
+  ins_broker_fees_tot_amt INTEGER,
+  pension_eoy_gen_acct_amt INTEGER,
+  pension_eoy_sep_acct_amt INTEGER,
+  pension_basis_rates_text TEXT,
+  pension_prem_paid_tot_amt TEXT,
+  pension_unpaid_premium_amt TEXT,
+  pension_contract_cost_amt TEXT,
+  pension_cost_text TEXT,
+  alloc_contracts_indiv_ind INTEGER NOT NULL,
+  alloc_contracts_group_ind INTEGER NOT NULL,
+  alloc_contracts_other_ind INTEGER NOT NULL,
+  alloc_contracts_other_text TEXT,
+  pens_distr_bnft_term_pln_ind INTEGER NOT NULL,
+  unalloc_contracts_dep_adm_ind INTEGER NOT NULL,
+  unal_contrac_imm_part_guar_ind INTEGER NOT NULL,
+  unal_contracts_guar_invest_ind INTEGER NOT NULL,
+  unalloc_contracts_other_ind INTEGER NOT NULL,
+  unalloc_contracts_other_text VARCHAR(255),
+  pension_end_prev_bal_amt INTEGER,
+  pension_contrib_dep_amt INTEGER,
+  pension_divnd_cr_dep_amt INTEGER,
+  pension_int_cr_dur_yr_amt INTEGER,
+  pension_transfer_from_amt INTEGER,
+  pension_other_amt INTEGER,
+  pension_other_text VARCHAR(255),
+  pension_tot_additions_amt INTEGER NOT NULL,
+  pension_tot_bal_addn_amt INTEGER NOT NULL,
+  pension_bnfts_dsbrsd_amt INTEGER,
+  pension_admin_chrg_amt INTEGER,
+  pension_transfer_to_amt INTEGER,
+  pension_oth_ded_amt INTEGER,
+  pension_oth_ded_text TEXT,
+  pension_tot_ded_amt INTEGER NOT NULL,
+  pension_eoy_bal_amt INTEGER NOT NULL,
+  wlfr_bnft_health_ind INTEGER NOT NULL,
+  wlfr_bnft_dental_ind INTEGER NOT NULL,
+  wlfr_bnft_vision_ind INTEGER NOT NULL,
+  wlfr_bnft_life_insur_ind INTEGER NOT NULL,
+  wlfr_bnft_temp_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_long_term_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_unemp_ind INTEGER NOT NULL,
+  wlfr_bnft_drug_ind INTEGER NOT NULL,
+  wlfr_bnft_stop_loss_ind INTEGER NOT NULL,
+  wlfr_bnft_hmo_ind INTEGER NOT NULL,
+  wlfr_bnft_ppo_ind INTEGER NOT NULL,
+  wlfr_bnft_indemnity_ind INTEGER NOT NULL,
+  wlfr_bnft_other_ind INTEGER NOT NULL,
+  wlfr_type_bnft_oth_text VARCHAR(255),
+  wlfr_premium_rcvd_amt TEXT,
+  wlfr_unpaid_due_amt TEXT,
+  wlfr_reserve_amt TEXT,
+  wlfr_tot_earned_prem_amt INTEGER NOT NULL,
+  wlfr_claims_paid_amt TEXT,
+  wlfr_incr_reserve_amt TEXT,
+  wlfr_incurred_claim_amt INTEGER NOT NULL,
+  wlfr_claims_chrgd_amt TEXT,
+  wlfr_ret_commissions_amt TEXT,
+  wlfr_ret_admin_amt TEXT,
+  wlfr_ret_oth_cost_amt TEXT,
+  wlfr_ret_oth_expense_amt TEXT,
+  wlfr_ret_taxes_amt TEXT,
+  wlfr_ret_charges_amt TEXT,
+  wlfr_ret_oth_chrgs_amt TEXT,
+  wlfr_ret_tot_amt INTEGER NOT NULL,
+  wlfr_refund_cash_ind INTEGER NOT NULL,
+  wlfr_refund_credit_ind INTEGER NOT NULL,
+  wlfr_refund_amt TEXT,
+  wlfr_held_bnfts_amt TEXT,
+  wlfr_claims_reserve_amt TEXT,
+  wlfr_oth_reserve_amt TEXT,
+  wlfr_divnds_due_amt TEXT,
+  wlfr_tot_charges_paid_amt INTEGER,
+  wlfr_acquis_cost_amt TEXT,
+  wlfr_acquis_cost_text TEXT,
+  ins_fail_provide_info_ind INTEGER NOT NULL,
+  ins_fail_provide_info_text TEXT
+);
+
+-- Indexes
+CREATE INDEX idx_schedule_a_records_ack_id ON schedule_a_records(ack_id);
+CREATE INDEX idx_schedule_a_records_form_id ON schedule_a_records(form_id);
+CREATE INDEX idx_schedule_a_records_sch_a_plan_num ON schedule_a_records(sch_a_plan_num);
+CREATE INDEX idx_schedule_a_records_sch_a_ein ON schedule_a_records(sch_a_ein);
+CREATE INDEX idx_schedule_a_records_ins_carrier_name ON schedule_a_records(ins_carrier_name);
+CREATE INDEX idx_schedule_a_records_ins_carrier_ein ON schedule_a_records(ins_carrier_ein);
+CREATE INDEX idx_schedule_a_records_year ON schedule_a_records(year);
+
+
+==================================================
+
+🔍 Analyzing F_SCH_A_2023_latest.csv...
+📋 File: F_SCH_A_2023_latest.csv
+📊 Rows: 328,218
+📑 Columns: 90
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - FORM_ID (form_id) -> INTEGER
+  - SCH_A_PLAN_NUM (sch_a_plan_num) -> INTEGER
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_EIN (ins_carrier_ein) -> INTEGER
+
+🔍 Searchable Columns:
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_NAME (ins_carrier_name) -> VARCHAR(255)
+
+📝 Suggested SQL for schedule_a_records:
+CREATE TABLE schedule_a_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_id INTEGER NOT NULL,
+  sch_a_plan_year_begin_date DATE NOT NULL,
+  sch_a_plan_year_end_date DATE NOT NULL,
+  sch_a_plan_num INTEGER NOT NULL,
+  sch_a_ein INTEGER NOT NULL,
+  ins_carrier_name VARCHAR(255) NOT NULL,
+  ins_carrier_ein INTEGER NOT NULL,
+  ins_carrier_naic_code INTEGER NOT NULL,
+  ins_contract_num VARCHAR(255) NOT NULL,
+  ins_prsn_covered_eoy_cnt INTEGER NOT NULL,
+  ins_policy_from_date DATE NOT NULL,
+  ins_policy_to_date DATE NOT NULL,
+  ins_broker_comm_tot_amt INTEGER NOT NULL,
+  ins_broker_fees_tot_amt INTEGER NOT NULL,
+  pension_eoy_gen_acct_amt TEXT,
+  pension_eoy_sep_acct_amt TEXT,
+  pension_basis_rates_text TEXT,
+  pension_prem_paid_tot_amt TEXT,
+  pension_unpaid_premium_amt TEXT,
+  pension_contract_cost_amt TEXT,
+  pension_cost_text TEXT,
+  alloc_contracts_indiv_ind INTEGER NOT NULL,
+  alloc_contracts_group_ind INTEGER NOT NULL,
+  alloc_contracts_other_ind INTEGER NOT NULL,
+  alloc_contracts_other_text TEXT,
+  pens_distr_bnft_term_pln_ind INTEGER NOT NULL,
+  unalloc_contracts_dep_adm_ind INTEGER NOT NULL,
+  unal_contrac_imm_part_guar_ind INTEGER NOT NULL,
+  unal_contracts_guar_invest_ind INTEGER NOT NULL,
+  unalloc_contracts_other_ind INTEGER NOT NULL,
+  unalloc_contracts_other_text TEXT,
+  pension_end_prev_bal_amt INTEGER NOT NULL,
+  pension_contrib_dep_amt TEXT,
+  pension_divnd_cr_dep_amt TEXT,
+  pension_int_cr_dur_yr_amt TEXT,
+  pension_transfer_from_amt TEXT,
+  pension_other_amt TEXT,
+  pension_other_text TEXT,
+  pension_tot_additions_amt INTEGER NOT NULL,
+  pension_tot_bal_addn_amt INTEGER NOT NULL,
+  pension_bnfts_dsbrsd_amt TEXT,
+  pension_admin_chrg_amt TEXT,
+  pension_transfer_to_amt TEXT,
+  pension_oth_ded_amt TEXT,
+  pension_oth_ded_text TEXT,
+  pension_tot_ded_amt INTEGER NOT NULL,
+  pension_eoy_bal_amt INTEGER NOT NULL,
+  wlfr_bnft_health_ind INTEGER NOT NULL,
+  wlfr_bnft_dental_ind INTEGER NOT NULL,
+  wlfr_bnft_vision_ind INTEGER NOT NULL,
+  wlfr_bnft_life_insur_ind INTEGER NOT NULL,
+  wlfr_bnft_temp_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_long_term_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_unemp_ind INTEGER NOT NULL,
+  wlfr_bnft_drug_ind INTEGER NOT NULL,
+  wlfr_bnft_stop_loss_ind INTEGER NOT NULL,
+  wlfr_bnft_hmo_ind INTEGER NOT NULL,
+  wlfr_bnft_ppo_ind INTEGER NOT NULL,
+  wlfr_bnft_indemnity_ind INTEGER NOT NULL,
+  wlfr_bnft_other_ind INTEGER NOT NULL,
+  wlfr_type_bnft_oth_text VARCHAR(255),
+  wlfr_premium_rcvd_amt TEXT,
+  wlfr_unpaid_due_amt TEXT,
+  wlfr_reserve_amt TEXT,
+  wlfr_tot_earned_prem_amt INTEGER NOT NULL,
+  wlfr_claims_paid_amt TEXT,
+  wlfr_incr_reserve_amt TEXT,
+  wlfr_incurred_claim_amt INTEGER NOT NULL,
+  wlfr_claims_chrgd_amt TEXT,
+  wlfr_ret_commissions_amt TEXT,
+  wlfr_ret_admin_amt TEXT,
+  wlfr_ret_oth_cost_amt TEXT,
+  wlfr_ret_oth_expense_amt TEXT,
+  wlfr_ret_taxes_amt TEXT,
+  wlfr_ret_charges_amt TEXT,
+  wlfr_ret_oth_chrgs_amt TEXT,
+  wlfr_ret_tot_amt INTEGER NOT NULL,
+  wlfr_refund_cash_ind INTEGER NOT NULL,
+  wlfr_refund_credit_ind INTEGER NOT NULL,
+  wlfr_refund_amt TEXT,
+  wlfr_held_bnfts_amt TEXT,
+  wlfr_claims_reserve_amt TEXT,
+  wlfr_oth_reserve_amt TEXT,
+  wlfr_divnds_due_amt TEXT,
+  wlfr_tot_charges_paid_amt INTEGER NOT NULL,
+  wlfr_acquis_cost_amt TEXT,
+  wlfr_acquis_cost_text TEXT,
+  ins_fail_provide_info_ind INTEGER NOT NULL,
+  ins_fail_provide_info_text TEXT
+);
+
+-- Indexes
+CREATE INDEX idx_schedule_a_records_ack_id ON schedule_a_records(ack_id);
+CREATE INDEX idx_schedule_a_records_form_id ON schedule_a_records(form_id);
+CREATE INDEX idx_schedule_a_records_sch_a_plan_num ON schedule_a_records(sch_a_plan_num);
+CREATE INDEX idx_schedule_a_records_sch_a_ein ON schedule_a_records(sch_a_ein);
+CREATE INDEX idx_schedule_a_records_ins_carrier_name ON schedule_a_records(ins_carrier_name);
+CREATE INDEX idx_schedule_a_records_ins_carrier_ein ON schedule_a_records(ins_carrier_ein);
+CREATE INDEX idx_schedule_a_records_year ON schedule_a_records(year);
+
+
+==================================================
+
+🔍 Analyzing F_SCH_A_2024_latest.csv...
+📋 File: F_SCH_A_2024_latest.csv
+📊 Rows: 52,720
+📑 Columns: 90
+
+🔑 Key Columns:
+  - ACK_ID (ack_id) -> VARCHAR(255)
+  - FORM_ID (form_id) -> INTEGER
+  - SCH_A_PLAN_NUM (sch_a_plan_num) -> INTEGER
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_EIN (ins_carrier_ein) -> INTEGER
+
+🔍 Searchable Columns:
+  - SCH_A_EIN (sch_a_ein) -> INTEGER
+  - INS_CARRIER_NAME (ins_carrier_name) -> VARCHAR(255)
+
+📝 Suggested SQL for schedule_a_records:
+CREATE TABLE schedule_a_records (
+  id SERIAL PRIMARY KEY,
+  year INTEGER NOT NULL,
+  ack_id VARCHAR(255) NOT NULL,
+  form_id INTEGER NOT NULL,
+  sch_a_plan_year_begin_date DATE NOT NULL,
+  sch_a_plan_year_end_date DATE NOT NULL,
+  sch_a_plan_num INTEGER NOT NULL,
+  sch_a_ein INTEGER NOT NULL,
+  ins_carrier_name VARCHAR(255) NOT NULL,
+  ins_carrier_ein INTEGER NOT NULL,
+  ins_carrier_naic_code INTEGER NOT NULL,
+  ins_contract_num VARCHAR(255) NOT NULL,
+  ins_prsn_covered_eoy_cnt INTEGER NOT NULL,
+  ins_policy_from_date DATE NOT NULL,
+  ins_policy_to_date DATE NOT NULL,
+  ins_broker_comm_tot_amt INTEGER,
+  ins_broker_fees_tot_amt INTEGER,
+  pension_eoy_gen_acct_amt INTEGER,
+  pension_eoy_sep_acct_amt INTEGER,
+  pension_basis_rates_text TEXT,
+  pension_prem_paid_tot_amt TEXT,
+  pension_unpaid_premium_amt TEXT,
+  pension_contract_cost_amt TEXT,
+  pension_cost_text TEXT,
+  alloc_contracts_indiv_ind INTEGER NOT NULL,
+  alloc_contracts_group_ind INTEGER NOT NULL,
+  alloc_contracts_other_ind INTEGER NOT NULL,
+  alloc_contracts_other_text TEXT,
+  pens_distr_bnft_term_pln_ind INTEGER NOT NULL,
+  unalloc_contracts_dep_adm_ind INTEGER NOT NULL,
+  unal_contrac_imm_part_guar_ind INTEGER NOT NULL,
+  unal_contracts_guar_invest_ind INTEGER NOT NULL,
+  unalloc_contracts_other_ind INTEGER NOT NULL,
+  unalloc_contracts_other_text TEXT,
+  pension_end_prev_bal_amt INTEGER,
+  pension_contrib_dep_amt INTEGER,
+  pension_divnd_cr_dep_amt INTEGER,
+  pension_int_cr_dur_yr_amt INTEGER,
+  pension_transfer_from_amt INTEGER,
+  pension_other_amt INTEGER,
+  pension_other_text TEXT,
+  pension_tot_additions_amt INTEGER NOT NULL,
+  pension_tot_bal_addn_amt INTEGER NOT NULL,
+  pension_bnfts_dsbrsd_amt INTEGER,
+  pension_admin_chrg_amt INTEGER,
+  pension_transfer_to_amt INTEGER,
+  pension_oth_ded_amt INTEGER,
+  pension_oth_ded_text VARCHAR(255),
+  pension_tot_ded_amt INTEGER NOT NULL,
+  pension_eoy_bal_amt INTEGER NOT NULL,
+  wlfr_bnft_health_ind INTEGER NOT NULL,
+  wlfr_bnft_dental_ind INTEGER NOT NULL,
+  wlfr_bnft_vision_ind INTEGER NOT NULL,
+  wlfr_bnft_life_insur_ind INTEGER NOT NULL,
+  wlfr_bnft_temp_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_long_term_disab_ind INTEGER NOT NULL,
+  wlfr_bnft_unemp_ind INTEGER NOT NULL,
+  wlfr_bnft_drug_ind INTEGER NOT NULL,
+  wlfr_bnft_stop_loss_ind INTEGER NOT NULL,
+  wlfr_bnft_hmo_ind INTEGER NOT NULL,
+  wlfr_bnft_ppo_ind INTEGER NOT NULL,
+  wlfr_bnft_indemnity_ind INTEGER NOT NULL,
+  wlfr_bnft_other_ind INTEGER NOT NULL,
+  wlfr_type_bnft_oth_text TEXT,
+  wlfr_premium_rcvd_amt TEXT,
+  wlfr_unpaid_due_amt TEXT,
+  wlfr_reserve_amt TEXT,
+  wlfr_tot_earned_prem_amt INTEGER NOT NULL,
+  wlfr_claims_paid_amt TEXT,
+  wlfr_incr_reserve_amt TEXT,
+  wlfr_incurred_claim_amt INTEGER NOT NULL,
+  wlfr_claims_chrgd_amt TEXT,
+  wlfr_ret_commissions_amt TEXT,
+  wlfr_ret_admin_amt TEXT,
+  wlfr_ret_oth_cost_amt TEXT,
+  wlfr_ret_oth_expense_amt TEXT,
+  wlfr_ret_taxes_amt TEXT,
+  wlfr_ret_charges_amt TEXT,
+  wlfr_ret_oth_chrgs_amt TEXT,
+  wlfr_ret_tot_amt INTEGER NOT NULL,
+  wlfr_refund_cash_ind INTEGER NOT NULL,
+  wlfr_refund_credit_ind INTEGER NOT NULL,
+  wlfr_refund_amt TEXT,
+  wlfr_held_bnfts_amt TEXT,
+  wlfr_claims_reserve_amt TEXT,
+  wlfr_oth_reserve_amt TEXT,
+  wlfr_divnds_due_amt TEXT,
+  wlfr_tot_charges_paid_amt INTEGER,
+  wlfr_acquis_cost_amt TEXT,
+  wlfr_acquis_cost_text TEXT,
+  ins_fail_provide_info_ind INTEGER NOT NULL,
+  ins_fail_provide_info_text TEXT
+);
+
+-- Indexes
+CREATE INDEX idx_schedule_a_records_ack_id ON schedule_a_records(ack_id);
+CREATE INDEX idx_schedule_a_records_form_id ON schedule_a_records(form_id);
+CREATE INDEX idx_schedule_a_records_sch_a_plan_num ON schedule_a_records(sch_a_plan_num);
+CREATE INDEX idx_schedule_a_records_sch_a_ein ON schedule_a_records(sch_a_ein);
+CREATE INDEX idx_schedule_a_records_ins_carrier_name ON schedule_a_records(ins_carrier_name);
+CREATE INDEX idx_schedule_a_records_ins_carrier_ein ON schedule_a_records(ins_carrier_ein);
+CREATE INDEX idx_schedule_a_records_year ON schedule_a_records(year);
+
+
+==================================================
