@@ -9,6 +9,7 @@ const SaveTaskResults = require('./workflow/SaveTaskResults');
 const CLIInputParser = require('./utils/CLIInputParser');
 const OutputFileManager = require('./utils/OutputFileManager');
 const ResultsParser = require('./utils/ResultsParser');
+const ResultsExtractor = require('./utils/ResultsExtractor');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 
 class Manager {
@@ -16,6 +17,7 @@ class Manager {
     this.taskManager = null;
     this.outputManager = new OutputFileManager();
     this.parser = new ResultsParser();
+    this.extractor = new ResultsExtractor();
     this.dataExtractionService = new DataExtractionService();
   }
 
@@ -76,16 +78,18 @@ class Manager {
     try {
       await this.initializeTaskManager();
 
-      console.log('\n🔗 Starting third workflow: Legal entity extraction');
+      console.log('\n🔗 Starting second workflow: Legal entity extraction');
       
       // 1. Parse companies from most recent output file
       const outputDir = path.join(__dirname, 'json', 'output');
-      const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir);
+      const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir, 'pe_firm_research');
+      console.log("[DEBUG] - Most recent file:", mostRecentFile);
+
       const firstWorkflowResults = JSON.parse(fs.readFileSync(mostRecentFile, 'utf8'));
-      const companyNames = this.parser.parseCompaniesFromResults(firstWorkflowResults);
-      
+      const firmAndCompanyNames = this.parser.parseCompaniesFromResults(firstWorkflowResults);
+
       // Validate parsed companies
-      if (!this.parser.validateCompanies(companyNames)) {
+      if (!this.parser.validateCompanies(firmAndCompanyNames)) {
         console.warn('⚠️ Company parsing validation failed, but continuing with workflow');
       }
       
@@ -95,18 +99,18 @@ class Manager {
       // Set workflow name in environment for SaveTaskResults
       process.env.WORKFLOW_NAME = getLegalEntitiesWorkflow.workflow.name.replace(/\s+/g, '_').toLowerCase();
       
-      console.log(`🏢 Executing legal entities workflow for ${companyNames.length} companies`);
+      console.log(`🏢 Executing legal entities workflow for ${firmAndCompanyNames.length} companies`);
       
       // Pass company names as individual items in the input array
       // WorkflowManager will process each company name separately
-      const legal_names = await this.taskManager.executeWorkflow(getLegalEntitiesWorkflow, { input: companyNames });
+      const legal_names = await this.taskManager.executeWorkflow(getLegalEntitiesWorkflow, { input: firmAndCompanyNames });
       
       // 3. Log results
       console.log('\n📋 Legal entity extraction completed:');
       console.log('Legal names:', legal_names);
       
       return {
-        companyNames,
+        firmAndCompanyNames,
         legalEntities: legal_names 
       };
       
@@ -117,9 +121,15 @@ class Manager {
   }
 
   async run3(){
-    //parse legal names from workflow 2 output
-    const legalNames = "SMARTBUG LLC";
-    this.dataExtractionService.extractData(legalNames);
+    //get most recent file
+    const outputDir = path.join(__dirname, 'json', 'output');
+    const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir);
+
+    //extract final result from most recent file
+    const results = this.extractor.extractResults(mostRecentFile);
+
+    console.log('Extracted results:', results);
+    return results;
   }
 
   /**

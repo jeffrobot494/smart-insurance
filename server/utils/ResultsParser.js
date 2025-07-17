@@ -1,8 +1,8 @@
 class ResultsParser {
   /**
-   * Parse company names from workflow results
+   * Parse company names from workflow results with firm name prepended
    * @param {Object} workflowResults - Complete workflow results object
-   * @returns {Array} - Array of cleaned company names
+   * @returns {Array} - Array of cleaned company names with firm name prepended
    */
   parseCompaniesFromResults(workflowResults) {
     try {
@@ -15,17 +15,50 @@ class ResultsParser {
 
       console.log(`📋 Raw final result: ${finalResult}`);
 
-      // Parse the company list from the final result
-      // Expected format: "American Discovery Capital: Company1, Company2, Company3"
-      // or just: "Company1, Company2, Company3"
+      // Extract firm name and company names
+      const firmName = this.parseFirmNameFromResults(workflowResults);
       const companyNames = this.extractCompanyNames(finalResult);
 
-      console.log(`🏢 Parsed ${companyNames.length} companies: ${companyNames.join(', ')}`);
+      // Prepend firm name to each company
+      const companiesWithFirm = companyNames.map(company => `${firmName}, ${company}`);
+
+      console.log(`🏢 Parsed ${companiesWithFirm.length} companies with firm name: ${companiesWithFirm.join('; ')}`);
       
-      return companyNames;
+      return companiesWithFirm;
 
     } catch (error) {
       console.error(`❌ Error parsing companies from results: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Parse firm name from workflow results
+   * @param {Object} workflowResults - Complete workflow results object
+   * @returns {string} - The firm name
+   */
+  parseFirmNameFromResults(workflowResults) {
+    try {
+      // Extract the final result from batchInfo.results[0]
+      const finalResult = workflowResults?.batchInfo?.results?.[0];
+      
+      if (!finalResult) {
+        throw new Error('No final result found in workflow results');
+      }
+
+      // Expected format: "PE Firm Name: [company list]"
+      const colonIndex = finalResult.indexOf(':');
+      if (colonIndex === -1) {
+        throw new Error('No colon found in result - expected format: "PE Firm Name: [companies]"');
+      }
+      
+      const firmName = finalResult.substring(0, colonIndex).trim();
+      console.log(`🏢 Extracted firm name: "${firmName}"`);
+      
+      return firmName;
+
+    } catch (error) {
+      console.error(`❌ Error parsing firm name from results: ${error.message}`);
       throw error;
     }
   }

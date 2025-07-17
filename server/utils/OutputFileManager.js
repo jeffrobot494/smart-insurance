@@ -5,9 +5,10 @@ class OutputFileManager {
   /**
    * Find the most recent output file in the specified directory
    * @param {string} outputDir - Directory to search for output files
+   * @param {string} workflowName - Optional workflow name to filter files (e.g., 'pe_research')
    * @returns {string} - Full path to the most recent output file
    */
-  getMostRecentOutputFile(outputDir) {
+  getMostRecentOutputFile(outputDir, workflowName = null) {
     try {
       // Ensure the directory exists
       if (!fs.existsSync(outputDir)) {
@@ -18,12 +19,22 @@ class OutputFileManager {
       const files = fs.readdirSync(outputDir);
       
       // Filter for JSON files with timestamp pattern (workflow_results_timestamp.json)
-      const outputFiles = files.filter(file => 
+      let outputFiles = files.filter(file => 
         file.endsWith('.json') && file.includes('_results_')
       );
 
+      // If workflowName is specified, filter for files that start with that workflow name
+      if (workflowName) {
+        outputFiles = outputFiles.filter(file => 
+          file.startsWith(`${workflowName}_results_`)
+        );
+      }
+
       if (outputFiles.length === 0) {
-        throw new Error(`No output files found in: ${outputDir}`);
+        const errorMsg = workflowName 
+          ? `No output files found for workflow '${workflowName}' in: ${outputDir}`
+          : `No output files found in: ${outputDir}`;
+        throw new Error(errorMsg);
       }
 
       // Sort files by timestamp (most recent first)
@@ -38,7 +49,10 @@ class OutputFileManager {
       const mostRecentFile = sortedFiles[0];
       const fullPath = path.join(outputDir, mostRecentFile);
       
-      console.log(`📁 Found most recent output file: ${mostRecentFile}`);
+      const logMsg = workflowName 
+        ? `📁 Found most recent output file for '${workflowName}': ${mostRecentFile}`
+        : `📁 Found most recent output file: ${mostRecentFile}`;
+      console.log(logMsg);
       return fullPath;
 
     } catch (error) {

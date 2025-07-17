@@ -55,8 +55,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// POST /api/workflow/2
-router.post('/2/', async (req, res) => {
+// GET /api/workflow/2
+router.get('/2/', async (req, res) => {
   try {
 
     // Send immediate response

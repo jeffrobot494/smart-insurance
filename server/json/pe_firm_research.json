@@ -1,6 +1,6 @@
 {
     "workflow": {
-      "name": "PE Firm Research",
+      "name": "PE firm research",
       "description": "Research workflow to find portfolio companies of a private equity firm",
       "tasks": [
         {
