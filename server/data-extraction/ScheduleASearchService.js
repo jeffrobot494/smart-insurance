@@ -1,29 +1,31 @@
-const CSVParser = require('./CSVParser');
+const DatabaseManager = require('./DatabaseManager');
 
 /**
- * Service for searching EINs in Schedule A datasets
+ * Service for searching EINs in Schedule A datasets using database
  */
 class ScheduleASearchService {
   constructor() {
-    this.csvParser = new CSVParser();
+    this.databaseManager = new DatabaseManager();
   }
 
   /**
-   * Search for EINs in Schedule A datasets
-   * @param {Array} datasets - Array of Schedule A datasets
+   * Search for EINs in Schedule A datasets using database
    * @param {Array} companiesWithEIN - Array of companies with valid EINs
    * @returns {Array} Array of companies with Schedule A data
    */
-  searchEINs(datasets, companiesWithEIN) {
+  async searchEINs(companiesWithEIN) {
     console.log('\n📊 STEP 2: Searching EINs in SCH_A data');
     console.log('='.repeat(50));
+
+    // Initialize database connection
+    await this.databaseManager.initialize();
 
     for (let i = 0; i < companiesWithEIN.length; i++) {
       const company = companiesWithEIN[i];
       console.log(`[${i + 1}/${companiesWithEIN.length}] Searching EIN ${company.ein} for ${company.company}`);
 
       try {
-        const schAResult = this.searchSingleEIN(datasets, company.ein);
+        const schAResult = await this.searchSingleEIN(company.ein);
         company.schARecords = schAResult.counts;
         company.schADetails = schAResult.details;
 
@@ -42,12 +44,11 @@ class ScheduleASearchService {
   }
 
   /**
-   * Search for a single EIN across all Schedule A datasets
-   * @param {Array} datasets - Array of Schedule A datasets
+   * Search for a single EIN using database
    * @param {string} ein - EIN to search for
    * @returns {Object} Search result with counts and details
    */
-  searchSingleEIN(datasets, ein) {
+  async searchSingleEIN(ein) {
     const cleanEIN = ein.replace(/\D/g, '');
     
     if (cleanEIN.length !== 9) {
@@ -59,71 +60,48 @@ class ScheduleASearchService {
       details: {}
     };
 
-    for (const dataset of datasets) {
-      try {
-        const datasetResult = this.searchDataset(dataset, cleanEIN);
+    try {
+      // Get all matching Schedule A records from database
+      const dbRecords = await this.databaseManager.getScheduleAByEIN(cleanEIN);
+      
+      if (dbRecords.length > 0) {
+        // Group records by year
+        const recordsByYear = {};
         
-        if (datasetResult.foundRecords > 0) {
-          result.counts[dataset.year] = datasetResult.foundRecords;
-          result.details[dataset.year] = datasetResult.records;
+        for (const record of dbRecords) {
+          const year = record.year || 'unknown';
+          
+          if (!recordsByYear[year]) {
+            recordsByYear[year] = [];
+          }
+          
+          // Convert database record to expected format
+          const formattedRecord = this.formatDatabaseRecord(record, recordsByYear[year].length + 1);
+          recordsByYear[year].push(formattedRecord);
         }
-
-      } catch (error) {
-        console.log(`   ✗ Error searching ${dataset.year} dataset: ${error.message}`);
+        
+        // Populate result structure
+        for (const [year, records] of Object.entries(recordsByYear)) {
+          result.counts[year] = records.length;
+          result.details[year] = records;
+        }
       }
+
+    } catch (error) {
+      console.log(`   ✗ Error searching database for EIN "${ein}": ${error.message}`);
+      throw error;
     }
 
     return result;
   }
 
   /**
-   * Search a single dataset for an EIN
-   * @param {Object} dataset - Dataset object
-   * @param {string} cleanEIN - Clean EIN to search for
-   * @returns {Object} Dataset search result
-   */
-  searchDataset(dataset, cleanEIN) {
-    const einIndex = this.csvParser.findColumnIndex(dataset.headers, 'SCH_A_EIN');
-    
-    if (einIndex === -1) {
-      throw new Error('Could not find SCH_A_EIN column in CSV');
-    }
-
-    const records = [];
-    let foundRecords = 0;
-
-    // Search through all data rows
-    for (let i = 0; i < dataset.rows.length; i++) {
-      const row = dataset.rows[i];
-      
-      if (row.length > einIndex) {
-        const recordEIN = this.csvParser.cleanValue(row[einIndex]).replace(/\D/g, '');
-        
-        if (recordEIN === cleanEIN) {
-          foundRecords++;
-          
-          // Create record object with field mappings
-          const record = this.createRecordObject(dataset.headers, row, foundRecords);
-          records.push(record);
-        }
-      }
-    }
-
-    return {
-      foundRecords,
-      records,
-      year: dataset.year
-    };
-  }
-
-  /**
-   * Create a Schedule A record object with field mappings
-   * @param {Array} headers - Dataset headers
-   * @param {Array} row - Row data
+   * Format database record to match expected CSV record structure
+   * @param {Object} dbRecord - Database record
    * @param {number} recordNumber - Record number for this EIN
-   * @returns {Object} Record object with field mappings
+   * @returns {Object} Formatted record object
    */
-  createRecordObject(headers, row, recordNumber) {
+  formatDatabaseRecord(dbRecord, recordNumber) {
     const record = {
       recordNumber,
       headers: [],
@@ -131,15 +109,15 @@ class ScheduleASearchService {
       fieldsMap: {}
     };
     
-    for (let i = 0; i < Math.min(headers.length, row.length); i++) {
-      const header = headers[i];
-      const value = this.csvParser.cleanValue(row[i]);
-      
-      // Only include non-empty values
-      if (value && value.length > 0) {
-        record.headers.push(header);
-        record.values.push(value);
-        record.fieldsMap[header] = value;
+    // Convert database field names to expected CSV format and populate record
+    for (const [key, value] of Object.entries(dbRecord)) {
+      if (value !== null && value !== undefined && value !== '') {
+        // Convert database column names to uppercase (CSV format)
+        const headerName = key.toUpperCase();
+        
+        record.headers.push(headerName);
+        record.values.push(value.toString());
+        record.fieldsMap[headerName] = value.toString();
       }
     }
 

@@ -1,14 +1,12 @@
-const DatasetManager = require('./DatasetManager');
 const Form5500SearchService = require('./Form5500SearchService');
 const ScheduleASearchService = require('./ScheduleASearchService');
 const ReportGenerator = require('./ReportGenerator');
 
 /**
- * Main service for orchestrating data extraction from Form 5500 and Schedule A datasets
+ * Main service for orchestrating data extraction from database
  */
 class DataExtractionService {
   constructor() {
-    this.datasetManager = new DatasetManager();
     this.form5500SearchService = new Form5500SearchService();
     this.scheduleASearchService = new ScheduleASearchService();
     this.reportGenerator = new ReportGenerator();
@@ -18,7 +16,7 @@ class DataExtractionService {
   }
 
   /**
-   * Main entry point for data extraction process
+   * Main entry point for data extraction process using database
    * @param {Array} legalNames - Array of legal company names from run2()
    * @returns {Object} Complete extraction results
    */
@@ -28,27 +26,19 @@ class DataExtractionService {
       console.log(`📊 Processing ${legalNames.length} legal company names`);
       console.log('='.repeat(80));
 
-      // Phase 1: Load datasets
-      console.log('📂 Loading datasets...');
-      const form5500Datasets = this.datasetManager.loadForm5500Datasets();
-      const scheduleADatasets = this.datasetManager.loadScheduleADatasets();
+      // Phase 1: Search companies in Form 5500 using database
+      const form5500Results = await this.form5500SearchService.searchCompanies(legalNames);
       
-      console.log(`✅ Loaded ${form5500Datasets.length} Form 5500 datasets`);
-      console.log(`✅ Loaded ${scheduleADatasets.length} Schedule A datasets`);
-
-      // Phase 2: Search companies in Form 5500
-      const form5500Results = this.form5500SearchService.searchCompanies(form5500Datasets, legalNames);
-      
-      // Phase 3: Extract EINs from Form 5500 results
+      // Phase 2: Extract EINs from Form 5500 results
       const companiesWithEIN = this.form5500SearchService.extractEINs(form5500Results);
 
-      // Phase 4: Search EINs in Schedule A
-      const finalResults = this.scheduleASearchService.searchEINs(scheduleADatasets, companiesWithEIN);
+      // Phase 3: Search EINs in Schedule A using database
+      const finalResults = await this.scheduleASearchService.searchEINs(companiesWithEIN);
 
-      // Phase 5: Generate comprehensive reports
+      // Phase 4: Generate comprehensive reports
       const reportData = this.reportGenerator.generateFinalReport(finalResults);
 
-      // Phase 6: Return results
+      // Phase 5: Return results
       console.log('\n✅ Data extraction completed successfully');
       
       return {

@@ -13,9 +13,9 @@ if (!companyName) {
 
 // Define datasets to search
 const datasets = [
-    { path: path.join(__dirname, 'data', 'f_5500_2022_latest.csv'), year: '2022' },
-    { path: path.join(__dirname, 'data', 'f_5500_2023_latest.csv'), year: '2023' },
-    { path: path.join(__dirname, 'data', 'f_5500_2024_latest.csv'), year: '2024' }
+    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2022_latest.csv'), year: '2022' },
+    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2023_latest.csv'), year: '2023' },
+    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2024_latest.csv'), year: '2024' }
 ];
 
 console.log(`Searching for company: "${companyName}"`);
