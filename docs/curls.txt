@@ -1,0 +1,27 @@
+curl -X POST http://localhost:3000/api/workflow     -H "Content-Type: application/json"     -d '{
+      "workflowname": "pe_firm_research.json",
+      "input": ["American Discovery Capital"]
+    }'
+
+
+curl -X POST http://localhost:3000/api/workflow/2     -H "Content-Type: application/json"     -d '{
+      "workflowname": "pe_research.json",
+      "input": ["American Discovery Capital"]
+    }'
+
+curl -X GET http://localhost:3000/api/workflow/3     -H "Content-Type: application/json"     -d '{
+      "workflowname": "pe_research.json",
+      "input": ["American Discovery Capital"]
+    }'
+
+curl -X GET http://localhost:3000/api/workflow/extract5500/1     -H "Content-Type: application/json"     -d '{
+      
+    }'
+
+curl -X GET http://localhost:3000/api/workflow/1/results     -H "Content-Type: application/json"     -d '{
+      
+    }'
+
+
+ 11595 N. MERIDIAN ST
+SUITE 400, CARMEL, IN, 46032

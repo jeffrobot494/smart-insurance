@@ -112,8 +112,55 @@ router.get('/extract5500/:workflowExecutionId', async (req, res) => {
 
 // GET /api/workflow/:workflowId/results
 router.get('/:workflowId/results', async (req, res) => {
-  console.log('📋 [RESULTS] Get workflow results:', req.params.workflowId);
-  res.json({ message: 'Workflow results endpoint' });
+  try {
+    const { workflowId } = req.params;
+    
+    // Validate workflowId
+    if (!workflowId || isNaN(workflowId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid workflowId is required'
+      });
+    }
+
+    const workflowExecutionId = parseInt(workflowId);
+    console.log('📋 [RESULTS] Getting workflow results for ID:', workflowExecutionId);
+    
+    // Get database manager instance
+    const DatabaseManager = require('../data-extraction/DatabaseManager');
+    const dbManager = DatabaseManager.getInstance();
+    await dbManager.initialize();
+    
+    // Get workflow results
+    const workflowData = await dbManager.getWorkflowResults(workflowExecutionId);
+    
+    if (!workflowData) {
+      return res.status(404).json({
+        success: false,
+        error: 'Workflow execution not found'
+      });
+    }
+    
+    // If workflow is still running
+    if (workflowData.status === 'running') {
+      return res.status(202).json({
+        success: false,
+        status: 'running',
+        message: 'Workflow is still processing'
+      });
+    }
+    
+    // Return the results
+    console.log('📋 [RESULTS] Returning results for workflow:', workflowExecutionId);
+    res.status(200).json(workflowData.results);
+    
+  } catch (error) {
+    console.error('❌ Results endpoint error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 module.exports = router;

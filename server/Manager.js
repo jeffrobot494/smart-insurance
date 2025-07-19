@@ -135,7 +135,13 @@ class Manager {
       
       if (portfolioCompanies.length === 0) {
         console.log('⚠️ No portfolio companies found for this workflow execution');
-        return { success: false, message: 'No portfolio companies found' };
+        const errorResult = { 
+          success: false, 
+          message: 'No portfolio companies found',
+          timestamp: new Date().toISOString()
+        };
+        await this.databaseManager.updateWorkflowResults(workflowExecutionId, errorResult);
+        return errorResult;
       }
       
       console.log(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
@@ -143,11 +149,28 @@ class Manager {
       // Extract Form 5500 data for those companies
       const results = await this.dataExtractionService.extractData(portfolioCompanies);
       
-      console.log('✅ Data extraction completed successfully');
+      // Save results to database
+      await this.databaseManager.updateWorkflowResults(workflowExecutionId, results);
+      
+      console.log('✅ Data extraction completed and results saved to database');
       return results;
       
     } catch (error) {
       console.error('❌ Failed to extract portfolio company data:', error.message);
+      
+      // Save error result to database
+      const errorResult = { 
+        success: false, 
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+      
+      try {
+        await this.databaseManager.updateWorkflowResults(workflowExecutionId, errorResult);
+      } catch (dbError) {
+        console.error('❌ Failed to save error result to database:', dbError.message);
+      }
+      
       throw error;
     }
   }

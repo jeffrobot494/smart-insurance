@@ -266,6 +266,63 @@ class DatabaseManager {
       throw error;
     }
   }
+
+  /**
+   * Update workflow execution with results
+   * @param {number} workflowExecutionId - Workflow execution ID
+   * @param {Object} results - JSON results to store
+   */
+  async updateWorkflowResults(workflowExecutionId, results) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'UPDATE workflow_executions SET results = $1, completed_at = NOW(), status = $2 WHERE id = $3',
+        [JSON.stringify(results), 'completed', workflowExecutionId]
+      );
+      
+      return result.rowCount > 0;
+    } catch (error) {
+      console.error('❌ Failed to update workflow results:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get workflow execution results
+   * @param {number} workflowExecutionId - Workflow execution ID
+   * @returns {Object|null} Workflow results or null if not found
+   */
+  async getWorkflowResults(workflowExecutionId) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'SELECT results, status, completed_at FROM workflow_executions WHERE id = $1',
+        [workflowExecutionId]
+      );
+      
+      if (result.rows.length === 0) {
+        return null;
+      }
+      
+      const row = result.rows[0];
+      return {
+        status: row.status,
+        completed_at: row.completed_at,
+        results: row.results
+      };
+    } catch (error) {
+      console.error('❌ Failed to get workflow results:', error.message);
+      throw error;
+    }
+  }
 }
 
 module.exports = DatabaseManager;
