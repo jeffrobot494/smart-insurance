@@ -1,11 +1,13 @@
 const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
+const DatabaseManager = require('../data-extraction/DatabaseManager');
 
 class WorkflowManager {
   constructor(toolManager) {
     this.currentIndex = 0;
     this.resultsSaver = new SaveTaskResults();
     this.toolManager = toolManager; // Use injected ToolManager
+    this.databaseManager = DatabaseManager.getInstance();
   }
 
 
@@ -59,6 +61,9 @@ class WorkflowManager {
       const currentInput = inputList[i];
       console.log(`\n🔄 Processing item ${i + 1}/${inputList.length}: ${currentInput}`);
       
+      // Create workflow execution record in database
+      const workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
+      
       // Reset task index for each input
       this.reset();
       
@@ -107,12 +112,13 @@ class WorkflowManager {
       allResults.push({
         itemIndex: i,
         input: currentInput,
-        tasks: taskResults
+        tasks: taskResults,
+        workflowExecutionId: workflowExecutionId
       });
     }
     
     // Save all results at once
-    this.resultsSaver.saveBatchResults(allResults);
+    await this.resultsSaver.saveBatchResults(allResults);
     
     console.log('🏁 Workflow execution completed');
     console.log(`📊 Processed ${allResults.length} items`);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { run, run2, run3 } = require('../Manager');
+const { run, run2, extractPortfolioCompanyData } = require('../Manager');
 
 // POST /api/workflow
 router.post('/', async (req, res) => {
@@ -78,21 +78,42 @@ router.get('/2/', async (req, res) => {
   }
 });
 
-router.get('/3/', async (req, res) => {
-  try{
+// GET /api/workflow/extract5500/:workflowExecutionId
+// Extract 5500 data and save to database
+router.get('/extract5500/:workflowExecutionId', async (req, res) => {
+  try {
+    const { workflowExecutionId } = req.params;
+    
+    // Validate workflowExecutionId
+    if (!workflowExecutionId || isNaN(workflowExecutionId)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid workflowExecutionId is required'
+      });
+    }
+
     res.status(202).json({
-      success:true,
-      message: 'Data extraction started'
-    })
-    run3();
+      success: true,
+      message: 'Portfolio company data extraction started',
+      workflowExecutionId: parseInt(workflowExecutionId)
+    });
+
+    // Execute data extraction asynchronously (fire and forget)
+    extractPortfolioCompanyData(parseInt(workflowExecutionId));
+
   } catch (error) {
-    console.error('Data Extraction startup error:', error);
+    console.error('Portfolio company data extraction startup error:', error);
     res.status(500).json({
-      successs:false,
+      success: false,
       error: error.message
-    })
+    });
   }
 });
 
+// GET /api/workflow/:workflowId/results
+router.get('/:workflowId/results', async (req, res) => {
+  console.log('📋 [RESULTS] Get workflow results:', req.params.workflowId);
+  res.json({ message: 'Workflow results endpoint' });
+});
 
 module.exports = router;

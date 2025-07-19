@@ -5,7 +5,7 @@ const DatabaseManager = require('./DatabaseManager');
  */
 class ScheduleASearchService {
   constructor() {
-    this.databaseManager = new DatabaseManager();
+    this.databaseManager = DatabaseManager.getInstance();
   }
 
   /**
@@ -14,26 +14,18 @@ class ScheduleASearchService {
    * @returns {Array} Array of companies with Schedule A data
    */
   async searchEINs(companiesWithEIN) {
-    console.log('\n📊 STEP 2: Searching EINs in SCH_A data');
-    console.log('='.repeat(50));
-
     // Initialize database connection
     await this.databaseManager.initialize();
 
     for (let i = 0; i < companiesWithEIN.length; i++) {
       const company = companiesWithEIN[i];
-      console.log(`[${i + 1}/${companiesWithEIN.length}] Searching EIN ${company.ein} for ${company.company}`);
 
       try {
         const schAResult = await this.searchSingleEIN(company.ein);
         company.schARecords = schAResult.counts;
         company.schADetails = schAResult.details;
 
-        const totalSchARecords = Object.values(schAResult.counts).reduce((sum, count) => sum + count, 0);
-        console.log(`   ✓ Found ${totalSchARecords} SCH_A record(s) across all years`);
-
       } catch (error) {
-        console.log(`   ✗ Error searching EIN: ${error.message}`);
         company.schARecords = {};
         company.schADetails = {};
         company.schAError = error.message;
@@ -150,8 +142,6 @@ class ScheduleASearchService {
     const companiesWithSchARecords = companiesWithEIN.filter(company => 
       company.schARecords && Object.values(company.schARecords).some(count => count > 0)
     );
-
-    console.log(`📊 Found ${companiesWithSchARecords.length} companies with Schedule A records`);
     
     return companiesWithSchARecords;
   }

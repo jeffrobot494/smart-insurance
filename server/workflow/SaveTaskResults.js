@@ -1,11 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const DatabaseManager = require('../data-extraction/DatabaseManager');
 
 class SaveTaskResults {
   constructor() {
     // Store output directory, filename will be generated at save time
     this.outputDir = process.env.WORKFLOW_OUTPUT_DIR || path.join(__dirname, '..', 'json', 'output');
     this.ensureDirectoryExists();
+    this.databaseManager = DatabaseManager.getInstance();
   }
 
   ensureDirectoryExists() {
@@ -14,7 +16,7 @@ class SaveTaskResults {
     }
   }
 
-  saveBatchResults(batchResults) {
+  async saveBatchResults(batchResults) {
     try {
       // Generate filename at save time using current workflow name
       const workflowName = process.env.WORKFLOW_NAME || 'workflow';
@@ -45,9 +47,45 @@ class SaveTaskResults {
       
       console.log(`💾 Batch results for ${batchResults.length} items saved to: ${path.basename(jsonFilePath)}`);
       
+      // Save portfolio companies to database if this is a PE research workflow
+      await this.savePortfolioCompaniesToDatabase(batchResults, finalResults);
+      
     } catch (error) {
       console.error(`❌ Failed to save batch results:`, error.message);
       throw error;
+    }
+  }
+
+  /**
+   * Save portfolio companies to database
+   * @param {Array} batchResults - Array of workflow results
+   * @param {Array} finalResults - Array of final result strings
+   */
+  async savePortfolioCompaniesToDatabase(batchResults, finalResults) {
+    try {
+      // Only process if this looks like PE research workflow results
+      for (let i = 0; i < finalResults.length; i++) {
+        const result = finalResults[i];
+        const workflowExecutionId = batchResults[i]?.workflowExecutionId;
+        
+        // Check if result looks like PE firm portfolio format: "Firm Name: Company1, Company2, Company3"
+        if (result && typeof result === 'string' && result.includes(':') && workflowExecutionId) {
+          const parts = result.split(':');
+          if (parts.length >= 2) {
+            const firmName = parts[0].trim();
+            const companiesStr = parts.slice(1).join(':').trim(); // Handle case where company names have colons
+            const companies = companiesStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
+            
+            // Save each portfolio company to database
+            await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
+            
+            console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('❌ Failed to save portfolio companies to database:', error.message);
+      // Don't throw - this shouldn't break the workflow
     }
   }
 }

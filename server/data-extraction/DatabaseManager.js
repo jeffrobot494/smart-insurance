@@ -2,10 +2,12 @@ const { Client, Pool } = require('pg');
 
 /**
  * Manages PostgreSQL database connections and queries for data extraction
+ * Singleton pattern to ensure single connection pool across application
  */
 class DatabaseManager {
   constructor() {
     this.pool = null;
+    this.initialized = false;
     
     // Use DATABASE_PUBLIC_URL for external connections, DATABASE_URL as fallback
     const connectionString = process.env.DATABASE_PUBLIC_URL || process.env.DATABASE_URL;
@@ -32,9 +34,25 @@ class DatabaseManager {
   }
 
   /**
+   * Get singleton instance of DatabaseManager
+   * @returns {DatabaseManager} Singleton instance
+   */
+  static getInstance() {
+    if (!DatabaseManager.instance) {
+      DatabaseManager.instance = new DatabaseManager();
+    }
+    return DatabaseManager.instance;
+  }
+
+  /**
    * Initialize database connection pool
    */
   async initialize() {
+    // Prevent multiple initializations
+    if (this.initialized) {
+      return true;
+    }
+
     try {
       this.pool = new Pool(this.config);
       
@@ -44,6 +62,7 @@ class DatabaseManager {
       client.release();
       
       console.log('✅ Database connection established successfully');
+      this.initialized = true;
       return true;
     } catch (error) {
       console.error('❌ Failed to connect to database:', error.message);
@@ -140,6 +159,83 @@ class DatabaseManager {
     if (this.pool) {
       await this.pool.end();
       console.log('✅ Database connections closed');
+    }
+  }
+
+  /**
+   * Create a workflow execution record in the database
+   * @param {string} workflowName - Name of the workflow
+   * @returns {number} The workflow execution ID
+   */
+  async createWorkflowExecution(workflowName) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'INSERT INTO workflow_executions (workflow_name, status) VALUES ($1, $2) RETURNING id',
+        [workflowName, 'running']
+      );
+      
+      return result.rows[0].id;
+    } catch (error) {
+      console.error('❌ Failed to create workflow execution record:', error.message);
+      // Return null instead of throwing to not break workflow execution
+      return null;
+    }
+  }
+
+  /**
+   * Save portfolio companies to database
+   * @param {number} workflowExecutionId - The workflow execution ID
+   * @param {string} firmName - Name of the PE firm
+   * @param {Array} companies - Array of company names
+   */
+  async savePortfolioCompanies(workflowExecutionId, firmName, companies) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      // Insert each company
+      for (const companyName of companies) {
+        await this.query(
+          'INSERT INTO portfolio_companies (workflow_execution_id, firm_name, company_name) VALUES ($1, $2, $3) ON CONFLICT (workflow_execution_id, company_name) DO NOTHING',
+          [workflowExecutionId, firmName, companyName]
+        );
+      }
+      
+      console.log(`✅ Saved ${companies.length} portfolio companies for ${firmName}`);
+    } catch (error) {
+      console.error('❌ Failed to save portfolio companies:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get portfolio companies by workflow execution ID
+   * @param {number} workflowExecutionId - The workflow execution ID
+   * @returns {Array} Array of company names
+   */
+  async getPortfolioCompaniesByWorkflowId(workflowExecutionId) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'SELECT company_name FROM portfolio_companies WHERE workflow_execution_id = $1 ORDER BY company_name',
+        [workflowExecutionId]
+      );
+      
+      return result.rows.map(row => row.company_name);
+    } catch (error) {
+      console.error('❌ Failed to get portfolio companies:', error.message);
+      throw error;
     }
   }
 

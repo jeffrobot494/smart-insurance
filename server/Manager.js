@@ -11,6 +11,7 @@ const OutputFileManager = require('./utils/OutputFileManager');
 const ResultsParser = require('./utils/ResultsParser');
 const ResultsExtractor = require('./utils/ResultsExtractor');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
+const DatabaseManager = require('./data-extraction/DatabaseManager');
 
 class Manager {
   constructor() {
@@ -19,6 +20,7 @@ class Manager {
     this.parser = new ResultsParser();
     this.extractor = new ResultsExtractor();
     this.dataExtractionService = new DataExtractionService();
+    this.databaseManager = DatabaseManager.getInstance();
   }
 
   /**
@@ -120,17 +122,34 @@ class Manager {
     }
   }
 
-  async run3(){
-    //get most recent file
-    const outputDir = path.join(__dirname, 'json', 'output');
-    const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir);
-
-    //extract final result from most recent file
-    const results = this.extractor.extractResults(mostRecentFile);
-
-    console.log('Extracted results:', results);
-    this.dataExtractionService.extractData(results);
-    return results;
+  /**
+   * Extract Form 5500 data for portfolio companies from a specific workflow execution
+   * @param {number} workflowExecutionId - The workflow execution ID to get companies from
+   */
+  async extractPortfolioCompanyData(workflowExecutionId) {
+    try {
+      console.log(`🔍 Extracting Form 5500 data for portfolio companies from workflow execution: ${workflowExecutionId}`);
+      
+      // Get portfolio companies from database using workflowExecutionId
+      const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(workflowExecutionId);
+      
+      if (portfolioCompanies.length === 0) {
+        console.log('⚠️ No portfolio companies found for this workflow execution');
+        return { success: false, message: 'No portfolio companies found' };
+      }
+      
+      console.log(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
+      
+      // Extract Form 5500 data for those companies
+      const results = await this.dataExtractionService.extractData(portfolioCompanies);
+      
+      console.log('✅ Data extraction completed successfully');
+      return results;
+      
+    } catch (error) {
+      console.error('❌ Failed to extract portfolio company data:', error.message);
+      throw error;
+    }
   }
 
   /**
@@ -165,9 +184,9 @@ const manager = new Manager();
 const run = (workflowFilename = null, userInputs = {}) => manager.run(workflowFilename, userInputs);
 const run2 = () => manager.run2();
 const runBoth = (workflowFilename = null, userInputs = {}) => manager.runBoth(workflowFilename, userInputs);
-const run3 = () => manager.run3();
+const extractPortfolioCompanyData = (workflowExecutionId) => manager.extractPortfolioCompanyData(workflowExecutionId);
 
-module.exports = { run, run2, runBoth, run3, Manager };
+module.exports = { run, run2, runBoth, extractPortfolioCompanyData, Manager };
 
 // If called directly from command line, run with no user inputs
 if (require.main === module) {

@@ -5,7 +5,7 @@ const DatabaseManager = require('./DatabaseManager');
  */
 class Form5500SearchService {
   constructor() {
-    this.databaseManager = new DatabaseManager();
+    this.databaseManager = DatabaseManager.getInstance();
   }
 
   /**
@@ -16,20 +16,13 @@ class Form5500SearchService {
   async searchCompanies(companyNames) {
     const results = [];
 
-    console.log('📊 STEP 1: Searching company names in Form 5500 data');
-    console.log('='.repeat(50));
-
     // Initialize database connection
     await this.databaseManager.initialize();
 
     for (let i = 0; i < companyNames.length; i++) {
       const companyName = companyNames[i];
-      console.log(`[${i + 1}/${companyNames.length}] Researching: ${companyName}`);
-
       const result = await this.searchSingleCompany(companyName);
       results.push(result);
-
-      console.log(`   ✓ Found ${result.years.length} year(s) of data`);
     }
 
     return results;
@@ -117,8 +110,6 @@ class Form5500SearchService {
     const companiesWithEIN = searchResults.filter(result => 
       result.ein && result.ein !== 'ERROR' && result.ein !== 'Not Found'
     );
-
-    console.log(`📊 Found ${companiesWithEIN.length} companies with valid EINs`);
     
     return companiesWithEIN;
   }

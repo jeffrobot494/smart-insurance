@@ -23,6 +23,9 @@ app.use('/api/health', healthcheckRoutes);
 const workflowRoutes = require('./routes/workflow');
 app.use('/api/workflow', workflowRoutes);
 
+const pollingRoutes = require('./routes/polling');
+app.use('/api/polling', pollingRoutes);
+
 // Default route
 app.get('/', (req, res) => {
   res.json({ 
