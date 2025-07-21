@@ -65,7 +65,35 @@ class Manager {
       const results = await this.taskManager.executeWorkflow(workflowData, userInputs);
       
       console.log('✅ First workflow completed');
-      return results;
+      
+      // Automatically trigger data extraction for each workflow execution
+      console.log('🔍 Starting automatic data extraction for portfolio companies');
+      const extractionResults = [];
+      
+      for (const result of results) {
+        if (result.workflowExecutionId) {
+          try {
+            console.log(`📊 Extracting data for workflow execution ID: ${result.workflowExecutionId}`);
+            const extractionResult = await this.extractPortfolioCompanyData(result.workflowExecutionId);
+            extractionResults.push({
+              workflowExecutionId: result.workflowExecutionId,
+              extraction: extractionResult
+            });
+          } catch (error) {
+            console.error(`❌ Data extraction failed for workflow ID ${result.workflowExecutionId}:`, error.message);
+            extractionResults.push({
+              workflowExecutionId: result.workflowExecutionId,
+              extraction: { success: false, error: error.message }
+            });
+          }
+        }
+      }
+      
+      console.log('✅ Combined workflow (research + data extraction) completed');
+      return {
+        portfolioResearch: results,
+        dataExtraction: extractionResults
+      };
 
     } catch (error) {
       console.error('💥 Workflow execution failed:', error.message);
@@ -76,6 +104,7 @@ class Manager {
   /**
    * Second workflow - Legal entity extraction
    */
+  /*
   async run2() {
     try {
       await this.initializeTaskManager();
@@ -121,7 +150,7 @@ class Manager {
       throw error;
     }
   }
-
+*/
   /**
    * Extract Form 5500 data for portfolio companies from a specific workflow execution
    * @param {number} workflowExecutionId - The workflow execution ID to get companies from
@@ -171,30 +200,6 @@ class Manager {
         console.error('❌ Failed to save error result to database:', dbError.message);
       }
       
-      throw error;
-    }
-  }
-
-  /**
-   * Combined workflow execution (both workflows in sequence)
-   */
-  async runBoth(workflowFilename = null, userInputs = {}) {
-    try {
-      console.log('🚀 Starting combined workflow execution');
-      
-      // Run first workflow
-      const firstResults = await this.run(workflowFilename, userInputs);
-      
-      // Run second workflow (uses output from first)
-      const secondResults = await this.run2();
-      
-      return {
-        firstWorkflow: firstResults,
-        secondWorkflow: secondResults
-      };
-      
-    } catch (error) {
-      console.error('💥 Combined workflow execution failed:', error.message);
       throw error;
     }
   }

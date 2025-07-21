@@ -4,8 +4,33 @@ class APIClient {
     }
 
     async startWorkflow(firms) {
-        console.log('APIClient.startWorkflow() - TODO: Implement workflow start request');
-        return { success: true, workflowId: 'mock-id' };
+        console.log('APIClient.startWorkflow() - Starting workflow for firms:', firms);
+        
+        try {
+            const response = await fetch(`${this.baseURL}/api/workflow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    workflowname: 'pe_firm_research',
+                    input: firms
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                console.log('Workflow started successfully:', result);
+                return { success: true, ...result };
+            } else {
+                console.error('Workflow start failed:', result);
+                return { success: false, error: result.error };
+            }
+        } catch (error) {
+            console.error('Network error starting workflow:', error);
+            return { success: false, error: error.message };
+        }
     }
 
     async pollProgress() {

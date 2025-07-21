@@ -53,6 +53,18 @@ class UIManager {
 
     handleStartButtonClicked(event) {
         console.log('Start button clicked - preparing to start workflow');
+        
+        // Get the uploaded firms data from the table manager
+        const firmNames = this.tableManager.getFirmNames();
+        
+        if (firmNames && firmNames.length > 0) {
+            // Fire workflow start event with firm data
+            document.dispatchEvent(new CustomEvent('workflowStartRequested', {
+                detail: { firmNames }
+            }));
+        } else {
+            this.notificationManager.showError('No firms uploaded. Please upload a CSV file first.');
+        }
     }
 
     initializeElements() {

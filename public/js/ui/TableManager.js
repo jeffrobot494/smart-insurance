@@ -73,4 +73,8 @@ class TableManager {
     showDownloadButton(firmId) {
         // Display the download button for a completed firm
     }
+
+    getFirmNames() {
+        return this.firms.map(firm => firm.name);
+    }
 }

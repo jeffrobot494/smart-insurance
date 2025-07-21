@@ -5,6 +5,20 @@ class WorkflowManager {
         this.firms = [];
         this.isProcessing = false;
         this.pollingInterval = null;
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        document.addEventListener('workflowStartRequested', (event) => {
+            this.handleWorkflowStartRequested(event);
+        });
+    }
+
+    handleWorkflowStartRequested(event) {
+        console.log('WorkflowManager received workflow start request:', event.detail);
+        const { firmNames } = event.detail;
+        this.firms = firmNames;
+        this.startProcessing();
     }
 
     async handleFileUpload(event) {
@@ -13,7 +27,33 @@ class WorkflowManager {
     }
 
     async startProcessing() {
-        console.log('WorkflowManager.startProcessing() - TODO: Implement workflow start coordination');
+        console.log('WorkflowManager.startProcessing() - Starting workflow for firms:', this.firms);
+        
+        if (this.isProcessing) {
+            console.log('Workflow is already processing, ignoring request');
+            return;
+        }
+        
+        if (!this.firms || this.firms.length === 0) {
+            console.error('No firms to process');
+            return;
+        }
+        
+        this.isProcessing = true;
+        
+        try {
+            const result = await this.apiClient.startWorkflow(this.firms);
+            
+            if (result.success) {
+                console.log('Workflow started successfully:', result);
+            } else {
+                console.error('Failed to start workflow:', result.error);
+            }
+        } catch (error) {
+            console.error('Error starting workflow:', error);
+        } finally {
+            this.isProcessing = false;
+        }
     }
 
     async startPolling() {

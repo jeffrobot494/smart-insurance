@@ -30,51 +30,74 @@ class TaskExecution {
       });
 
       let iterations = 0;
+      let consecutiveFailures = 0;
+      const maxRetries = 3;
       
       // Main conversation loop - continues while Claude makes tool calls
       while (iterations < this.maxIterations) {
-        // Send message to Claude with tools available
-        const response = await this.claudeManager.sendMessage('', {
-          conversationHistory: this.conversationHistory,
-          maxTokens: 2048,
-          temperature: 0.3,
-          tools: this.getAvailableTools() // We'll need to add this
-        });
+        try {
+          // Send message to Claude with tools available
+          const response = await this.claudeManager.sendMessage('', {
+            conversationHistory: this.conversationHistory,
+            maxTokens: 2048,
+            temperature: 0.3,
+            tools: this.getAvailableTools()
+          });
 
-        if (!response.success) {
-          throw new Error(`Claude API error: ${response.error}`);
+          if (!response.success) {
+            throw new Error(`Claude API error: ${response.error}`);
+          }
+
+          // Reset failure counter on success
+          consecutiveFailures = 0;
+
+          // Parse Claude's response for text and tool calls
+          const { responseText, toolCalls } = this.parseClaudeResponse(response.content);
+
+          // Add Claude's response to conversation
+          this.conversationHistory.push({
+            role: 'assistant',
+            content: response.content
+          });
+
+          // If no tool calls, task is complete
+          if (toolCalls.length === 0) {
+            this.status = 'completed';
+            return {
+              success: true,
+              taskId: this.task.id,
+              taskName: this.task.name,
+              outputKey: this.task.outputKey,
+              result: responseText,
+              conversationHistory: this.conversationHistory
+            };
+          }
+
+          // Execute tool calls
+          const toolResults = await this.executeToolCalls(toolCalls);
+          
+          // Add tool results back to conversation
+          this.conversationHistory.push({
+            role: 'user',
+            content: toolResults
+          });
+
+        } catch (error) {
+          consecutiveFailures++;
+          console.log(`⚠️ API call failed (attempt ${consecutiveFailures}/${maxRetries + 1}): ${error.message}`);
+          
+          if (consecutiveFailures > maxRetries) {
+            throw error; // Max retries exceeded, propagate error
+          }
+          
+          // Wait before retry with exponential backoff
+          const delay = Math.pow(2, consecutiveFailures - 1) * 1000; // 1s, 2s, 4s
+          console.log(`🔄 Retrying in ${delay}ms...`);
+          await this.sleep(delay);
+          
+          // Don't increment iterations on retry
+          continue;
         }
-
-        // Parse Claude's response for text and tool calls
-        const { responseText, toolCalls } = this.parseClaudeResponse(response.content);
-
-        // Add Claude's response to conversation
-        this.conversationHistory.push({
-          role: 'assistant',
-          content: response.content
-        });
-
-        // If no tool calls, task is complete
-        if (toolCalls.length === 0) {
-          this.status = 'completed';
-          return {
-            success: true,
-            taskId: this.task.id,
-            taskName: this.task.name,
-            outputKey: this.task.outputKey,
-            result: responseText,
-            conversationHistory: this.conversationHistory
-          };
-        }
-
-        // Execute tool calls
-        const toolResults = await this.executeToolCalls(toolCalls);
-        
-        // Add tool results back to conversation
-        this.conversationHistory.push({
-          role: 'user',
-          content: toolResults
-        });
 
         iterations++;
       }
@@ -97,6 +120,10 @@ class TaskExecution {
         errorType: 'execution_error'
       };
     }
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   parseClaudeResponse(content) {
