@@ -205,6 +205,16 @@ button:active {
     background: linear-gradient(135deg, #e67e22, #d68910);
 }
 
+.start-btn.ready {
+    background: linear-gradient(135deg, #27ae60, #229954);
+}
+
+.start-btn.ready:hover {
+    background: linear-gradient(135deg, #229954, #1e8449);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* Progress table styles */
 .progress-table {
     width: 100%;

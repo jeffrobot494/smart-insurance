@@ -1,16 +1,40 @@
 class TableManager {
-    constructor(tableElement, tableBodyElement) {
-        this.table = tableElement;
+    constructor(tableBodyElement, tableSectionElement) {
         this.tableBody = tableBodyElement;
+        this.tableSection = tableSectionElement;
         this.firms = [];
     }
 
     createTable(firmNames) {
-        // Parse firm names array and create table structure with Name, Progress, Status columns
+        this.clearTable();
+        
+        this.firms = firmNames.map((name, index) => ({
+            id: index,
+            name: name,
+            progress: '',
+            status: 'Waiting'
+        }));
+        
+        this.firms.forEach(firm => {
+            this.addRow(firm);
+        });
+        
+        this.showTable();
     }
 
     addRow(firmData) {
-        // Add a single row to the table with firm name, empty progress, and "Waiting" status
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${firmData.name}</td>
+            <td class="progress-text" id="progress-${firmData.id}">${firmData.progress}</td>
+            <td>
+                <span class="status-waiting" id="status-${firmData.id}">${firmData.status}</span>
+                <div id="download-${firmData.id}" style="display: none;">
+                    <button class="download-btn" onclick="downloadNewReport(${firmData.id})">Download</button>
+                </div>
+            </td>
+        `;
+        this.tableBody.appendChild(row);
     }
 
     updateRow(firmId, progressText, statusText, statusClass) {
@@ -18,11 +42,16 @@ class TableManager {
     }
 
     clearTable() {
-        // Remove all rows from the table body
+        if (this.tableBody) {
+            this.tableBody.innerHTML = '';
+        }
+        this.firms = [];
     }
 
     showTable() {
-        // Make the table section visible
+        if (this.tableSection) {
+            this.tableSection.style.display = 'block';
+        }
     }
 
     hideTable() {

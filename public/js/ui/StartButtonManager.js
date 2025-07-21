@@ -3,14 +3,26 @@ class StartButtonManager {
         this.startButton = startButtonElement;
         this.isProcessing = false;
         this.initializeButton();
+        this.setupClickHandler();
     }
 
     initializeButton() {
         this.disableStartButton();
     }
 
-    setupClickHandler(onStartCallback) {
-        // Add click event listener that calls the provided callback function
+    setupClickHandler() {
+        if (this.startButton) {
+            this.startButton.addEventListener('click', () => {
+                this.handleStartButtonClick();
+            });
+        }
+    }
+
+    handleStartButtonClick() {
+        if (!this.startButton.disabled) {
+            console.log('Start button clicked');
+            document.dispatchEvent(new CustomEvent('startButtonClicked'));
+        }
     }
 
     enableStartButton() {
@@ -18,6 +30,7 @@ class StartButtonManager {
             this.startButton.disabled = false;
             this.startButton.textContent = 'Start Process';
             this.startButton.classList.remove('running');
+            this.startButton.classList.add('ready');
         }
     }
 
@@ -25,7 +38,7 @@ class StartButtonManager {
         if (this.startButton) {
             this.startButton.disabled = true;
             this.startButton.textContent = 'Start Process';
-            this.startButton.classList.remove('running');
+            this.startButton.classList.remove('running', 'ready');
         }
     }
 

@@ -4,6 +4,7 @@ const path = require('path');
 require('./utils/load-env'); // Load environment variables
 const MCPServerManager = require('./mcp/MCPServerManager');
 const ToolManager = require('./workflow/ToolManager');
+const pollingService = require('./services/PollingService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -83,7 +84,12 @@ function getToolManager() {
   return globalToolManager;
 }
 
-module.exports = { app, getToolManager };
+// Export function to get global PollingService
+function getPollingService() {
+  return pollingService;
+}
+
+module.exports = { app, getToolManager, getPollingService };
 
 // Start the server
 startServer();

@@ -33,16 +33,26 @@ class UIManager {
         document.addEventListener('csvUploadError', (event) => {
             this.handleCsvUploadError(event);
         });
+        
+        document.addEventListener('startButtonClicked', (event) => {
+            this.handleStartButtonClicked(event);
+        });
     }
 
     handleCsvUploaded(event) {
         console.log('CSV uploaded with firm names:', event.detail.firmNames);
         this.notificationManager.showCsvUploadSuccess(event.detail.firmNames.length);
+        this.tableManager.createTable(event.detail.firmNames);
+        this.startButtonManager.enableStartButton();
     }
 
     handleCsvUploadError(event) {
         console.log('CSV upload error:', event.detail.error);
         this.notificationManager.showCsvUploadError(event.detail.error);
+    }
+
+    handleStartButtonClicked(event) {
+        console.log('Start button clicked - preparing to start workflow');
     }
 
     initializeElements() {
