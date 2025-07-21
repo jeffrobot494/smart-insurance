@@ -1,6 +1,7 @@
 const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
 const DatabaseManager = require('../data-extraction/DatabaseManager');
+const pollingService = require('../services/PollingService');
 
 class WorkflowManager {
   constructor(toolManager) {
@@ -64,6 +65,9 @@ class WorkflowManager {
       // Create workflow execution record in database
       const workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
       
+      // Add polling message for workflow start
+      pollingService.addMessage(workflowExecutionId, i, 'progress', `Starting research for ${currentInput}`);
+      
       // Reset task index for each input
       this.reset();
       
@@ -76,6 +80,9 @@ class WorkflowManager {
         
         console.log(`🎯 Executing Task ${task.id}: ${task.name}`);
         console.log(`📝 Instructions: ${task.instructions}`);
+        
+        // Add polling message for task start
+        pollingService.addMessage(workflowExecutionId, i, 'progress', `Task ${task.id}/${this.tasks.length}: ${task.name}`);
         
         // Gather inputs for this task
         const inputs = {};
@@ -96,13 +103,22 @@ class WorkflowManager {
             console.log(`📤 Output (${task.outputKey}): ${result.result}`);
             itemInputs[task.outputKey] = result.result;
             taskResults[task.id] = result;
+            
+            // Add polling message for task success
+            pollingService.addMessage(workflowExecutionId, i, 'progress', `✅ Completed ${task.name}`);
           } else {
             console.error(`❌ Task ${task.id} failed: ${result.error}`);
             taskResults[task.id] = result;
+            
+            // Add polling message for task failure
+            pollingService.addMessage(workflowExecutionId, i, 'error', `❌ ${task.name} failed: ${result.error}`);
             break;
           }
         } catch (error) {
           console.error(`💥 Task ${task.id} threw an error: ${error.message}`);
+          
+          // Add polling message for task exception
+          pollingService.addMessage(workflowExecutionId, i, 'error', `💥 ${task.name} error: ${error.message}`);
           break;
         }
         
@@ -115,6 +131,14 @@ class WorkflowManager {
         tasks: taskResults,
         workflowExecutionId: workflowExecutionId
       });
+      
+      // Add polling message for individual firm completion
+      const completedTasks = Object.keys(taskResults).length;
+      if (completedTasks === this.tasks.length) {
+        pollingService.addMessage(workflowExecutionId, i, 'complete', `🎉 Research completed for ${currentInput}`);
+      } else {
+        pollingService.addMessage(workflowExecutionId, i, 'error', `⚠️ Research incomplete for ${currentInput} (${completedTasks}/${this.tasks.length} tasks)`);
+      }
     }
     
     // Save all results at once

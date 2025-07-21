@@ -147,7 +147,7 @@ class Manager {
       console.log(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
       
       // Extract Form 5500 data for those companies
-      const results = await this.dataExtractionService.extractData(portfolioCompanies);
+      const results = await this.dataExtractionService.extractData(portfolioCompanies, workflowExecutionId, 0);
       
       // Save results to database
       await this.databaseManager.updateWorkflowResults(workflowExecutionId, results);
