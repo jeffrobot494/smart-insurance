@@ -26,6 +26,8 @@ app.use('/api/workflow', workflowRoutes);
 const pollingRoutes = require('./routes/polling');
 app.use('/api/polling', pollingRoutes);
 
+app.use(express.static('../public'));
+
 // Default route
 app.get('/', (req, res) => {
   res.json({ 
