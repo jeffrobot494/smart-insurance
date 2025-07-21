@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { run, run2, extractPortfolioCompanyData } = require('../Manager');
+const { run, run2, extractPortfolioCompanyData, initializeWorkflows } = require('../Manager');
 
 // POST /api/workflow
 router.post('/', async (req, res) => {
@@ -26,17 +26,22 @@ router.post('/', async (req, res) => {
     // Add .json extension if not present
     const workflowFile = workflowname.endsWith('.json') ? workflowname : `${workflowname}.json`;
 
-    // Send immediate response
+    // Initialize workflows and get IDs immediately
+    const initResult = await initializeWorkflows(workflowFile, { input: inputArray });
+
+    // Send immediate response with workflow execution IDs for polling
     res.status(202).json({
       success: true,
       message: 'Workflow execution started',
       workflowname,
       inputCount: inputArray.length,
+      workflowExecutionIds: initResult.workflowExecutionIds,
+      firmNames: initResult.firmNames,
       status: 'started'
     });
 
-    // Execute workflow asynchronously (fire and forget)
-    run(workflowFile, { input: inputArray })
+    // Execute workflow asynchronously with pre-generated IDs
+    run(workflowFile, { input: inputArray }, initResult.workflowExecutionIds)
     /*
       .then(results => {
         console.log(`Workflow ${workflowname} completed successfully`);

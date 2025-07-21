@@ -188,6 +188,37 @@ class DatabaseManager {
   }
 
   /**
+   * Create multiple workflow execution records at once
+   * @param {string} workflowName - Name of the workflow
+   * @param {number} inputCount - Number of workflow executions to create
+   * @returns {number[]} Array of workflow execution IDs
+   */
+  async createBatchWorkflowExecutions(workflowName, inputCount) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const workflowExecutionIds = [];
+      
+      for (let i = 0; i < inputCount; i++) {
+        const result = await this.query(
+          'INSERT INTO workflow_executions (workflow_name, status) VALUES ($1, $2) RETURNING id',
+          [workflowName, 'initialized']
+        );
+        workflowExecutionIds.push(result.rows[0].id);
+      }
+      
+      console.log(`✅ Created ${inputCount} workflow execution records with IDs:`, workflowExecutionIds);
+      return workflowExecutionIds;
+    } catch (error) {
+      console.error('❌ Failed to create batch workflow execution records:', error.message);
+      throw error;
+    }
+  }
+
+  /**
    * Save portfolio companies to database
    * @param {number} workflowExecutionId - The workflow execution ID
    * @param {string} firmName - Name of the PE firm

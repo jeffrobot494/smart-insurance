@@ -46,6 +46,9 @@ class WorkflowManager {
             
             if (result.success) {
                 console.log('Workflow started successfully:', result);
+                
+                // Start sequential polling now that we have workflowExecutionIds
+                this.apiClient.startSequentialPolling();
             } else {
                 console.error('Failed to start workflow:', result.error);
             }

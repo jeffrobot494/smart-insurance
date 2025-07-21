@@ -40,7 +40,7 @@ class WorkflowManager {
     this.currentIndex = 0;
   }
 
-  async executeWorkflow(workflowData, userInputs = {}) {
+  async executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
     this.workflowData = workflowData;
     if (!this.workflowData) {
       throw new Error('workflorData must be provided to WorkflowManager');
@@ -62,8 +62,20 @@ class WorkflowManager {
       const currentInput = inputList[i];
       console.log(`\n🔄 Processing item ${i + 1}/${inputList.length}: ${currentInput}`);
       
-      // Create workflow execution record in database
-      const workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
+      let workflowExecutionId;
+      
+      if (preGeneratedIds && preGeneratedIds.length > i) {
+        // Use pre-generated ID and update status
+        workflowExecutionId = preGeneratedIds[i];
+        console.log(`🆔 Using pre-generated workflow execution ID: ${workflowExecutionId}`);
+        await this.databaseManager.query(
+          'UPDATE workflow_executions SET status = $1 WHERE id = $2',
+          ['running', workflowExecutionId]
+        );
+      } else {
+        // Create new workflow execution record in database
+        workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
+      }
       
       // Add polling message for workflow start
       pollingService.addMessage(workflowExecutionId, i, 'progress', `Starting research for ${currentInput}`);

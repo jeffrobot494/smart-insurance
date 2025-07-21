@@ -40,9 +40,38 @@ class Manager {
   }
 
   /**
+   * Initialize workflows and return IDs immediately for polling
+   */
+  async initializeWorkflows(workflowFilename, userInputs) {
+    try {
+      await this.initializeTaskManager();
+      
+      const inputArray = Array.isArray(userInputs.input) ? userInputs.input : [userInputs.input];
+      const workflowData = readWorkflow(workflowFilename);
+      
+      // Pre-generate workflow execution IDs
+      const workflowExecutionIds = await this.databaseManager.createBatchWorkflowExecutions(
+        workflowData.workflow.name, 
+        inputArray.length
+      );
+      
+      console.log(`🆔 Pre-generated ${workflowExecutionIds.length} workflow execution IDs for immediate polling`);
+      
+      return {
+        workflowExecutionIds,
+        firmNames: inputArray,
+        workflowData
+      };
+    } catch (error) {
+      console.error('💥 Workflow initialization failed:', error.message);
+      throw error;
+    }
+  }
+
+  /**
    * First workflow - PE research
    */
-  async run(workflowFilename = null, userInputs = {}) {
+  async run(workflowFilename = null, userInputs = {}, preGeneratedIds = null) {
     try {
       await this.initializeTaskManager();
 
@@ -61,8 +90,8 @@ class Manager {
       // Set workflow name in environment for SaveTaskResults
       process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
 
-      // Execute the workflow with user inputs
-      const results = await this.taskManager.executeWorkflow(workflowData, userInputs);
+      // Execute the workflow with user inputs and optional pre-generated IDs
+      const results = await this.taskManager.executeWorkflow(workflowData, userInputs, preGeneratedIds);
       
       console.log('✅ First workflow completed');
       
@@ -209,12 +238,13 @@ class Manager {
 const manager = new Manager();
 
 // Export functions that use the singleton
-const run = (workflowFilename = null, userInputs = {}) => manager.run(workflowFilename, userInputs);
+const run = (workflowFilename = null, userInputs = {}, preGeneratedIds = null) => manager.run(workflowFilename, userInputs, preGeneratedIds);
 const run2 = () => manager.run2();
 const runBoth = (workflowFilename = null, userInputs = {}) => manager.runBoth(workflowFilename, userInputs);
 const extractPortfolioCompanyData = (workflowExecutionId) => manager.extractPortfolioCompanyData(workflowExecutionId);
+const initializeWorkflows = (workflowFilename, userInputs) => manager.initializeWorkflows(workflowFilename, userInputs);
 
-module.exports = { run, run2, runBoth, extractPortfolioCompanyData, Manager };
+module.exports = { run, run2, runBoth, extractPortfolioCompanyData, initializeWorkflows, Manager };
 
 // If called directly from command line, run with no user inputs
 if (require.main === module) {
