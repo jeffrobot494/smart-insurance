@@ -12,6 +12,18 @@ class WorkflowManager {
         document.addEventListener('workflowStartRequested', (event) => {
             this.handleWorkflowStartRequested(event);
         });
+        
+        document.addEventListener('workflowProgress', (event) => {
+            this.handleWorkflowProgress(event);
+        });
+        
+        document.addEventListener('workflowComplete', (event) => {
+            this.handleWorkflowComplete(event);
+        });
+        
+        document.addEventListener('downloadRequested', (event) => {
+            this.handleDownloadRequested(event);
+        });
     }
 
     handleWorkflowStartRequested(event) {
@@ -19,6 +31,27 @@ class WorkflowManager {
         const { firmNames } = event.detail;
         this.firms = firmNames;
         this.startProcessing();
+    }
+    
+    handleWorkflowProgress(event) {
+        console.log('WorkflowManager received workflow progress:', event.detail);
+        this.uiManager.handleWorkflowProgress(event.detail);
+    }
+    
+    handleWorkflowComplete(event) {
+        console.log('WorkflowManager received workflow complete:', event.detail);
+        this.uiManager.handleWorkflowComplete(event.detail);
+    }
+    
+    async handleDownloadRequested(event) {
+        console.log('WorkflowManager received download request:', event.detail);
+        const { firmId, firmName } = event.detail;
+        
+        try {
+            await this.apiClient.downloadResults(firmId, firmName);
+        } catch (error) {
+            console.error('Download failed:', error);
+        }
     }
 
     async handleFileUpload(event) {

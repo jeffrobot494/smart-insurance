@@ -161,6 +161,61 @@ class APIClient {
         return { success: true, data: {} };
     }
 
+    async downloadResults(firmId, firmName) {
+        console.log(`APIClient.downloadResults() - Downloading results for firm ${firmName} (ID: ${firmId})`);
+        
+        try {
+            // Map firmId to workflowExecutionId
+            if (firmId >= this.workflowExecutionIds.length) {
+                throw new Error(`Invalid firm ID: ${firmId}`);
+            }
+            
+            const workflowExecutionId = this.workflowExecutionIds[firmId];
+            console.log(`Fetching results for workflow execution ID: ${workflowExecutionId}`);
+            
+            const response = await fetch(`${this.baseURL}/api/workflow/${workflowExecutionId}/results`);
+            
+            if (response.ok) {
+                const results = await response.json();
+                console.log('Results fetched successfully:', results);
+                
+                // Format and download the JSON
+                this.downloadJsonFile(results, `${firmName}_research_results.json`);
+            } else {
+                const error = await response.json();
+                console.error('Failed to fetch results:', error);
+                throw new Error(error.error || 'Failed to fetch results');
+            }
+        } catch (error) {
+            console.error('Network error downloading results:', error);
+            throw error;
+        }
+    }
+    
+    downloadJsonFile(data, filename) {
+        // Create formatted JSON string
+        const jsonString = JSON.stringify(data, null, 2);
+        
+        // Create blob and download link
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        
+        // Create temporary download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        
+        // Trigger download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        // Cleanup
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+        
+        console.log(`Downloaded: ${filename}`);
+    }
+
     async deleteResults(firmId) {
         console.log('APIClient.deleteResults() - TODO: Implement results deletion');
         return { success: true };

@@ -17,7 +17,6 @@ class UIManager {
     initializeManagers() {
         this.tabManager = new TabManager(this.elements.tabButtons, this.elements.tabContents);
         this.startButtonManager = new StartButtonManager(this.elements.startBtn);
-        this.progressManager = new ProgressManager();
         this.tableManager = new TableManager(this.elements.tableBody, this.elements.tableSection);
         this.fileUploadManager = new FileUploadManager(this.elements.csvFile, this.elements.uploadBtn);
         this.notificationManager = new NotificationManager();
@@ -67,6 +66,26 @@ class UIManager {
         }
     }
 
+    handleWorkflowProgress(eventDetail) {
+        console.log('UIManager handling workflow progress:', eventDetail);
+        const { firmIndex, messages } = eventDetail;
+        
+        // Get the latest message to show as progress
+        if (messages && messages.length > 0) {
+            const latestMessage = messages[messages.length - 1];
+            this.updateProgress(firmIndex, latestMessage.message);
+        }
+    }
+
+    handleWorkflowComplete(eventDetail) {
+        console.log('UIManager handling workflow complete:', eventDetail);
+        const { firmIndex } = eventDetail;
+        
+        // Mark firm as completed in UI
+        this.updateStatus(firmIndex, 'Completed', 'status-complete');
+        this.showDownloadButton(firmIndex);
+    }
+
     initializeElements() {
         this.elements = {
             tabButtons: document.querySelectorAll('.tab-button'),
@@ -95,11 +114,11 @@ class UIManager {
     }
 
     updateProgress(firmId, progress) {
-        this.progressManager.updateProgress(firmId, progress);
+        this.tableManager.updateProgress(firmId, progress);
     }
 
     updateStatus(firmId, status, statusClass) {
-        this.progressManager.updateStatus(firmId, status, statusClass);
+        this.tableManager.updateStatus(firmId, status, statusClass);
     }
 
     showDownloadButton(firmId) {
@@ -123,6 +142,6 @@ class UIManager {
     }
 
     getStatusClass(status) {
-        return this.progressManager.getStatusClass(status);
+        return this.tableManager.getStatusClass(status);
     }
 }
