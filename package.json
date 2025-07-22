@@ -2,21 +2,30 @@
   "name": "pe-insurance-reports",
   "version": "1.0.0",
   "description": "Generate insurance cost reports for PE firm portfolio companies",
-  "main": "index.js",
+  "main": "server/Manager.js",
   "scripts": {
+    "start": "cd server && node server.js",
     "process": "node process_data.js",
     "generate": "node generate_report.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd server && npm run server"
+    "dev": "cd server && node Manager.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "process-data": "./process_data.js",
     "generate-report": "./generate_report.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@modelcontextprotocol/sdk": "^1.15.0",
     "commander": "^11.0.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
     "dotenv": "^17.2.0",
-    "pg": "^8.16.3"
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^5.9.0",
+    "pg": "^8.16.3",
+    "uuid": "^11.0.5"
   },
   "keywords": [
     "insurance",
