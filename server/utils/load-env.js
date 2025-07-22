@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 function loadEnv(filePath = './.env') {
+  // Check if we're in production (Railway)
+  if (process.env.RAILWAY_PROJECT_NAME) {
+    console.log('Production environment detected (Railway) - using platform environment variables');
+    return;
+  }
+  
   try {
     // Read the .env file
     const envFile = fs.readFileSync(filePath, 'utf8');
