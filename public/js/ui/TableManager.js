@@ -30,7 +30,6 @@ class TableManager {
             <td>
                 <span class="status-waiting" id="status-${firmData.id}">${firmData.status}</span>
                 <div id="download-${firmData.id}" style="display: none;">
-                    <button class="download-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download JSON</button>
                     <button class="download-pdf-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download PDF</button>
                 </div>
             </td>
