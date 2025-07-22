@@ -6,7 +6,8 @@
   "scripts": {
     "process": "node process_data.js",
     "generate": "node generate_report.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && npm run server"
   },
   "bin": {
     "process-data": "./process_data.js",
