@@ -161,8 +161,8 @@ class APIClient {
         return { success: true, data: {} };
     }
 
-    async downloadResults(firmId, firmName) {
-        console.log(`APIClient.downloadResults() - Downloading results for firm ${firmName} (ID: ${firmId})`);
+    async downloadResults(firmId, firmName, format = 'json') {
+        console.log(`APIClient.downloadResults() - Downloading results for firm ${firmName} (ID: ${firmId}), format: ${format}`);
         
         try {
             // Map firmId to workflowExecutionId
@@ -179,8 +179,19 @@ class APIClient {
                 const results = await response.json();
                 console.log('Results fetched successfully:', results);
                 
-                // Format and download the JSON
-                this.downloadJsonFile(results, `${firmName}_research_results.json`);
+                if (format === 'json') {
+                    // Format and download the JSON
+                    this.downloadJsonFile(results, `${firmName}_research_results.json`);
+                } else {
+                    // Fire event with JSON data for other formats
+                    document.dispatchEvent(new CustomEvent('gotJSONResults', {
+                        detail: { 
+                            firmData: results,
+                            firmName: firmName,
+                            format: format
+                        }
+                    }));
+                }
             } else {
                 const error = await response.json();
                 console.error('Failed to fetch results:', error);
@@ -190,30 +201,6 @@ class APIClient {
             console.error('Network error downloading results:', error);
             throw error;
         }
-    }
-    
-    downloadJsonFile(data, filename) {
-        // Create formatted JSON string
-        const jsonString = JSON.stringify(data, null, 2);
-        
-        // Create blob and download link
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        
-        // Create temporary download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = url;
-        downloadLink.download = filename;
-        
-        // Trigger download
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        
-        // Cleanup
-        document.body.removeChild(downloadLink);
-        URL.revokeObjectURL(url);
-        
-        console.log(`Downloaded: ${filename}`);
     }
 
     async deleteResults(firmId) {

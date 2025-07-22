@@ -30,31 +30,35 @@ class TableManager {
             <td>
                 <span class="status-waiting" id="status-${firmData.id}">${firmData.status}</span>
                 <div id="download-${firmData.id}" style="display: none;">
-                    <button class="download-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download</button>
+                    <button class="download-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download JSON</button>
+                    <button class="download-pdf-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download PDF</button>
                 </div>
             </td>
         `;
         
-        // Add click event listener to download button
-        const downloadButton = row.querySelector('.download-btn');
-        if (downloadButton) {
-            downloadButton.addEventListener('click', (event) => {
-                this.handleDownloadClick(event);
+        const downloadPdfButton = row.querySelector('.download-pdf-btn');
+        if (downloadPdfButton) {
+            downloadPdfButton.addEventListener('click', (event) => {
+                this.handleDownloadClick(event, 'pdf');
             });
         }
         
         this.tableBody.appendChild(row);
     }
 
-    handleDownloadClick(event) {
+    handleDownloadClick(event, format = 'json') {
         const firmId = event.target.getAttribute('data-firm-id');
         const firmName = event.target.getAttribute('data-firm-name');
         
-        console.log(`TableManager: Download clicked for firm ${firmName} (ID: ${firmId})`);
+        console.log(`TableManager: ${format.toUpperCase()} download clicked for firm ${firmName} (ID: ${firmId})`);
         
-        // Fire download event
+        // Fire download event with format
         document.dispatchEvent(new CustomEvent('downloadRequested', {
-            detail: { firmId: parseInt(firmId), firmName }
+            detail: { 
+                firmId: parseInt(firmId), 
+                firmName,
+                format
+            }
         }));
     }
 

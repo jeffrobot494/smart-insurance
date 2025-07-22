@@ -24,6 +24,10 @@ class WorkflowManager {
         document.addEventListener('downloadRequested', (event) => {
             this.handleDownloadRequested(event);
         });
+        
+        document.addEventListener('gotJSONResults', (event) => {
+            this.handleGotJSONResults(event);
+        });
     }
 
     handleWorkflowStartRequested(event) {
@@ -45,12 +49,28 @@ class WorkflowManager {
     
     async handleDownloadRequested(event) {
         console.log('WorkflowManager received download request:', event.detail);
-        const { firmId, firmName } = event.detail;
+        const { firmId, firmName, format = 'json' } = event.detail;
         
         try {
-            await this.apiClient.downloadResults(firmId, firmName);
+            await this.apiClient.downloadResults(firmId, firmName, format);
         } catch (error) {
             console.error('Download failed:', error);
+        }
+    }
+    
+    async handleGotJSONResults(event) {
+        console.log('WorkflowManager received JSON results:', event.detail);
+        const { firmData, firmName, format } = event.detail;
+        
+        try {
+            if (format === 'pdf') {
+                // Import and use ReportGenerationService
+                const { ReportGenerationService } = await import('./services/ReportGenerationService.js');
+                await ReportGenerationService.generatePDFReport(firmData, firmName);
+            }
+            // Could handle other formats here in the future
+        } catch (error) {
+            console.error('Report generation failed:', error);
         }
     }
 
