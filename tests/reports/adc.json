@@ -1,0 +1,822 @@
+{
+  "success": true,
+  "summary": {
+    "totalCompanies": 6,
+    "companiesWithEIN": 6,
+    "companiesWithForm5500": 6,
+    "companiesWithScheduleA": 5
+  },
+  "companies": [
+    {
+      "ein": "815000414",
+      "form5500": {
+        "years": [
+          "2023"
+        ],
+        "records": {
+          "2023": [
+            {
+              "ein": "815000414",
+              "year": 2023,
+              "plan_name": "AMERICAN PAIN CONSORTIUM EMPLOYEE WELFARE PLAN",
+              "sponsor_name": "AMERICAN PAIN CONSORTIUM",
+              "has_schedule_a": true,
+              "active_participants": 204
+            },
+            {
+              "ein": "815000414",
+              "year": 2023,
+              "plan_name": "AMERICAN PAIN CONSORTIUM MANAGEMENT, LLC RETIREMENT PLAN",
+              "sponsor_name": "AMERICAN PAIN CONSORTIUM MANAGEMENT, LLC",
+              "has_schedule_a": true,
+              "active_participants": 226
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2023": [
+            {
+              "benefitType": "TELEHEALTH",
+              "carrierName": "ANTHEM INSURANCE COMPANIES, INC.",
+              "totalCharges": "1540766.00",
+              "personsCovered": "226",
+              "brokerCommission": "48788.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "JOHN HANCOCK LIFE INSURANCE COMPANY (U.S.A.)",
+              "totalCharges": "",
+              "personsCovered": "158",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM,ACCIDENT,CRITICAL ILLNESS,HOSPITAL",
+              "carrierName": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+              "totalCharges": "88812.00",
+              "personsCovered": "187",
+              "brokerCommission": "18369.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2023": 3
+        }
+      },
+      "companyName": "American Pain Consortium"
+    },
+    {
+      "ein": "830876072",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "830876072",
+              "year": 2022,
+              "plan_name": "1UP ENTERTAINMENT PARTNERS INC. 401K PLAN",
+              "sponsor_name": "1UP ENTERTAINMENT PARTNERS INC.",
+              "has_schedule_a": false,
+              "active_participants": 1
+            },
+            {
+              "ein": "981290755",
+              "year": 2022,
+              "plan_name": "TORONTO RAPTORS PLAYERS' PENSION PLAN",
+              "sponsor_name": "MAPLE LEAF SPORTS & ENTERTAINMENT PARTNERSHIP",
+              "has_schedule_a": false,
+              "active_participants": 14
+            }
+          ],
+          "2023": [
+            {
+              "ein": "830876072",
+              "year": 2023,
+              "plan_name": "1UP ENTERTAINMENT PARTNERS INC. 401K PLAN",
+              "sponsor_name": "1UP ENTERTAINMENT PARTNERS INC.",
+              "has_schedule_a": false,
+              "active_participants": 2
+            },
+            {
+              "ein": "981290755",
+              "year": 2023,
+              "plan_name": "TORONTO RAPTORS PLAYERS' PENSION PLAN",
+              "sponsor_name": "MAPLE LEAF SPORTS & ENTERTAINMENT PARTNERSHIP",
+              "has_schedule_a": false,
+              "active_participants": 10
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {},
+        "recordCounts": {}
+      },
+      "companyName": "Entertainment Partners"
+    },
+    {
+      "ein": "271144329",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "271144329",
+              "year": 2022,
+              "plan_name": "GREENSLATE LLC HEALTH & WELFARE BENEFIT PLAN",
+              "sponsor_name": "GREENSLATE LLC",
+              "has_schedule_a": true,
+              "active_participants": 457
+            },
+            {
+              "ein": "271144329",
+              "year": 2022,
+              "plan_name": "GREENSLATE LLC 401(K) PLAN",
+              "sponsor_name": "GREENSLATE LLC",
+              "has_schedule_a": false,
+              "active_participants": 149
+            }
+          ],
+          "2023": [
+            {
+              "ein": "271144329",
+              "year": 2023,
+              "plan_name": "GREENSLATE LLC 401(K) PLAN",
+              "sponsor_name": "GREENSLATE LLC",
+              "has_schedule_a": false,
+              "active_participants": 180
+            },
+            {
+              "ein": "271144329",
+              "year": 2023,
+              "plan_name": "GREENSLATE LLC HEALTH & WELFARE BENEFIT PLAN",
+              "sponsor_name": "GREENSLATE LLC",
+              "has_schedule_a": true,
+              "active_participants": 1697
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+              "totalCharges": "5249644.00",
+              "personsCovered": "537",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "236894.00",
+              "personsCovered": "355",
+              "brokerCommission": "21061.00"
+            },
+            {
+              "benefitType": "AD&D",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "143179.00",
+              "personsCovered": "190",
+              "brokerCommission": "9673.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "CIGNA HEALTH AND LIFE COMPANY AND AFFILIATES",
+              "totalCharges": "117839.00",
+              "personsCovered": "149",
+              "brokerCommission": "5025.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+              "totalCharges": "5575202.00",
+              "personsCovered": "536",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "280626.00",
+              "personsCovered": "394",
+              "brokerCommission": "16203.00"
+            },
+            {
+              "benefitType": "AD&D",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "53095.00",
+              "personsCovered": "182",
+              "brokerCommission": "6857.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 3,
+          "2023": 4
+        }
+      },
+      "companyName": "GreenSlate"
+    },
+    {
+      "ein": "952256015",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "952256015",
+              "year": 2022,
+              "plan_name": "MAJESTIC REALTY HEALTH AND LIFE PLAN",
+              "sponsor_name": "MAJESTIC REALTY CO.",
+              "has_schedule_a": true,
+              "active_participants": 303
+            },
+            {
+              "ein": "952256015",
+              "year": 2022,
+              "plan_name": "MRC 401(K) SAVINGS PLAN",
+              "sponsor_name": "MAJESTIC REALTY CO.",
+              "has_schedule_a": false,
+              "active_participants": 254
+            }
+          ],
+          "2023": [
+            {
+              "ein": "952256015",
+              "year": 2023,
+              "plan_name": "MAJESTIC REALTY HEALTH AND LIFE PLAN",
+              "sponsor_name": "MAJESTIC REALTY CO.",
+              "has_schedule_a": true,
+              "active_participants": 293
+            },
+            {
+              "ein": "952256015",
+              "year": 2023,
+              "plan_name": "MRC 401(K) SAVINGS PLAN",
+              "sponsor_name": "MAJESTIC REALTY CO.",
+              "has_schedule_a": false,
+              "active_participants": 256
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUE CROSS OF CALIFORNIA",
+              "totalCharges": "1690413.00",
+              "personsCovered": "308",
+              "brokerCommission": "78753.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+              "carrierName": "GUARDIAN",
+              "totalCharges": "32480.00",
+              "personsCovered": "263",
+              "brokerCommission": "4932.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUE CROSS OF CALIFORNIA",
+              "totalCharges": "5845039.00",
+              "personsCovered": "298",
+              "brokerCommission": "260303.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+              "carrierName": "GUARDIAN",
+              "totalCharges": "135321.00",
+              "personsCovered": "256",
+              "brokerCommission": "22259.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 2,
+          "2023": 2
+        }
+      },
+      "companyName": "Majestic Realty"
+    },
+    {
+      "ein": "462686621",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "462686621",
+              "year": 2022,
+              "plan_name": "AUGMEDIX, INC. WELFARE BENEFITS PLAN",
+              "sponsor_name": "AUGMEDIX, INC.",
+              "has_schedule_a": true,
+              "active_participants": 174
+            },
+            {
+              "ein": "462686621",
+              "year": 2022,
+              "plan_name": "AUGMEDIX, INC. 401K PLAN",
+              "sponsor_name": "AUGMEDIX, INC.",
+              "has_schedule_a": false,
+              "active_participants": 253
+            },
+            {
+              "ein": "231732306",
+              "year": 2022,
+              "plan_name": "DELTA MEDIX, P.C. EMPLOYEES' DEFERRED SAVINGS AND PROFIT SHARING PLAN AND TRUST",
+              "sponsor_name": "DELTA MEDIX, P.C.",
+              "has_schedule_a": true,
+              "active_participants": 0
+            },
+            {
+              "ein": "201302085",
+              "year": 2022,
+              "plan_name": "INTERMEDIX STAFFING 401(K) PLAN",
+              "sponsor_name": "INTERMEDIX STAFFING",
+              "has_schedule_a": false,
+              "active_participants": 0
+            },
+            {
+              "ein": "542028306",
+              "year": 2022,
+              "plan_name": "MEDIX SPECIALITY VEHICLES, LLC 401(K) RETIREMENT PLAN",
+              "sponsor_name": "MEDIX SPECIALITY VEHICLES, LLC",
+              "has_schedule_a": true,
+              "active_participants": 206
+            },
+            {
+              "ein": "542028306",
+              "year": 2022,
+              "plan_name": "MEDIX SPECIALTY VEHICLES WELFARE BENEFIT PLAN",
+              "sponsor_name": "MEDIX SPECIALTY VEHICLES, LLC",
+              "has_schedule_a": true,
+              "active_participants": 167
+            },
+            {
+              "ein": "260019561",
+              "year": 2022,
+              "plan_name": "MEDIX STAFFING SOLUTIONS, INC. 401(K) PLAN",
+              "sponsor_name": "MEDIX STAFFING SOLUTIONS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 2702
+            },
+            {
+              "ein": "260019561",
+              "year": 2022,
+              "plan_name": "MEDIX HEALTH AND WELFARE",
+              "sponsor_name": "MEDIX STAFFING SOLUTIONS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 1193
+            }
+          ],
+          "2023": [
+            {
+              "ein": "462686621",
+              "year": 2023,
+              "plan_name": "AUGMEDIX, INC. WELFARE BENEFITS PLAN",
+              "sponsor_name": "AUGMEDIX, INC.",
+              "has_schedule_a": true,
+              "active_participants": 156
+            },
+            {
+              "ein": "462686621",
+              "year": 2023,
+              "plan_name": "AUGMEDIX, INC. 401K PLAN",
+              "sponsor_name": "AUGMEDIX, INC.",
+              "has_schedule_a": false,
+              "active_participants": 219
+            },
+            {
+              "ein": "850538319",
+              "year": 2023,
+              "plan_name": "MEDIX INFUSION HEALTH & WELFARE BENEFIT PLAN",
+              "sponsor_name": "MEDIX INFUSION, INC.",
+              "has_schedule_a": true,
+              "active_participants": 0
+            },
+            {
+              "ein": "542028306",
+              "year": 2023,
+              "plan_name": "MEDIX SPECIALTY VEHICLES WELFARE BENEFIT PLAN",
+              "sponsor_name": "MEDIX SPECIALTY VEHICLES, LLC",
+              "has_schedule_a": true,
+              "active_participants": 161
+            },
+            {
+              "ein": "260019561",
+              "year": 2023,
+              "plan_name": "MEDIX STAFFING SOLUTIONS, INC. 401(K) PLAN",
+              "sponsor_name": "MEDIX STAFFING SOLUTIONS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 1122
+            },
+            {
+              "ein": "260019561",
+              "year": 2023,
+              "plan_name": "MEDIX HEALTH AND WELFARE",
+              "sponsor_name": "MEDIX STAFFING SOLUTIONS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 1303
+            }
+          ],
+          "2024": [
+            {
+              "ein": "462686621",
+              "year": 2024,
+              "plan_name": "AUGMEDIX, INC. 401K PLAN",
+              "sponsor_name": "AUGMEDIX, INC.",
+              "has_schedule_a": false,
+              "active_participants": 175
+            },
+            {
+              "ein": "542028306",
+              "year": 2024,
+              "plan_name": "MEDIX SPECIALTY VEHICLES WELFARE BENEFIT PLAN",
+              "sponsor_name": "MEDIX SPECIALTY VEHICLES, LLC",
+              "has_schedule_a": true,
+              "active_participants": 0
+            }
+          ]
+        },
+        "recordCount": 16
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "KAISER FOUNDATION HEALTH PLAN INC.",
+              "totalCharges": "281836.00",
+              "personsCovered": "53",
+              "brokerCommission": "17174.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT AND EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "228497.00",
+              "personsCovered": "173",
+              "brokerCommission": "27657.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUE CROSS OF CALIFORNIA",
+              "totalCharges": "1259006.00",
+              "personsCovered": "138",
+              "brokerCommission": "79202.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "KAISER FOUNDATION HEALTH PLAN INC.",
+              "totalCharges": "304296.00",
+              "personsCovered": "50",
+              "brokerCommission": "13930.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT AND EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "213365.00",
+              "personsCovered": "201",
+              "brokerCommission": "25882.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 2,
+          "2023": 3
+        }
+      },
+      "companyName": "Medix"
+    },
+    {
+      "ein": "204063021",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "204063021",
+              "year": 2022,
+              "plan_name": "THE INTERSECT GROUP EMPLOYEE HEALTH CARE PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 258
+            },
+            {
+              "ein": "204063021",
+              "year": 2022,
+              "plan_name": "THE INTERSECT GROUP, LLC 401(K) PROFIT SHARING PLAN & TRUST",
+              "sponsor_name": "THE INTERSECT GROUP, LLC",
+              "has_schedule_a": false,
+              "active_participants": 1015
+            }
+          ],
+          "2023": [
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP ANCILLARY PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 62
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP MEC PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 127
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP EMPLOYEE HEALTH CARE PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 271
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP LIFE PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 258
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP ADD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 258
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP STD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 244
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP LTD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 258
+            },
+            {
+              "ein": "204063021",
+              "year": 2023,
+              "plan_name": "THE INTERSECT GROUP, LLC 401(K) PROFIT SHARING PLAN & TRUST",
+              "sponsor_name": "THE INTERSECT GROUP, LLC",
+              "has_schedule_a": false,
+              "active_participants": 766
+            }
+          ],
+          "2024": [
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP MEC PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 126
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP LIFE PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 77
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP ADD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 77
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP STD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 77
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP LTD PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 77
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP ANCILLARY PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 48
+            },
+            {
+              "ein": "204063021",
+              "year": 2024,
+              "plan_name": "THE INTERSECT GROUP EMPLOYEE HEALTH CARE PLAN",
+              "sponsor_name": "THE INTERSECT GROUP",
+              "has_schedule_a": true,
+              "active_participants": 77
+            }
+          ]
+        },
+        "recordCount": 17
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS",
+              "carrierName": "BLUE CROSS BLUE SHIELD HEALTHCARE PLAN OF GEORGIA, INC.",
+              "totalCharges": "166358.00",
+              "personsCovered": "365",
+              "brokerCommission": "83363.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT,EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+              "totalCharges": "67977.00",
+              "personsCovered": "302",
+              "brokerCommission": "11556.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+              "totalCharges": "209346.00",
+              "personsCovered": "110",
+              "brokerCommission": "20585.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RENAISSANCE LIFE & HEALTH INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "58993.00",
+              "personsCovered": "147",
+              "brokerCommission": "5899.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS",
+              "carrierName": "BLUE CROSS BLUE SHIELD HEALTHCARE PLAN OF GEORGIA, INC.",
+              "totalCharges": "196529.00",
+              "personsCovered": "414",
+              "brokerCommission": "31292.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+              "totalCharges": "34206.00",
+              "personsCovered": "258",
+              "brokerCommission": "5815.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+              "totalCharges": "27834.00",
+              "personsCovered": "258",
+              "brokerCommission": "4732.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+              "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+              "totalCharges": "5965.00",
+              "personsCovered": "258",
+              "brokerCommission": "1014.00"
+            },
+            {
+              "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+              "totalCharges": "8299.00",
+              "personsCovered": "244",
+              "brokerCommission": "1411.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+              "totalCharges": "38472.00",
+              "personsCovered": "127",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RENAISSANCE LIFE & HEALTH INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "137021.00",
+              "personsCovered": "145",
+              "brokerCommission": "17157.00"
+            }
+          ],
+          "2024": [
+            {
+              "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "10136.00",
+              "personsCovered": "181",
+              "brokerCommission": "1614.00"
+            },
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "142024.00",
+              "personsCovered": "197",
+              "brokerCommission": "48479.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "36552.00",
+              "personsCovered": "181",
+              "brokerCommission": "5760.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "35596.00",
+              "personsCovered": "181",
+              "brokerCommission": "5681.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "5026.00",
+              "personsCovered": "181",
+              "brokerCommission": "805.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+              "totalCharges": "46275.00",
+              "personsCovered": "126",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+              "totalCharges": "14365.00",
+              "personsCovered": "48",
+              "brokerCommission": "1437.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 4,
+          "2023": 7,
+          "2024": 7
+        }
+      },
+      "companyName": "The Intersect Group"
+    }
+  ],
+  "timestamp": "2025-07-21T21:56:28.169Z"
+}

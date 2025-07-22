@@ -1,0 +1,485 @@
+{
+  "success": true,
+  "summary": {
+    "totalCompanies": 5,
+    "companiesWithEIN": 5,
+    "companiesWithForm5500": 5,
+    "companiesWithScheduleA": 5
+  },
+  "companies": [
+    {
+      "ein": "200939510",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "200939510",
+              "year": 2022,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC WELFARE BENEFIT PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 1354
+            },
+            {
+              "ein": "200939510",
+              "year": 2022,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC 401(K) PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": false,
+              "active_participants": 744
+            }
+          ],
+          "2023": [
+            {
+              "ein": "200939510",
+              "year": 2023,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC WELFARE BENEFIT PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 437
+            },
+            {
+              "ein": "200939510",
+              "year": 2023,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC 401(K) PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": false,
+              "active_participants": 1135
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUE CROSS OF CALIFORNIA",
+              "totalCharges": "2672187.00",
+              "personsCovered": "418",
+              "brokerCommission": "139839.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "19757.00",
+              "personsCovered": "1353",
+              "brokerCommission": "2419.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUE CROSS OF CALIFORNIA",
+              "totalCharges": "3301468.00",
+              "personsCovered": "509",
+              "brokerCommission": "171622.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+              "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+              "totalCharges": "9297.00",
+              "personsCovered": "435",
+              "brokerCommission": "0.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 2,
+          "2023": 2
+        }
+      },
+      "companyName": "Behavior Frontiers"
+    },
+    {
+      "ein": "421300275",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "464352686",
+              "year": 2022,
+              "plan_name": "CALCIUM USA 401(K) PLAN",
+              "sponsor_name": "CALCIUM USA, LLC",
+              "has_schedule_a": true,
+              "active_participants": 94
+            }
+          ],
+          "2023": [
+            {
+              "ein": "421300275",
+              "year": 2023,
+              "plan_name": "CALCIUM HEALTH AND WELFARE PLAN",
+              "sponsor_name": "CALCIUM PRODUCTS",
+              "has_schedule_a": true,
+              "active_participants": 107
+            },
+            {
+              "ein": "421300275",
+              "year": 2023,
+              "plan_name": "CALCIUM PRODUCTS INC. RETIREMENT SAVINGS PLAN",
+              "sponsor_name": "CALCIUM PRODUCTS INC.",
+              "has_schedule_a": true,
+              "active_participants": 110
+            },
+            {
+              "ein": "464352686",
+              "year": 2023,
+              "plan_name": "CALCIUM USA 401(K) PLAN",
+              "sponsor_name": "CALCIUM USA, LLC",
+              "has_schedule_a": true,
+              "active_participants": 108
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "TRANSAMERICA LIFE INSURANCE COMPANY",
+              "totalCharges": "",
+              "personsCovered": "0",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+              "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+              "totalCharges": "8431.00",
+              "personsCovered": "107",
+              "brokerCommission": "843.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2023": 2
+        }
+      },
+      "companyName": "Calcium"
+    },
+    {
+      "ein": "364849207",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "364849207",
+              "year": 2022,
+              "plan_name": "MEDUIT, LLC 401(K) RETIREMENT PLAN",
+              "sponsor_name": "MEDUIT. LLC ILK/A RECEIVABLES",
+              "has_schedule_a": true,
+              "active_participants": 1273
+            }
+          ],
+          "2023": [
+            {
+              "ein": "364849207",
+              "year": 2023,
+              "plan_name": "MEDUIT, LLC 401(K) RETIREMENT PLAN",
+              "sponsor_name": "MEDUIT. LLC ILK/A RECEIVABLES",
+              "has_schedule_a": true,
+              "active_participants": 1439
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+              "totalCharges": "",
+              "personsCovered": "1692",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+              "totalCharges": "",
+              "personsCovered": "1861",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 1,
+          "2023": 1
+        }
+      },
+      "companyName": "Meduit"
+    },
+    {
+      "ein": "232766461",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "232766461",
+              "year": 2022,
+              "plan_name": "METZ CULINARY MANAGEMENT EMPLOYEE BENEFIT PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT",
+              "has_schedule_a": true,
+              "active_participants": 3956
+            },
+            {
+              "ein": "232766461",
+              "year": 2022,
+              "plan_name": "METZ CULINARY MANAGEMENT, LLC 401(K) PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT, LLC",
+              "has_schedule_a": false,
+              "active_participants": 5435
+            }
+          ],
+          "2023": [
+            {
+              "ein": "232766461",
+              "year": 2023,
+              "plan_name": "METZ CULINARY MANAGEMENT EMPLOYEE BENEFIT PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT",
+              "has_schedule_a": true,
+              "active_participants": 4571
+            },
+            {
+              "ein": "232766461",
+              "year": 2023,
+              "plan_name": "METZ CULINARY MANAGEMENT, LLC 401(K) PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT, LLC",
+              "has_schedule_a": false,
+              "active_participants": 6436
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+              "totalCharges": "5965.00",
+              "personsCovered": "14",
+              "brokerCommission": "799.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+              "totalCharges": "66591.00",
+              "personsCovered": "163",
+              "brokerCommission": "10670.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "411806.00",
+              "personsCovered": "3748",
+              "brokerCommission": "14316.00"
+            },
+            {
+              "benefitType": "CRITICAL ILLNESS AND ACCIDENT",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "95525.00",
+              "personsCovered": "284",
+              "brokerCommission": "21524.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+              "totalCharges": "76640.00",
+              "personsCovered": "157",
+              "brokerCommission": "11339.00"
+            },
+            {
+              "benefitType": "CRITICAL ILLNESS AND ACCIDENT",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "83435.00",
+              "personsCovered": "282",
+              "brokerCommission": "16632.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+              "totalCharges": "419559.00",
+              "personsCovered": "4280",
+              "brokerCommission": "11834.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 4,
+          "2023": 3
+        }
+      },
+      "companyName": "Metz Culinary Management"
+    },
+    {
+      "ein": "800236699",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "800236699",
+              "year": 2022,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 116
+            },
+            {
+              "ein": "800236699",
+              "year": 2022,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 121
+            }
+          ],
+          "2023": [
+            {
+              "ein": "800236699",
+              "year": 2023,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 119
+            },
+            {
+              "ein": "800236699",
+              "year": 2023,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 122
+            }
+          ],
+          "2024": [
+            {
+              "ein": "800236699",
+              "year": 2024,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 117
+            }
+          ]
+        },
+        "recordCount": 5
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUECROSS BLUESHIELD OF TEXAS",
+              "totalCharges": "1244168.00",
+              "personsCovered": "227",
+              "brokerCommission": "49946.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "DEARBORN LIFE INSURANCE COMPANY",
+              "totalCharges": "116039.00",
+              "personsCovered": "121",
+              "brokerCommission": "14577.00"
+            },
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "34174.00",
+              "personsCovered": "108",
+              "brokerCommission": "5674.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUECROSS BLUESHIELD OF TEXAS",
+              "totalCharges": "1328472.00",
+              "personsCovered": "238",
+              "brokerCommission": "51956.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "DEARBORN LIFE INSURANCE COMPANY",
+              "totalCharges": "133314.00",
+              "personsCovered": "122",
+              "brokerCommission": "16155.00"
+            },
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "32068.00",
+              "personsCovered": "120",
+              "brokerCommission": "3537.00"
+            }
+          ],
+          "2024": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "BLUECROSS BLUESHIELD OF TEXAS",
+              "totalCharges": "1485775.00",
+              "personsCovered": "237",
+              "brokerCommission": "68049.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "DEARBORN LIFE INSURANCE COMPANY",
+              "totalCharges": "135565.00",
+              "personsCovered": "117",
+              "brokerCommission": "16504.00"
+            },
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "38754.00",
+              "personsCovered": "122",
+              "brokerCommission": "4507.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 3,
+          "2023": 3,
+          "2024": 3
+        }
+      },
+      "companyName": "Selerix"
+    }
+  ],
+  "timestamp": "2025-07-21T22:01:33.035Z"
+}

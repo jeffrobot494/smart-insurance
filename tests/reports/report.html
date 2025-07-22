@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADC Portfolio Companies - Insurance Costs Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .summary {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .summary-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: none;
+        }
+
+        .company-row {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .company-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .company-row.expanded {
+            background-color: #e3f2fd;
+        }
+
+        .company-row td {
+            padding: 18px 15px;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+        .company-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .expand-arrow {
+            width: 0;
+            height: 0;
+            border-left: 6px solid #667eea;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            transition: transform 0.2s ease;
+        }
+
+        .expand-arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .detail-rows {
+            display: none;
+        }
+
+        .detail-rows.expanded {
+            display: table-row-group;
+        }
+
+        .detail-row {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .detail-row td {
+            padding: 12px 15px 12px 35px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .detail-row .plan-name {
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .currency {
+            font-weight: 600;
+            color: #28a745;
+            text-align: right;
+        }
+
+        .currency.total {
+            color: #0d6efd;
+            font-size: 1.05rem;
+        }
+
+        .people-count {
+            font-weight: 500;
+            color: #6f42c1;
+            text-align: right;
+        }
+
+        .year-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .no-data-badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .benefit-type {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .carrier-name {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+            }
+            
+            .detail-row td {
+                padding: 10px 8px 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ADC Portfolio Companies</h1>
+            <p>Insurance Costs & Brokerage Fees Report</p>
+        </div>
+
+        <div class="summary">
+            <h3>Report Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-number">6</div>
+                    <div>Total Companies</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">5</div>
+                    <div>Companies with Cost Data</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">2023</div>
+                    <div>Most Recent Year</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Data Year</th>
+                            <th>Total Premiums</th>
+                            <th>Total Brokerage Fees</th>
+                            <th>People Covered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- American Pain Consortium -->
+                        <tr class="company-row" onclick="toggleCompanyDetails('american-pain')">
+                            <td>
+                                <div class="company-name">
+                                    <div class="expand-arrow" id="arrow-american-pain"></div>
+                                    American Pain Consortium
+                                </div>
+                            </td>
+                            <td><span class="year-badge">2023</span></td>
+                            <td class="currency total">$1,629,578</td>
+                            <td class="currency total">$67,157</td>
+                            <td class="people-count">571</td>
+                        </tr>
+                        <tbody id="details-american-pain" class="detail-rows">
+                            <tr class="detail-row">
+                                <td class="plan-name">Telehealth - Anthem Insurance Companies, Inc.</td>
+                                <td>2023</td>
+                                <td class="currency">$1,540,766</td>
+                                <td class="currency">$48,788</td>
+                                <td class="people-count">226</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - John Hancock Life Insurance Company (U.S.A.)</td>
+                                <td>2023</td>
+                                <td class="currency">$0</td>
+                                <td class="currency">$0</td>
+                                <td class="people-count">158</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">AD&D, EAP, Accident, Critical Illness, Hospital - Reliance Standard Life Insurance Company</td>
+                                <td>2023</td>
+                                <td class="currency">$88,812</td>
+                                <td class="currency">$18,369</td>
+                                <td class="people-count">187</td>
+                            </tr>
+                        </tbody>
+
+                        <!-- Entertainment Partners -->
+                        <tr class="company-row">
+                            <td>
+                                <div class="company-name">
+                                    Entertainment Partners
+                                </div>
+                            </td>
+                            <td><span class="no-data-badge">No Data</span></td>
+                            <td class="currency total">$0</td>
+                            <td class="currency total">$0</td>
+                            <td class="people-count">0</td>
+                        </tr>
+
+                        <!-- GreenSlate -->
+                        <tr class="company-row" onclick="toggleCompanyDetails('greenslate')">
+                            <td>
+                                <div class="company-name">
+                                    <div class="expand-arrow" id="arrow-greenslate"></div>
+                                    GreenSlate
+                                </div>
+                            </td>
+                            <td><span class="year-badge">2023</span></td>
+                            <td class="currency total">$6,026,762</td>
+                            <td class="currency total">$28,085</td>
+                            <td class="people-count">1,261</td>
+                        </tr>
+                        <tbody id="details-greenslate" class="detail-rows">
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Cigna Health and Life Company and Affiliates</td>
+                                <td>2023</td>
+                                <td class="currency">$117,839</td>
+                                <td class="currency">$5,025</td>
+                                <td class="people-count">149</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Cigna Health and Life Insurance Company</td>
+                                <td>2023</td>
+                                <td class="currency">$5,575,202</td>
+                                <td class="currency">$0</td>
+                                <td class="people-count">536</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Metropolitan Life Insurance Company</td>
+                                <td>2023</td>
+                                <td class="currency">$280,626</td>
+                                <td class="currency">$16,203</td>
+                                <td class="people-count">394</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">AD&D - The Guardian Life Insurance Company of America</td>
+                                <td>2023</td>
+                                <td class="currency">$53,095</td>
+                                <td class="currency">$6,857</td>
+                                <td class="people-count">182</td>
+                            </tr>
+                        </tbody>
+
+                        <!-- Majestic Realty -->
+                        <tr class="company-row" onclick="toggleCompanyDetails('majestic')">
+                            <td>
+                                <div class="company-name">
+                                    <div class="expand-arrow" id="arrow-majestic"></div>
+                                    Majestic Realty
+                                </div>
+                            </td>
+                            <td><span class="year-badge">2023</span></td>
+                            <td class="currency total">$5,980,360</td>
+                            <td class="currency total">$282,562</td>
+                            <td class="people-count">554</td>
+                        </tr>
+                        <tbody id="details-majestic" class="detail-rows">
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Blue Cross of California</td>
+                                <td>2023</td>
+                                <td class="currency">$5,845,039</td>
+                                <td class="currency">$260,303</td>
+                                <td class="people-count">298</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Accidental Death & Dismemberment - Guardian</td>
+                                <td>2023</td>
+                                <td class="currency">$135,321</td>
+                                <td class="currency">$22,259</td>
+                                <td class="people-count">256</td>
+                            </tr>
+                        </tbody>
+
+                        <!-- Medix -->
+                        <tr class="company-row" onclick="toggleCompanyDetails('medix')">
+                            <td>
+                                <div class="company-name">
+                                    <div class="expand-arrow" id="arrow-medix"></div>
+                                    Medix
+                                </div>
+                            </td>
+                            <td><span class="year-badge">2023</span></td>
+                            <td class="currency total">$1,776,667</td>
+                            <td class="currency total">$119,014</td>
+                            <td class="people-count">389</td>
+                        </tr>
+                        <tbody id="details-medix" class="detail-rows">
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Blue Cross of California</td>
+                                <td>2023</td>
+                                <td class="currency">$1,259,006</td>
+                                <td class="currency">$79,202</td>
+                                <td class="people-count">138</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Kaiser Foundation Health Plan Inc.</td>
+                                <td>2023</td>
+                                <td class="currency">$304,296</td>
+                                <td class="currency">$13,930</td>
+                                <td class="people-count">50</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">AD&D and Employee Assistance Program - The Guardian Life Insurance Company of America</td>
+                                <td>2023</td>
+                                <td class="currency">$213,365</td>
+                                <td class="currency">$25,882</td>
+                                <td class="people-count">201</td>
+                            </tr>
+                        </tbody>
+
+                        <!-- The Intersect Group -->
+                        <tr class="company-row" onclick="toggleCompanyDetails('intersect')">
+                            <td>
+                                <div class="company-name">
+                                    <div class="expand-arrow" id="arrow-intersect"></div>
+                                    The Intersect Group
+                                </div>
+                            </td>
+                            <td><span class="year-badge">2024</span></td>
+                            <td class="currency total">$289,974</td>
+                            <td class="currency total">$63,777</td>
+                            <td class="people-count">1,075</td>
+                        </tr>
+                        <tbody id="details-intersect" class="detail-rows">
+                            <tr class="detail-row">
+                                <td class="plan-name">Employee Assistance Program - Metropolitan Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$10,136</td>
+                                <td class="currency">$1,614</td>
+                                <td class="people-count">181</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Accident, Critical Illness - Metropolitan Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$142,024</td>
+                                <td class="currency">$48,479</td>
+                                <td class="people-count">197</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Metropolitan Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$36,552</td>
+                                <td class="currency">$5,760</td>
+                                <td class="people-count">181</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Metropolitan Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$35,596</td>
+                                <td class="currency">$5,681</td>
+                                <td class="people-count">181</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Accidental Death and Dismemberment - Metropolitan Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$5,026</td>
+                                <td class="currency">$805</td>
+                                <td class="people-count">181</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Reliance Standard Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$46,275</td>
+                                <td class="currency">$0</td>
+                                <td class="people-count">126</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td class="plan-name">Standard Benefits - Reliance Standard Life Insurance Company</td>
+                                <td>2024</td>
+                                <td class="currency">$14,365</td>
+                                <td class="currency">$1,437</td>
+                                <td class="people-count">48</td>
+                            </tr>
+                        </tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCompanyDetails(companyId) {
+            const detailsElement = document.getElementById('details-' + companyId);
+            const arrowElement = document.getElementById('arrow-' + companyId);
+            const companyRow = arrowElement.closest('.company-row');
+            
+            if (detailsElement.classList.contains('expanded')) {
+                // Collapse
+                detailsElement.classList.remove('expanded');
+                arrowElement.classList.remove('expanded');
+                companyRow.classList.remove('expanded');
+            } else {
+                // Expand
+                detailsElement.classList.add('expanded');
+                arrowElement.classList.add('expanded');
+                companyRow.classList.add('expanded');
+            }
+        }
+    </script>
+</body>
+</html>
