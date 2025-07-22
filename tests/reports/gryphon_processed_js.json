@@ -1,0 +1,1283 @@
+{
+  "firm_name": "Gryphon",
+  "timestamp": "2025-07-21T22:01:43.527Z",
+  "summary": {
+    "total_companies": 31,
+    "companies_with_data": 24,
+    "most_recent_year": "2023"
+  },
+  "companies": [
+    {
+      "company_name": "3Cloud",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 8793389,
+      "total_brokerage_fees": 457601,
+      "total_people_covered": 2148,
+      "total_participants": 1297,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS BLUE SHIELD OF ILLINOIS",
+          "premiums": 7485740,
+          "brokerage_fees": 242768,
+          "people_covered": 1432
+        },
+        {
+          "benefit_type": "AD&D; ACCIDENT; CRITICAL ILLNESS",
+          "carrier_name": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 1260071,
+          "brokerage_fees": 203675,
+          "people_covered": 660
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "TRUSTMARK INSURANCE COMPANY",
+          "premiums": 47578,
+          "brokerage_fees": 11158,
+          "people_covered": 56
+        }
+      ]
+    },
+    {
+      "company_name": "AirX Climate Solutions",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 615335,
+      "total_brokerage_fees": 88440,
+      "total_people_covered": 1066,
+      "total_participants": 893,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "COMBINED INSURANCE",
+          "premiums": 54737,
+          "brokerage_fees": 34291,
+          "people_covered": 78
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "DEARBORN LIFE INSURANCE COMPANY",
+          "premiums": 438704,
+          "brokerage_fees": 0,
+          "people_covered": 609
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "MASSMUTUAL LIFE INSURANCE CO.",
+          "premiums": 0,
+          "brokerage_fees": 22777,
+          "people_covered": 245
+        },
+        {
+          "benefit_type": "HOSPITAL,CRITICAL ILLNESS,ACCIDENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 121894,
+          "brokerage_fees": 31372,
+          "people_covered": 134
+        }
+      ]
+    },
+    {
+      "company_name": "Aqua Dermatology",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 882565,
+      "total_brokerage_fees": 68761,
+      "total_people_covered": 4642,
+      "total_participants": 2122,
+      "plans": [
+        {
+          "benefit_type": "EMPLOYEE ASSISTANCE PROGRAM, TELEHEALTH",
+          "carrier_name": "FIRST STOP HEALTH",
+          "premiums": 66817,
+          "brokerage_fees": 0,
+          "people_covered": 1525
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 294438,
+          "brokerage_fees": 28198,
+          "people_covered": 1112
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "SAFEGUARD HEALTH PLANS, INC. A FLORIDA CORPORATION",
+          "premiums": 36744,
+          "brokerage_fees": 3699,
+          "people_covered": 315
+        },
+        {
+          "benefit_type": "ACCIDENT,CRITICAL ILLNESS,HOSPITAL",
+          "carrier_name": "UNUM INSURANCE COMPANY",
+          "premiums": 104100,
+          "brokerage_fees": 22372,
+          "people_covered": 217
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 380466,
+          "brokerage_fees": 14492,
+          "people_covered": 1473
+        }
+      ]
+    },
+    {
+      "company_name": "CORA Health Services",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1009006,
+      "total_brokerage_fees": 218339,
+      "total_people_covered": 6518,
+      "total_participants": 3421,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "PRINCIPAL LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 56880,
+          "people_covered": 1997
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "PRINCIPAL LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 18409,
+          "people_covered": 1997
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 890830,
+          "brokerage_fees": 139034,
+          "people_covered": 1607
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 118176,
+          "brokerage_fees": 4016,
+          "people_covered": 917
+        }
+      ]
+    },
+    {
+      "company_name": "DLC",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 1581,
+      "plans": []
+    },
+    {
+      "company_name": "Eight O'Clock Coffee",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 78,
+      "plans": []
+    },
+    {
+      "company_name": "Flagstone Foods",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1102653,
+      "total_brokerage_fees": 98972,
+      "total_people_covered": 2712,
+      "total_participants": 1593,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "CONTINENTAL AMERICAN INSURANCE COMPANY",
+          "premiums": 99400,
+          "brokerage_fees": 19679,
+          "people_covered": 479
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 914230,
+          "brokerage_fees": 75736,
+          "people_covered": 1573
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 89023,
+          "brokerage_fees": 3557,
+          "people_covered": 660
+        }
+      ]
+    },
+    {
+      "company_name": "Goodier",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1253773,
+      "total_brokerage_fees": 44111,
+      "total_people_covered": 560,
+      "total_participants": 382,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "MINNESOTA LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 185
+        },
+        {
+          "benefit_type": "AD&D, HOSPITAL, ACCIDENT, CRITICAL ILLNESS",
+          "carrier_name": "UNITED HEALTHCARE INSURANCE COMPANY",
+          "premiums": 101230,
+          "brokerage_fees": 30649,
+          "people_covered": 137
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1152543,
+          "brokerage_fees": 13462,
+          "people_covered": 238
+        }
+      ]
+    },
+    {
+      "company_name": "Heartland Veterinary Partners",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 12430160,
+      "total_brokerage_fees": 305875,
+      "total_people_covered": 5660,
+      "total_participants": 4670,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUECROSS AND BLUESHIELD OF ILLINOIS",
+          "premiums": 11144451,
+          "brokerage_fees": 53259,
+          "people_covered": 2098
+        },
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS",
+          "carrier_name": "CONTINENTAL AMERICAN INSURANCE COMPANY",
+          "premiums": 163579,
+          "brokerage_fees": 145015,
+          "people_covered": 1210
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "DEARBORN LIFE INSURANCE COMPANY",
+          "premiums": 111246,
+          "brokerage_fees": 11090,
+          "people_covered": 1537
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 44
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "MINNESOTA LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 1010884,
+          "brokerage_fees": 96511,
+          "people_covered": 771
+        }
+      ]
+    },
+    {
+      "company_name": "HEPACO",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1228289,
+      "total_brokerage_fees": 133068,
+      "total_people_covered": 3373,
+      "total_participants": 951,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "AETNA LIFE INSURANCE CO.",
+          "premiums": 433878,
+          "brokerage_fees": 24632,
+          "people_covered": 1277
+        },
+        {
+          "benefit_type": "HOSPITAL",
+          "carrier_name": "UNUM INSURANCE COMPANY",
+          "premiums": 24214,
+          "brokerage_fees": 4415,
+          "people_covered": 190
+        },
+        {
+          "benefit_type": "ACCIDENT",
+          "carrier_name": "UNUM INSURANCE COMPANY",
+          "premiums": 32383,
+          "brokerage_fees": 5894,
+          "people_covered": 218
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS",
+          "carrier_name": "UNUM INSURANCE COMPANY",
+          "premiums": 105148,
+          "brokerage_fees": 15772,
+          "people_covered": 250
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 438668,
+          "brokerage_fees": 53255,
+          "people_covered": 985
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 193998,
+          "brokerage_fees": 29100,
+          "people_covered": 453
+        }
+      ]
+    },
+    {
+      "company_name": "Heritage Distribution Holdings",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 849,
+      "plans": []
+    },
+    {
+      "company_name": "Jensen Hughes",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1170100,
+      "total_brokerage_fees": 126508,
+      "total_people_covered": 3293,
+      "total_participants": 1739,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENT",
+          "carrier_name": "AMERICAN HERITAGE LIFE INSURANCE COMPANY",
+          "premiums": 30313,
+          "brokerage_fees": 2043,
+          "people_covered": 169
+        },
+        {
+          "benefit_type": "HOSPITAL CARE",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+          "premiums": 23098,
+          "brokerage_fees": 3465,
+          "people_covered": 110
+        },
+        {
+          "benefit_type": "EAP; BTA",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+          "premiums": 684327,
+          "brokerage_fees": 67285,
+          "people_covered": 22
+        },
+        {
+          "benefit_type": "EAP",
+          "carrier_name": "COMPSYCH CORPORATION",
+          "premiums": 28594,
+          "brokerage_fees": 0,
+          "people_covered": 1456
+        },
+        {
+          "benefit_type": "VOLUNTARY CRITICAL ILLNESS",
+          "carrier_name": "GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 26312,
+          "brokerage_fees": 2631,
+          "people_covered": 84
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+          "premiums": 4867,
+          "brokerage_fees": 480,
+          "people_covered": 22
+        },
+        {
+          "benefit_type": "AD&D, VOLUNTARY LIFE",
+          "carrier_name": "SUN LIFE ASSURANCE COMPANY OF CANADA",
+          "premiums": 372589,
+          "brokerage_fees": 39989,
+          "people_covered": 825
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 0,
+          "brokerage_fees": 10615,
+          "people_covered": 605
+        }
+      ]
+    },
+    {
+      "company_name": "Mechanix Wear",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1909497,
+      "total_brokerage_fees": 27059,
+      "total_people_covered": 608,
+      "total_participants": 434,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "JOHN HANCOCK LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT",
+          "carrier_name": "PRINCIPAL LIFE INSURANCE COMPANY",
+          "premiums": 174945,
+          "brokerage_fees": 27059,
+          "people_covered": 335
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1734552,
+          "brokerage_fees": 0,
+          "people_covered": 273
+        }
+      ]
+    },
+    {
+      "company_name": "Metagenics",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1052386,
+      "total_brokerage_fees": 58235,
+      "total_people_covered": 523,
+      "total_participants": 907,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENTAL DEATH & DISMEMBERMENT",
+          "carrier_name": "HARTFORD LIFE AND ACCIDENT",
+          "premiums": 280918,
+          "brokerage_fees": 28092,
+          "people_covered": 469
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "KAISER FOUNDATION HEALTH PLAN OF WASHINGTON",
+          "premiums": 771468,
+          "brokerage_fees": 30143,
+          "people_covered": 54
+        }
+      ]
+    },
+    {
+      "company_name": "Ncontracts",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 265091,
+      "total_brokerage_fees": 44046,
+      "total_people_covered": 434,
+      "total_participants": 738,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS, HOSPITAL, CANCER",
+          "carrier_name": "CONTINENTAL AMERICAN INSURANCE COMPANY",
+          "premiums": 23090,
+          "brokerage_fees": 9221,
+          "people_covered": 108
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "HARTFORD LIFE AND ACCIDENT",
+          "premiums": 227273,
+          "brokerage_fees": 34091,
+          "people_covered": 322
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "KAISER FOUNDATION HEALTH PLAN, INC",
+          "premiums": 14728,
+          "brokerage_fees": 734,
+          "people_covered": 4
+        }
+      ]
+    },
+    {
+      "company_name": "NewRocket",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 3018981,
+      "total_brokerage_fees": 185358,
+      "total_people_covered": 1553,
+      "total_participants": 396,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS OF CALIFORNIA",
+          "premiums": 2550110,
+          "brokerage_fees": 117870,
+          "people_covered": 369
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "EMPOWER ANNUITY INSURANCE COMPANY OF AMERICA",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 40
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "EYEMED VISION CARE ON BEHALF OF FIDELITY SECURITY LIFE INSURANCE CO",
+          "premiums": 21646,
+          "brokerage_fees": 1990,
+          "people_covered": 336
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 379952,
+          "brokerage_fees": 36617,
+          "people_covered": 382
+        },
+        {
+          "benefit_type": "ACCIDENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 20442,
+          "brokerage_fees": 9054,
+          "people_covered": 110
+        },
+        {
+          "benefit_type": "HOSPITAL",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 14407,
+          "brokerage_fees": 7098,
+          "people_covered": 144
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 32424,
+          "brokerage_fees": 12729,
+          "people_covered": 172
+        }
+      ]
+    },
+    {
+      "company_name": "OBHG",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 2858869,
+      "total_brokerage_fees": 388031,
+      "total_people_covered": 7201,
+      "total_participants": 3072,
+      "plans": [
+        {
+          "benefit_type": "LEGAL",
+          "carrier_name": "ARAG SERVICES, LLC",
+          "premiums": 46466,
+          "brokerage_fees": 4647,
+          "people_covered": 388
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS BLUE SHIELD OF SOUTH CAROLINA",
+          "premiums": 0,
+          "brokerage_fees": 115564,
+          "people_covered": 833
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "KAISER FOUNDATION HEALTH PLAN, INC.",
+          "premiums": 196122,
+          "brokerage_fees": 1834,
+          "people_covered": 34
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 870999,
+          "brokerage_fees": 49477,
+          "people_covered": 1788
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+          "premiums": 1397492,
+          "brokerage_fees": 139749,
+          "people_covered": 1148
+        },
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "RELIASTAR LIFE INSURANCE COMPANY",
+          "premiums": 347790,
+          "brokerage_fees": 76514,
+          "people_covered": 632
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 220,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 26,
+          "people_covered": 2378
+        }
+      ]
+    },
+    {
+      "company_name": "Orchid Underwriters Agency",
+      "data_year": "2022",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 0,
+      "plans": []
+    },
+    {
+      "company_name": "PACUR",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 128389,
+      "total_brokerage_fees": 41004,
+      "total_people_covered": 505,
+      "total_participants": 259,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "DELTA DENTAL OF WISCONSIN",
+          "premiums": 0,
+          "brokerage_fees": 4464,
+          "people_covered": 92
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS, ACCIDENT",
+          "carrier_name": "PRINCIPAL LIFE INSURANCE COMPANY",
+          "premiums": 128389,
+          "brokerage_fees": 36540,
+          "people_covered": 209
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "WISCONSIN PHYSICIANS SERVICE INSURANCE CORPORATION",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 204
+        }
+      ]
+    },
+    {
+      "company_name": "phData",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 314,
+      "plans": []
+    },
+    {
+      "company_name": "Physical Rehabilitation Network",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 2837186,
+      "total_brokerage_fees": 299673,
+      "total_people_covered": 2778,
+      "total_participants": 2257,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES",
+          "premiums": 2425509,
+          "brokerage_fees": 238994,
+          "people_covered": 1281
+        },
+        {
+          "benefit_type": "LEGAL",
+          "carrier_name": "METLIFE LEGAL PLANS, INC.",
+          "premiums": 16758,
+          "brokerage_fees": 1541,
+          "people_covered": 65
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 111502,
+          "brokerage_fees": 16625,
+          "people_covered": 383
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 116149,
+          "brokerage_fees": 17422,
+          "people_covered": 317
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 101604,
+          "brokerage_fees": 15241,
+          "people_covered": 415
+        },
+        {
+          "benefit_type": "ACCIDENT",
+          "carrier_name": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 39866,
+          "brokerage_fees": 5980,
+          "people_covered": 106
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS",
+          "carrier_name": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 25798,
+          "brokerage_fees": 3870,
+          "people_covered": 211
+        }
+      ]
+    },
+    {
+      "company_name": "RegEd",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 15279200,
+      "total_brokerage_fees": 394080,
+      "total_people_covered": 7968,
+      "total_participants": 2075,
+      "plans": [
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "AMERICAN GENERAL LIFE INSURANCE COMPANY",
+          "premiums": 180237,
+          "brokerage_fees": 25225,
+          "people_covered": 452
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "AMERICAN GENERAL LIFE INSURANCE COMPANY",
+          "premiums": 126523,
+          "brokerage_fees": 20581,
+          "people_covered": 389
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "AMERICAN GENERAL LIFE INSURANCE COMPANY",
+          "premiums": 440443,
+          "brokerage_fees": 7751,
+          "people_covered": 207
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS AND BLUE SHIELD OF NORTH CAROLINA",
+          "premiums": 1481680,
+          "brokerage_fees": 39224,
+          "people_covered": 339
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+          "premiums": 997152,
+          "brokerage_fees": 97053,
+          "people_covered": 401
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "EQUITABLE FINANCIAL LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 254483,
+          "brokerage_fees": 25448,
+          "people_covered": 314
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "EQUITABLE FINANCIAL LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 215131,
+          "brokerage_fees": 21513,
+          "people_covered": 253
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "HUMANA DENTAL INSURANCE COMPANY",
+          "premiums": 132756,
+          "brokerage_fees": 6565,
+          "people_covered": 159
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "HUMANA DENTAL INSURANCE COMPANY",
+          "premiums": 139153,
+          "brokerage_fees": 1386,
+          "people_covered": 181
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 1547,
+          "brokerage_fees": 309,
+          "people_covered": 17
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 183563,
+          "brokerage_fees": 15187,
+          "people_covered": 564
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 183829,
+          "brokerage_fees": 13948,
+          "people_covered": 553
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 8271,
+          "brokerage_fees": 481,
+          "people_covered": 32
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 9153,
+          "brokerage_fees": 2047,
+          "people_covered": 105
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 580230,
+          "brokerage_fees": 39130,
+          "people_covered": 644
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 32401,
+          "brokerage_fees": 5502,
+          "people_covered": 118
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 217150,
+          "brokerage_fees": 17660,
+          "people_covered": 10
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 5462,
+          "brokerage_fees": 420,
+          "people_covered": 69
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 4726,
+          "brokerage_fees": 399,
+          "people_covered": 37
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 15566,
+          "brokerage_fees": 3037,
+          "people_covered": 150
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 204202,
+          "brokerage_fees": 16896,
+          "people_covered": 409
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "MONY LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 184188,
+          "brokerage_fees": 18504,
+          "people_covered": 260
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "MONY LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 132414,
+          "brokerage_fees": 13156,
+          "people_covered": 238
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 2081106,
+          "brokerage_fees": 0,
+          "people_covered": 383
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1859991,
+          "brokerage_fees": 0,
+          "people_covered": 349
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1589049,
+          "brokerage_fees": 0,
+          "people_covered": 372
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 2324112,
+          "brokerage_fees": 0,
+          "people_covered": 242
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1639792,
+          "brokerage_fees": 0,
+          "people_covered": 368
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 25896,
+          "brokerage_fees": 1283,
+          "people_covered": 160
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 28994,
+          "brokerage_fees": 1375,
+          "people_covered": 193
+        }
+      ]
+    },
+    {
+      "company_name": "Revision Skincare",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 2567719,
+      "total_brokerage_fees": 76284,
+      "total_people_covered": 1206,
+      "total_participants": 425,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "MINNESOTA LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 222
+        },
+        {
+          "benefit_type": "AD&D, CRITICAL ILLNESS, ACCIDENT, HOSPITAL",
+          "carrier_name": "UNITED HEALTHCARE INSURANCE COMPANY",
+          "premiums": 92732,
+          "brokerage_fees": 10581,
+          "people_covered": 152
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITED HEALTHCARE INSURANCE COMPANY",
+          "premiums": 813039,
+          "brokerage_fees": 7844,
+          "people_covered": 380
+        },
+        {
+          "benefit_type": "AD&D, HOSPITAL, ACCIDENT, CRITICAL ILLNESS",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 150274,
+          "brokerage_fees": 40031,
+          "people_covered": 161
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 1511674,
+          "brokerage_fees": 17828,
+          "people_covered": 291
+        }
+      ]
+    },
+    {
+      "company_name": "Rootstock Software",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 86,
+      "plans": []
+    },
+    {
+      "company_name": "Shermco Industries",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1293790,
+      "total_brokerage_fees": 26796,
+      "total_people_covered": 3480,
+      "total_participants": 1924,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 913860,
+          "brokerage_fees": 0,
+          "people_covered": 896
+        },
+        {
+          "benefit_type": "LEGAL",
+          "carrier_name": "METLIFE LEGAL PLANS, INC.",
+          "premiums": 70403,
+          "brokerage_fees": 0,
+          "people_covered": 260
+        },
+        {
+          "benefit_type": "EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "UNITED BEHAVIORAL HEALTH DBA OPTUM",
+          "premiums": 19241,
+          "brokerage_fees": 0,
+          "people_covered": 945
+        },
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "UNITEDHEALTHCARE INSURANCE COMPANY",
+          "premiums": 180465,
+          "brokerage_fees": 26796,
+          "people_covered": 623
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VISION SERVICE PLAN",
+          "premiums": 109821,
+          "brokerage_fees": 0,
+          "people_covered": 756
+        }
+      ]
+    },
+    {
+      "company_name": "Spindrift",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 0,
+      "total_brokerage_fees": 2960,
+      "total_people_covered": 185,
+      "total_participants": 190,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "STANDARD INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 2960,
+          "people_covered": 185
+        }
+      ]
+    },
+    {
+      "company_name": "Techmer",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 3871484,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 1384,
+      "total_participants": 909,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS BLUE SHIELD OF TENNESSEE",
+          "premiums": 2841912,
+          "brokerage_fees": 0,
+          "people_covered": 353
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "KAISER FOUNDATION HEALTH PLAN INC",
+          "premiums": 526804,
+          "brokerage_fees": 0,
+          "people_covered": 86
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 146
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+          "premiums": 466035,
+          "brokerage_fees": 0,
+          "people_covered": 457
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "STARMOUNT LIFE INSURANCE COMPANY",
+          "premiums": 36733,
+          "brokerage_fees": 0,
+          "people_covered": 342
+        }
+      ]
+    },
+    {
+      "company_name": "Transportation Insight",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 2341069,
+      "total_brokerage_fees": 49935,
+      "total_people_covered": 4627,
+      "total_participants": 3425,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 948073,
+          "brokerage_fees": 0,
+          "people_covered": 2135
+        },
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "RELIASTAR LIFE INSURANCE COMPANY",
+          "premiums": 247116,
+          "brokerage_fees": 49935,
+          "people_covered": 769
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 1145880,
+          "brokerage_fees": 0,
+          "people_covered": 1723
+        }
+      ]
+    },
+    {
+      "company_name": "Trinity Consultants",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 887799,
+      "total_brokerage_fees": 79300,
+      "total_people_covered": 3531,
+      "total_participants": 2287,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 554148,
+          "brokerage_fees": 48464,
+          "people_covered": 1347
+        },
+        {
+          "benefit_type": "NEW YORK STATE'S DISABILITY BENEFIT",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY",
+          "premiums": 35399,
+          "brokerage_fees": 2221,
+          "people_covered": 106
+        },
+        {
+          "benefit_type": "PAID FAMILY LEAVE",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY",
+          "premiums": 12102,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 12151,
+          "brokerage_fees": 1215,
+          "people_covered": 32
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 177742,
+          "brokerage_fees": 17774,
+          "people_covered": 1022
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 96257,
+          "brokerage_fees": 9626,
+          "people_covered": 1024
+        }
+      ]
+    },
+    {
+      "company_name": "Vessco",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 1486,
+      "plans": []
+    },
+    {
+      "company_name": "Vision Innovation Partners",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 678301,
+      "total_brokerage_fees": 46571,
+      "total_people_covered": 2108,
+      "total_participants": 1133,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "EYEMED VISION CARE ON BEHALF OF FIDELITY SECURITY LIFE INSURANCE CO.",
+          "premiums": 53239,
+          "brokerage_fees": 4064,
+          "people_covered": 559
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 625062,
+          "brokerage_fees": 42507,
+          "people_covered": 1549
+        }
+      ]
+    }
+  ]
+}

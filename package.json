@@ -1,6 +1,29 @@
 {
+  "name": "pe-insurance-reports",
+  "version": "1.0.0",
+  "description": "Generate insurance cost reports for PE firm portfolio companies",
+  "main": "index.js",
+  "scripts": {
+    "process": "node process_data.js",
+    "generate": "node generate_report.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "process-data": "./process_data.js",
+    "generate-report": "./generate_report.js"
+  },
   "dependencies": {
+    "commander": "^11.0.0",
     "dotenv": "^17.2.0",
     "pg": "^8.16.3"
-  }
+  },
+  "keywords": [
+    "insurance",
+    "pe",
+    "private-equity",
+    "reports",
+    "form5500"
+  ],
+  "author": "",
+  "license": "ISC"
 }

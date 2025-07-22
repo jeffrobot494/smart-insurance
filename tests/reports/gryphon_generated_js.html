@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gryphon Portfolio Companies - Insurance Costs Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .summary {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .summary-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: none;
+        }
+
+        .company-row {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .company-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .company-row.expanded {
+            background-color: #e3f2fd;
+        }
+
+        .company-row td {
+            padding: 18px 15px;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+        .company-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .expand-arrow {
+            width: 0;
+            height: 0;
+            border-left: 6px solid #667eea;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            transition: transform 0.2s ease;
+        }
+
+        .expand-arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .detail-rows {
+            display: none;
+        }
+
+        .detail-rows.expanded {
+            display: table-row-group;
+        }
+
+        .detail-row {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .detail-row td {
+            padding: 12px 15px 12px 35px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .detail-row .plan-name {
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .currency {
+            font-weight: 600;
+            color: #28a745;
+            text-align: right;
+        }
+
+        .currency.total {
+            color: #0d6efd;
+            font-size: 1.05rem;
+        }
+
+        .people-count {
+            font-weight: 500;
+            color: #6f42c1;
+            text-align: right;
+        }
+
+        .year-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .no-data-badge {
+            background: #6c757d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .benefit-type {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .carrier-name {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+            }
+            
+            .detail-row td {
+                padding: 10px 8px 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gryphon Portfolio Companies</h1>
+            <p>Insurance Costs & Brokerage Fees Report</p>
+        </div>
+
+        <div class="summary">
+            <h3>Report Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-number">31</div>
+                    <div>Total Companies</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">24</div>
+                    <div>Companies with Cost Data</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">2023</div>
+                    <div>Most Recent Year</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Data Year</th>
+                            <th>Total Premiums</th>
+                            <th>Total Brokerage Fees</th>
+                            <th>People Covered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr class="company-row" onclick="toggleCompanyDetails('company-0')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-0"></div>
+                    3Cloud
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$8,793,389</td>
+            <td class="currency total">$457,601</td>
+            <td class="people-count">2,148</td>
+        </tr>
+        <tbody id="details-company-0" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUE CROSS BLUE SHIELD OF ILLINOIS</td>
+                <td>2023</td>
+                <td class="currency">$7,485,740</td>
+                <td class="currency">$242,768</td>
+                <td class="people-count">1,432</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D; ACCIDENT; CRITICAL ILLNESS - THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$1,260,071</td>
+                <td class="currency">$203,675</td>
+                <td class="people-count">660</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - TRUSTMARK INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$47,578</td>
+                <td class="currency">$11,158</td>
+                <td class="people-count">56</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-1')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-1"></div>
+                    AirX Climate Solutions
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$615,335</td>
+            <td class="currency total">$88,440</td>
+            <td class="people-count">1,066</td>
+        </tr>
+        <tbody id="details-company-1" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - COMBINED INSURANCE</td>
+                <td>2023</td>
+                <td class="currency">$54,737</td>
+                <td class="currency">$34,291</td>
+                <td class="people-count">78</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - DEARBORN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$438,704</td>
+                <td class="currency">$0</td>
+                <td class="people-count">609</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - MASSMUTUAL LIFE INSURANCE CO.</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$22,777</td>
+                <td class="people-count">245</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">HOSPITAL,CRITICAL ILLNESS,ACCIDENT - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$121,894</td>
+                <td class="currency">$31,372</td>
+                <td class="people-count">134</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-2')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-2"></div>
+                    Aqua Dermatology
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$882,565</td>
+            <td class="currency total">$68,761</td>
+            <td class="people-count">4,642</td>
+        </tr>
+        <tbody id="details-company-2" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">EMPLOYEE ASSISTANCE PROGRAM, TELEHEALTH - FIRST STOP HEALTH</td>
+                <td>2023</td>
+                <td class="currency">$66,817</td>
+                <td class="currency">$0</td>
+                <td class="people-count">1,525</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$294,438</td>
+                <td class="currency">$28,198</td>
+                <td class="people-count">1,112</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - SAFEGUARD HEALTH PLANS, INC. A FLORIDA CORPORATION</td>
+                <td>2023</td>
+                <td class="currency">$36,744</td>
+                <td class="currency">$3,699</td>
+                <td class="people-count">315</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT,CRITICAL ILLNESS,HOSPITAL - UNUM INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$104,100</td>
+                <td class="currency">$22,372</td>
+                <td class="people-count">217</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$380,466</td>
+                <td class="currency">$14,492</td>
+                <td class="people-count">1,473</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-3')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-3"></div>
+                    CORA Health Services
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,009,006</td>
+            <td class="currency total">$218,339</td>
+            <td class="people-count">6,518</td>
+        </tr>
+        <tbody id="details-company-3" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - PRINCIPAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$56,880</td>
+                <td class="people-count">1,997</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - PRINCIPAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$18,409</td>
+                <td class="people-count">1,997</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL - THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$890,830</td>
+                <td class="currency">$139,034</td>
+                <td class="people-count">1,607</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$118,176</td>
+                <td class="currency">$4,016</td>
+                <td class="people-count">917</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    DLC
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    Eight O'Clock Coffee
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-6')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-6"></div>
+                    Flagstone Foods
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,102,653</td>
+            <td class="currency total">$98,972</td>
+            <td class="people-count">2,712</td>
+        </tr>
+        <tbody id="details-company-6" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT, CRITICAL ILLNESS, HOSPITAL - CONTINENTAL AMERICAN INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$99,400</td>
+                <td class="currency">$19,679</td>
+                <td class="people-count">479</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$914,230</td>
+                <td class="currency">$75,736</td>
+                <td class="people-count">1,573</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$89,023</td>
+                <td class="currency">$3,557</td>
+                <td class="people-count">660</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-7')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-7"></div>
+                    Goodier
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,253,773</td>
+            <td class="currency total">$44,111</td>
+            <td class="people-count">560</td>
+        </tr>
+        <tbody id="details-company-7" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - MINNESOTA LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">185</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D, HOSPITAL, ACCIDENT, CRITICAL ILLNESS - UNITED HEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$101,230</td>
+                <td class="currency">$30,649</td>
+                <td class="people-count">137</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,152,543</td>
+                <td class="currency">$13,462</td>
+                <td class="people-count">238</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-8')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-8"></div>
+                    Heartland Veterinary Partners
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$12,430,160</td>
+            <td class="currency total">$305,875</td>
+            <td class="people-count">5,660</td>
+        </tr>
+        <tbody id="details-company-8" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUECROSS AND BLUESHIELD OF ILLINOIS</td>
+                <td>2023</td>
+                <td class="currency">$11,144,451</td>
+                <td class="currency">$53,259</td>
+                <td class="people-count">2,098</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT, CRITICAL ILLNESS - CONTINENTAL AMERICAN INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$163,579</td>
+                <td class="currency">$145,015</td>
+                <td class="people-count">1,210</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - DEARBORN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$111,246</td>
+                <td class="currency">$11,090</td>
+                <td class="people-count">1,537</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">44</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - MINNESOTA LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$1,010,884</td>
+                <td class="currency">$96,511</td>
+                <td class="people-count">771</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-9')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-9"></div>
+                    HEPACO
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,228,289</td>
+            <td class="currency total">$133,068</td>
+            <td class="people-count">3,373</td>
+        </tr>
+        <tbody id="details-company-9" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - AETNA LIFE INSURANCE CO.</td>
+                <td>2023</td>
+                <td class="currency">$433,878</td>
+                <td class="currency">$24,632</td>
+                <td class="people-count">1,277</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">HOSPITAL - UNUM INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$24,214</td>
+                <td class="currency">$4,415</td>
+                <td class="people-count">190</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT - UNUM INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$32,383</td>
+                <td class="currency">$5,894</td>
+                <td class="people-count">218</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS - UNUM INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$105,148</td>
+                <td class="currency">$15,772</td>
+                <td class="people-count">250</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$438,668</td>
+                <td class="currency">$53,255</td>
+                <td class="people-count">985</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$193,998</td>
+                <td class="currency">$29,100</td>
+                <td class="people-count">453</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    Heritage Distribution Holdings
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-11')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-11"></div>
+                    Jensen Hughes
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,170,100</td>
+            <td class="currency total">$126,508</td>
+            <td class="people-count">3,293</td>
+        </tr>
+        <tbody id="details-company-11" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT - AMERICAN HERITAGE LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$30,313</td>
+                <td class="currency">$2,043</td>
+                <td class="people-count">169</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">HOSPITAL CARE - CIGNA HEALTH AND LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$23,098</td>
+                <td class="currency">$3,465</td>
+                <td class="people-count">110</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">EAP; BTA - CIGNA HEALTH AND LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$684,327</td>
+                <td class="currency">$67,285</td>
+                <td class="people-count">22</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">EAP - COMPSYCH CORPORATION</td>
+                <td>2023</td>
+                <td class="currency">$28,594</td>
+                <td class="currency">$0</td>
+                <td class="people-count">1,456</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">VOLUNTARY CRITICAL ILLNESS - GUARDIAN LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$26,312</td>
+                <td class="currency">$2,631</td>
+                <td class="people-count">84</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - LIFE INSURANCE COMPANY OF NORTH AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$4,867</td>
+                <td class="currency">$480</td>
+                <td class="people-count">22</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D, VOLUNTARY LIFE - SUN LIFE ASSURANCE COMPANY OF CANADA</td>
+                <td>2023</td>
+                <td class="currency">$372,589</td>
+                <td class="currency">$39,989</td>
+                <td class="people-count">825</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$10,615</td>
+                <td class="people-count">605</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-12')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-12"></div>
+                    Mechanix Wear
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,909,497</td>
+            <td class="currency total">$27,059</td>
+            <td class="people-count">608</td>
+        </tr>
+        <tbody id="details-company-12" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - JOHN HANCOCK LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT - PRINCIPAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$174,945</td>
+                <td class="currency">$27,059</td>
+                <td class="people-count">335</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,734,552</td>
+                <td class="currency">$0</td>
+                <td class="people-count">273</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-13')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-13"></div>
+                    Metagenics
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,052,386</td>
+            <td class="currency total">$58,235</td>
+            <td class="people-count">523</td>
+        </tr>
+        <tbody id="details-company-13" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH & DISMEMBERMENT - HARTFORD LIFE AND ACCIDENT</td>
+                <td>2023</td>
+                <td class="currency">$280,918</td>
+                <td class="currency">$28,092</td>
+                <td class="people-count">469</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - KAISER FOUNDATION HEALTH PLAN OF WASHINGTON</td>
+                <td>2023</td>
+                <td class="currency">$771,468</td>
+                <td class="currency">$30,143</td>
+                <td class="people-count">54</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-14')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-14"></div>
+                    Ncontracts
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$265,091</td>
+            <td class="currency total">$44,046</td>
+            <td class="people-count">434</td>
+        </tr>
+        <tbody id="details-company-14" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - CIGNA HEALTH AND LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS, HOSPITAL, CANCER - CONTINENTAL AMERICAN INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$23,090</td>
+                <td class="currency">$9,221</td>
+                <td class="people-count">108</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM - HARTFORD LIFE AND ACCIDENT</td>
+                <td>2023</td>
+                <td class="currency">$227,273</td>
+                <td class="currency">$34,091</td>
+                <td class="people-count">322</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - KAISER FOUNDATION HEALTH PLAN, INC</td>
+                <td>2023</td>
+                <td class="currency">$14,728</td>
+                <td class="currency">$734</td>
+                <td class="people-count">4</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-15')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-15"></div>
+                    NewRocket
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$3,018,981</td>
+            <td class="currency total">$185,358</td>
+            <td class="people-count">1,553</td>
+        </tr>
+        <tbody id="details-company-15" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUE CROSS OF CALIFORNIA</td>
+                <td>2023</td>
+                <td class="currency">$2,550,110</td>
+                <td class="currency">$117,870</td>
+                <td class="people-count">369</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - EMPOWER ANNUITY INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">40</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - EYEMED VISION CARE ON BEHALF OF FIDELITY SECURITY LIFE INSURANCE CO</td>
+                <td>2023</td>
+                <td class="currency">$21,646</td>
+                <td class="currency">$1,990</td>
+                <td class="people-count">336</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$379,952</td>
+                <td class="currency">$36,617</td>
+                <td class="people-count">382</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$20,442</td>
+                <td class="currency">$9,054</td>
+                <td class="people-count">110</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">HOSPITAL - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$14,407</td>
+                <td class="currency">$7,098</td>
+                <td class="people-count">144</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$32,424</td>
+                <td class="currency">$12,729</td>
+                <td class="people-count">172</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-16')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-16"></div>
+                    OBHG
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$2,858,869</td>
+            <td class="currency total">$388,031</td>
+            <td class="people-count">7,201</td>
+        </tr>
+        <tbody id="details-company-16" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">LEGAL - ARAG SERVICES, LLC</td>
+                <td>2023</td>
+                <td class="currency">$46,466</td>
+                <td class="currency">$4,647</td>
+                <td class="people-count">388</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUE CROSS BLUE SHIELD OF SOUTH CAROLINA</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$115,564</td>
+                <td class="people-count">833</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - KAISER FOUNDATION HEALTH PLAN, INC.</td>
+                <td>2023</td>
+                <td class="currency">$196,122</td>
+                <td class="currency">$1,834</td>
+                <td class="people-count">34</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$870,999</td>
+                <td class="currency">$49,477</td>
+                <td class="people-count">1,788</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM - PRUDENTIAL INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$1,397,492</td>
+                <td class="currency">$139,749</td>
+                <td class="people-count">1,148</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT, CRITICAL ILLNESS, HOSPITAL - RELIASTAR LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$347,790</td>
+                <td class="currency">$76,514</td>
+                <td class="people-count">632</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$220</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$26</td>
+                <td class="people-count">2,378</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    Orchid Underwriters Agency
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-18')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-18"></div>
+                    PACUR
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$128,389</td>
+            <td class="currency total">$41,004</td>
+            <td class="people-count">505</td>
+        </tr>
+        <tbody id="details-company-18" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - DELTA DENTAL OF WISCONSIN</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$4,464</td>
+                <td class="people-count">92</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS, ACCIDENT - PRINCIPAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$128,389</td>
+                <td class="currency">$36,540</td>
+                <td class="people-count">209</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - WISCONSIN PHYSICIANS SERVICE INSURANCE CORPORATION</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">204</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    phData
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-20')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-20"></div>
+                    Physical Rehabilitation Network
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$2,837,186</td>
+            <td class="currency total">$299,673</td>
+            <td class="people-count">2,778</td>
+        </tr>
+        <tbody id="details-company-20" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES</td>
+                <td>2023</td>
+                <td class="currency">$2,425,509</td>
+                <td class="currency">$238,994</td>
+                <td class="people-count">1,281</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">LEGAL - METLIFE LEGAL PLANS, INC.</td>
+                <td>2023</td>
+                <td class="currency">$16,758</td>
+                <td class="currency">$1,541</td>
+                <td class="people-count">65</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - THE LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$111,502</td>
+                <td class="currency">$16,625</td>
+                <td class="people-count">383</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - THE LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$116,149</td>
+                <td class="currency">$17,422</td>
+                <td class="people-count">317</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM - THE LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$101,604</td>
+                <td class="currency">$15,241</td>
+                <td class="people-count">415</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT - THE LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$39,866</td>
+                <td class="currency">$5,980</td>
+                <td class="people-count">106</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS - THE LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$25,798</td>
+                <td class="currency">$3,870</td>
+                <td class="people-count">211</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-21')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-21"></div>
+                    RegEd
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$15,279,200</td>
+            <td class="currency total">$394,080</td>
+            <td class="people-count">7,968</td>
+        </tr>
+        <tbody id="details-company-21" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - AMERICAN GENERAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$180,237</td>
+                <td class="currency">$25,225</td>
+                <td class="people-count">452</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - AMERICAN GENERAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$126,523</td>
+                <td class="currency">$20,581</td>
+                <td class="people-count">389</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - AMERICAN GENERAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$440,443</td>
+                <td class="currency">$7,751</td>
+                <td class="people-count">207</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUE CROSS AND BLUE SHIELD OF NORTH CAROLINA</td>
+                <td>2023</td>
+                <td class="currency">$1,481,680</td>
+                <td class="currency">$39,224</td>
+                <td class="people-count">339</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - CIGNA HEALTH AND LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$997,152</td>
+                <td class="currency">$97,053</td>
+                <td class="people-count">401</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - EQUITABLE FINANCIAL LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$254,483</td>
+                <td class="currency">$25,448</td>
+                <td class="people-count">314</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - EQUITABLE FINANCIAL LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$215,131</td>
+                <td class="currency">$21,513</td>
+                <td class="people-count">253</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - HUMANA DENTAL INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$132,756</td>
+                <td class="currency">$6,565</td>
+                <td class="people-count">159</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - HUMANA DENTAL INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$139,153</td>
+                <td class="currency">$1,386</td>
+                <td class="people-count">181</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,547</td>
+                <td class="currency">$309</td>
+                <td class="people-count">17</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$183,563</td>
+                <td class="currency">$15,187</td>
+                <td class="people-count">564</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$183,829</td>
+                <td class="currency">$13,948</td>
+                <td class="people-count">553</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$8,271</td>
+                <td class="currency">$481</td>
+                <td class="people-count">32</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$9,153</td>
+                <td class="currency">$2,047</td>
+                <td class="people-count">105</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$580,230</td>
+                <td class="currency">$39,130</td>
+                <td class="people-count">644</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">CRITICAL ILLNESS - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$32,401</td>
+                <td class="currency">$5,502</td>
+                <td class="people-count">118</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$217,150</td>
+                <td class="currency">$17,660</td>
+                <td class="people-count">10</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$5,462</td>
+                <td class="currency">$420</td>
+                <td class="people-count">69</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$4,726</td>
+                <td class="currency">$399</td>
+                <td class="people-count">37</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$15,566</td>
+                <td class="currency">$3,037</td>
+                <td class="people-count">150</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$204,202</td>
+                <td class="currency">$16,896</td>
+                <td class="people-count">409</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - MONY LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$184,188</td>
+                <td class="currency">$18,504</td>
+                <td class="people-count">260</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - MONY LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$132,414</td>
+                <td class="currency">$13,156</td>
+                <td class="people-count">238</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$2,081,106</td>
+                <td class="currency">$0</td>
+                <td class="people-count">383</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,859,991</td>
+                <td class="currency">$0</td>
+                <td class="people-count">349</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,589,049</td>
+                <td class="currency">$0</td>
+                <td class="people-count">372</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$2,324,112</td>
+                <td class="currency">$0</td>
+                <td class="people-count">242</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,639,792</td>
+                <td class="currency">$0</td>
+                <td class="people-count">368</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$25,896</td>
+                <td class="currency">$1,283</td>
+                <td class="people-count">160</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$28,994</td>
+                <td class="currency">$1,375</td>
+                <td class="people-count">193</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-22')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-22"></div>
+                    Revision Skincare
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$2,567,719</td>
+            <td class="currency total">$76,284</td>
+            <td class="people-count">1,206</td>
+        </tr>
+        <tbody id="details-company-22" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - MINNESOTA LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">222</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D, CRITICAL ILLNESS, ACCIDENT, HOSPITAL - UNITED HEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$92,732</td>
+                <td class="currency">$10,581</td>
+                <td class="people-count">152</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITED HEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$813,039</td>
+                <td class="currency">$7,844</td>
+                <td class="people-count">380</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D, HOSPITAL, ACCIDENT, CRITICAL ILLNESS - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$150,274</td>
+                <td class="currency">$40,031</td>
+                <td class="people-count">161</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$1,511,674</td>
+                <td class="currency">$17,828</td>
+                <td class="people-count">291</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    Rootstock Software
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-24')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-24"></div>
+                    Shermco Industries
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$1,293,790</td>
+            <td class="currency total">$26,796</td>
+            <td class="people-count">3,480</td>
+        </tr>
+        <tbody id="details-company-24" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$913,860</td>
+                <td class="currency">$0</td>
+                <td class="people-count">896</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">LEGAL - METLIFE LEGAL PLANS, INC.</td>
+                <td>2023</td>
+                <td class="currency">$70,403</td>
+                <td class="currency">$0</td>
+                <td class="people-count">260</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">EMPLOYEE ASSISTANCE PROGRAM - UNITED BEHAVIORAL HEALTH DBA OPTUM</td>
+                <td>2023</td>
+                <td class="currency">$19,241</td>
+                <td class="currency">$0</td>
+                <td class="people-count">945</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT, CRITICAL ILLNESS, HOSPITAL - UNITEDHEALTHCARE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$180,465</td>
+                <td class="currency">$26,796</td>
+                <td class="people-count">623</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - VISION SERVICE PLAN</td>
+                <td>2023</td>
+                <td class="currency">$109,821</td>
+                <td class="currency">$0</td>
+                <td class="people-count">756</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-25')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-25"></div>
+                    Spindrift
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$2,960</td>
+            <td class="people-count">185</td>
+        </tr>
+        <tbody id="details-company-25" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM - STANDARD INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$2,960</td>
+                <td class="people-count">185</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-26')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-26"></div>
+                    Techmer
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$3,871,484</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">1,384</td>
+        </tr>
+        <tbody id="details-company-26" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - BLUE CROSS BLUE SHIELD OF TENNESSEE</td>
+                <td>2023</td>
+                <td class="currency">$2,841,912</td>
+                <td class="currency">$0</td>
+                <td class="people-count">353</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - KAISER FOUNDATION HEALTH PLAN INC</td>
+                <td>2023</td>
+                <td class="currency">$526,804</td>
+                <td class="currency">$0</td>
+                <td class="people-count">86</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">146</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - LINCOLN NATIONAL LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$0</td>
+                <td class="currency">$0</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - PRUDENTIAL INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$466,035</td>
+                <td class="currency">$0</td>
+                <td class="people-count">457</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - STARMOUNT LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$36,733</td>
+                <td class="currency">$0</td>
+                <td class="people-count">342</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-27')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-27"></div>
+                    Transportation Insight
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$2,341,069</td>
+            <td class="currency total">$49,935</td>
+            <td class="people-count">4,627</td>
+        </tr>
+        <tbody id="details-company-27" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$948,073</td>
+                <td class="currency">$0</td>
+                <td class="people-count">2,135</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENT, CRITICAL ILLNESS, HOSPITAL - RELIASTAR LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$247,116</td>
+                <td class="currency">$49,935</td>
+                <td class="people-count">769</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$1,145,880</td>
+                <td class="currency">$0</td>
+                <td class="people-count">1,723</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-28')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-28"></div>
+                    Trinity Consultants
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$887,799</td>
+            <td class="currency total">$79,300</td>
+            <td class="people-count">3,531</td>
+        </tr>
+        <tbody id="details-company-28" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$554,148</td>
+                <td class="currency">$48,464</td>
+                <td class="people-count">1,347</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">NEW YORK STATE'S DISABILITY BENEFIT - UNUM LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$35,399</td>
+                <td class="currency">$2,221</td>
+                <td class="people-count">106</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">PAID FAMILY LEAVE - UNUM LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$12,102</td>
+                <td class="currency">$0</td>
+                <td class="people-count">0</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$12,151</td>
+                <td class="currency">$1,215</td>
+                <td class="people-count">32</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">AD&D - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$177,742</td>
+                <td class="currency">$17,774</td>
+                <td class="people-count">1,022</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - UNUM LIFE INSURANCE COMPANY OF AMERICA</td>
+                <td>2023</td>
+                <td class="currency">$96,257</td>
+                <td class="currency">$9,626</td>
+                <td class="people-count">1,024</td>
+            </tr>
+        </tbody>
+        <tr class="company-row" >
+            <td>
+                <div class="company-name">
+                    
+                    Vessco
+                </div>
+            </td>
+            <td><span class="no-data-badge">No Data</span></td>
+            <td class="currency total">$0</td>
+            <td class="currency total">$0</td>
+            <td class="people-count">0</td>
+        </tr>
+        <tr class="company-row" onclick="toggleCompanyDetails('company-30')">
+            <td>
+                <div class="company-name">
+                    <div class="expand-arrow" id="arrow-company-30"></div>
+                    Vision Innovation Partners
+                </div>
+            </td>
+            <td><span class="year-badge">2023</span></td>
+            <td class="currency total">$678,301</td>
+            <td class="currency total">$46,571</td>
+            <td class="people-count">2,108</td>
+        </tr>
+        <tbody id="details-company-30" class="detail-rows">
+            <tr class="detail-row">
+                <td class="plan-name">Standard Benefits - EYEMED VISION CARE ON BEHALF OF FIDELITY SECURITY LIFE INSURANCE CO.</td>
+                <td>2023</td>
+                <td class="currency">$53,239</td>
+                <td class="currency">$4,064</td>
+                <td class="people-count">559</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="plan-name">ACCIDENTAL DEATH AND DISMEMBERMENT - METROPOLITAN LIFE INSURANCE COMPANY</td>
+                <td>2023</td>
+                <td class="currency">$625,062</td>
+                <td class="currency">$42,507</td>
+                <td class="people-count">1,549</td>
+            </tr>
+        </tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleCompanyDetails(companyId) {
+            const detailsElement = document.getElementById('details-' + companyId);
+            const arrowElement = document.getElementById('arrow-' + companyId);
+            const companyRow = arrowElement.closest('.company-row');
+            
+            if (detailsElement.classList.contains('expanded')) {
+                // Collapse
+                detailsElement.classList.remove('expanded');
+                arrowElement.classList.remove('expanded');
+                companyRow.classList.remove('expanded');
+            } else {
+                // Expand
+                detailsElement.classList.add('expanded');
+                arrowElement.classList.add('expanded');
+                companyRow.classList.add('expanded');
+            }
+        }
+    </script>
+</body>
+</html>

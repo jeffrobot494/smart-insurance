@@ -1,0 +1,143 @@
+{
+  "firm_name": "Nexphase",
+  "timestamp": "2025-07-21T22:01:33.035Z",
+  "summary": {
+    "total_companies": 5,
+    "companies_with_data": 5,
+    "most_recent_year": "2023"
+  },
+  "companies": [
+    {
+      "company_name": "Behavior Frontiers",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 3310765,
+      "total_brokerage_fees": 171622,
+      "total_people_covered": 944,
+      "total_participants": 1572,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS OF CALIFORNIA",
+          "premiums": 3301468,
+          "brokerage_fees": 171622,
+          "people_covered": 509
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH & DISMEMBERMENT",
+          "carrier_name": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+          "premiums": 9297,
+          "brokerage_fees": 0,
+          "people_covered": 435
+        }
+      ]
+    },
+    {
+      "company_name": "Calcium",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 8431,
+      "total_brokerage_fees": 843,
+      "total_people_covered": 107,
+      "total_participants": 325,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "TRANSAMERICA LIFE INSURANCE COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 0
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+          "premiums": 8431,
+          "brokerage_fees": 843,
+          "people_covered": 107
+        }
+      ]
+    },
+    {
+      "company_name": "Meduit",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 1861,
+      "total_participants": 1439,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 1861
+        }
+      ]
+    },
+    {
+      "company_name": "Metz Culinary Management",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 579634,
+      "total_brokerage_fees": 39805,
+      "total_people_covered": 4719,
+      "total_participants": 11007,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+          "premiums": 76640,
+          "brokerage_fees": 11339,
+          "people_covered": 157
+        },
+        {
+          "benefit_type": "CRITICAL ILLNESS AND ACCIDENT",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 83435,
+          "brokerage_fees": 16632,
+          "people_covered": 282
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 419559,
+          "brokerage_fees": 11834,
+          "people_covered": 4280
+        }
+      ]
+    },
+    {
+      "company_name": "Selerix",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1493854,
+      "total_brokerage_fees": 71648,
+      "total_people_covered": 480,
+      "total_participants": 241,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUECROSS BLUESHIELD OF TEXAS",
+          "premiums": 1328472,
+          "brokerage_fees": 51956,
+          "people_covered": 238
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "DEARBORN LIFE INSURANCE COMPANY",
+          "premiums": 133314,
+          "brokerage_fees": 16155,
+          "people_covered": 122
+        },
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+          "carrier_name": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 32068,
+          "brokerage_fees": 3537,
+          "people_covered": 120
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "firm_name": "Adc",
+  "timestamp": "2025-07-21T21:56:28.169Z",
+  "summary": {
+    "total_companies": 6,
+    "companies_with_data": 5,
+    "most_recent_year": "2023"
+  },
+  "companies": [
+    {
+      "company_name": "American Pain Consortium",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1629578,
+      "total_brokerage_fees": 67157,
+      "total_people_covered": 571,
+      "total_participants": 430,
+      "plans": [
+        {
+          "benefit_type": "TELEHEALTH",
+          "carrier_name": "ANTHEM INSURANCE COMPANIES, INC.",
+          "premiums": 1540766,
+          "brokerage_fees": 48788,
+          "people_covered": 226
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "JOHN HANCOCK LIFE INSURANCE COMPANY (U.S.A.)",
+          "premiums": 0,
+          "brokerage_fees": 0,
+          "people_covered": 158
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM,ACCIDENT,CRITICAL ILLNESS,HOSPITAL",
+          "carrier_name": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+          "premiums": 88812,
+          "brokerage_fees": 18369,
+          "people_covered": 187
+        }
+      ]
+    },
+    {
+      "company_name": "Entertainment Partners",
+      "data_year": "2023",
+      "has_data": false,
+      "total_premiums": 0,
+      "total_brokerage_fees": 0,
+      "total_people_covered": 0,
+      "total_participants": 12,
+      "plans": []
+    },
+    {
+      "company_name": "GreenSlate",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 6026762,
+      "total_brokerage_fees": 28085,
+      "total_people_covered": 1261,
+      "total_participants": 1877,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "CIGNA HEALTH AND LIFE COMPANY AND AFFILIATES",
+          "premiums": 117839,
+          "brokerage_fees": 5025,
+          "people_covered": 149
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+          "premiums": 5575202,
+          "brokerage_fees": 0,
+          "people_covered": 536
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "METROPOLITAN LIFE INSURANCE COMPANY",
+          "premiums": 280626,
+          "brokerage_fees": 16203,
+          "people_covered": 394
+        },
+        {
+          "benefit_type": "AD&D",
+          "carrier_name": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 53095,
+          "brokerage_fees": 6857,
+          "people_covered": 182
+        }
+      ]
+    },
+    {
+      "company_name": "Majestic Realty",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 5980360,
+      "total_brokerage_fees": 282562,
+      "total_people_covered": 554,
+      "total_participants": 549,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS OF CALIFORNIA",
+          "premiums": 5845039,
+          "brokerage_fees": 260303,
+          "people_covered": 298
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH & DISMEMBERMENT",
+          "carrier_name": "GUARDIAN",
+          "premiums": 135321,
+          "brokerage_fees": 22259,
+          "people_covered": 256
+        }
+      ]
+    },
+    {
+      "company_name": "Medix",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 1776667,
+      "total_brokerage_fees": 119014,
+      "total_people_covered": 389,
+      "total_participants": 2961,
+      "plans": [
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "BLUE CROSS OF CALIFORNIA",
+          "premiums": 1259006,
+          "brokerage_fees": 79202,
+          "people_covered": 138
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "KAISER FOUNDATION HEALTH PLAN INC.",
+          "premiums": 304296,
+          "brokerage_fees": 13930,
+          "people_covered": 50
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT AND EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+          "premiums": 213365,
+          "brokerage_fees": 25882,
+          "people_covered": 201
+        }
+      ]
+    },
+    {
+      "company_name": "The Intersect Group",
+      "data_year": "2023",
+      "has_data": true,
+      "total_premiums": 448326,
+      "total_brokerage_fees": 61421,
+      "total_people_covered": 1704,
+      "total_participants": 2244,
+      "plans": [
+        {
+          "benefit_type": "ACCIDENT, CRITICAL ILLNESS",
+          "carrier_name": "BLUE CROSS BLUE SHIELD HEALTHCARE PLAN OF GEORGIA, INC.",
+          "premiums": 196529,
+          "brokerage_fees": 31292,
+          "people_covered": 414
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+          "premiums": 34206,
+          "brokerage_fees": 5815,
+          "people_covered": 258
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+          "premiums": 27834,
+          "brokerage_fees": 4732,
+          "people_covered": 258
+        },
+        {
+          "benefit_type": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+          "carrier_name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+          "premiums": 5965,
+          "brokerage_fees": 1014,
+          "people_covered": 258
+        },
+        {
+          "benefit_type": "EMPLOYEE ASSISTANCE PROGRAM",
+          "carrier_name": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+          "premiums": 8299,
+          "brokerage_fees": 1411,
+          "people_covered": 244
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "RELIANCE STANDARD LIFE INSURANCE COMPANY",
+          "premiums": 38472,
+          "brokerage_fees": 0,
+          "people_covered": 127
+        },
+        {
+          "benefit_type": "Standard Benefits",
+          "carrier_name": "RENAISSANCE LIFE & HEALTH INSURANCE COMPANY OF AMERICA",
+          "premiums": 137021,
+          "brokerage_fees": 17157,
+          "people_covered": 145
+        }
+      ]
+    }
+  ]
+}
