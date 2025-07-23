@@ -50,7 +50,7 @@ class SavedReportsManager {
         row.innerHTML = `
             <td>${report.firmName}</td>
             <td>
-                <button class="download-btn" data-report-id="${report.id}" data-firm-name="${report.firmName}">Download</button>
+                <button class="download-btn" data-workflow-execution-id="${report.id}" data-firm-name="${report.firmName}">Download</button>
                 <button class="delete-btn" data-report-id="${report.id}" data-firm-name="${report.firmName}">Delete</button>
             </td>
         `;
@@ -76,15 +76,15 @@ class SavedReportsManager {
 
     handleDownloadClick(event) {
         console.log('SavedReportsManager.handleDownloadClick() - TODO: Fire downloadRequested event to UIManager -> WorkflowManager');
-        const reportId = event.target.getAttribute('data-report-id');
+        const workflowExecutionId = event.target.getAttribute('data-workflow-execution-id');
         const firmName = event.target.getAttribute('data-firm-name');
         
-        console.log(`SavedReportsManager: Download clicked for saved report ${firmName} (ID: ${reportId})`);
+        console.log(`SavedReportsManager: Download clicked for saved report ${firmName} (Workflow ID: ${workflowExecutionId})`);
         
         // Fire download event - reuse existing downloadRequested event
         document.dispatchEvent(new CustomEvent('downloadRequested', {
             detail: { 
-                firmId: parseInt(reportId), 
+                workflowExecutionId: parseInt(workflowExecutionId), 
                 firmName,
                 format: 'pdf',
                 isFromSaved: true

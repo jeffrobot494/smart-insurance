@@ -77,22 +77,22 @@ class UIManager {
 
     handleWorkflowProgress(eventDetail) {
         console.log('UIManager handling workflow progress:', eventDetail);
-        const { firmIndex, messages } = eventDetail;
+        const { workflowExecutionId, messages } = eventDetail;
         
         // Get the latest message to show as progress
         if (messages && messages.length > 0) {
             const latestMessage = messages[messages.length - 1];
-            this.updateProgress(firmIndex, latestMessage.message);
+            this.updateProgress(workflowExecutionId, latestMessage.message);
         }
     }
 
     handleWorkflowComplete(eventDetail) {
         console.log('UIManager handling workflow complete:', eventDetail);
-        const { firmIndex } = eventDetail;
+        const { workflowExecutionId } = eventDetail;
         
         // Mark firm as completed in UI
-        this.updateStatus(firmIndex, 'Completed', 'status-complete');
-        this.showDownloadButton(firmIndex);
+        this.updateStatus(workflowExecutionId, 'Completed', 'status-complete');
+        this.showDownloadButton(workflowExecutionId);
     }
 
     initializeElements() {
@@ -122,16 +122,21 @@ class UIManager {
         this.tableManager.displayProgressTable(firms);
     }
 
-    updateProgress(firmId, progress) {
-        this.tableManager.updateProgress(firmId, progress);
+    updateProgress(workflowExecutionId, progress) {
+        this.tableManager.updateProgress(workflowExecutionId, progress);
     }
 
-    updateStatus(firmId, status, statusClass) {
-        this.tableManager.updateStatus(firmId, status, statusClass);
+    updateStatus(workflowExecutionId, status, statusClass) {
+        this.tableManager.updateStatus(workflowExecutionId, status, statusClass);
     }
 
-    showDownloadButton(firmId) {
-        this.tableManager.showDownloadButton(firmId);
+    showDownloadButton(workflowExecutionId) {
+        this.tableManager.showDownloadButton(workflowExecutionId);
+    }
+
+    updateTableWithWorkflowIds(firmNames, workflowExecutionIds) {
+        console.log('UIManager updating table with workflow execution IDs:', workflowExecutionIds);
+        this.tableManager.createTable(firmNames, workflowExecutionIds);
     }
 
     displaySavedResults(results) {

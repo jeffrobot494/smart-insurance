@@ -104,7 +104,6 @@ class APIClient {
                     document.dispatchEvent(new CustomEvent('workflowComplete', {
                         detail: { 
                             workflowExecutionId,
-                            firmIndex: this.currentPollingIndex,
                             messages: result.messages
                         }
                     }));
@@ -116,7 +115,6 @@ class APIClient {
                     document.dispatchEvent(new CustomEvent('workflowProgress', {
                         detail: { 
                             workflowExecutionId,
-                            firmIndex: this.currentPollingIndex,
                             messages: result.messages
                         }
                     }));
@@ -161,16 +159,10 @@ class APIClient {
         return { success: true, data: {} };
     }
 
-    async downloadResults(firmId, firmName, format = 'json') {
-        console.log(`APIClient.downloadResults() - Downloading results for firm ${firmName} (ID: ${firmId}), format: ${format}`);
+    async downloadResults(workflowExecutionId, firmName, format = 'json') {
+        console.log(`APIClient.downloadResults() - Downloading results for firm ${firmName} (Workflow ID: ${workflowExecutionId}), format: ${format}`);
         
         try {
-            // Map firmId to workflowExecutionId
-            if (firmId >= this.workflowExecutionIds.length) {
-                throw new Error(`Invalid firm ID: ${firmId}`);
-            }
-            
-            const workflowExecutionId = this.workflowExecutionIds[firmId];
             console.log(`Fetching results for workflow execution ID: ${workflowExecutionId}`);
             
             const response = await fetch(`${this.baseURL}/api/workflow/${workflowExecutionId}/results`);
@@ -203,8 +195,8 @@ class APIClient {
         }
     }
 
-    async deleteResults(firmId) {
-        console.log('APIClient.deleteResults() - TODO: Implement results deletion');
+    async deleteResults(workflowExecutionId) {
+        console.log('APIClient.deleteResults() - TODO: Implement results deletion for workflow ID:', workflowExecutionId);
         return { success: true };
     }
 

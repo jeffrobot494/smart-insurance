@@ -57,10 +57,10 @@ class WorkflowManager {
     
     async handleDownloadRequested(event) {
         console.log('WorkflowManager received download request:', event.detail);
-        const { firmId, firmName, format = 'json' } = event.detail;
+        const { workflowExecutionId, firmName, format = 'json' } = event.detail;
         
         try {
-            await this.apiClient.downloadResults(firmId, firmName, format);
+            await this.apiClient.downloadResults(workflowExecutionId, firmName, format);
         } catch (error) {
             console.error('Download failed:', error);
         }
@@ -108,6 +108,11 @@ class WorkflowManager {
             if (result.success) {
                 console.log('Workflow started successfully:', result);
                 
+                // Update UI table with actual workflowExecutionIds
+                if (result.workflowExecutionIds && result.workflowExecutionIds.length > 0) {
+                    this.uiManager.updateTableWithWorkflowIds(this.firms, result.workflowExecutionIds);
+                }
+                
                 // Start sequential polling now that we have workflowExecutionIds
                 this.apiClient.startSequentialPolling();
             } else {
@@ -132,12 +137,8 @@ class WorkflowManager {
         console.log('WorkflowManager.handlePollingResponse() - TODO: Process polling response');
     }
 
-    async downloadResults(firmId) {
-        console.log('WorkflowManager.downloadResults() - TODO: Implement results download');
-    }
-
-    async deleteResults(firmId) {
-        console.log('WorkflowManager.deleteResults() - TODO: Implement results deletion');
+    async deleteResults(workflowExecutionId) {
+        console.log('WorkflowManager.deleteResults() - TODO: Implement results deletion for workflow ID:', workflowExecutionId);
     }
 
     async handleLoadSavedReportsRequested(event) {
@@ -150,7 +151,7 @@ class WorkflowManager {
         const { reportId, firmName } = event.detail;
         
         try {
-            await this.deleteResults(reportId);
+            await this.deleteResults(reportId); // reportId is actually the workflowExecutionId from the database
             
             // Fire event to notify SavedReportsManager to remove the row
             document.dispatchEvent(new CustomEvent('reportDeleted', {

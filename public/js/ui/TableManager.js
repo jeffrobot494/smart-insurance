@@ -5,11 +5,12 @@ class TableManager {
         this.firms = [];
     }
 
-    createTable(firmNames) {
+    createTable(firmNames, workflowExecutionIds = []) {
         this.clearTable();
         
         this.firms = firmNames.map((name, index) => ({
-            id: index,
+            id: workflowExecutionIds[index] || index, // Use workflowExecutionId if available, fallback to index
+            workflowExecutionId: workflowExecutionIds[index] || index,
             name: name,
             progress: '',
             status: 'Waiting'
@@ -26,11 +27,11 @@ class TableManager {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${firmData.name}</td>
-            <td class="progress-text" id="progress-${firmData.id}">${firmData.progress}</td>
+            <td class="progress-text" id="progress-${firmData.workflowExecutionId}">${firmData.progress}</td>
             <td>
-                <span class="status-waiting" id="status-${firmData.id}">${firmData.status}</span>
-                <div id="download-${firmData.id}" style="display: none;">
-                    <button class="download-pdf-btn" data-firm-id="${firmData.id}" data-firm-name="${firmData.name}">Download PDF</button>
+                <span class="status-waiting" id="status-${firmData.workflowExecutionId}">${firmData.status}</span>
+                <div id="download-${firmData.workflowExecutionId}" style="display: none;">
+                    <button class="download-pdf-btn" data-workflow-execution-id="${firmData.workflowExecutionId}" data-firm-name="${firmData.name}">Download PDF</button>
                 </div>
             </td>
         `;
@@ -46,15 +47,15 @@ class TableManager {
     }
 
     handleDownloadClick(event, format = 'json') {
-        const firmId = event.target.getAttribute('data-firm-id');
+        const workflowExecutionId = event.target.getAttribute('data-workflow-execution-id');
         const firmName = event.target.getAttribute('data-firm-name');
         
-        console.log(`TableManager: ${format.toUpperCase()} download clicked for firm ${firmName} (ID: ${firmId})`);
+        console.log(`TableManager: ${format.toUpperCase()} download clicked for firm ${firmName} (Workflow ID: ${workflowExecutionId})`);
         
         // Fire download event with format
         document.dispatchEvent(new CustomEvent('downloadRequested', {
             detail: { 
-                firmId: parseInt(firmId), 
+                workflowExecutionId: parseInt(workflowExecutionId), 
                 firmName,
                 format
             }
@@ -94,22 +95,22 @@ class TableManager {
         // Implement saved results table display
     }
 
-    showDownloadButton(firmId) {
-        const downloadDiv = document.getElementById(`download-${firmId}`);
+    showDownloadButton(workflowExecutionId) {
+        const downloadDiv = document.getElementById(`download-${workflowExecutionId}`);
         if (downloadDiv) {
             downloadDiv.style.display = 'block';
         }
     }
 
-    updateProgress(firmId, progressText) {
-        const progressElement = document.getElementById(`progress-${firmId}`);
+    updateProgress(workflowExecutionId, progressText) {
+        const progressElement = document.getElementById(`progress-${workflowExecutionId}`);
         if (progressElement) {
             progressElement.textContent = progressText;
         }
     }
 
-    updateStatus(firmId, statusText, statusClass) {
-        const statusElement = document.getElementById(`status-${firmId}`);
+    updateStatus(workflowExecutionId, statusText, statusClass) {
+        const statusElement = document.getElementById(`status-${workflowExecutionId}`);
         if (statusElement) {
             statusElement.textContent = statusText;
             statusElement.className = statusClass;
