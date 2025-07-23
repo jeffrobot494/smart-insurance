@@ -28,6 +28,14 @@ class WorkflowManager {
         document.addEventListener('gotJSONResults', (event) => {
             this.handleGotJSONResults(event);
         });
+        
+        document.addEventListener('loadSavedReportsRequested', (event) => {
+            this.handleLoadSavedReportsRequested(event);
+        });
+        
+        document.addEventListener('workflowDeleteRequested', (event) => {
+            this.handleWorkflowDeleteRequested(event);
+        });
     }
 
     handleWorkflowStartRequested(event) {
@@ -132,8 +140,43 @@ class WorkflowManager {
         console.log('WorkflowManager.deleteResults() - TODO: Implement results deletion');
     }
 
+    async handleLoadSavedReportsRequested(event) {
+        console.log('WorkflowManager.handleLoadSavedReportsRequested() - TODO: Load saved reports from API');
+        await this.loadSavedResults();
+    }
+
+    async handleWorkflowDeleteRequested(event) {
+        console.log('WorkflowManager.handleWorkflowDeleteRequested() - TODO: Delete report via API');
+        const { reportId, firmName } = event.detail;
+        
+        try {
+            await this.deleteResults(reportId);
+            
+            // Fire event to notify SavedReportsManager to remove the row
+            document.dispatchEvent(new CustomEvent('reportDeleted', {
+                detail: { reportId, firmName }
+            }));
+        } catch (error) {
+            console.error('Failed to delete report:', error);
+        }
+    }
+
     async loadSavedResults() {
-        console.log('WorkflowManager.loadSavedResults() - TODO: Load and display saved results');
+        console.log('WorkflowManager.loadSavedResults() - Loading saved workflow results from API');
+        try {
+            const response = await this.apiClient.getAllResults();
+            
+            if (response.success) {
+                console.log('Saved reports loaded successfully:', response.results);
+                
+                // Call UIManager to handle saved reports loaded
+                this.uiManager.handleSavedReportsLoaded(response.results);
+            } else {
+                console.error('Failed to load saved reports:', response.error);
+            }
+        } catch (error) {
+            console.error('Failed to load saved reports:', error);
+        }
     }
 
     parseCsvFile(content) {

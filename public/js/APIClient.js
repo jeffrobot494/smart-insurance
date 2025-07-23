@@ -209,7 +209,23 @@ class APIClient {
     }
 
     async getAllResults() {
-        console.log('APIClient.getAllResults() - TODO: Implement all results fetching');
-        return { success: true, results: [] };
+        console.log('APIClient.getAllResults() - Fetching all saved workflow results');
+        
+        try {
+            const response = await fetch(`${this.baseURL}/api/workflow/results`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('All saved results fetched successfully:', data);
+                return data;
+            } else {
+                const error = await response.json();
+                console.error('Failed to fetch all results:', error);
+                return { success: false, error: error.error || 'Failed to fetch results' };
+            }
+        } catch (error) {
+            console.error('Network error fetching all results:', error);
+            return { success: false, error: error.message };
+        }
     }
 }

@@ -49,10 +49,10 @@ class Manager {
       const inputArray = Array.isArray(userInputs.input) ? userInputs.input : [userInputs.input];
       const workflowData = readWorkflow(workflowFilename);
       
-      // Pre-generate workflow execution IDs
+      // Pre-generate workflow execution IDs with firm names
       const workflowExecutionIds = await this.databaseManager.createBatchWorkflowExecutions(
         workflowData.workflow.name, 
-        inputArray.length
+        inputArray
       );
       
       console.log(`🆔 Pre-generated ${workflowExecutionIds.length} workflow execution IDs for immediate polling`);
@@ -232,6 +232,29 @@ class Manager {
       throw error;
     }
   }
+
+  /**
+   * Get all saved workflow results
+   * @returns {Array} Array of saved workflow results
+   */
+  async getAllSavedResults() {
+    try {
+      console.log('📋 [MANAGER] Getting all saved workflow results');
+      
+      // Initialize database if needed
+      if (!this.databaseManager.initialized) {
+        await this.databaseManager.initialize();
+      }
+      
+      const results = await this.databaseManager.getAllWorkflowResults();
+      console.log(`📋 [MANAGER] Found ${results.length} saved workflow results`);
+      
+      return results;
+    } catch (error) {
+      console.error('❌ Failed to get all saved results:', error.message);
+      throw error;
+    }
+  }
 }
 
 // Create a singleton instance
@@ -243,8 +266,9 @@ const run2 = () => manager.run2();
 const runBoth = (workflowFilename = null, userInputs = {}) => manager.runBoth(workflowFilename, userInputs);
 const extractPortfolioCompanyData = (workflowExecutionId) => manager.extractPortfolioCompanyData(workflowExecutionId);
 const initializeWorkflows = (workflowFilename, userInputs) => manager.initializeWorkflows(workflowFilename, userInputs);
+const getAllSavedResults = () => manager.getAllSavedResults();
 
-module.exports = { run, run2, runBoth, extractPortfolioCompanyData, initializeWorkflows, Manager };
+module.exports = { run, run2, runBoth, extractPortfolioCompanyData, initializeWorkflows, getAllSavedResults, Manager };
 
 // If called directly from command line, run with no user inputs
 if (require.main === module) {

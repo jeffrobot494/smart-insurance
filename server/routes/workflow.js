@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { run, run2, extractPortfolioCompanyData, initializeWorkflows } = require('../Manager');
+const { run, run2, extractPortfolioCompanyData, initializeWorkflows, getAllSavedResults } = require('../Manager');
 
 // POST /api/workflow
 router.post('/', async (req, res) => {
@@ -108,6 +108,28 @@ router.get('/extract5500/:workflowExecutionId', async (req, res) => {
 
   } catch (error) {
     console.error('Portfolio company data extraction startup error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// GET /api/workflow/results - Get all saved workflow results
+router.get('/results', async (req, res) => {
+  try {
+    console.log('📋 [RESULTS_ENDPOINT] Getting all saved workflow results');
+    
+    const results = await getAllSavedResults();
+    
+    console.log('📋 [RESULTS_ENDPOINT] Returning', results.length, 'saved results');
+    res.status(200).json({
+      success: true,
+      results: results
+    });
+    
+  } catch (error) {
+    console.error('❌ All results endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message

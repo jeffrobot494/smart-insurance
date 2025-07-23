@@ -165,9 +165,10 @@ class DatabaseManager {
   /**
    * Create a workflow execution record in the database
    * @param {string} workflowName - Name of the workflow
+   * @param {string} firmName - Name of the firm (optional)
    * @returns {number} The workflow execution ID
    */
-  async createWorkflowExecution(workflowName) {
+  async createWorkflowExecution(workflowName, firmName = null) {
     try {
       // Initialize database connection if not already done
       if (!this.pool) {
@@ -175,8 +176,8 @@ class DatabaseManager {
       }
       
       const result = await this.query(
-        'INSERT INTO workflow_executions (workflow_name, status) VALUES ($1, $2) RETURNING id',
-        [workflowName, 'running']
+        'INSERT INTO workflow_executions (workflow_name, firm_name, status) VALUES ($1, $2, $3) RETURNING id',
+        [workflowName, firmName, 'running']
       );
       
       return result.rows[0].id;
@@ -190,10 +191,10 @@ class DatabaseManager {
   /**
    * Create multiple workflow execution records at once
    * @param {string} workflowName - Name of the workflow
-   * @param {number} inputCount - Number of workflow executions to create
+   * @param {Array} firmNames - Array of firm names
    * @returns {number[]} Array of workflow execution IDs
    */
-  async createBatchWorkflowExecutions(workflowName, inputCount) {
+  async createBatchWorkflowExecutions(workflowName, firmNames) {
     try {
       // Initialize database connection if not already done
       if (!this.pool) {
@@ -202,15 +203,16 @@ class DatabaseManager {
       
       const workflowExecutionIds = [];
       
-      for (let i = 0; i < inputCount; i++) {
+      for (let i = 0; i < firmNames.length; i++) {
+        const firmName = firmNames[i];
         const result = await this.query(
-          'INSERT INTO workflow_executions (workflow_name, status) VALUES ($1, $2) RETURNING id',
-          [workflowName, 'initialized']
+          'INSERT INTO workflow_executions (workflow_name, firm_name, status) VALUES ($1, $2, $3) RETURNING id',
+          [workflowName, firmName, 'initialized']
         );
         workflowExecutionIds.push(result.rows[0].id);
       }
       
-      console.log(`✅ Created ${inputCount} workflow execution records with IDs:`, workflowExecutionIds);
+      console.log(`✅ Created ${firmNames.length} workflow execution records with IDs:`, workflowExecutionIds);
       return workflowExecutionIds;
     } catch (error) {
       console.error('❌ Failed to create batch workflow execution records:', error.message);
@@ -351,6 +353,35 @@ class DatabaseManager {
       };
     } catch (error) {
       console.error('❌ Failed to get workflow results:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get all completed workflow execution results
+   * @returns {Array} Array of workflow execution records
+   */
+  async getAllWorkflowResults() {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'SELECT id, workflow_name, firm_name, status, created_at, completed_at FROM workflow_executions WHERE status = $1 ORDER BY completed_at DESC',
+        ['completed']
+      );
+      
+      return result.rows.map(row => ({
+        id: row.id,
+        firmName: row.firm_name || row.workflow_name, // Use firm_name if available, fallback to workflow_name
+        status: row.status,
+        createdAt: row.created_at,
+        completedAt: row.completed_at
+      }));
+    } catch (error) {
+      console.error('❌ Failed to get all workflow results:', error.message);
       throw error;
     }
   }

@@ -20,6 +20,7 @@ class UIManager {
         this.tableManager = new TableManager(this.elements.tableBody, this.elements.tableSection);
         this.fileUploadManager = new FileUploadManager(this.elements.csvFile, this.elements.uploadBtn);
         this.notificationManager = new NotificationManager();
+        this.savedReportsManager = new SavedReportsManager(this.elements.savedTableBody);
         
         this.setupEventHandlers();
     }
@@ -35,6 +36,14 @@ class UIManager {
         
         document.addEventListener('startButtonClicked', (event) => {
             this.handleStartButtonClicked(event);
+        });
+        
+        document.addEventListener('savedReportsRequested', (event) => {
+            this.handleSavedReportsRequested(event);
+        });
+        
+        document.addEventListener('deleteRequested', (event) => {
+            this.handleDeleteRequested(event);
         });
     }
 
@@ -143,5 +152,26 @@ class UIManager {
 
     getStatusClass(status) {
         return this.tableManager.getStatusClass(status);
+    }
+
+    handleSavedReportsRequested(event) {
+        console.log('UIManager handling saved reports request');
+        
+        // Forward to WorkflowManager to load saved reports from API
+        document.dispatchEvent(new CustomEvent('loadSavedReportsRequested'));
+    }
+
+    handleDeleteRequested(event) {
+        console.log('UIManager handling delete request:', event.detail);
+        
+        // Forward to WorkflowManager to handle deletion
+        document.dispatchEvent(new CustomEvent('workflowDeleteRequested', {
+            detail: event.detail
+        }));
+    }
+
+    handleSavedReportsLoaded(reports) {
+        console.log('UIManager handling saved reports loaded:', reports);
+        this.savedReportsManager.handleSavedReportsLoaded(reports);
     }
 }
