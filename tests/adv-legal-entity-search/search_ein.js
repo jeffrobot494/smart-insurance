@@ -3,22 +3,32 @@
 const fs = require('fs');
 const path = require('path');
 
-// Get company name from command line arguments
-const companyName = process.argv[2];
+// Get EIN from command line arguments
+const ein = process.argv[2];
 
-if (!companyName) {
-    console.error('Usage: node search_company.js "Company Name"');
+if (!ein) {
+    console.error('Usage: node search_ein.js "EIN_NUMBER"');
+    console.error('Example: node search_ein.js "231352636"');
+    process.exit(1);
+}
+
+// Remove any non-digit characters from EIN for consistent matching
+const cleanEIN = ein.replace(/\D/g, '');
+
+if (cleanEIN.length !== 9) {
+    console.error('Error: EIN must be 9 digits');
+    console.error('Example: 231352636 or 23-1352636');
     process.exit(1);
 }
 
 // Define datasets to search
 const datasets = [
-    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2022_latest.csv'), year: '2022' },
-    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2023_latest.csv'), year: '2023' },
-    { path: path.join(__dirname, '..', 'server', 'data', 'f_5500_2024_latest.csv'), year: '2024' }
+    { path: path.join(__dirname, '..', 'data', 'F_SCH_A_2022_latest.csv'), year: '2022' },
+    { path: path.join(__dirname, '..', 'data', 'F_SCH_A_2023_latest.csv'), year: '2023' },
+    { path: path.join(__dirname, '..', 'data', 'F_SCH_A_2024_latest.csv'), year: '2024' }
 ];
 
-console.log(`Searching for company: "${companyName}"`);
+console.log(`Searching for EIN: ${cleanEIN}`);
 console.log('='.repeat(50));
 
 let totalFoundRecords = 0;
@@ -34,7 +44,7 @@ for (const dataset of datasets) {
     }
 
     try {
-        const foundRecords = searchDataset(dataset.path, companyName, dataset.year);
+        const foundRecords = searchDataset(dataset.path, cleanEIN, dataset.year);
         totalFoundRecords += foundRecords;
         
         if (foundRecords === 0) {
@@ -51,7 +61,7 @@ console.log('\n' + '='.repeat(50));
 console.log(`🔍 Total records found across all datasets: ${totalFoundRecords}`);
 
 // Function to search a single dataset
-function searchDataset(csvPath, companyName, year) {
+function searchDataset(csvPath, cleanEIN, year) {
     const csvData = fs.readFileSync(csvPath, 'utf8');
     const lines = csvData.split('\n');
     
@@ -60,16 +70,15 @@ function searchDataset(csvPath, companyName, year) {
     }
     
     const headers = lines[0].split(',');
-    const sponsorNameIndex = headers.findIndex(header => 
-        header.replace(/"/g, '') === 'SPONSOR_DFE_NAME'
+    const einIndex = headers.findIndex(header => 
+        header.replace(/"/g, '') === 'SCH_A_EIN'
     );
     
-    if (sponsorNameIndex === -1) {
-        throw new Error('Could not find SPONSOR_DFE_NAME column in CSV');
+    if (einIndex === -1) {
+        throw new Error('Could not find SCH_A_EIN column in CSV');
     }
     
     let foundRecords = 0;
-    const searchLower = companyName.toLowerCase();
     
     // Search through all data rows
     for (let i = 1; i < lines.length; i++) {
@@ -78,10 +87,10 @@ function searchDataset(csvPath, companyName, year) {
         
         const row = parseCSVRow(line);
         
-        if (row.length > sponsorNameIndex) {
-            const sponsorName = row[sponsorNameIndex].replace(/"/g, '');
+        if (row.length > einIndex) {
+            const recordEIN = row[einIndex].replace(/"/g, '').replace(/\D/g, '');
             
-            if (sponsorName.toLowerCase().includes(searchLower)) {
+            if (recordEIN === cleanEIN) {
                 foundRecords++;
                 console.log(`\n--- ${year} Record ${foundRecords} ---`);
                 
