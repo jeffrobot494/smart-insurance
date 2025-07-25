@@ -1,3 +1,4 @@
+const { files: logger } = require('./logger');
 const fs = require('fs');
 const path = require('path');
 
@@ -52,11 +53,11 @@ class OutputFileManager {
       const logMsg = workflowName 
         ? `📁 Found most recent output file for '${workflowName}': ${mostRecentFile}`
         : `📁 Found most recent output file: ${mostRecentFile}`;
-      console.log(logMsg);
+      logger.info(logMsg);
       return fullPath;
 
     } catch (error) {
-      console.error(`❌ Error finding most recent output file: ${error.message}`);
+      logger.error(`❌ Error finding most recent output file: ${error.message}`);
       throw error;
     }
   }
@@ -98,7 +99,7 @@ class OutputFileManager {
         .map(file => path.join(outputDir, file));
 
     } catch (error) {
-      console.error(`❌ Error getting output files: ${error.message}`);
+      logger.error(`❌ Error getting output files: ${error.message}`);
       throw error;
     }
   }

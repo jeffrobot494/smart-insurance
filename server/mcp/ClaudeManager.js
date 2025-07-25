@@ -1,3 +1,4 @@
+const { mcp: logger } = require('../utils/logger');
 const Anthropic = require('@anthropic-ai/sdk');
 
 class ClaudeManager {
@@ -52,7 +53,7 @@ class ClaudeManager {
       }
 
       //DEBUG --
-      console.log("[DEBUG]: Message to Claude: ", message);
+      logger.debug("[DEBUG]: Message to Claude: ", message);
 
       const response = await this.client.messages.create(requestParams);
 

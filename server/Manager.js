@@ -3,6 +3,7 @@ require('./utils/load-env');
 
 const path = require('path');
 const fs = require('fs');
+const { manager: logger } = require('./utils/logger');
 const { readWorkflow } = require('./utils/workflowReader');
 const WorkflowManager = require('./workflow/WorkflowManager');
 const SaveTaskResults = require('./workflow/SaveTaskResults');
@@ -35,7 +36,7 @@ class Manager {
         throw new Error('ToolManager not available. Ensure server is running.');
       }
       this.taskManager = new WorkflowManager(toolManager);
-      console.log('🔧 TaskManager initialized');
+      logger.info('🔧 TaskManager initialized');
     }
   }
 
@@ -55,7 +56,7 @@ class Manager {
         inputArray
       );
       
-      console.log(`🆔 Pre-generated ${workflowExecutionIds.length} workflow execution IDs for immediate polling`);
+      logger.info(`🆔 Pre-generated ${workflowExecutionIds.length} workflow execution IDs for immediate polling`);
       
       return {
         workflowExecutionIds,
@@ -63,7 +64,7 @@ class Manager {
         workflowData
       };
     } catch (error) {
-      console.error('💥 Workflow initialization failed:', error.message);
+      logger.error('💥 Workflow initialization failed:', error.message);
       throw error;
     }
   }
@@ -78,11 +79,11 @@ class Manager {
       const cliParser = new CLIInputParser();
       const filename = workflowFilename || cliParser.getWorkflowFilename();
       
-      console.log(`🚀 Starting workflow execution for: ${filename}`);
+      logger.info(`🚀 Starting workflow execution for: ${filename}`);
       
       // Log user inputs if provided
       if (Object.keys(userInputs).length > 0) {
-        console.log('📥 User inputs provided:', userInputs);
+        logger.info('📥 User inputs provided:', userInputs);
       }
       
       const workflowData = readWorkflow(filename);
@@ -93,23 +94,23 @@ class Manager {
       // Execute the workflow with user inputs and optional pre-generated IDs
       const results = await this.taskManager.executeWorkflow(workflowData, userInputs, preGeneratedIds);
       
-      console.log('✅ First workflow completed');
+      logger.info('✅ First workflow completed');
       
       // Automatically trigger data extraction for each workflow execution
-      console.log('🔍 Starting automatic data extraction for portfolio companies');
+      logger.info('🔍 Starting automatic data extraction for portfolio companies');
       const extractionResults = [];
       
       for (const result of results) {
         if (result.workflowExecutionId) {
           try {
-            console.log(`📊 Extracting data for workflow execution ID: ${result.workflowExecutionId}`);
+            logger.info(`📊 Extracting data for workflow execution ID: ${result.workflowExecutionId}`);
             const extractionResult = await this.extractPortfolioCompanyData(result.workflowExecutionId);
             extractionResults.push({
               workflowExecutionId: result.workflowExecutionId,
               extraction: extractionResult
             });
           } catch (error) {
-            console.error(`❌ Data extraction failed for workflow ID ${result.workflowExecutionId}:`, error.message);
+            logger.error(`❌ Data extraction failed for workflow ID ${result.workflowExecutionId}:`, error.message);
             extractionResults.push({
               workflowExecutionId: result.workflowExecutionId,
               extraction: { success: false, error: error.message }
@@ -118,14 +119,14 @@ class Manager {
         }
       }
       
-      console.log('✅ Combined workflow (research + data extraction) completed');
+      logger.info('✅ Combined workflow (research + data extraction) completed');
       return {
         portfolioResearch: results,
         dataExtraction: extractionResults
       };
 
     } catch (error) {
-      console.error('💥 Workflow execution failed:', error.message);
+      logger.error('💥 Workflow execution failed:', error.message);
       throw error;
     }
   }
@@ -138,19 +139,19 @@ class Manager {
     try {
       await this.initializeTaskManager();
 
-      console.log('\n🔗 Starting second workflow: Legal entity extraction');
+      logger.info('\n🔗 Starting second workflow: Legal entity extraction');
       
       // 1. Parse companies from most recent output file
       const outputDir = path.join(__dirname, 'json', 'output');
       const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir, 'pe_firm_research');
-      console.log("[DEBUG] - Most recent file:", mostRecentFile);
+      logger.info("[DEBUG] - Most recent file:", mostRecentFile);
 
       const firstWorkflowResults = JSON.parse(fs.readFileSync(mostRecentFile, 'utf8'));
       const firmAndCompanyNames = this.parser.parseCompaniesFromResults(firstWorkflowResults);
 
       // Validate parsed companies
       if (!this.parser.validateCompanies(firmAndCompanyNames)) {
-        console.warn('⚠️ Company parsing validation failed, but continuing with workflow');
+        logger.warn('⚠️ Company parsing validation failed, but continuing with workflow');
       }
       
       // 2. Load and execute legal entities workflow
@@ -159,15 +160,15 @@ class Manager {
       // Set workflow name in environment for SaveTaskResults
       process.env.WORKFLOW_NAME = getLegalEntitiesWorkflow.workflow.name.replace(/\s+/g, '_').toLowerCase();
       
-      console.log(`🏢 Executing legal entities workflow for ${firmAndCompanyNames.length} companies`);
+      logger.info(`🏢 Executing legal entities workflow for ${firmAndCompanyNames.length} companies`);
       
       // Pass company names as individual items in the input array
       // WorkflowManager will process each company name separately
       const legal_names = await this.taskManager.executeWorkflow(getLegalEntitiesWorkflow, { input: firmAndCompanyNames });
       
       // 3. Log results
-      console.log('\n📋 Legal entity extraction completed:');
-      console.log('Legal names:', legal_names);
+      logger.info('\n📋 Legal entity extraction completed:');
+      logger.info('Legal names:', legal_names);
       
       return {
         firmAndCompanyNames,
@@ -175,7 +176,7 @@ class Manager {
       };
       
     } catch (error) {
-      console.error('💥 Workflow execution failed:', error.message);
+      logger.error('💥 Workflow execution failed:', error.message);
       throw error;
     }
   }
@@ -186,13 +187,13 @@ class Manager {
    */
   async extractPortfolioCompanyData(workflowExecutionId) {
     try {
-      console.log(`🔍 Extracting Form 5500 data for portfolio companies from workflow execution: ${workflowExecutionId}`);
+      logger.info(`🔍 Extracting Form 5500 data for portfolio companies from workflow execution: ${workflowExecutionId}`);
       
       // Get portfolio companies from database using workflowExecutionId
       const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(workflowExecutionId);
       
       if (portfolioCompanies.length === 0) {
-        console.log('⚠️ No portfolio companies found for this workflow execution');
+        logger.info('⚠️ No portfolio companies found for this workflow execution');
         const errorResult = { 
           success: false, 
           message: 'No portfolio companies found',
@@ -202,7 +203,7 @@ class Manager {
         return errorResult;
       }
       
-      console.log(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
+      logger.info(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
       
       // Extract Form 5500 data for those companies
       const results = await this.dataExtractionService.extractData(portfolioCompanies, workflowExecutionId, 0);
@@ -210,11 +211,11 @@ class Manager {
       // Save results to database
       await this.databaseManager.updateWorkflowResults(workflowExecutionId, results);
       
-      console.log('✅ Data extraction completed and results saved to database');
+      logger.info('✅ Data extraction completed and results saved to database');
       return results;
       
     } catch (error) {
-      console.error('❌ Failed to extract portfolio company data:', error.message);
+      logger.error('❌ Failed to extract portfolio company data:', error.message);
       
       // Save error result to database
       const errorResult = { 
@@ -226,7 +227,7 @@ class Manager {
       try {
         await this.databaseManager.updateWorkflowResults(workflowExecutionId, errorResult);
       } catch (dbError) {
-        console.error('❌ Failed to save error result to database:', dbError.message);
+        logger.error('❌ Failed to save error result to database:', dbError.message);
       }
       
       throw error;
@@ -239,7 +240,7 @@ class Manager {
    */
   async getAllSavedResults() {
     try {
-      console.log('📋 [MANAGER] Getting all saved workflow results');
+      logger.info('📋 [MANAGER] Getting all saved workflow results');
       
       // Initialize database if needed
       if (!this.databaseManager.initialized) {
@@ -247,11 +248,11 @@ class Manager {
       }
       
       const results = await this.databaseManager.getAllWorkflowResults();
-      console.log(`📋 [MANAGER] Found ${results.length} saved workflow results`);
+      logger.info(`📋 [MANAGER] Found ${results.length} saved workflow results`);
       
       return results;
     } catch (error) {
-      console.error('❌ Failed to get all saved results:', error.message);
+      logger.error('❌ Failed to get all saved results:', error.message);
       throw error;
     }
   }
@@ -272,5 +273,5 @@ module.exports = { run, run2, runBoth, extractPortfolioCompanyData, initializeWo
 
 // If called directly from command line, run with no user inputs
 if (require.main === module) {
-  run().catch(console.error);
+  run().catch(logger.error);
 }

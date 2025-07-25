@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 require('./utils/load-env'); // Load environment variables
+const { server: logger } = require('./utils/logger');
 const MCPServerManager = require('./mcp/MCPServerManager');
 const ToolManager = require('./workflow/ToolManager');
 const pollingService = require('./services/PollingService');
@@ -40,7 +41,7 @@ app.get('/', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error('Express error handler', { error: err.message, stack: err.stack });
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
@@ -53,26 +54,26 @@ app.use('*', (req, res) => {
 async function startServer() {
   try {
     // Initialize MCP servers once
-    console.log('🔄 Initializing MCP servers...');
+    logger.info('Initializing MCP servers');
     globalMCPManager = new MCPServerManager();
     await globalMCPManager.initialize();
     globalToolManager = new ToolManager(globalMCPManager);
     
-    console.log('✅ MCP servers ready');
+    logger.info('MCP servers ready');
     
     app.listen(PORT, () => {
-      console.log(`Smart Insurance Workflow Engine server running on port ${PORT}`);
-      console.log(`Health check available at: http://localhost:${PORT}/api/health`);
+      logger.info('Server started', { port: PORT });
+      logger.info('Health check available', { url: `http://localhost:${PORT}/api/health` });
     });
   } catch (error) {
-    console.error('❌ Failed to initialize MCP servers:', error);
+    logger.error('Failed to initialize MCP servers', { error: error.message, stack: error.stack });
     process.exit(1);
   }
 }
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('🛑 Shutting down server...');
+  logger.info('Shutting down server');
   if (globalMCPManager) {
     await globalMCPManager.cleanup();
   }

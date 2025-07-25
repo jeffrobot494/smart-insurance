@@ -1,3 +1,4 @@
+const { files: logger } = require('../utils/logger');
 const fs = require('fs');
 const path = require('path');
 const CSVParser = require('./CSVParser');
@@ -68,7 +69,7 @@ class DatasetManager {
         }
       }
 
-      console.log(`📊 Loaded dataset: ${path.basename(filePath)} (${rows.length} rows)`);
+      logger.info(`📊 Loaded dataset: ${path.basename(filePath)} (${rows.length} rows)`);
 
       return {
         headers,
@@ -77,7 +78,7 @@ class DatasetManager {
       };
 
     } catch (error) {
-      console.error(`❌ Error loading dataset ${filePath}:`, error.message);
+      logger.error(`❌ Error loading dataset ${filePath}:`, error.message);
       throw error;
     }
   }
@@ -131,7 +132,7 @@ class DatasetManager {
           year: config.year
         });
       } catch (error) {
-        console.warn(`⚠️  Warning: Could not load Form 5500 dataset for ${config.year}: ${error.message}`);
+        logger.warn(`⚠️  Warning: Could not load Form 5500 dataset for ${config.year}: ${error.message}`);
       }
     }
 
@@ -159,7 +160,7 @@ class DatasetManager {
           year: config.year
         });
       } catch (error) {
-        console.warn(`⚠️  Warning: Could not load Schedule A dataset for ${config.year}: ${error.message}`);
+        logger.warn(`⚠️  Warning: Could not load Schedule A dataset for ${config.year}: ${error.message}`);
       }
     }
 

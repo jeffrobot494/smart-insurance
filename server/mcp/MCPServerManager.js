@@ -1,3 +1,4 @@
+const { mcp: logger } = require('../utils/logger');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -15,7 +16,7 @@ class MCPServerManager {
   }
 
   async initialize() {
-    console.log('🚀 Starting MCP servers...');
+    logger.info('🚀 Starting MCP servers...');
     
     try {
       await this.startFirecrawlMCP();
@@ -23,18 +24,18 @@ class MCPServerManager {
       await this.waitForServerInitialization();
       
       this.isInitialized = true;
-      console.log('✓ All MCP servers ready');
-      console.log(`✓ Available tools: ${this.allTools.map(t => t.name).join(', ')}\n`);
+      logger.info('✓ All MCP servers ready');
+      logger.info(`✓ Available tools: ${this.allTools.map(t => t.name).join(', ')}\n`);
       
     } catch (error) {
-      console.error('Failed to start MCP servers:', error.message);
+      logger.error('Failed to start MCP servers:', error.message);
       this.cleanup();
       throw error;
     }
   }
 
   async startFirecrawlMCP() {
-    console.log('  Starting Firecrawl MCP...');
+    logger.info('  Starting Firecrawl MCP...');
     
     if (!fs.existsSync(this.FIRECRAWL_MCP_PATH)) {
       throw new Error(`Firecrawl MCP path not found: ${this.FIRECRAWL_MCP_PATH}`);
@@ -47,18 +48,18 @@ class MCPServerManager {
     });
 
     this.firecrawlProcess.on('error', (error) => {
-      console.error('Firecrawl MCP error:', error.message);
+      logger.error('Firecrawl MCP error:', error.message);
     });
 
     this.firecrawlProcess.on('exit', (code) => {
-      console.log(`Firecrawl MCP exited with code ${code}`);
+      logger.info(`Firecrawl MCP exited with code ${code}`);
     });
 
     this.setupMCPCommunication(this.firecrawlProcess, 'firecrawl');
   }
 
   async startPerplexityMCP() {
-    console.log('  Starting Perplexity MCP...');
+    logger.info('  Starting Perplexity MCP...');
     
     if (!fs.existsSync(this.PERPLEXITY_MCP_PATH)) {
       throw new Error(`Perplexity MCP path not found: ${this.PERPLEXITY_MCP_PATH}`);
@@ -71,11 +72,11 @@ class MCPServerManager {
     });
 
     this.perplexityProcess.on('error', (error) => {
-      console.error('Perplexity MCP error:', error.message);
+      logger.error('Perplexity MCP error:', error.message);
     });
 
     this.perplexityProcess.on('exit', (code) => {
-      console.log(`Perplexity MCP exited with code ${code}`);
+      logger.info(`Perplexity MCP exited with code ${code}`);
     });
 
     this.setupMCPCommunication(this.perplexityProcess, 'perplexity');
@@ -96,14 +97,14 @@ class MCPServerManager {
             const message = JSON.parse(line);
             this.handleMCPMessage(message, process, serverName);
           } catch (error) {
-            console.error(`Error parsing ${serverName} MCP message:`, error.message);
+            logger.error(`Error parsing ${serverName} MCP message:`, error.message);
           }
         }
       }
     });
 
     process.stderr.on('data', (data) => {
-      console.error(`${serverName} MCP stderr:`, data.toString());
+      logger.error(`${serverName} MCP stderr:`, data.toString());
     });
 
     this.initializeMCP(process, serverName);
@@ -139,7 +140,7 @@ class MCPServerManager {
 
   handleMCPMessage(message, process, serverName) {
     if (message.id && message.id.startsWith('init_') && message.result) {
-      console.log(`  ✓ ${serverName} MCP initialized`);
+      logger.info(`  ✓ ${serverName} MCP initialized`);
       
       this.sendMCPMessage(process, {
         jsonrpc: '2.0',
@@ -154,7 +155,7 @@ class MCPServerManager {
           serverName: serverName
         }));
         this.allTools.push(...tools);
-        console.log(`  ✓ ${serverName} tools loaded: ${tools.map(t => t.name).join(', ')}`);
+        logger.info(`  ✓ ${serverName} tools loaded: ${tools.map(t => t.name).join(', ')}`);
       }
     }
   }
@@ -208,7 +209,7 @@ class MCPServerManager {
   }
 
   cleanup() {
-    console.log('🧹 Cleaning up MCP servers...');
+    logger.info('🧹 Cleaning up MCP servers...');
     
     if (this.firecrawlProcess) {
       this.firecrawlProcess.kill();

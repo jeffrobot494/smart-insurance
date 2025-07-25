@@ -1,3 +1,4 @@
+const { server: logger } = require('../utils/logger');
 const express = require('express');
 const router = express.Router();
 const pollingService = require('../services/PollingService');
@@ -15,7 +16,7 @@ router.get('/:workflowId', async (req, res) => {
       });
     }
 
-    console.log('📊 [POLLING] Check workflow status:', workflowId);
+    logger.info('📊 [POLLING] Check workflow status:', workflowId);
     
     // Get all messages for this workflow and clear the queue
     const messages = pollingService.getAndClearMessages(workflowId);
@@ -28,7 +29,7 @@ router.get('/:workflowId', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Polling endpoint error:', error);
+    logger.error('❌ Polling endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -59,7 +60,7 @@ router.get('/:workflowId/peek', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('❌ Polling peek endpoint error:', error);
+    logger.error('❌ Polling peek endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message

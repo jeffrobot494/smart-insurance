@@ -1,3 +1,4 @@
+const { database: logger } = require('../utils/logger');
 const { Client, Pool } = require('pg');
 
 /**
@@ -61,11 +62,11 @@ class DatabaseManager {
       const result = await client.query('SELECT NOW()');
       client.release();
       
-      console.log('✅ Database connection established successfully');
+      logger.info('✅ Database connection established successfully');
       this.initialized = true;
       return true;
     } catch (error) {
-      console.error('❌ Failed to connect to database:', error.message);
+      logger.error('❌ Failed to connect to database:', error.message);
       throw error;
     }
   }
@@ -85,9 +86,9 @@ class DatabaseManager {
       const result = await this.pool.query(query, params);
       return result;
     } catch (error) {
-      console.error('❌ Database query failed:', error.message);
-      console.error('Query:', query);
-      console.error('Params:', params);
+      logger.error('❌ Database query failed:', error.message);
+      logger.error('Query:', query);
+      logger.error('Params:', params);
       throw error;
     }
   }
@@ -106,7 +107,7 @@ class DatabaseManager {
       
       return result.rows;
     } catch (error) {
-      console.error(`❌ Error searching companies for "${companyName}":`, error.message);
+      logger.error(`❌ Error searching companies for "${companyName}":`, error.message);
       throw error;
     }
   }
@@ -131,7 +132,7 @@ class DatabaseManager {
       
       return result.rows;
     } catch (error) {
-      console.error(`❌ Error searching Schedule A for EIN "${ein}":`, error.message);
+      logger.error(`❌ Error searching Schedule A for EIN "${ein}":`, error.message);
       throw error;
     }
   }
@@ -158,7 +159,7 @@ class DatabaseManager {
   async close() {
     if (this.pool) {
       await this.pool.end();
-      console.log('✅ Database connections closed');
+      logger.info('✅ Database connections closed');
     }
   }
 
@@ -182,7 +183,7 @@ class DatabaseManager {
       
       return result.rows[0].id;
     } catch (error) {
-      console.error('❌ Failed to create workflow execution record:', error.message);
+      logger.error('❌ Failed to create workflow execution record:', error.message);
       // Return null instead of throwing to not break workflow execution
       return null;
     }
@@ -212,10 +213,10 @@ class DatabaseManager {
         workflowExecutionIds.push(result.rows[0].id);
       }
       
-      console.log(`✅ Created ${firmNames.length} workflow execution records with IDs:`, workflowExecutionIds);
+      logger.info(`✅ Created ${firmNames.length} workflow execution records with IDs:`, workflowExecutionIds);
       return workflowExecutionIds;
     } catch (error) {
-      console.error('❌ Failed to create batch workflow execution records:', error.message);
+      logger.error('❌ Failed to create batch workflow execution records:', error.message);
       throw error;
     }
   }
@@ -241,9 +242,9 @@ class DatabaseManager {
         );
       }
       
-      console.log(`✅ Saved ${companies.length} portfolio companies for ${firmName}`);
+      logger.info(`✅ Saved ${companies.length} portfolio companies for ${firmName}`);
     } catch (error) {
-      console.error('❌ Failed to save portfolio companies:', error.message);
+      logger.error('❌ Failed to save portfolio companies:', error.message);
       throw error;
     }
   }
@@ -267,7 +268,7 @@ class DatabaseManager {
       
       return result.rows.map(row => row.company_name);
     } catch (error) {
-      console.error('❌ Failed to get portfolio companies:', error.message);
+      logger.error('❌ Failed to get portfolio companies:', error.message);
       throw error;
     }
   }
@@ -277,25 +278,25 @@ class DatabaseManager {
    */
   async testConnection() {
     try {
-      console.log('🔍 Testing database connection...');
+      logger.info('🔍 Testing database connection...');
       
       // Test basic connectivity
       const timeResult = await this.query('SELECT NOW() as current_time');
-      console.log('✅ Basic connectivity test passed');
+      logger.info('✅ Basic connectivity test passed');
       
       // Test search_companies_by_name function
       const companyResult = await this.searchCompaniesByName('Test Company');
-      console.log('✅ search_companies_by_name function test passed');
+      logger.info('✅ search_companies_by_name function test passed');
       
       // Test get_schedule_a_by_ein function  
       const einResult = await this.getScheduleAByEIN('123456789');
-      console.log('✅ get_schedule_a_by_ein function test passed');
+      logger.info('✅ get_schedule_a_by_ein function test passed');
       
-      console.log('✅ All database tests passed successfully');
+      logger.info('✅ All database tests passed successfully');
       return true;
       
     } catch (error) {
-      console.error('❌ Database test failed:', error.message);
+      logger.error('❌ Database test failed:', error.message);
       throw error;
     }
   }
@@ -319,7 +320,7 @@ class DatabaseManager {
       
       return result.rowCount > 0;
     } catch (error) {
-      console.error('❌ Failed to update workflow results:', error.message);
+      logger.error('❌ Failed to update workflow results:', error.message);
       throw error;
     }
   }
@@ -352,7 +353,7 @@ class DatabaseManager {
         results: row.results
       };
     } catch (error) {
-      console.error('❌ Failed to get workflow results:', error.message);
+      logger.error('❌ Failed to get workflow results:', error.message);
       throw error;
     }
   }
@@ -381,7 +382,7 @@ class DatabaseManager {
         completedAt: row.completed_at
       }));
     } catch (error) {
-      console.error('❌ Failed to get all workflow results:', error.message);
+      logger.error('❌ Failed to get all workflow results:', error.message);
       throw error;
     }
   }

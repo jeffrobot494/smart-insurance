@@ -1,3 +1,5 @@
+const { polling: logger } = require('../utils/logger');
+
 class PollingService {
     constructor() {
         // Store message queues per workflow ID
@@ -28,7 +30,7 @@ class PollingService {
         };
         
         this.messageQueues.get(workflowKey).push(messageObj);
-        console.log(`📨 [POLLING] Added message for workflow ${workflowId}:`, messageObj);
+        logger.info(`📨 [POLLING] Added message for workflow ${workflowId}:`, messageObj);
     }
 
     /**
@@ -46,7 +48,7 @@ class PollingService {
         const messages = this.messageQueues.get(workflowKey);
         this.messageQueues.set(workflowKey, []); // Clear the queue
         
-        console.log(`📬 [POLLING] Retrieved ${messages.length} messages for workflow ${workflowId}`);
+        logger.info(`📬 [POLLING] Retrieved ${messages.length} messages for workflow ${workflowId}`);
         return messages;
     }
 
@@ -67,7 +69,7 @@ class PollingService {
     clearWorkflow(workflowId) {
         const workflowKey = String(workflowId);
         this.messageQueues.delete(workflowKey);
-        console.log(`🗑️ [POLLING] Cleared all messages for workflow ${workflowId}`);
+        logger.info(`🗑️ [POLLING] Cleared all messages for workflow ${workflowId}`);
     }
 
     /**
@@ -99,7 +101,7 @@ class PollingService {
             const oldestMessage = messages[0];
             if (new Date(oldestMessage.timestamp) < cutoffTime) {
                 this.messageQueues.delete(workflowId);
-                console.log(`🧹 [POLLING] Cleaned up old workflow ${workflowId}`);
+                logger.info(`🧹 [POLLING] Cleaned up old workflow ${workflowId}`);
             }
         }
     }

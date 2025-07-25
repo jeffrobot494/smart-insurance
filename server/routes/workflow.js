@@ -1,3 +1,4 @@
+const { server: logger } = require('../utils/logger');
 const express = require('express');
 const router = express.Router();
 const { run, run2, extractPortfolioCompanyData, initializeWorkflows, getAllSavedResults } = require('../Manager');
@@ -44,15 +45,15 @@ router.post('/', async (req, res) => {
     run(workflowFile, { input: inputArray }, initResult.workflowExecutionIds)
     /*
       .then(results => {
-        console.log(`Workflow ${workflowname} completed successfully`);
+        logger.info(`Workflow ${workflowname} completed successfully`);
         // Results are automatically saved by SaveTaskResults.js
       })
       .catch(error => {
-        console.error(`Workflow ${workflowname} failed:`, error.message);
+        logger.error(`Workflow ${workflowname} failed:`, error.message);
       });
 */
   } catch (error) {
-    console.error('Workflow startup error:', error);
+    logger.error('Workflow startup error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -75,7 +76,7 @@ router.get('/2/', async (req, res) => {
     run2();
 
   } catch (error) {
-    console.error('Workflow startup error:', error);
+    logger.error('Workflow startup error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -107,7 +108,7 @@ router.get('/extract5500/:workflowExecutionId', async (req, res) => {
     extractPortfolioCompanyData(parseInt(workflowExecutionId));
 
   } catch (error) {
-    console.error('Portfolio company data extraction startup error:', error);
+    logger.error('Portfolio company data extraction startup error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -118,18 +119,18 @@ router.get('/extract5500/:workflowExecutionId', async (req, res) => {
 // GET /api/workflow/results - Get all saved workflow results
 router.get('/results', async (req, res) => {
   try {
-    console.log('📋 [RESULTS_ENDPOINT] Getting all saved workflow results');
+    logger.info('📋 [RESULTS_ENDPOINT] Getting all saved workflow results');
     
     const results = await getAllSavedResults();
     
-    console.log('📋 [RESULTS_ENDPOINT] Returning', results.length, 'saved results');
+    logger.info('📋 [RESULTS_ENDPOINT] Returning', results.length, 'saved results');
     res.status(200).json({
       success: true,
       results: results
     });
     
   } catch (error) {
-    console.error('❌ All results endpoint error:', error);
+    logger.error('❌ All results endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -151,7 +152,7 @@ router.get('/:workflowId/results', async (req, res) => {
     }
 
     const workflowExecutionId = parseInt(workflowId);
-    console.log('📋 [RESULTS] Getting workflow results for ID:', workflowExecutionId);
+    logger.info('📋 [RESULTS] Getting workflow results for ID:', workflowExecutionId);
     
     // Get database manager instance
     const DatabaseManager = require('../data-extraction/DatabaseManager');
@@ -178,11 +179,11 @@ router.get('/:workflowId/results', async (req, res) => {
     }
     
     // Return the results
-    console.log('📋 [RESULTS] Returning results for workflow:', workflowExecutionId);
+    logger.info('📋 [RESULTS] Returning results for workflow:', workflowExecutionId);
     res.status(200).json(workflowData.results);
     
   } catch (error) {
-    console.error('❌ Results endpoint error:', error);
+    logger.error('❌ Results endpoint error:', error);
     res.status(500).json({
       success: false,
       error: error.message

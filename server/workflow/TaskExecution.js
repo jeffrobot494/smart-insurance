@@ -1,3 +1,4 @@
+const { workflow: logger } = require('../utils/logger');
 const ClaudeManager = require('../mcp/ClaudeManager');
 
 class TaskExecution {
@@ -84,7 +85,7 @@ class TaskExecution {
 
         } catch (error) {
           consecutiveFailures++;
-          console.log(`⚠️ API call failed (attempt ${consecutiveFailures}/${maxRetries + 1}): ${error.message}`);
+          logger.info(`⚠️ API call failed (attempt ${consecutiveFailures}/${maxRetries + 1}): ${error.message}`);
           
           if (consecutiveFailures > maxRetries) {
             throw error; // Max retries exceeded, propagate error
@@ -92,7 +93,7 @@ class TaskExecution {
           
           // Wait before retry with exponential backoff
           const delay = Math.pow(2, consecutiveFailures - 1) * 1000; // 1s, 2s, 4s
-          console.log(`🔄 Retrying in ${delay}ms...`);
+          logger.info(`🔄 Retrying in ${delay}ms...`);
           await this.sleep(delay);
           
           // Don't increment iterations on retry
@@ -151,7 +152,7 @@ class TaskExecution {
 
     for (const toolCall of toolCalls) {
       try {
-        console.log(`  🔧 Executing ${toolCall.name}...`);
+        logger.info(`  🔧 Executing ${toolCall.name}...`);
         
         // Execute the tool (we'll need to implement tool execution)
         const result = await this.executeTool(toolCall.name, toolCall.input);
@@ -162,9 +163,9 @@ class TaskExecution {
           content: JSON.stringify(result, null, 2)
         });
         
-        console.log(`  ✓ ${toolCall.name} completed`);
+        logger.info(`  ✓ ${toolCall.name} completed`);
       } catch (error) {
-        console.error(`  ✗ ${toolCall.name} failed:`, error.message);
+        logger.error(`  ✗ ${toolCall.name} failed:`, error.message);
         
         toolResults.push({
           type: 'tool_result',

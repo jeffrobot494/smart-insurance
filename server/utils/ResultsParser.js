@@ -1,3 +1,5 @@
+const { parsing: logger } = require('./logger');
+
 class ResultsParser {
   /**
    * Parse company names from workflow results with firm name prepended
@@ -13,7 +15,7 @@ class ResultsParser {
         throw new Error('No final result found in workflow results');
       }
 
-      console.log(`📋 Raw final result: ${finalResult}`);
+      logger.debug(`📋 Raw final result: ${finalResult}`);
 
       // Extract firm name and company names
       const firmName = this.parseFirmNameFromResults(workflowResults);
@@ -22,12 +24,12 @@ class ResultsParser {
       // Prepend firm name to each company
       const companiesWithFirm = companyNames.map(company => `${firmName}, ${company}`);
 
-      console.log(`🏢 Parsed ${companiesWithFirm.length} companies with firm name: ${companiesWithFirm.join('; ')}`);
+      logger.debug(`🏢 Parsed ${companiesWithFirm.length} companies with firm name: ${companiesWithFirm.join('; ')}`);
       
       return companiesWithFirm;
 
     } catch (error) {
-      console.error(`❌ Error parsing companies from results: ${error.message}`);
+      logger.error(`❌ Error parsing companies from results: ${error.message}`);
       throw error;
     }
   }
@@ -53,12 +55,12 @@ class ResultsParser {
       }
       
       const firmName = finalResult.substring(0, colonIndex).trim();
-      console.log(`🏢 Extracted firm name: "${firmName}"`);
+      logger.debug(`🏢 Extracted firm name: "${firmName}"`);
       
       return firmName;
 
     } catch (error) {
-      console.error(`❌ Error parsing firm name from results: ${error.message}`);
+      logger.error(`❌ Error parsing firm name from results: ${error.message}`);
       throw error;
     }
   }
@@ -75,27 +77,27 @@ class ResultsParser {
       return [];
     }
 
-    console.log('🔍 Extracting companies from text:', text.substring(0, 100) + '...');
+    logger.debug('🔍 Extracting companies from text:', text.substring(0, 100) + '...');
     
     // Expected format: "PE Firm Name: [company list]"
     // Find the colon and extract everything after it (throw away PE firm name)
     const colonIndex = text.indexOf(':');
     if (colonIndex === -1) {
-      console.warn('⚠️ No colon found in text - expected format: "PE Firm Name: [companies]"');
+      logger.warn('⚠️ No colon found in text - expected format: "PE Firm Name: [companies]"');
       return [];
     }
     
     // Extract PE firm name (for logging purposes)
     const firmName = text.substring(0, colonIndex).trim();
-    console.log(`🏢 PE Firm detected: "${firmName}" (discarding this)`);
+    logger.debug(`🏢 PE Firm detected: "${firmName}" (discarding this)`);
     
     // Get everything after the colon (the company list)
     const companiesText = text.substring(colonIndex + 1).trim();
-    console.log('📋 Company list text:', companiesText.substring(0, 100) + '...');
+    logger.debug('📋 Company list text:', companiesText.substring(0, 100) + '...');
 
     // Check if companies are separated by newlines with bullet points
     if (companiesText.includes('\n-') || companiesText.includes('\n•') || companiesText.includes('\n*')) {
-      console.log('📝 Using newline/bullet point parsing');
+      logger.debug('📝 Using newline/bullet point parsing');
       // Split by newlines and process each line
       const companies = companiesText
         .split('\n')
@@ -104,7 +106,7 @@ class ResultsParser {
       
       return companies;
     } else {
-      console.log('📝 Using comma-separated parsing');
+      logger.debug('📝 Using comma-separated parsing');
       // Split by commas and clean each company name
       const companies = companiesText
         .split(',')
@@ -147,12 +149,12 @@ class ResultsParser {
       }
 
       return results.map((result, index) => {
-        console.log(`📋 Processing batch item ${index + 1}: ${result}`);
+        logger.debug(`📋 Processing batch item ${index + 1}: ${result}`);
         return this.extractCompanyNames(result);
       });
 
     } catch (error) {
-      console.error(`❌ Error parsing batch companies: ${error.message}`);
+      logger.error(`❌ Error parsing batch companies: ${error.message}`);
       throw error;
     }
   }
@@ -164,22 +166,22 @@ class ResultsParser {
    */
   validateCompanies(companies) {
     if (!Array.isArray(companies) || companies.length === 0) {
-      console.warn('⚠️ No companies found in results');
+      logger.warn('⚠️ No companies found in results');
       return false;
     }
 
     // Check for suspiciously long "company names" (might be error text)
     const suspiciousCompanies = companies.filter(company => company.length > 100);
     if (suspiciousCompanies.length > 0) {
-      console.warn('⚠️ Found suspiciously long company names (might be error text)');
-      console.warn('Suspicious entries:', suspiciousCompanies);
+      logger.warn('⚠️ Found suspiciously long company names (might be error text)');
+      logger.warn('Suspicious entries:', suspiciousCompanies);
     }
 
     // Check for very short names (might be parsing errors)
     const shortCompanies = companies.filter(company => company.length < 3);
     if (shortCompanies.length > 0) {
-      console.warn('⚠️ Found very short company names (might be parsing errors)');
-      console.warn('Short entries:', shortCompanies);
+      logger.warn('⚠️ Found very short company names (might be parsing errors)');
+      logger.warn('Short entries:', shortCompanies);
     }
 
     return true;

@@ -1,3 +1,4 @@
+const { database: logger } = require('../utils/logger');
 const DatabaseManager = require('./DatabaseManager');
 
 /**
@@ -72,7 +73,7 @@ class Form5500SearchService {
       }
 
     } catch (error) {
-      console.log(`   ✗ Error searching database for "${companyName}": ${error.message}`);
+      logger.debug(`   ✗ Error searching database for "${companyName}": ${error.message}`);
     }
 
     return result;

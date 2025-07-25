@@ -1,3 +1,4 @@
+const { workflow: logger } = require('../utils/logger');
 const TaskExecution = require('./TaskExecution');
 const SaveTaskResults = require('./SaveTaskResults');
 const DatabaseManager = require('../data-extraction/DatabaseManager');
@@ -56,18 +57,18 @@ class WorkflowManager {
     const inputList = userInputs.input || [];
     const allResults = [];
     
-    console.log(`📋 Processing ${inputList.length} input(s) through ${this.getAllTasks().length} tasks\n`);
+    logger.info(`📋 Processing ${inputList.length} input(s) through ${this.getAllTasks().length} tasks\n`);
     
     for (let i = 0; i < inputList.length; i++) {
       const currentInput = inputList[i];
-      console.log(`\n🔄 Processing item ${i + 1}/${inputList.length}: ${currentInput}`);
+      logger.info(`\n🔄 Processing item ${i + 1}/${inputList.length}: ${currentInput}`);
       
       let workflowExecutionId;
       
       if (preGeneratedIds && preGeneratedIds.length > i) {
         // Use pre-generated ID and update status
         workflowExecutionId = preGeneratedIds[i];
-        console.log(`🆔 Using pre-generated workflow execution ID: ${workflowExecutionId}`);
+        logger.info(`🆔 Using pre-generated workflow execution ID: ${workflowExecutionId}`);
         await this.databaseManager.query(
           'UPDATE workflow_executions SET status = $1 WHERE id = $2',
           ['running', workflowExecutionId]
@@ -90,8 +91,8 @@ class WorkflowManager {
       while (this.hasMoreTasks()) {
         const task = this.getNextTask();
         
-        console.log(`🎯 Executing Task ${task.id}: ${task.name}`);
-        console.log(`📝 Instructions: ${task.instructions}`);
+        logger.info(`🎯 Executing Task ${task.id}: ${task.name}`);
+        logger.info(`📝 Instructions: ${task.instructions}`);
         
         // Add polling message for task start
         pollingService.addMessage(workflowExecutionId, i, 'progress', `Task ${task.id}/${this.tasks.length}: ${task.name}`);
@@ -101,7 +102,7 @@ class WorkflowManager {
         task.inputKeys.forEach(key => {
           if (itemInputs[key]) {
             inputs[key] = itemInputs[key];
-            console.log(`📥 Input ${key}: ${itemInputs[key]}`);
+            logger.info(`📥 Input ${key}: ${itemInputs[key]}`);
           }
         });
         
@@ -111,15 +112,15 @@ class WorkflowManager {
           const result = await execution.run(inputs);
           
           if (result.success) {
-            console.log(`✅ Task ${task.id} completed successfully`);
-            console.log(`📤 Output (${task.outputKey}): ${result.result}`);
+            logger.info(`✅ Task ${task.id} completed successfully`);
+            logger.info(`📤 Output (${task.outputKey}): ${result.result}`);
             itemInputs[task.outputKey] = result.result;
             taskResults[task.id] = result;
             
             // Add polling message for task success
             pollingService.addMessage(workflowExecutionId, i, 'progress', `✅ Completed ${task.name}`);
           } else {
-            console.error(`❌ Task ${task.id} failed: ${result.error}`);
+            logger.error(`❌ Task ${task.id} failed: ${result.error}`);
             taskResults[task.id] = result;
             
             // Add polling message for task failure
@@ -127,14 +128,14 @@ class WorkflowManager {
             break;
           }
         } catch (error) {
-          console.error(`💥 Task ${task.id} threw an error: ${error.message}`);
+          logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
           
           // Add polling message for task exception
           pollingService.addMessage(workflowExecutionId, i, 'error', `💥 ${task.name} error: ${error.message}`);
           break;
         }
         
-        console.log(''); // Empty line for readability
+        logger.info(''); // Empty line for readability
       }
       
       allResults.push({
@@ -156,8 +157,8 @@ class WorkflowManager {
     // Save all results at once
     await this.resultsSaver.saveBatchResults(allResults);
     
-    console.log('🏁 Workflow execution completed');
-    console.log(`📊 Processed ${allResults.length} items`);
+    logger.info('🏁 Workflow execution completed');
+    logger.info(`📊 Processed ${allResults.length} items`);
     
     return allResults;
   }

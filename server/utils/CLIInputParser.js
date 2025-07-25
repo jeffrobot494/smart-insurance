@@ -1,3 +1,5 @@
+const { parsing: logger } = require('./logger');
+
 class CLIInputParser {
   constructor() {
     this.args = process.argv;
@@ -21,9 +23,9 @@ class CLIInputParser {
   }
 
   showUsage() {
-    console.error('❌ Please specify a workflow filename');
-    console.log('Usage: node Manager.js <workflow-filename> [key:value] [key:value]...');
-    console.log('Example: node Manager.js workflow.json name:"Blackstone Group" location:"New York"');
+    logger.error('❌ Please specify a workflow filename');
+    logger.info('Usage: node Manager.js <workflow-filename> [key:value] [key:value]...');
+    logger.info('Example: node Manager.js workflow.json name:"Blackstone Group" location:"New York"');
   }
 
   hasWorkflowFilename() {

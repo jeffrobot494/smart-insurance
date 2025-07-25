@@ -1,3 +1,4 @@
+const { database: logger } = require('../utils/logger');
 const DatabaseManager = require('./DatabaseManager');
 
 /**
@@ -80,7 +81,7 @@ class ScheduleASearchService {
       }
 
     } catch (error) {
-      console.log(`   ✗ Error searching database for EIN "${ein}": ${error.message}`);
+      logger.debug(`   ✗ Error searching database for EIN "${ein}": ${error.message}`);
       throw error;
     }
 

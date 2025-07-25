@@ -1,3 +1,4 @@
+const { database: logger } = require('../utils/logger');
 const Form5500SearchService = require('./Form5500SearchService');
 const ScheduleASearchService = require('./ScheduleASearchService');
 const ReportGenerator = require('./ReportGenerator');
@@ -25,7 +26,7 @@ class DataExtractionService {
    */
   async extractData(legalNames, workflowId = null, firmId = null) {
     try {
-      console.log(`🔍 Processing ${legalNames.length} companies for Form 5500/Schedule A data`);
+      logger.info(`🔍 Processing ${legalNames.length} companies for Form 5500/Schedule A data`);
       
       // Add polling message for data extraction start
       if (workflowId) {
@@ -66,7 +67,7 @@ class DataExtractionService {
       
       const reportData = this.reportGenerator.generateFinalReport(finalResults);
 
-      console.log('✅ Data extraction completed');
+      logger.info('✅ Data extraction completed');
       
       // Add polling message for completion
       if (workflowId) {
@@ -76,7 +77,7 @@ class DataExtractionService {
       return reportData;
 
     } catch (error) {
-      console.error('❌ Data extraction failed:', error.message);
+      logger.error('❌ Data extraction failed:', error.message);
       
       // Add polling message for error
       if (workflowId) {
