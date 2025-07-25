@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Behavior Frontiers",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Behavior Frontiers",
+    "matched": true
+  },
+  {
+    "name": "Insurance Systems/ISI",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Insurance Systems Inc.",
+    "matched": false
+  },
+  {
+    "name": "Tubby Todd",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Tubby Todd Bath Co.",
+    "matched": false
+  },
+  {
+    "name": "Aztec Software",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Aztec Software, LLC",
+    "matched": false
+  },
+  {
+    "name": "Metz Culinary Management",
+    "firm": "NexPhase Capital",
+    "legal_entity": "METZ CULINARY MANAGEMENT, LLC",
+    "matched": true
+  },
+  {
+    "name": "Calcium",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Calcium Holdings, Inc.",
+    "matched": false
+  },
+  {
+    "name": "Selerix",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Selerix",
+    "matched": true
+  },
+  {
+    "name": "Oliver Winery & Vineyards",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Oliver Wine Co., Inc.",
+    "matched": false
+  },
+  {
+    "name": "DealerOn",
+    "firm": "NexPhase Capital",
+    "legal_entity": "DealerOn",
+    "matched": true
+  },
+  {
+    "name": "KnowFully",
+    "firm": "NexPhase Capital",
+    "legal_entity": "KnowFully Learning Group, LLC",
+    "matched": false
+  },
+  {
+    "name": "Clearway Pain Solutions",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Kure Smart Pain Management, LLC",
+    "matched": false
+  },
+  {
+    "name": "Meduit",
+    "firm": "NexPhase Capital",
+    "legal_entity": "Meduit",
+    "matched": true
+  },
+  {
+    "name": "WinFertility",
+    "firm": "NexPhase Capital",
+    "legal_entity": "WINFERTILITY, INC.",
+    "matched": false
+  }
+]

@@ -28,6 +28,22 @@ Good perplexity search for legal entity is "What is the legal entity DBA <compan
     4a. My perplexity API key is "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"
     5a. Logs the final list of company objects.
 
-Bad news: The same company, when logging different plans, can use two different zip codes. So having a single zip code per company doesn't even work. 
+    Bad news: The same company, when logging different plans, can use two different zip codes. So having a single zip code per company doesn't even work. 
 
-So, we will get the "legal entity DBA <company_name>, the portfolio company of <firm_name>."
+    So, we will get the "legal entity DBA <company_name>, the portfolio company of <firm_name>."
+
+2. Please create a new script inthe v2 directory that is similar to v1 in that it searches for company names in the f5500 datasets, but with these differences:
+    2a. It takes a .csv file of company names instead of a single one. 
+    2b. After printing the key values for each record, it summarizes the results at the bottom. The summary includes:
+        2b.1 For each company name, was it an unambiguous match, in that all the records have the same sponsor name?
+        2b.2 For each company name, was it an ambiguous match, in that there are multiple sponsor names in the records, indicating that the company name we searched for matched with more than one company, and we don't know which is the intended match?
+        2b.3 For each company, indicate whether no matches were found. 
+    2c. For example, if the contents of the .csv file is: "Acme Incorporated, Infinity Ward, Bazoo", the results will look like this:
+        <actual record results for Acme Incorporated, Infinity Ward, Bazoo listed here>
+        Acme Incorporated: unambiguous match - all records match
+        Infinity Ward: ambiguous match - three different sponsors found amongst 11 records
+        Bazoo: not found
+        Total: 
+            33% unambiguous
+            33% ambiguous
+            33% not found
