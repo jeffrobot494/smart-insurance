@@ -104,7 +104,10 @@ class MCPServerManager {
     });
 
     process.stderr.on('data', (data) => {
-      logger.error(`${serverName} MCP stderr:`, data.toString());
+      const message = data.toString().trim();
+      if (message) {
+        logger.debug(`${serverName} MCP stderr: ${message}`);
+      }
     });
 
     this.initializeMCP(process, serverName);

@@ -1,6 +1,6 @@
 curl -X POST http://localhost:3000/api/workflow     -H "Content-Type: application/json"     -d '{
       "workflowname": "pe_firm_research.json",
-      "input": ["American Discovery Capital"]
+      "input": ["Firm: American Discovery Capital -> Company: CEI Vision Partners"]
     }'
 
 

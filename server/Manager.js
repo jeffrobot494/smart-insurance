@@ -93,7 +93,7 @@ class Manager {
 
       // Execute the workflow with user inputs and optional pre-generated IDs
       const results = await this.taskManager.executeWorkflow(workflowData, userInputs, preGeneratedIds);
-      
+      logger.info("Results:", results);
       logger.info('✅ First workflow completed');
       
       // Automatically trigger data extraction for each workflow execution

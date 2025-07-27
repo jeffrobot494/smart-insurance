@@ -1,0 +1,22 @@
+{
+    "workflow": {
+      "name": "Perplexity Verification",
+      "description": "Verify companies are portfolio companies of the firm",
+      "tasks": [
+        {
+          "id": 1,
+          "name": "FindDomain",
+          "instructions": "Find the website domain for the given private equity firm name. Return just the domain URL (e.g., 'www.example.com'). Use web search to find their official website. Respond with only the domain name.",
+          "inputKeys": ["input"],
+          "outputKey": "domain"
+        },
+        {
+          "id": 2,
+          "name": "MapDomain", 
+          "instructions": "Create a sitemap of all pages on the given domain. Use web crawling tools to discover all accessible pages. Once you have the list of URLs, make a final response that is only the URLs.",
+          "inputKeys": ["domain"],
+          "outputKey": "sitemap"
+        }
+      ]
+    }
+  }
