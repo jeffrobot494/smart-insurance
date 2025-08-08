@@ -24,9 +24,9 @@ class MCPServerManager {
         dir: 'perplexity'
       },
       {
-        name: 'form5500',        // NEW SERVER - using test version temporarily
+        name: 'form5500',        // NEW SERVER - using real database
         command: 'node',
-        args: ['test-server.js'],
+        args: ['index.js'],
         dir: 'form5500'
       }
     ];

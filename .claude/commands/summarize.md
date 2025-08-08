@@ -1,0 +1,1 @@
+Please write a comprehensive summary of everything you learned about the application and its functioning from this conversation. Write it to a markdown file in "./docs".

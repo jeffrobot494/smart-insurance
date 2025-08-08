@@ -5,6 +5,7 @@ require('./utils/load-env'); // Load environment variables
 const { server: logger } = require('./utils/logger');
 const MCPServerManager = require('./mcp/MCPServerManager');
 const ToolManager = require('./workflow/ToolManager');
+const DatabaseManager = require('./data-extraction/DatabaseManager');
 const pollingService = require('./services/PollingService');
 
 const app = express();
@@ -53,6 +54,11 @@ app.use('*', (req, res) => {
 // Initialize MCP servers and start server
 async function startServer() {
   try {
+    // Initialize DatabaseManager first
+    logger.info('Initializing database connection');
+    const databaseManager = DatabaseManager.getInstance();
+    await databaseManager.initialize();
+    
     // Initialize MCP servers once
     logger.info('Initializing MCP servers');
     globalMCPManager = new MCPServerManager();

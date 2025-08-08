@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         error: 'input is required' 
       });
     }
-
+    console.log("SLUT");
     // Always convert to array
     const inputArray = Array.isArray(input) ? input : [input];
 
@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
     });
 
     // Execute workflow asynchronously with pre-generated IDs
+    logger.info(`Starting workflow: ${workflowname} with ${inputArray.length} inputs`);
     run(workflowFile, { input: inputArray }, initResult.workflowExecutionIds)
     /*
       .then(results => {

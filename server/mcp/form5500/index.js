@@ -32,10 +32,7 @@ function loadEnvManually() {
   }
 }
 
-// Load environment before importing other modules
-loadEnvManually();
-
-// Import database manager - adjust path as needed
+// Import database manager - will use singleton that's already initialized
 const DatabaseManager = require('../../data-extraction/DatabaseManager');
 
 class Form5500MCPServer {
@@ -58,12 +55,18 @@ class Form5500MCPServer {
 
   async initialize() {
     try {
+      // Use the singleton instance that was already initialized in server.js
       this.databaseManager = DatabaseManager.getInstance();
-      await this.databaseManager.initialize();
-      // Database connected successfully (no console output in MCP server)
+      
+      // Check if database is ready (should be initialized already)
+      if (!this.databaseManager.initialized) {
+        throw new Error('Database not initialized');
+      }
+      
+      // Database is available
     } catch (error) {
-      // Database failed, operating in mock mode (no console output in MCP server)
-      this.databaseManager = null; // Set to null to indicate no database
+      // Database failed, operating in mock mode
+      this.databaseManager = null;
     }
   }
 
@@ -166,32 +169,32 @@ class Form5500MCPServer {
     if (exactOnly) {
       query = `
         SELECT DISTINCT 
-          sponsor_name,
-          sponsor_ein,
-          sponsor_city,
-          sponsor_state,
-          sponsor_zipcode,
-          plan_year,
-          COUNT(*) OVER (PARTITION BY sponsor_name, sponsor_ein) as record_count
-        FROM form_5500_data 
-        WHERE LOWER(sponsor_name) = LOWER($1)
-        ORDER BY record_count DESC, plan_year DESC
+          sponsor_dfe_name,
+          spons_dfe_ein,
+          spons_dfe_mail_us_city,
+          spons_dfe_mail_us_state,
+          spons_dfe_mail_us_zip,
+          year,
+          COUNT(*) OVER (PARTITION BY sponsor_dfe_name, spons_dfe_ein) as record_count
+        FROM form_5500_records 
+        WHERE LOWER(sponsor_dfe_name) = LOWER($1)
+        ORDER BY record_count DESC, year DESC
         LIMIT $2
       `;
       params = [companyName, limit];
     } else {
       query = `
         SELECT DISTINCT 
-          sponsor_name,
-          sponsor_ein,
-          sponsor_city,
-          sponsor_state,
-          sponsor_zipcode,
-          plan_year,
-          COUNT(*) OVER (PARTITION BY sponsor_name, sponsor_ein) as record_count
-        FROM form_5500_data 
-        WHERE LOWER(sponsor_name) LIKE LOWER($1)
-        ORDER BY record_count DESC, plan_year DESC
+          sponsor_dfe_name,
+          spons_dfe_ein,
+          spons_dfe_mail_us_city,
+          spons_dfe_mail_us_state,
+          spons_dfe_mail_us_zip,
+          year,
+          COUNT(*) OVER (PARTITION BY sponsor_dfe_name, spons_dfe_ein) as record_count
+        FROM form_5500_records 
+        WHERE LOWER(sponsor_dfe_name) LIKE LOWER($1)
+        ORDER BY record_count DESC, year DESC
         LIMIT $2
       `;
       params = [`%${companyName}%`, limit];
@@ -200,12 +203,12 @@ class Form5500MCPServer {
     const searchResults = await this.databaseManager.query(query, params);
     
     const results = searchResults.rows.map(row => ({
-      legalName: row.sponsor_name,
-      ein: row.sponsor_ein,
-      location: `${row.sponsor_city}, ${row.sponsor_state} ${row.sponsor_zipcode}`,
-      planYear: parseInt(row.plan_year),
+      legalName: row.sponsor_dfe_name,
+      ein: row.spons_dfe_ein,
+      location: `${row.spons_dfe_mail_us_city}, ${row.spons_dfe_mail_us_state} ${row.spons_dfe_mail_us_zip}`,
+      planYear: parseInt(row.year),
       recordCount: parseInt(row.record_count),
-      matchType: this.determineMatchType(companyName, row.sponsor_name)
+      matchType: this.determineMatchType(companyName, row.sponsor_dfe_name)
     }));
 
     return {
