@@ -77,3 +77,21 @@
 {"level":"error","message":"firecrawl MCP stderr:","service":"mcp","timestamp":"2025-07-25T17:00:53.345Z"}
 {"level":"error","message":"  ✗ firecrawl_map failed:","service":"workflow","timestamp":"2025-07-27T00:41:03.584Z"}
 {"level":"error","message":"  ✗ firecrawl_scrape failed:","service":"workflow","timestamp":"2025-07-27T00:42:13.015Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:45:01.329Z"}
+{"level":"error","message":"Failed to start MCP servers:","service":"mcp","timestamp":"2025-08-08T08:45:11.358Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:52:37.578Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:52:39.227Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:53:33.417Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:53:35.595Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:54:07.915Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:54:09.800Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:54:09.801Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:56:07.734Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:56:07.735Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:57:25.903Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:58:24.632Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:37.175Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:24.031Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-08T09:18:43.708Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-08T09:18:43.709Z"}
+{"level":"error","message":"Params:","service":"database","timestamp":"2025-08-08T09:18:43.709Z"}

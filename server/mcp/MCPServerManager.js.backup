@@ -5,42 +5,22 @@ const path = require('path');
 
 class MCPServerManager {
   constructor() {
-    this.processes = new Map(); // Replaces individual process properties
+    this.firecrawlProcess = null;
+    this.perplexityProcess = null;
     this.allTools = [];
     this.isInitialized = false;
     
-    // Server configurations - easy to add new servers
-    this.servers = [
-      {
-        name: 'firecrawl',
-        command: 'node',
-        args: ['dist/index.js'],
-        dir: 'firecrawl'
-      },
-      {
-        name: 'perplexity',
-        command: 'python',
-        args: ['perplexity-search.py'],
-        dir: 'perplexity'
-      },
-      {
-        name: 'form5500',        // NEW SERVER - using test version temporarily
-        command: 'node',
-        args: ['test-server.js'],
-        dir: 'form5500'
-      }
-    ];
+    // Paths to local mcp directory
+    this.FIRECRAWL_MCP_PATH = path.join(__dirname, 'firecrawl');
+    this.PERPLEXITY_MCP_PATH = path.join(__dirname, 'perplexity');
   }
 
   async initialize() {
     logger.info('🚀 Starting MCP servers...');
     
     try {
-      // Start all servers using generic method
-      for (const serverConfig of this.servers) {
-        await this.startServer(serverConfig);
-      }
-      
+      await this.startFirecrawlMCP();
+      await this.startPerplexityMCP();
       await this.waitForServerInitialization();
       
       this.isInitialized = true;
@@ -54,58 +34,54 @@ class MCPServerManager {
     }
   }
 
-  async startServer(config) {
-    logger.info(`  Starting ${config.name} MCP...`);
+  async startFirecrawlMCP() {
+    logger.info('  Starting Firecrawl MCP...');
     
-    const serverPath = path.join(__dirname, config.dir);
-    if (!fs.existsSync(serverPath)) {
-      throw new Error(`${config.name} MCP path not found: ${serverPath}`);
+    if (!fs.existsSync(this.FIRECRAWL_MCP_PATH)) {
+      throw new Error(`Firecrawl MCP path not found: ${this.FIRECRAWL_MCP_PATH}`);
     }
 
-    const serverProcess = spawn(config.command, config.args, {
-      cwd: serverPath,
+    this.firecrawlProcess = spawn('node', ['dist/index.js'], {
+      cwd: this.FIRECRAWL_MCP_PATH,
       stdio: ['pipe', 'pipe', 'pipe'],
       env: { ...process.env }
     });
 
-    serverProcess.on('error', (error) => {
-      logger.error(`${config.name} MCP error:`, error.message);
+    this.firecrawlProcess.on('error', (error) => {
+      logger.error('Firecrawl MCP error:', error.message);
     });
 
-    serverProcess.on('exit', (code) => {
-      logger.info(`${config.name} MCP exited with code ${code}`);
+    this.firecrawlProcess.on('exit', (code) => {
+      logger.info(`Firecrawl MCP exited with code ${code}`);
     });
 
-    this.processes.set(config.name, serverProcess);
-    this.setupMCPCommunication(serverProcess, config.name);
+    this.setupMCPCommunication(this.firecrawlProcess, 'firecrawl');
   }
 
-  async cleanup() {
-    logger.info('🧹 Cleaning up MCP servers...');
+  async startPerplexityMCP() {
+    logger.info('  Starting Perplexity MCP...');
     
-    // Kill all processes generically
-    for (const [name, serverProcess] of this.processes) {
-      if (serverProcess) {
-        serverProcess.kill();
-        logger.info(`✓ ${name} process cleaned up`);
-      }
+    if (!fs.existsSync(this.PERPLEXITY_MCP_PATH)) {
+      throw new Error(`Perplexity MCP path not found: ${this.PERPLEXITY_MCP_PATH}`);
     }
-    
-    this.processes.clear();
-    this.isInitialized = false;
-    logger.info('MCP processes cleaned up');
+
+    this.perplexityProcess = spawn('python', ['perplexity-search.py'], {
+      cwd: this.PERPLEXITY_MCP_PATH,
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env }
+    });
+
+    this.perplexityProcess.on('error', (error) => {
+      logger.error('Perplexity MCP error:', error.message);
+    });
+
+    this.perplexityProcess.on('exit', (code) => {
+      logger.info(`Perplexity MCP exited with code ${code}`);
+    });
+
+    this.setupMCPCommunication(this.perplexityProcess, 'perplexity');
   }
 
-  // Updated getServerProcess method for new architecture
-  getServerProcess(serverName) {
-    const serverProcess = this.processes.get(serverName);
-    if (!serverProcess) {
-      throw new Error(`Unknown server: ${serverName}`);
-    }
-    return serverProcess;
-  }
-
-  // All existing MCP communication methods stay exactly the same
   setupMCPCommunication(process, serverName) {
     let buffer = '';
     
@@ -216,12 +192,35 @@ class MCPServerManager {
     }));
   }
 
+  getServerProcess(serverName) {
+    switch (serverName) {
+      case 'firecrawl':
+        return this.firecrawlProcess;
+      case 'perplexity':
+        return this.perplexityProcess;
+      default:
+        throw new Error(`Unknown server: ${serverName}`);
+    }
+  }
+
   findToolByName(toolName) {
     return this.allTools.find(t => t.name === toolName);
   }
 
   isReady() {
     return this.isInitialized;
+  }
+
+  cleanup() {
+    logger.info('🧹 Cleaning up MCP servers...');
+    
+    if (this.firecrawlProcess) {
+      this.firecrawlProcess.kill();
+    }
+    
+    if (this.perplexityProcess) {
+      this.perplexityProcess.kill();
+    }
   }
 }
 

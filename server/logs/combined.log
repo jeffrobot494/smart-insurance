@@ -1268,3 +1268,238 @@
 {"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:24.468Z"}
 {"level":"info","message":"📬 [POLLING] Retrieved 5 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:24.469Z"}
 {"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-07-27T00:42:33.614Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:45:01.132Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:45:01.134Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:45:01.134Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:45:01.140Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:45:01.320Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:45:01.329Z"}
+{"level":"info","message":"form5500 MCP exited with code 1","service":"mcp","timestamp":"2025-08-08T08:45:08.724Z"}
+{"level":"error","message":"Failed to start MCP servers:","service":"mcp","timestamp":"2025-08-08T08:45:11.358Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:52:37.469Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:52:37.471Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:52:37.471Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:52:37.477Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:52:37.573Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:52:37.578Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:52:39.227Z"}
+{"level":"info","message":"form5500 MCP exited with code 1","service":"mcp","timestamp":"2025-08-08T08:52:42.252Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:52:46.401Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:52:46.404Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:52:46.407Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-08T08:52:46.408Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:52:46.408Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:52:46.409Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:52:46.409Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:53:33.300Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:53:33.301Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:53:33.301Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:53:33.308Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:53:33.407Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:53:33.417Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:53:35.595Z"}
+{"level":"info","message":"form5500 MCP exited with code 1","service":"mcp","timestamp":"2025-08-08T08:53:38.974Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:53:40.302Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:53:40.305Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:53:40.430Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-08T08:53:40.430Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:53:40.430Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:53:40.431Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:53:40.432Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:54:07.804Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:54:07.805Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:54:07.806Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:54:07.812Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:54:07.910Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:54:07.915Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:54:09.800Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:54:09.801Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-08T08:54:09.803Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test","service":"mcp","timestamp":"2025-08-08T08:54:09.805Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:54:09.918Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test\n","service":"mcp","timestamp":"2025-08-08T08:54:09.919Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:54:09.919Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:54:09.920Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:54:09.920Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:54:14.641Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:54:14.644Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:56:07.619Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:56:07.621Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:56:07.622Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:56:07.628Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:56:07.638Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:56:07.734Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-08T08:56:07.735Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-08T08:56:07.738Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test","service":"mcp","timestamp":"2025-08-08T08:56:07.739Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:56:07.850Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test\n","service":"mcp","timestamp":"2025-08-08T08:56:07.850Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:56:07.850Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:56:07.854Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:56:07.854Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:56:07.913Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:56:07.915Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-08T08:56:11.590Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-08T08:56:11.595Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:57:25.750Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:57:25.751Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:57:25.751Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:57:25.758Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:57:25.898Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:57:25.903Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-08T08:57:28.087Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test","service":"mcp","timestamp":"2025-08-08T08:57:28.088Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:57:28.107Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test\n","service":"mcp","timestamp":"2025-08-08T08:57:28.107Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:57:28.107Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:57:28.108Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:57:28.109Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:57:31.184Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:57:31.187Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T08:58:24.516Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T08:58:24.519Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T08:58:24.519Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T08:58:24.525Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T08:58:24.625Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-08T08:58:24.632Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-08T08:58:26.653Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test","service":"mcp","timestamp":"2025-08-08T08:58:26.654Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T08:58:26.836Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test\n","service":"mcp","timestamp":"2025-08-08T08:58:26.836Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T08:58:26.836Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T08:58:26.838Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T08:58:26.838Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T08:58:30.686Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T08:58:30.689Z"}
+{"level":"info","message":"🔧 TaskManager initialized","service":"manager","timestamp":"2025-08-08T09:00:28.994Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-08T09:00:29.378Z"}
+{"0":21,"level":"info","message":"✅ Created 1 workflow execution records with IDs:","service":"database","timestamp":"2025-08-08T09:00:29.457Z"}
+{"level":"info","message":"🆔 Pre-generated 1 workflow execution IDs for immediate polling","service":"manager","timestamp":"2025-08-08T09:00:29.458Z"}
+{"level":"info","message":"🚀 Starting workflow execution for: test_name_resolution.json","service":"manager","timestamp":"2025-08-08T09:00:29.458Z"}
+{"input":[{"companies":["Test Company","McDonalds Corporation","Fake Company XYZ"]}],"level":"info","message":"📥 User inputs provided:","service":"manager","timestamp":"2025-08-08T09:00:29.458Z"}
+{"level":"info","message":"📋 Processing 1 input(s) through 1 tasks\n","service":"workflow","timestamp":"2025-08-08T09:00:29.462Z"}
+{"level":"info","message":"\n🔄 Processing item 1/1: [object Object]","service":"workflow","timestamp":"2025-08-08T09:00:29.462Z"}
+{"level":"info","message":"🆔 Using pre-generated workflow execution ID: 21","service":"workflow","timestamp":"2025-08-08T09:00:29.462Z"}
+{"firmId":null,"id":"me2lihfz51p54fpvj1t","level":"info","message":"📨 [POLLING] Added message for workflow 21: Starting research for [object Object]","service":"polling","timestamp":"2025-08-08T09:00:29.519Z","type":"progress"}
+{"level":"info","message":"🎯 Executing Task 1: TestCompanyNames","service":"workflow","timestamp":"2025-08-08T09:00:29.520Z"}
+{"level":"info","message":"📝 Instructions: For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input.","service":"workflow","timestamp":"2025-08-08T09:00:29.520Z"}
+{"firmId":null,"id":"me2lihg09exj2perqn","level":"info","message":"📨 [POLLING] Added message for workflow 21: Task 1/1: TestCompanyNames","service":"polling","timestamp":"2025-08-08T09:00:29.520Z","type":"progress"}
+{"level":"info","message":"⚠️ API call failed (attempt 1/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:29.779Z"}
+{"level":"info","message":"🔄 Retrying in 1000ms...","service":"workflow","timestamp":"2025-08-08T09:00:29.779Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 2/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:30.882Z"}
+{"level":"info","message":"🔄 Retrying in 2000ms...","service":"workflow","timestamp":"2025-08-08T09:00:30.882Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 3/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:33.036Z"}
+{"level":"info","message":"🔄 Retrying in 4000ms...","service":"workflow","timestamp":"2025-08-08T09:00:33.036Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 4/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:37.175Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:00:37.175Z"}
+{"firmId":null,"id":"me2linconh8rvfaqcr","level":"info","message":"📨 [POLLING] Added message for workflow 21: ❌ TestCompanyNames failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"polling","timestamp":"2025-08-08T09:00:37.176Z","type":"error"}
+{"firmId":null,"id":"me2lincol2yq37g2e6r","level":"info","message":"📨 [POLLING] Added message for workflow 21: 🎉 Research completed for [object Object]","service":"polling","timestamp":"2025-08-08T09:00:37.176Z","type":"complete"}
+{"level":"info","message":"🏁 Workflow execution completed","service":"workflow","timestamp":"2025-08-08T09:00:37.185Z"}
+{"level":"info","message":"📊 Processed 1 items","service":"workflow","timestamp":"2025-08-08T09:00:37.185Z"}
+{"0":{"input":{"companies":["Test Company","McDonalds Corporation","Fake Company XYZ"]},"itemIndex":0,"tasks":{"1":{"error":"Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","errorType":"execution_error","success":false,"taskId":1}},"workflowExecutionId":21},"level":"info","message":"Results:","service":"manager","timestamp":"2025-08-08T09:00:37.186Z"}
+{"level":"info","message":"✅ First workflow completed","service":"manager","timestamp":"2025-08-08T09:00:37.186Z"}
+{"level":"info","message":"🔍 Starting automatic data extraction for portfolio companies","service":"manager","timestamp":"2025-08-08T09:00:37.186Z"}
+{"level":"info","message":"📊 Extracting data for workflow execution ID: 21","service":"manager","timestamp":"2025-08-08T09:00:37.186Z"}
+{"level":"info","message":"🔍 Extracting Form 5500 data for portfolio companies from workflow execution: 21","service":"manager","timestamp":"2025-08-08T09:00:37.186Z"}
+{"level":"info","message":"⚠️ No portfolio companies found for this workflow execution","service":"manager","timestamp":"2025-08-08T09:00:37.242Z"}
+{"level":"info","message":"✅ Combined workflow (research + data extraction) completed","service":"manager","timestamp":"2025-08-08T09:00:37.310Z"}
+{"level":"info","message":"📋 [RESULTS] Getting workflow results for ID:","service":"server","timestamp":"2025-08-08T09:00:51.759Z"}
+{"level":"info","message":"📋 [RESULTS] Returning results for workflow:","service":"server","timestamp":"2025-08-08T09:00:51.818Z"}
+{"0":22,"level":"info","message":"✅ Created 1 workflow execution records with IDs:","service":"database","timestamp":"2025-08-08T09:01:16.484Z"}
+{"level":"info","message":"🆔 Pre-generated 1 workflow execution IDs for immediate polling","service":"manager","timestamp":"2025-08-08T09:01:16.485Z"}
+{"level":"info","message":"🚀 Starting workflow execution for: direct_tool_test.json","service":"manager","timestamp":"2025-08-08T09:01:16.485Z"}
+{"input":[{"test_companies":["Test Company","Random Corp","Another Test"]}],"level":"info","message":"📥 User inputs provided:","service":"manager","timestamp":"2025-08-08T09:01:16.486Z"}
+{"level":"info","message":"📋 Processing 1 input(s) through 1 tasks\n","service":"workflow","timestamp":"2025-08-08T09:01:16.491Z"}
+{"level":"info","message":"\n🔄 Processing item 1/1: [object Object]","service":"workflow","timestamp":"2025-08-08T09:01:16.491Z"}
+{"level":"info","message":"🆔 Using pre-generated workflow execution ID: 22","service":"workflow","timestamp":"2025-08-08T09:01:16.492Z"}
+{"firmId":null,"id":"me2ljhqgt4mezy7q9h","level":"info","message":"📨 [POLLING] Added message for workflow 22: Starting research for [object Object]","service":"polling","timestamp":"2025-08-08T09:01:16.552Z","type":"progress"}
+{"level":"info","message":"🎯 Executing Task 1: TestForm5500Tool","service":"workflow","timestamp":"2025-08-08T09:01:16.552Z"}
+{"level":"info","message":"📝 Instructions: You have access to a tool called 'form5500_name_test'. Test this tool by calling it with each of the provided company names.\n\n**Instructions:**\n1. For each company name in the test_companies input, call the form5500_name_test tool\n2. Document the response you get from each tool call\n3. Return a summary of the results\n\n**Expected companies to test:**\n- 'Test Company' (should return mock data with exact match)\n- 'Random Corp' (should return mock data with partial match)\n- 'Another Test' (should return mock data)\n\nCall the tool like this:\nform5500_name_test({\"companyName\": \"Test Company\"})\n\n**Output the results in this format:**\n```json\n{\n  \"tool_test_results\": [\n    {\n      \"company_tested\": \"Test Company\",\n      \"tool_response\": \"<the actual response from the tool>\",\n      \"success\": true\n    }\n  ]\n}\n```\n\n**Important**: Actually call the form5500_name_test tool for each company. Don't simulate or guess the results.","service":"workflow","timestamp":"2025-08-08T09:01:16.552Z"}
+{"firmId":null,"id":"me2ljhqgpmk03zpp0r","level":"info","message":"📨 [POLLING] Added message for workflow 22: Task 1/1: TestForm5500Tool","service":"polling","timestamp":"2025-08-08T09:01:16.552Z","type":"progress"}
+{"level":"info","message":"⚠️ API call failed (attempt 1/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:16.674Z"}
+{"level":"info","message":"🔄 Retrying in 1000ms...","service":"workflow","timestamp":"2025-08-08T09:01:16.675Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 2/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:17.788Z"}
+{"level":"info","message":"🔄 Retrying in 2000ms...","service":"workflow","timestamp":"2025-08-08T09:01:17.789Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 3/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:19.885Z"}
+{"level":"info","message":"🔄 Retrying in 4000ms...","service":"workflow","timestamp":"2025-08-08T09:01:19.885Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 4/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:24.030Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:01:24.031Z"}
+{"firmId":null,"id":"me2ljni798stpi73hdb","level":"info","message":"📨 [POLLING] Added message for workflow 22: ❌ TestForm5500Tool failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"polling","timestamp":"2025-08-08T09:01:24.031Z","type":"error"}
+{"firmId":null,"id":"me2ljni7jltclvrg2rl","level":"info","message":"📨 [POLLING] Added message for workflow 22: 🎉 Research completed for [object Object]","service":"polling","timestamp":"2025-08-08T09:01:24.031Z","type":"complete"}
+{"level":"info","message":"🏁 Workflow execution completed","service":"workflow","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"📊 Processed 1 items","service":"workflow","timestamp":"2025-08-08T09:01:24.037Z"}
+{"0":{"input":{"test_companies":["Test Company","Random Corp","Another Test"]},"itemIndex":0,"tasks":{"1":{"error":"Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","errorType":"execution_error","success":false,"taskId":1}},"workflowExecutionId":22},"level":"info","message":"Results:","service":"manager","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"✅ First workflow completed","service":"manager","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"🔍 Starting automatic data extraction for portfolio companies","service":"manager","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"📊 Extracting data for workflow execution ID: 22","service":"manager","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"🔍 Extracting Form 5500 data for portfolio companies from workflow execution: 22","service":"manager","timestamp":"2025-08-08T09:01:24.037Z"}
+{"level":"info","message":"⚠️ No portfolio companies found for this workflow execution","service":"manager","timestamp":"2025-08-08T09:01:24.092Z"}
+{"level":"info","message":"✅ Combined workflow (research + data extraction) completed","service":"manager","timestamp":"2025-08-08T09:01:24.151Z"}
+{"level":"info","message":"📋 [RESULTS] Getting workflow results for ID:","service":"server","timestamp":"2025-08-08T09:01:44.521Z"}
+{"level":"info","message":"📋 [RESULTS] Returning results for workflow:","service":"server","timestamp":"2025-08-08T09:01:44.578Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-08T09:15:30.127Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-08T09:17:30.996Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-08T09:17:30.998Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-08T09:17:30.998Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-08T09:17:31.005Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-08T09:17:31.014Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-08T09:17:31.116Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test","service":"mcp","timestamp":"2025-08-08T09:17:31.118Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-08T09:17:31.230Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test\n","service":"mcp","timestamp":"2025-08-08T09:17:31.230Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-08T09:17:31.231Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-08T09:17:31.233Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-08T09:17:31.233Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-08T09:17:31.279Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-08T09:17:31.281Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-08T09:17:32.203Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-08T09:17:32.208Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-08T09:18:43.644Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-08T09:18:43.708Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-08T09:18:43.709Z"}
+{"level":"error","message":"Params:","service":"database","timestamp":"2025-08-08T09:18:43.709Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-08T09:18:52.614Z"}
+{"level":"info","message":"✅ Database connections closed","service":"database","timestamp":"2025-08-08T09:18:52.755Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-08T09:19:01.747Z"}
+{"level":"info","message":"✅ Database connections closed","service":"database","timestamp":"2025-08-08T09:19:01.818Z"}
+{"level":"info","message":"🔍 Extracting Form 5500 data for portfolio companies from workflow execution: 13","service":"manager","timestamp":"2025-08-08T09:22:48.762Z"}
+{"0":"American Pain Consortium","1":"Brown Gibbons Lang & Company","2":"Entertainment Partners","3":"Majestic Realty","4":"Medix","5":"SmartBug Media","6":"The Intersect Group","level":"info","message":"📊 Found 7 portfolio companies:","service":"manager","timestamp":"2025-08-08T09:22:49.129Z"}
+{"level":"info","message":"🔍 Processing 7 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-08-08T09:22:49.130Z"}
+{"firmId":null,"id":"me2mb73eq7avc7joe5g","level":"info","message":"📨 [POLLING] Added message for workflow 13: 🔍 Starting Form 5500 research for 7 companies","service":"polling","timestamp":"2025-08-08T09:22:49.130Z","type":"progress"}
+{"firmId":null,"id":"me2mb84ua0x1uudy4o","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📋 Found Form 5500 records for 0 companies","service":"polling","timestamp":"2025-08-08T09:22:50.478Z","type":"progress"}
+{"firmId":null,"id":"me2mb84ujd7eezjatr","level":"info","message":"📨 [POLLING] Added message for workflow 13: 🔍 Starting Schedule A research for 6 EINs","service":"polling","timestamp":"2025-08-08T09:22:50.478Z","type":"progress"}
+{"firmId":null,"id":"me2mb8gg4qdk8bzhn13","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📋 Found Schedule A records for 0 EINs","service":"polling","timestamp":"2025-08-08T09:22:50.896Z","type":"progress"}
+{"firmId":null,"id":"me2mb8gh8t24z0cctpx","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📊 Generating final report","service":"polling","timestamp":"2025-08-08T09:22:50.897Z","type":"progress"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-08T09:22:50.897Z"}
+{"firmId":null,"id":"me2mb8ghh9xq6kc8c0h","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Data extraction completed","service":"polling","timestamp":"2025-08-08T09:22:50.897Z","type":"progress"}
+{"level":"info","message":"✅ Data extraction completed and results saved to database","service":"manager","timestamp":"2025-08-08T09:22:51.027Z"}
+{"0":23,"level":"info","message":"✅ Created 1 workflow execution records with IDs:","service":"database","timestamp":"2025-08-08T09:24:41.918Z"}
+{"level":"info","message":"🆔 Pre-generated 1 workflow execution IDs for immediate polling","service":"manager","timestamp":"2025-08-08T09:24:41.918Z"}
+{"level":"info","message":"🚀 Starting workflow execution for: test_name_resolution.json","service":"manager","timestamp":"2025-08-08T09:24:41.920Z"}
+{"input":["test"],"level":"info","message":"📥 User inputs provided:","service":"manager","timestamp":"2025-08-08T09:24:41.920Z"}
+{"level":"info","message":"📋 Processing 1 input(s) through 1 tasks\n","service":"workflow","timestamp":"2025-08-08T09:24:41.926Z"}
+{"level":"info","message":"\n🔄 Processing item 1/1: test","service":"workflow","timestamp":"2025-08-08T09:24:41.926Z"}
+{"level":"info","message":"🆔 Using pre-generated workflow execution ID: 23","service":"workflow","timestamp":"2025-08-08T09:24:41.926Z"}
+{"firmId":null,"id":"me2mdm6gdtj736hv0qb","level":"info","message":"📨 [POLLING] Added message for workflow 23: Starting research for test","service":"polling","timestamp":"2025-08-08T09:24:41.992Z","type":"progress"}
+{"level":"info","message":"🎯 Executing Task 1: TestCompanyNames","service":"workflow","timestamp":"2025-08-08T09:24:41.992Z"}
+{"level":"info","message":"📝 Instructions: For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input.","service":"workflow","timestamp":"2025-08-08T09:24:41.992Z"}
+{"firmId":null,"id":"me2mdm6g76vsnfuwlmy","level":"info","message":"📨 [POLLING] Added message for workflow 23: Task 1/1: TestCompanyNames","service":"polling","timestamp":"2025-08-08T09:24:41.992Z","type":"progress"}
+{"level":"info","message":"⚠️ API call failed (attempt 1/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:24:42.125Z"}
+{"level":"info","message":"🔄 Retrying in 1000ms...","service":"workflow","timestamp":"2025-08-08T09:24:42.126Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 2/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:24:43.214Z"}
+{"level":"info","message":"🔄 Retrying in 2000ms...","service":"workflow","timestamp":"2025-08-08T09:24:43.214Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 3/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:24:45.304Z"}
+{"level":"info","message":"🔄 Retrying in 4000ms...","service":"workflow","timestamp":"2025-08-08T09:24:45.304Z"}
+{"level":"info","message":"⚠️ API call failed (attempt 4/4): Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:24:49.448Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-08T09:24:49.448Z"}
+{"firmId":null,"id":"me2mdrxkuxqzia0s0uf","level":"info","message":"📨 [POLLING] Added message for workflow 23: ❌ TestCompanyNames failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"polling","timestamp":"2025-08-08T09:24:49.448Z","type":"error"}
+{"firmId":null,"id":"me2mdrxk2pps8bjb80l","level":"info","message":"📨 [POLLING] Added message for workflow 23: 🎉 Research completed for test","service":"polling","timestamp":"2025-08-08T09:24:49.448Z","type":"complete"}
+{"level":"info","message":"🏁 Workflow execution completed","service":"workflow","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"📊 Processed 1 items","service":"workflow","timestamp":"2025-08-08T09:24:49.453Z"}
+{"0":{"input":"test","itemIndex":0,"tasks":{"1":{"error":"Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","errorType":"execution_error","success":false,"taskId":1}},"workflowExecutionId":23},"level":"info","message":"Results:","service":"manager","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"✅ First workflow completed","service":"manager","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"🔍 Starting automatic data extraction for portfolio companies","service":"manager","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"📊 Extracting data for workflow execution ID: 23","service":"manager","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"🔍 Extracting Form 5500 data for portfolio companies from workflow execution: 23","service":"manager","timestamp":"2025-08-08T09:24:49.453Z"}
+{"level":"info","message":"⚠️ No portfolio companies found for this workflow execution","service":"manager","timestamp":"2025-08-08T09:24:49.525Z"}
+{"level":"info","message":"✅ Combined workflow (research + data extraction) completed","service":"manager","timestamp":"2025-08-08T09:24:49.582Z"}

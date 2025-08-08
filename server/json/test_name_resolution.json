@@ -1,0 +1,15 @@
+{
+  "workflow": {
+    "name": "Test Name Resolution",
+    "description": "Test individual company names against Form 5500 data",
+    "tasks": [
+      {
+        "id": 1,
+        "name": "TestCompanyNames",
+        "outputKey": "test_results",
+        "inputKeys": ["companies"],
+        "instructions": "For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input."
+      }
+    ]
+  }
+}

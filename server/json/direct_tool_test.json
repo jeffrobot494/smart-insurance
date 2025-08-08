@@ -1,0 +1,15 @@
+{
+  "workflow": {
+    "name": "Direct Tool Test",
+    "description": "Test form5500_name_test tool directly",
+    "tasks": [
+      {
+        "id": 1,
+        "name": "TestForm5500Tool",
+        "outputKey": "tool_test_results",
+        "inputKeys": ["test_companies"],
+        "instructions": "You have access to a tool called 'form5500_name_test'. Test this tool by calling it with each of the provided company names.\n\n**Instructions:**\n1. For each company name in the test_companies input, call the form5500_name_test tool\n2. Document the response you get from each tool call\n3. Return a summary of the results\n\n**Expected companies to test:**\n- 'Test Company' (should return mock data with exact match)\n- 'Random Corp' (should return mock data with partial match)\n- 'Another Test' (should return mock data)\n\nCall the tool like this:\nform5500_name_test({\"companyName\": \"Test Company\"})\n\n**Output the results in this format:**\n```json\n{\n  \"tool_test_results\": [\n    {\n      \"company_tested\": \"Test Company\",\n      \"tool_response\": \"<the actual response from the tool>\",\n      \"success\": true\n    }\n  ]\n}\n```\n\n**Important**: Actually call the form5500_name_test tool for each company. Don't simulate or guess the results."
+      }
+    ]
+  }
+}

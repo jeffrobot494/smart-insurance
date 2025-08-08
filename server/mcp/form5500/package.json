@@ -1,0 +1,12 @@
+{
+  "name": "form5500-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Form 5500 data testing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.0"
+  }
+}
