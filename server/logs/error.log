@@ -75,3 +75,5 @@
 {"level":"error","message":"firecrawl MCP stderr:","service":"mcp","timestamp":"2025-07-25T17:00:48.928Z"}
 {"level":"error","message":"firecrawl MCP stderr:","service":"mcp","timestamp":"2025-07-25T17:00:53.341Z"}
 {"level":"error","message":"firecrawl MCP stderr:","service":"mcp","timestamp":"2025-07-25T17:00:53.345Z"}
+{"level":"error","message":"  ✗ firecrawl_map failed:","service":"workflow","timestamp":"2025-07-27T00:41:03.584Z"}
+{"level":"error","message":"  ✗ firecrawl_scrape failed:","service":"workflow","timestamp":"2025-07-27T00:42:13.015Z"}

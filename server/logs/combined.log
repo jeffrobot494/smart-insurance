@@ -994,3 +994,277 @@
 {"level":"info","message":"Health check available","service":"server","timestamp":"2025-07-25T19:55:54.418Z","url":"http://localhost:3000/api/health"}
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-07-25T19:55:55.167Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-07-25T19:55:55.172Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-07-27T00:38:59.458Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-07-27T00:38:59.463Z"}
+{"level":"info","message":"  Starting Firecrawl MCP...","service":"mcp","timestamp":"2025-07-27T00:38:59.465Z"}
+{"level":"info","message":"  Starting Perplexity MCP...","service":"mcp","timestamp":"2025-07-27T00:38:59.495Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-07-27T00:39:02.908Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-07-27T00:39:02.919Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-07-27T00:39:03.019Z"}
+{"level":"info","message":"✓ Available tools: search_web, search_image, ask_factual_question\n","service":"mcp","timestamp":"2025-07-27T00:39:03.020Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-07-27T00:39:03.020Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-07-27T00:39:03.026Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-07-27T00:39:03.027Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-07-27T00:39:04.182Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-07-27T00:39:04.187Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Getting all saved workflow results","service":"server","timestamp":"2025-07-27T00:39:10.419Z"}
+{"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-07-27T00:39:10.420Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-07-27T00:39:10.779Z"}
+{"level":"info","message":"📋 [MANAGER] Found 11 saved workflow results","service":"manager","timestamp":"2025-07-27T00:39:10.841Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-07-27T00:39:10.841Z"}
+{"level":"info","message":"🔧 TaskManager initialized","service":"manager","timestamp":"2025-07-27T00:39:21.898Z"}
+{"0":13,"level":"info","message":"✅ Created 1 workflow execution records with IDs:","service":"database","timestamp":"2025-07-27T00:39:21.955Z"}
+{"level":"info","message":"🆔 Pre-generated 1 workflow execution IDs for immediate polling","service":"manager","timestamp":"2025-07-27T00:39:21.956Z"}
+{"level":"info","message":"🚀 Starting workflow execution for: pe_firm_research.json","service":"manager","timestamp":"2025-07-27T00:39:21.957Z"}
+{"input":["American Discovery Capital"],"level":"info","message":"📥 User inputs provided:","service":"manager","timestamp":"2025-07-27T00:39:21.958Z"}
+{"level":"info","message":"📋 Processing 1 input(s) through 4 tasks\n","service":"workflow","timestamp":"2025-07-27T00:39:21.960Z"}
+{"level":"info","message":"\n🔄 Processing item 1/1: American Discovery Capital","service":"workflow","timestamp":"2025-07-27T00:39:21.960Z"}
+{"level":"info","message":"🆔 Using pre-generated workflow execution ID: 13","service":"workflow","timestamp":"2025-07-27T00:39:21.960Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:21.962Z"}
+{"firmId":null,"id":"mdkybt78sm9goe1m5m","level":"info","message":"📨 [POLLING] Added message for workflow 13: Starting research for American Discovery Capital","service":"polling","timestamp":"2025-07-27T00:39:22.004Z","type":"progress"}
+{"level":"info","message":"🎯 Executing Task 1: FindDomain","service":"workflow","timestamp":"2025-07-27T00:39:22.004Z"}
+{"level":"info","message":"📝 Instructions: Find the website domain for the given private equity firm name. Return just the domain URL (e.g., 'www.example.com'). Use web search to find their official website. Respond with only the domain name.","service":"workflow","timestamp":"2025-07-27T00:39:22.005Z"}
+{"firmId":null,"id":"mdkybt79pwpbpbyrde","level":"info","message":"📨 [POLLING] Added message for workflow 13: Task 1/4: FindDomain","service":"polling","timestamp":"2025-07-27T00:39:22.005Z","type":"progress"}
+{"level":"info","message":"📥 Input input: American Discovery Capital","service":"workflow","timestamp":"2025-07-27T00:39:22.005Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:23.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 2 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:23.969Z"}
+{"level":"info","message":"  🔧 Executing search_web...","service":"workflow","timestamp":"2025-07-27T00:39:24.675Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:25.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:25.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:27.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:27.967Z"}
+{"level":"info","message":"  ✓ search_web completed","service":"workflow","timestamp":"2025-07-27T00:39:28.165Z"}
+{"level":"info","message":"✅ Task 1 completed successfully","service":"workflow","timestamp":"2025-07-27T00:39:29.518Z"}
+{"level":"info","message":"📤 Output (domain): americandiscoverycapital.com","service":"workflow","timestamp":"2025-07-27T00:39:29.518Z"}
+{"firmId":null,"id":"mdkybyzzq39pfize1qr","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Completed FindDomain","service":"polling","timestamp":"2025-07-27T00:39:29.519Z","type":"progress"}
+{"level":"info","message":"","service":"workflow","timestamp":"2025-07-27T00:39:29.519Z"}
+{"level":"info","message":"🎯 Executing Task 2: MapDomain","service":"workflow","timestamp":"2025-07-27T00:39:29.519Z"}
+{"level":"info","message":"📝 Instructions: Create a sitemap of all pages on the given domain. Use web crawling tools to discover all accessible pages. Once you have the list of URLs, make a final response that is only the URLs.","service":"workflow","timestamp":"2025-07-27T00:39:29.519Z"}
+{"firmId":null,"id":"mdkybyzz9jxtvi8xlv4","level":"info","message":"📨 [POLLING] Added message for workflow 13: Task 2/4: MapDomain","service":"polling","timestamp":"2025-07-27T00:39:29.519Z","type":"progress"}
+{"level":"info","message":"📥 Input domain: americandiscoverycapital.com","service":"workflow","timestamp":"2025-07-27T00:39:29.519Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:29.962Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 2 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:29.962Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:31.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:31.967Z"}
+{"level":"info","message":"  🔧 Executing firecrawl_map...","service":"workflow","timestamp":"2025-07-27T00:39:32.156Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:33.964Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:33.964Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:35.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:35.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:38.027Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:38.028Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:39.964Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:39.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:41.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:41.976Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:43.967Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:43.967Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:45.963Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:45.964Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:47.971Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:47.972Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:49.963Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:49.964Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:51.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:51.966Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:53.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:53.967Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:55.995Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:55.996Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:57.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:57.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:39:59.976Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:39:59.977Z"}
+{"level":"info","message":"  ✓ firecrawl_map completed","service":"workflow","timestamp":"2025-07-27T00:40:00.971Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:01.967Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:01.967Z"}
+{"level":"info","message":"  🔧 Executing firecrawl_map...","service":"workflow","timestamp":"2025-07-27T00:40:03.580Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:03.965Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:03.965Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:05.977Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:05.977Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:07.972Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:07.972Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:09.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:09.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:11.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:11.974Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:13.973Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:13.973Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:15.968Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:15.969Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:17.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:17.967Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:19.976Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:19.976Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:21.971Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:21.971Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:23.980Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:23.981Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:25.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:25.974Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:27.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:27.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:29.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:29.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:31.971Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:31.971Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:33.965Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:33.965Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:35.982Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:35.982Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:37.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:37.969Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:39.979Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:39.980Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:41.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:41.976Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:43.971Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:43.972Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:45.968Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:45.969Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:47.979Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:47.980Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:49.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:49.976Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:51.972Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:51.973Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:53.970Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:53.971Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:55.968Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:55.968Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:57.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:57.969Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:40:59.968Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:40:59.969Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:01.971Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:01.971Z"}
+{"level":"error","message":"  ✗ firecrawl_map failed:","service":"workflow","timestamp":"2025-07-27T00:41:03.584Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:03.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:03.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:05.967Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:05.968Z"}
+{"level":"info","message":"✅ Task 2 completed successfully","service":"workflow","timestamp":"2025-07-27T00:41:06.326Z"}
+{"level":"info","message":"📤 Output (sitemap): I apologize, but I'm experiencing technical difficulties accessing the website through our tools. This could be due to several reasons:\n\n1. The website might be temporarily down\n2. The website might have strict access controls\n3. There might be technical issues with the connection\n\nWould you like me to:\n1. Try an alternative approach using a different tool\n2. Verify if the domain is correct\n3. Try again in a few moments\n\nPlease let me know how you'd like to proceed, and I'll be happy to help accordingly.","service":"workflow","timestamp":"2025-07-27T00:41:06.326Z"}
+{"firmId":null,"id":"mdkye1p2sb8s77wqiq","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Completed MapDomain","service":"polling","timestamp":"2025-07-27T00:41:06.326Z","type":"progress"}
+{"level":"info","message":"","service":"workflow","timestamp":"2025-07-27T00:41:06.327Z"}
+{"level":"info","message":"🎯 Executing Task 3: FindPortfolioPage","service":"workflow","timestamp":"2025-07-27T00:41:06.327Z"}
+{"level":"info","message":"📝 Instructions: Analyze the sitemap and identify which pages are most likely to contain information about portfolio companies. Look for URLs containing words like 'portfolio', 'investments', 'companies', 'holdings'. Respond with only the relevant URLs.","service":"workflow","timestamp":"2025-07-27T00:41:06.327Z"}
+{"firmId":null,"id":"mdkye1p3ffcwxa8hk7d","level":"info","message":"📨 [POLLING] Added message for workflow 13: Task 3/4: FindPortfolioPage","service":"polling","timestamp":"2025-07-27T00:41:06.327Z","type":"progress"}
+{"level":"info","message":"📥 Input sitemap: I apologize, but I'm experiencing technical difficulties accessing the website through our tools. This could be due to several reasons:\n\n1. The website might be temporarily down\n2. The website might have strict access controls\n3. There might be technical issues with the connection\n\nWould you like me to:\n1. Try an alternative approach using a different tool\n2. Verify if the domain is correct\n3. Try again in a few moments\n\nPlease let me know how you'd like to proceed, and I'll be happy to help accordingly.","service":"workflow","timestamp":"2025-07-27T00:41:06.328Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:07.977Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 2 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:07.978Z"}
+{"level":"info","message":"✅ Task 3 completed successfully","service":"workflow","timestamp":"2025-07-27T00:41:09.390Z"}
+{"level":"info","message":"📤 Output (portfolio_pages): I notice that you haven't provided a specific website URL to analyze. The firecrawl_map tool requires a URL parameter to function. Could you please provide the website URL you'd like me to analyze? Once you share that, I can search for portfolio-related pages and filter the results according to your criteria.\n\nFor example, the URL might look something like:\n- https://example.com\n- https://venturefirm.com\n- https://investmentcompany.com\n\nPlease provide the specific website URL you'd like me to analyze.","service":"workflow","timestamp":"2025-07-27T00:41:09.390Z"}
+{"firmId":null,"id":"mdkye427nzwpesa6r3","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Completed FindPortfolioPage","service":"polling","timestamp":"2025-07-27T00:41:09.391Z","type":"progress"}
+{"level":"info","message":"","service":"workflow","timestamp":"2025-07-27T00:41:09.391Z"}
+{"level":"info","message":"🎯 Executing Task 4: ExtractCompanies","service":"workflow","timestamp":"2025-07-27T00:41:09.391Z"}
+{"level":"info","message":"📝 Instructions: Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. All portfolio pages show both current/actively investment companies AND exited companies. You must find the current/actively invested companies. Return ONLY the name of the firm then the list of company names separated by commas, and with zero commentary. Like this: American Discovery Capital: Bubba Gump Shrimp, Nintendo of America, Peeboy Food Cans, etc","service":"workflow","timestamp":"2025-07-27T00:41:09.391Z"}
+{"firmId":null,"id":"mdkye427wwfijwq4mdk","level":"info","message":"📨 [POLLING] Added message for workflow 13: Task 4/4: ExtractCompanies","service":"polling","timestamp":"2025-07-27T00:41:09.391Z","type":"progress"}
+{"level":"info","message":"📥 Input portfolio_pages: I notice that you haven't provided a specific website URL to analyze. The firecrawl_map tool requires a URL parameter to function. Could you please provide the website URL you'd like me to analyze? Once you share that, I can search for portfolio-related pages and filter the results according to your criteria.\n\nFor example, the URL might look something like:\n- https://example.com\n- https://venturefirm.com\n- https://investmentcompany.com\n\nPlease provide the specific website URL you'd like me to analyze.","service":"workflow","timestamp":"2025-07-27T00:41:09.392Z"}
+{"level":"info","message":"📥 Input domain: americandiscoverycapital.com","service":"workflow","timestamp":"2025-07-27T00:41:09.392Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:09.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 2 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:09.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:11.979Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:11.979Z"}
+{"level":"info","message":"  🔧 Executing firecrawl_scrape...","service":"workflow","timestamp":"2025-07-27T00:41:13.011Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:13.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:13.974Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:15.970Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:15.971Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:17.969Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:17.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:19.978Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:19.979Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:21.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:21.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:23.966Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:23.967Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:25.975Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:25.976Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:27.970Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:27.970Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:29.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:29.975Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:31.974Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:31.974Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:34.468Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:34.469Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:36.468Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:36.468Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:38.468Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:38.469Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:40.474Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:40.474Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:42.472Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:42.472Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:44.470Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:44.470Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:46.466Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:46.467Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:48.499Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:48.499Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:50.471Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:50.472Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:52.480Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:52.482Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:54.474Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:54.475Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:56.470Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:56.471Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:41:58.475Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:41:58.476Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:00.472Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:00.472Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:02.465Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:02.466Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:04.468Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:04.469Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:06.467Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:06.467Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:08.471Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:08.472Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:10.469Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:10.469Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:12.471Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:12.472Z"}
+{"level":"error","message":"  ✗ firecrawl_scrape failed:","service":"workflow","timestamp":"2025-07-27T00:42:13.015Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:14.467Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:14.468Z"}
+{"level":"info","message":"  🔧 Executing search_web...","service":"workflow","timestamp":"2025-07-27T00:42:15.477Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:16.480Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:16.480Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:18.470Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:18.471Z"}
+{"level":"info","message":"  ✓ search_web completed","service":"workflow","timestamp":"2025-07-27T00:42:19.799Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:20.472Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 0 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:20.473Z"}
+{"level":"info","message":"✅ Task 4 completed successfully","service":"workflow","timestamp":"2025-07-27T00:42:21.822Z"}
+{"level":"info","message":"📤 Output (portfolio_companies): American Discovery Capital: American Pain Consortium, Entertainment Partners, SmartBug Media, The Intersect Group, Majestic Realty, Medix, Brown Gibbons Lang & Company","service":"workflow","timestamp":"2025-07-27T00:42:21.822Z"}
+{"firmId":null,"id":"mdkyfny72j8ed8a02sq","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Completed ExtractCompanies","service":"polling","timestamp":"2025-07-27T00:42:21.823Z","type":"progress"}
+{"level":"info","message":"","service":"workflow","timestamp":"2025-07-27T00:42:21.823Z"}
+{"firmId":null,"id":"mdkyfny72tnxxu1250d","level":"info","message":"📨 [POLLING] Added message for workflow 13: 🎉 Research completed for American Discovery Capital","service":"polling","timestamp":"2025-07-27T00:42:21.823Z","type":"complete"}
+{"level":"info","message":"✅ Saved 7 portfolio companies for American Discovery Capital","service":"database","timestamp":"2025-07-27T00:42:22.289Z"}
+{"level":"info","message":"🏁 Workflow execution completed","service":"workflow","timestamp":"2025-07-27T00:42:22.290Z"}
+{"level":"info","message":"📊 Processed 1 items","service":"workflow","timestamp":"2025-07-27T00:42:22.290Z"}
+{"0":{"input":"American Discovery Capital","itemIndex":0,"tasks":{"1":{"conversationHistory":[{"content":"Find the website domain for the given private equity firm name. Return just the domain URL (e.g., 'www.example.com'). Use web search to find their official website. Respond with only the domain name.\n\nInputs:\ninput: American Discovery Capital\n","role":"user"},{"content":[{"text":"Let me search for American Discovery Capital's official website.","type":"text"},{"id":"toolu_01AbMiAW8s99JC96EcBgCcSD","input":{"query":"American Discovery Capital official website private equity firm"},"name":"search_web","type":"tool_use"}],"role":"assistant"},{"content":[{"content":"{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"The **official website of American Discovery Capital**, a private equity and merchant banking firm, is **americandiscoverycapital.com**[1][3][5]. The firm specializes in providing advisory services and private equity investments, particularly for founder- and family-owned businesses in the software and services sectors[3][5].\\n\\nSources:\\n1. https://6sense.com/company/american-discovery-capital/5c3b01b3d55ae49f1b783bb2\\n2. https://www.prnewswire.com/news-releases/american-discovery-capital-closes-fund-ii-at-190-million-302186687.html\\n3. https://www.americandiscoverycapital.com/about\\n4. https://www.americandiscoverycapital.com/analyst\\n5. https://www.zoominfo.com/c/american-discovery-capital-llc/382416813\\n\\n\\n(Results from Perplexity sonar-pro)\"\n    }\n  ],\n  \"isError\": false\n}","tool_use_id":"toolu_01AbMiAW8s99JC96EcBgCcSD","type":"tool_result"}],"role":"user"},{"content":[{"text":"americandiscoverycapital.com","type":"text"}],"role":"assistant"}],"outputKey":"domain","result":"americandiscoverycapital.com","success":true,"taskId":1,"taskName":"FindDomain"},"2":{"conversationHistory":[{"content":"Create a sitemap of all pages on the given domain. Use web crawling tools to discover all accessible pages. Once you have the list of URLs, make a final response that is only the URLs.\n\nInputs:\ndomain: americandiscoverycapital.com\n","role":"user"},{"content":[{"text":"I'll help you map out all the URLs on americandiscoverycapital.com using the firecrawl_map tool, which is specifically designed for discovering URLs on a website.","type":"text"},{"id":"toolu_01NtCQaPx1BXGHUX1ZubMFMn","input":{"url":"https://americandiscoverycapital.com"},"name":"firecrawl_map","type":"tool_use"}],"role":"assistant"},{"content":[{"content":"{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"Error: Request failed with status code 502\"\n    }\n  ],\n  \"isError\": true\n}","tool_use_id":"toolu_01NtCQaPx1BXGHUX1ZubMFMn","type":"tool_result"}],"role":"user"},{"content":[{"text":"I apologize, but it seems there was an error accessing the website. Let me try the URL with 'www' prefix to ensure we're using the most common format:","type":"text"},{"id":"toolu_01RCZrHBT7CFi3bNNiwTVatz","input":{"url":"https://www.americandiscoverycapital.com"},"name":"firecrawl_map","type":"tool_use"}],"role":"assistant"},{"content":[{"content":"Error: MCP tool call timeout","is_error":true,"tool_use_id":"toolu_01RCZrHBT7CFi3bNNiwTVatz","type":"tool_result"}],"role":"user"},{"content":[{"text":"I apologize, but I'm experiencing technical difficulties accessing the website through our tools. This could be due to several reasons:\n\n1. The website might be temporarily down\n2. The website might have strict access controls\n3. There might be technical issues with the connection\n\nWould you like me to:\n1. Try an alternative approach using a different tool\n2. Verify if the domain is correct\n3. Try again in a few moments\n\nPlease let me know how you'd like to proceed, and I'll be happy to help accordingly.","type":"text"}],"role":"assistant"}],"outputKey":"sitemap","result":"I apologize, but I'm experiencing technical difficulties accessing the website through our tools. This could be due to several reasons:\n\n1. The website might be temporarily down\n2. The website might have strict access controls\n3. There might be technical issues with the connection\n\nWould you like me to:\n1. Try an alternative approach using a different tool\n2. Verify if the domain is correct\n3. Try again in a few moments\n\nPlease let me know how you'd like to proceed, and I'll be happy to help accordingly.","success":true,"taskId":2,"taskName":"MapDomain"},"3":{"conversationHistory":[{"content":"Analyze the sitemap and identify which pages are most likely to contain information about portfolio companies. Look for URLs containing words like 'portfolio', 'investments', 'companies', 'holdings'. Respond with only the relevant URLs.\n\nInputs:\nsitemap: I apologize, but I'm experiencing technical difficulties accessing the website through our tools. This could be due to several reasons:\n\n1. The website might be temporarily down\n2. The website might have strict access controls\n3. There might be technical issues with the connection\n\nWould you like me to:\n1. Try an alternative approach using a different tool\n2. Verify if the domain is correct\n3. Try again in a few moments\n\nPlease let me know how you'd like to proceed, and I'll be happy to help accordingly.\n","role":"user"},{"content":[{"text":"I notice that you haven't provided a specific website URL to analyze. The firecrawl_map tool requires a URL parameter to function. Could you please provide the website URL you'd like me to analyze? Once you share that, I can search for portfolio-related pages and filter the results according to your criteria.\n\nFor example, the URL might look something like:\n- https://example.com\n- https://venturefirm.com\n- https://investmentcompany.com\n\nPlease provide the specific website URL you'd like me to analyze.","type":"text"}],"role":"assistant"}],"outputKey":"portfolio_pages","result":"I notice that you haven't provided a specific website URL to analyze. The firecrawl_map tool requires a URL parameter to function. Could you please provide the website URL you'd like me to analyze? Once you share that, I can search for portfolio-related pages and filter the results according to your criteria.\n\nFor example, the URL might look something like:\n- https://example.com\n- https://venturefirm.com\n- https://investmentcompany.com\n\nPlease provide the specific website URL you'd like me to analyze.","success":true,"taskId":3,"taskName":"FindPortfolioPage"},"4":{"conversationHistory":[{"content":"Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. All portfolio pages show both current/actively investment companies AND exited companies. You must find the current/actively invested companies. Return ONLY the name of the firm then the list of company names separated by commas, and with zero commentary. Like this: American Discovery Capital: Bubba Gump Shrimp, Nintendo of America, Peeboy Food Cans, etc\n\nInputs:\nportfolio_pages: I notice that you haven't provided a specific website URL to analyze. The firecrawl_map tool requires a URL parameter to function. Could you please provide the website URL you'd like me to analyze? Once you share that, I can search for portfolio-related pages and filter the results according to your criteria.\n\nFor example, the URL might look something like:\n- https://example.com\n- https://venturefirm.com\n- https://investmentcompany.com\n\nPlease provide the specific website URL you'd like me to analyze.\ndomain: americandiscoverycapital.com\n","role":"user"},{"content":[{"text":"Let me scrape the portfolio page from American Discovery Capital.","type":"text"},{"id":"toolu_011JHR1d6qvopFmaBNnDozzg","input":{"formats":["markdown"],"url":"https://americandiscoverycapital.com/portfolio/"},"name":"firecrawl_scrape","type":"tool_use"}],"role":"assistant"},{"content":[{"content":"Error: MCP tool call timeout","is_error":true,"tool_use_id":"toolu_011JHR1d6qvopFmaBNnDozzg","type":"tool_result"}],"role":"user"},{"content":[{"text":"I apologize for the timeout error. Let me try searching for their portfolio information through an alternative method.","type":"text"},{"id":"toolu_01WTHRTqr6obFs2HwugRxrh1","input":{"query":"American Discovery Capital current portfolio companies site:americandiscoverycapital.com"},"name":"search_web","type":"tool_use"}],"role":"assistant"},{"content":[{"content":"{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"The most current list of **American Discovery Capital's portfolio companies** provided on their official website includes the following:\\n\\n- **American Pain Consortium**\\n- **Entertainment Partners**\\n- **SmartBug Media**\\n- **The Intersect Group**\\n- **Majestic Realty**\\n- **TOPS Software (Exited)**\\n- **Medix**[5]\\n\\nIn addition, they have made a recent investment in **Brown Gibbons Lang & Company** as of January 4, 2024[3].\\n\\nNo definitive, more recent or comprehensive list is available directly on their site, but the above comes from their \\\"Private Equity Services\\\" page as of July 2025[5]. Note that \\\"TOPS Software\\\" is listed as exited, indicating it is not a current holding[5]. Additional historical investments—such as in SmartBug Media—are confirmed in their news releases[4]. \\n\\nIf you seek further details on the nature or dates of these investments, recent news releases or their press section might provide periodic updates, but this is the most direct listing currently disclosed.\\n\\nSources:\\n1. https://www.americandiscoverycapital.com/about\\n2. https://www.americandiscoverycapital.com/news/american-discovery-capital-acquires-clear-capital-advisors\\n3. https://www.cbinsights.com/investor/american-discovery-capital\\n4. https://www.americandiscoverycapital.com/news/american-discovery-capital-announces-strategic-growth-investment-in-smartbug-media\\n5. https://www.americandiscoverycapital.com/private-equity\\n\\n\\n(Results from Perplexity sonar-pro)\"\n    }\n  ],\n  \"isError\": false\n}","tool_use_id":"toolu_01WTHRTqr6obFs2HwugRxrh1","type":"tool_result"}],"role":"user"},{"content":[{"text":"American Discovery Capital: American Pain Consortium, Entertainment Partners, SmartBug Media, The Intersect Group, Majestic Realty, Medix, Brown Gibbons Lang & Company","type":"text"}],"role":"assistant"}],"outputKey":"portfolio_companies","result":"American Discovery Capital: American Pain Consortium, Entertainment Partners, SmartBug Media, The Intersect Group, Majestic Realty, Medix, Brown Gibbons Lang & Company","success":true,"taskId":4,"taskName":"ExtractCompanies"}},"workflowExecutionId":13},"level":"info","message":"Results:","service":"manager","timestamp":"2025-07-27T00:42:22.291Z"}
+{"level":"info","message":"✅ First workflow completed","service":"manager","timestamp":"2025-07-27T00:42:22.292Z"}
+{"level":"info","message":"🔍 Starting automatic data extraction for portfolio companies","service":"manager","timestamp":"2025-07-27T00:42:22.292Z"}
+{"level":"info","message":"📊 Extracting data for workflow execution ID: 13","service":"manager","timestamp":"2025-07-27T00:42:22.292Z"}
+{"level":"info","message":"🔍 Extracting Form 5500 data for portfolio companies from workflow execution: 13","service":"manager","timestamp":"2025-07-27T00:42:22.293Z"}
+{"0":"American Pain Consortium","1":"Brown Gibbons Lang & Company","2":"Entertainment Partners","3":"Majestic Realty","4":"Medix","5":"SmartBug Media","6":"The Intersect Group","level":"info","message":"📊 Found 7 portfolio companies:","service":"manager","timestamp":"2025-07-27T00:42:22.341Z"}
+{"level":"info","message":"🔍 Processing 7 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-07-27T00:42:22.341Z"}
+{"firmId":null,"id":"mdkyfocmijfawcpt8n","level":"info","message":"📨 [POLLING] Added message for workflow 13: 🔍 Starting Form 5500 research for 7 companies","service":"polling","timestamp":"2025-07-27T00:42:22.342Z","type":"progress"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:22.472Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 3 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:22.473Z"}
+{"firmId":null,"id":"mdkyfpg2hjphywloyk","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📋 Found Form 5500 records for 0 companies","service":"polling","timestamp":"2025-07-27T00:42:23.762Z","type":"progress"}
+{"firmId":null,"id":"mdkyfpg2yoxilsq9bz8","level":"info","message":"📨 [POLLING] Added message for workflow 13: 🔍 Starting Schedule A research for 6 EINs","service":"polling","timestamp":"2025-07-27T00:42:23.762Z","type":"progress"}
+{"firmId":null,"id":"mdkyfpozw9kpslrwy7p","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📋 Found Schedule A records for 0 EINs","service":"polling","timestamp":"2025-07-27T00:42:24.083Z","type":"progress"}
+{"firmId":null,"id":"mdkyfpozb62jsgsoo7g","level":"info","message":"📨 [POLLING] Added message for workflow 13: 📊 Generating final report","service":"polling","timestamp":"2025-07-27T00:42:24.083Z","type":"progress"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-07-27T00:42:24.084Z"}
+{"firmId":null,"id":"mdkyfpp0s92md0kb3no","level":"info","message":"📨 [POLLING] Added message for workflow 13: ✅ Data extraction completed","service":"polling","timestamp":"2025-07-27T00:42:24.084Z","type":"progress"}
+{"level":"info","message":"✅ Data extraction completed and results saved to database","service":"manager","timestamp":"2025-07-27T00:42:24.135Z"}
+{"level":"info","message":"✅ Combined workflow (research + data extraction) completed","service":"manager","timestamp":"2025-07-27T00:42:24.136Z"}
+{"level":"info","message":"📊 [POLLING] Check workflow status:","service":"server","timestamp":"2025-07-27T00:42:24.468Z"}
+{"level":"info","message":"📬 [POLLING] Retrieved 5 messages for workflow 13","service":"polling","timestamp":"2025-07-27T00:42:24.469Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-07-27T00:42:33.614Z"}

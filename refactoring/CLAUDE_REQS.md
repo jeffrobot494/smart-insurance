@@ -42,7 +42,6 @@ Once the Claude loop is robust, all other components become simple wrappers:
 - **Bidirectional Communication**: Send user messages, receive Claude responses
 - **Conversation Context**: Maintain full conversation history for Claude
 - **Message Formatting**: Proper API message structure with roles (user/assistant)
-- **Streaming Support**: Handle both streaming and non-streaming responses
 
 #### Tool Call Detection and Execution
 - **Tool Call Parsing**: Detect when Claude wants to use tools vs. providing final answers
