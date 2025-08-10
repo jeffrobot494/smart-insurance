@@ -4,34 +4,7 @@ const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
 const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
 const { CallToolRequestSchema, ListToolsRequestSchema } = require('@modelcontextprotocol/sdk/types.js');
 
-// Load environment variables manually to avoid load-env path issues
-const path = require('path');
-const fs = require('fs');
-
-function loadEnvManually() {
-  const envPath = path.join(__dirname, '..', '..', '.env');
-  
-  if (fs.existsSync(envPath)) {
-    const envContent = fs.readFileSync(envPath, 'utf8');
-    const lines = envContent.split('\n');
-    
-    lines.forEach(line => {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith('#')) {
-        const equalIndex = trimmed.indexOf('=');
-        if (equalIndex !== -1) {
-          const key = trimmed.substring(0, equalIndex).trim();
-          const value = trimmed.substring(equalIndex + 1).trim().replace(/^["']|["']$/g, '');
-          process.env[key] = value;
-        }
-      }
-    });
-    // Environment loaded (no console output in MCP server)
-  } else {
-    // No .env file found, using existing environment (no console output in MCP server)
-  }
-}
-
+// Environment variables are inherited from parent process
 // Import database manager - will use singleton that's already initialized
 const DatabaseManager = require('../../data-extraction/DatabaseManager');
 
@@ -55,15 +28,13 @@ class Form5500MCPServer {
 
   async initialize() {
     try {
-      // Use the singleton instance that was already initialized in server.js
+      // Get the singleton instance (fresh in this child process)
       this.databaseManager = DatabaseManager.getInstance();
       
-      // Check if database is ready (should be initialized already)
-      if (!this.databaseManager.initialized) {
-        throw new Error('Database not initialized');
-      }
+      // Initialize it in this child process (inherits env vars from parent)
+      await this.databaseManager.initialize();
       
-      // Database is available
+      // Database is now available in this child process
     } catch (error) {
       // Database failed, operating in mock mode
       this.databaseManager = null;
@@ -86,7 +57,7 @@ class Form5500MCPServer {
               limit: {
                 type: "number",
                 description: "Maximum number of results to return (default: 10)",
-                default: 10
+                default: 50
               },
               exactOnly: {
                 type: "boolean", 
@@ -123,7 +94,7 @@ class Form5500MCPServer {
   }
 
   async handleForm5500NameTest(args) {
-    const { companyName, limit = 10, exactOnly = false } = args;
+    const { companyName, limit = 50, exactOnly = false } = args;
     
     if (!companyName || typeof companyName !== 'string') {
       throw new Error('Company name is required and must be a string');
@@ -140,7 +111,7 @@ class Form5500MCPServer {
   }
 
   async testCompanyName(companyName, options = {}) {
-    const { limit = 10, exactOnly = false } = options;
+    const { limit = 50, exactOnly = false } = options;
     
     // If no database connection, return mock data
     if (!this.databaseManager) {

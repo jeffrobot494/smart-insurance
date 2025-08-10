@@ -42,11 +42,17 @@ function loadEnv(filePath = './.env') {
     console.log(`Successfully loaded environment variables from ${filePath}`);
   } catch (error) {
     if (error.code === 'ENOENT') {
-      console.error(`Error: .env file not found at ${filePath}`);
+      // Don't crash or log in child processes - they inherit environment variables from parent
+      // Child processes have process.send defined or different process.title
+      const isChildProcess = process.send !== undefined || process.title !== 'node';
+      if (process.env.NODE_ENV !== 'production' && !isChildProcess) {
+        // Only log in development and only for main process
+        console.log(`Environment file not found at ${filePath}, using inherited environment variables`);
+      }
     } else {
       console.error(`Error reading .env file: ${error.message}`);
+      process.exit(1);
     }
-    process.exit(1);
   }
 }
 

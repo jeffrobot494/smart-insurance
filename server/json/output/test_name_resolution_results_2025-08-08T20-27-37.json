@@ -1,0 +1,182 @@
+{
+  "batchInfo": {
+    "totalItems": 3,
+    "startedAt": "2025-08-08T20:27:37.737Z",
+    "workflowName": "test_name_resolution",
+    "results": [
+      "Based on the search results, I'll format the output according to the requested JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"McDonald's Corporation\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock McDonald's Corporation Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this was mock data as the database was not available, but I've structured the response according to the requested format. In a real scenario, the data would contain actual Form 5500 records for McDonald's Corporation.\n\nWould you like to test any additional company names?",
+      "Based on the search results, I'll format the output according to your specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Walmart Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Walmart Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate this was mock data as the database was not available, but I've formatted the response according to your specified structure. In a real scenario, the actual Form 5500 database would provide real company matches and data.\n\nWould you like to test any additional company names?",
+      "Based on the search results, I'll format the output according to the specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Apple Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Apple Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this is mock data as the database is not available, but I've formatted the response according to the requested structure. The search found one partial match for \"Apple Inc\" with the mock company \"Mock Apple Inc Corporation\". The search was successful, though it didn't find an exact match. The matched company has 5 Form 5500 records for the plan year 2023.\n\nIf you'd like to test more company names, please provide them and I'll perform the same analysis for each one."
+    ]
+  },
+  "items": [
+    {
+      "itemIndex": 0,
+      "input": "McDonald's Corporation",
+      "tasks": {
+        "1": {
+          "success": true,
+          "taskId": 1,
+          "taskName": "test_name_resolution.json",
+          "outputKey": "test_results",
+          "result": "Based on the search results, I'll format the output according to the requested JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"McDonald's Corporation\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock McDonald's Corporation Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this was mock data as the database was not available, but I've structured the response according to the requested format. In a real scenario, the data would contain actual Form 5500 records for McDonald's Corporation.\n\nWould you like to test any additional company names?",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input.\n\nInputs:\ninput: McDonald's Corporation\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "I'll help you search for \"McDonald's Corporation\" in the Form 5500 dataset using the form5500_name_test tool."
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_012kWmL2pm6SSy4CtXvGxrvY",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "McDonald's Corporation"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_012kWmL2pm6SSy4CtXvGxrvY",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"McDonald's Corporation\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": true,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 1,\\n  \\\"results\\\": [\\n    {\\n      \\\"legalName\\\": \\\"Mock McDonald's Corporation Corporation\\\",\\n      \\\"ein\\\": \\\"12-3456789\\\",\\n      \\\"location\\\": \\\"Mock City, ST 12345\\\",\\n      \\\"planYear\\\": 2023,\\n      \\\"recordCount\\\": 5,\\n      \\\"matchType\\\": \\\"partial\\\"\\n    }\\n  ],\\n  \\\"timestamp\\\": \\\"2025-08-08T20:27:14.119Z\\\",\\n  \\\"note\\\": \\\"Mock data - database not available\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Based on the search results, I'll format the output according to the requested JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"McDonald's Corporation\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock McDonald's Corporation Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this was mock data as the database was not available, but I've structured the response according to the requested format. In a real scenario, the data would contain actual Form 5500 records for McDonald's Corporation.\n\nWould you like to test any additional company names?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "workflowExecutionId": 66
+    },
+    {
+      "itemIndex": 1,
+      "input": "Walmart Inc",
+      "tasks": {
+        "1": {
+          "success": true,
+          "taskId": 1,
+          "taskName": "test_name_resolution.json",
+          "outputKey": "test_results",
+          "result": "Based on the search results, I'll format the output according to your specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Walmart Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Walmart Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate this was mock data as the database was not available, but I've formatted the response according to your specified structure. In a real scenario, the actual Form 5500 database would provide real company matches and data.\n\nWould you like to test any additional company names?",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input.\n\nInputs:\ninput: Walmart Inc\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "I'll help you test this company name using the form5500_name_test tool and format the results according to your specified structure."
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_01JxMVFC8EVLoYjASxsyULFF",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "Walmart Inc"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_01JxMVFC8EVLoYjASxsyULFF",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"Walmart Inc\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": true,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 1,\\n  \\\"results\\\": [\\n    {\\n      \\\"legalName\\\": \\\"Mock Walmart Inc Corporation\\\",\\n      \\\"ein\\\": \\\"12-3456789\\\",\\n      \\\"location\\\": \\\"Mock City, ST 12345\\\",\\n      \\\"planYear\\\": 2023,\\n      \\\"recordCount\\\": 5,\\n      \\\"matchType\\\": \\\"partial\\\"\\n    }\\n  ],\\n  \\\"timestamp\\\": \\\"2025-08-08T20:27:22.520Z\\\",\\n  \\\"note\\\": \\\"Mock data - database not available\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Based on the search results, I'll format the output according to your specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Walmart Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Walmart Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate this was mock data as the database was not available, but I've formatted the response according to your specified structure. In a real scenario, the actual Form 5500 database would provide real company matches and data.\n\nWould you like to test any additional company names?"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "workflowExecutionId": 67
+    },
+    {
+      "itemIndex": 2,
+      "input": "Apple Inc",
+      "tasks": {
+        "1": {
+          "success": true,
+          "taskId": 1,
+          "taskName": "test_name_resolution.json",
+          "outputKey": "test_results",
+          "result": "Based on the search results, I'll format the output according to the specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Apple Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Apple Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this is mock data as the database is not available, but I've formatted the response according to the requested structure. The search found one partial match for \"Apple Inc\" with the mock company \"Mock Apple Inc Corporation\". The search was successful, though it didn't find an exact match. The matched company has 5 Form 5500 records for the plan year 2023.\n\nIf you'd like to test more company names, please provide them and I'll perform the same analysis for each one.",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For each company name provided, use the form5500_name_test tool to search for matches in the Form 5500 dataset.\n\n**Process:**\n\n1. **Test Each Company**: For each company in the input list, call form5500_name_test with the exact name\n\n2. **Document Results**: Record what you find:\n   - Whether any matches were found\n   - If there's an exact match\n   - The number of matches\n   - Details about the best matches\n\n3. **Analyze Match Quality**: For each result, note:\n   - Match type (exact, contains, partial)\n   - Legal entity name found\n   - Location information\n   - Number of Form 5500 records\n\n**Output Format:**\nReturn results in this exact JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Company Name\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 3,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Found Legal Name\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"City, State ZIP\",\n            \"match_type\": \"contains_search\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 3,\n    \"found_matches\": 2,\n    \"exact_matches\": 1,\n    \"no_matches\": 1\n  }\n}\n```\n\n**Important**: Use the form5500_name_test tool exactly once for each company name. Test the names exactly as provided in the input.\n\nInputs:\ninput: Apple Inc\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "I'll help you test the company name \"Apple Inc\" using the form5500_name_test tool and format the results according to the specified structure."
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_018KrW5aZPPDF1QfgYcPrqoi",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "Apple Inc"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_018KrW5aZPPDF1QfgYcPrqoi",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"Apple Inc\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": true,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 1,\\n  \\\"results\\\": [\\n    {\\n      \\\"legalName\\\": \\\"Mock Apple Inc Corporation\\\",\\n      \\\"ein\\\": \\\"12-3456789\\\",\\n      \\\"location\\\": \\\"Mock City, ST 12345\\\",\\n      \\\"planYear\\\": 2023,\\n      \\\"recordCount\\\": 5,\\n      \\\"matchType\\\": \\\"partial\\\"\\n    }\\n  ],\\n  \\\"timestamp\\\": \\\"2025-08-08T20:27:30.667Z\\\",\\n  \\\"note\\\": \\\"Mock data - database not available\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Based on the search results, I'll format the output according to the specified JSON structure:\n\n```json\n{\n  \"tested_companies\": [\n    {\n      \"original_name\": \"Apple Inc\",\n      \"search_result\": {\n        \"found_matches\": true,\n        \"exact_match\": false,\n        \"match_count\": 1,\n        \"search_successful\": true,\n        \"best_matches\": [\n          {\n            \"legal_name\": \"Mock Apple Inc Corporation\",\n            \"ein\": \"12-3456789\",\n            \"location\": \"Mock City, ST 12345\",\n            \"match_type\": \"partial\",\n            \"plan_year\": 2023,\n            \"record_count\": 5\n          }\n        ]\n      }\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"found_matches\": 1,\n    \"exact_matches\": 0,\n    \"no_matches\": 0\n  }\n}\n```\n\nNote: The results indicate that this is mock data as the database is not available, but I've formatted the response according to the requested structure. The search found one partial match for \"Apple Inc\" with the mock company \"Mock Apple Inc Corporation\". The search was successful, though it didn't find an exact match. The matched company has 5 Form 5500 records for the plan year 2023.\n\nIf you'd like to test more company names, please provide them and I'll perform the same analysis for each one."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "workflowExecutionId": 68
+    }
+  ]
+}

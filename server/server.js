@@ -54,7 +54,7 @@ app.use('*', (req, res) => {
 // Initialize MCP servers and start server
 async function startServer() {
   try {
-    // Initialize DatabaseManager first
+    // Initialize DatabaseManager first (fail-fast if database unavailable)
     logger.info('Initializing database connection');
     const databaseManager = DatabaseManager.getInstance();
     await databaseManager.initialize();
