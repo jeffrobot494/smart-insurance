@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 // Cleanup script to remove test data from workflow tables
-require('./server/utils/load-env');
+const { loadEnv } = require('./server/utils/load-env');
+loadEnv('./server/.env'); // Load from correct path
 const DatabaseManager = require('./server/data-extraction/DatabaseManager');
 
 async function cleanupTestData() {

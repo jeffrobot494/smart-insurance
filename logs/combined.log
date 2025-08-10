@@ -1,1 +1,5 @@
 {"level":"info","message":"This should not appear","service":"polling","timestamp":"2025-07-25T16:34:07.959Z"}
+{"level":"error","message":"❌ Failed to connect to database:","service":"database","timestamp":"2025-08-10T20:57:28.134Z"}
+{"level":"info","message":"✅ Database connections closed","service":"database","timestamp":"2025-08-10T20:57:28.137Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-10T21:00:00.370Z"}
+{"level":"info","message":"✅ Database connections closed","service":"database","timestamp":"2025-08-10T21:00:03.698Z"}
