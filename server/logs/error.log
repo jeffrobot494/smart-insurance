@@ -155,3 +155,4 @@
 {"level":"error","message":"Query:","service":"database","timestamp":"2025-08-09T07:36:32.666Z"}
 {"0":72,"1":"Based on the search results, I'll format the output according to the requested JSON structure","2":"\"no_matches\": 1\n  }\n}\n```\n\nAnalysis:\n- The search for \"Matan Town\" was performed successfully but returned no matches in the Form 5500 dataset\n- No exact matches were found\n- No partial matches were found\n- The search was successful (the tool worked properly) but simply found no matching records\n\nWould you like to test any additional company names?","level":"error","message":"Params:","service":"database","timestamp":"2025-08-09T07:36:32.666Z"}
 {"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-09T07:36:32.666Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-10T20:39:07.651Z"}
