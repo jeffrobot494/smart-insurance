@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const TaskExecution = require('../workflow/TaskExecution');
 const ToolManager = require('../workflow/ToolManager');
+const WorkflowManager = require('../workflow/WorkflowManager');
+const F5500TestClaudeResponseParser = require('../utils/F5500TestClaudeResponseParser');
 
 // POST /api/testing/legal-entity-resolution
 router.post('/legal-entity-resolution', async (req, res) => {
@@ -28,8 +30,8 @@ router.post('/legal-entity-resolution', async (req, res) => {
     
     const executionTime = Date.now() - startTime;
     
-    // Return clean results
-    res.json({
+    // Return clean results with pretty formatting
+    const response = {
       success: true,
       results: results,
       metadata: {
@@ -38,7 +40,10 @@ router.post('/legal-entity-resolution', async (req, res) => {
         companies_processed: input.length,
         timestamp: new Date().toISOString()
       }
-    });
+    };
+    
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(response, null, 2));
     
   } catch (error) {
     logger.error('❌ Legal entity resolution test failed:', error);
@@ -103,9 +108,13 @@ async function executeIsolatedWorkflowTest(workflowName, companies) {
       throw new Error(`Task execution failed: ${taskResult.error}`);
     }
     
-    // Parse JSON from Claude's response
-    const parsedResult = parseJsonResult(taskResult.result);
+    // Debug: Log the full task result structure
+    logger.info(`🔍 Full task result: ${JSON.stringify(taskResult, null, 2)}`);
     
+    // Parse JSON from Claude's response using the dedicated parser
+    const parsedResult = F5500TestClaudeResponseParser.parseResult(taskResult.result, taskResult);
+    
+    logger.info(`🔍 Parsed result: ${JSON.stringify(parsedResult)}`);
     logger.info(`✅ Task completed successfully`);
     
     return parsedResult;
@@ -116,47 +125,117 @@ async function executeIsolatedWorkflowTest(workflowName, companies) {
   }
 }
 
-/**
- * Parse JSON from Claude's text response, handling various formats
- */
-function parseJsonResult(responseText) {
-  if (!responseText || typeof responseText !== 'string') {
-    return responseText; // Return as-is if not a string
-  }
+// POST /api/testing/full-workflow
+router.post('/full-workflow', async (req, res) => {
+  const startTime = Date.now();
   
   try {
-    // First try: parse the entire response as JSON
-    return JSON.parse(responseText.trim());
-  } catch (error) {
-    // Second try: look for JSON in markdown code blocks
-    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/) || 
-                     responseText.match(/```\s*([\s\S]*?)\s*```/);
+    const { companies, firmName, workflow = 'portfolio_company_verification' } = req.body;
     
-    if (jsonMatch && jsonMatch[1]) {
-      try {
-        return JSON.parse(jsonMatch[1].trim());
-      } catch (parseError) {
-        logger.info('📝 Found code block but failed to parse as JSON');
-      }
+    // Validate input
+    if (!companies || !Array.isArray(companies) || companies.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'companies array is required and must not be empty'
+      });
     }
     
-    // Third try: look for JSON-like content between braces
-    const braceMatch = responseText.match(/\{[\s\S]*\}/);
-    if (braceMatch) {
-      try {
-        return JSON.parse(braceMatch[0]);
-      } catch (parseError) {
-        logger.info('📝 Found braces but failed to parse as JSON');
-      }
+    if (!firmName || typeof firmName !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'firmName string is required'
+      });
     }
     
-    // If all parsing attempts fail, return the original text
-    logger.info('📝 Could not parse response as JSON, returning as text');
-    return {
-      raw_response: responseText,
-      parsed: false,
-      note: "Response could not be parsed as JSON"
+    logger.info(`🧪 Testing full workflow: ${workflow} for ${companies.length} companies from ${firmName}`);
+    
+    // Execute full multi-task workflow using WorkflowManager directly
+    const results = await executeFullWorkflowTestDirect(workflow, companies, firmName);
+    
+    const executionTime = Date.now() - startTime;
+    
+    // Return clean results with pretty formatting
+    const response = {
+      success: true,
+      results: results,
+      metadata: {
+        workflow_used: `${workflow}.json`,
+        execution_time_ms: executionTime,
+        companies_processed: companies.length,
+        firm_name: firmName,
+        timestamp: new Date().toISOString()
+      }
     };
+    
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(response, null, 2));
+    
+  } catch (error) {
+    logger.error('❌ Full workflow test failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      execution_time_ms: Date.now() - startTime
+    });
+  }
+});
+
+/**
+ * Execute full multi-task workflow using WorkflowManager directly (no database persistence or data extraction)
+ */
+async function executeFullWorkflowTestDirect(workflowName, companies, firmName) {
+  try {
+    // Load workflow definition
+    const workflowFile = workflowName.endsWith('.json') ? workflowName : `${workflowName}.json`;
+    const workflowPath = path.join(__dirname, '../json', workflowFile);
+    
+    if (!fs.existsSync(workflowPath)) {
+      throw new Error(`Workflow file not found: ${workflowFile}`);
+    }
+    
+    const workflowData = JSON.parse(fs.readFileSync(workflowPath, 'utf8'));
+    const workflow = workflowData.workflow;
+    
+    if (!workflow || !workflow.tasks || workflow.tasks.length === 0) {
+      throw new Error('Invalid workflow structure');
+    }
+    
+    logger.info(`📋 Loaded workflow: ${workflow.name} with ${workflow.tasks.length} tasks`);
+    
+    // Get the global tool manager
+    const { getToolManager } = require('../server');
+    const toolManager = getToolManager();
+    
+    if (!toolManager) {
+      throw new Error('Tool manager not available - MCP servers may not be initialized');
+    }
+    
+    // Create WorkflowManager instance
+    const workflowManager = new WorkflowManager(toolManager);
+    
+    // Create input array in the format: "Firm: [PE Firm], Company: [Company Name]"
+    const inputArray = companies.map(company => `Firm: ${firmName}, Company: ${company}`);
+    
+    logger.info(`📝 Created input array with ${inputArray.length} items`);
+    
+    // Prepare userInputs in WorkflowManager format
+    const userInputs = {
+      input: inputArray
+    };
+    
+    logger.info(`🏃 Executing workflow directly with WorkflowManager for ${companies.length} companies`);
+    
+    // Execute workflow directly without database persistence or data extraction
+    const results = await workflowManager.executeWorkflow(workflowData, userInputs);
+    
+    logger.info(`✅ Full workflow completed successfully`);
+    logger.info(`📊 Results: ${results.length} workflow executions completed`);
+    
+    return results;
+    
+  } catch (error) {
+    logger.error('❌ Direct workflow execution failed:', error);
+    throw error;
   }
 }
 

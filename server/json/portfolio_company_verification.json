@@ -1,0 +1,29 @@
+{
+  "workflow": {
+    "name": "Portfolio Company Verification and Form 5500 Matching",
+    "description": "Multi-step verification of portfolio companies with Form 5500 matching",
+    "tasks": [
+      {
+        "id": 1,
+        "name": "ResearchCompanyLocations",
+        "outputKey": "companies_with_locations",
+        "inputKeys": ["input"],
+        "instructions": "For the given portfolio company, find their headquarters location. Use the PE firm name as context to help identify the correct company. Use perplexity_search or research_legal_entity to find city and state of headquarters, complete address if possible, and verify this is the main operational headquarters. Include the PE firm context in your searches to ensure accuracy. Return results as JSON: {\"companies_with_locations\": [{\"company_name\": \"Company Name\", \"headquarters_location\": {\"city\": \"City Name\", \"state\": \"State\", \"full_address\": \"Complete address if found\", \"research_confidence\": \"high/medium/low\"}}]}. Include only the formatted JSON in your response, exclude any other text or comments."
+      },
+      {
+        "id": 2,
+        "name": "VerifyPortfolioStatus", 
+        "outputKey": "verified_portfolio_companies",
+        "inputKeys": ["companies_with_locations"],
+        "instructions": "For each company from the previous task, verify if it is currently an active portfolio company of the given PE firm. Use perplexity_search to research each company and verify: Is it currently an active portfolio company of the firm? When was the investment made? Has the company been exited/sold? Any recent news about the investment status? Return results as JSON: {\"verified_portfolio_companies\": [{\"company_name\": \"Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {\"is_active_portfolio\": true, \"verification_confidence\": \"high/medium/low\", \"investment_details\": \"Brief description\", \"investment_date\": \"Year if found\", \"status_notes\": \"Relevant notes\"}}], \"invalid_companies\": [{\"company_name\": \"Exited Company\", \"reason\": \"Company was exited in 2022\", \"headquarters_location\": {...}}]}. Only include companies that are confirmed active portfolio investments. Include only the formatted JSON in your response, exclude any other text or comments."
+      },
+      {
+        "id": 3,
+        "name": "TestForm5500Matches",
+        "outputKey": "form5500_test_results", 
+        "inputKeys": ["verified_portfolio_companies"],
+        "instructions": "For each verified active portfolio company, test for matches in the Form 5500 database. The form5500_name_test tool uses inclusive search, so searching for 'Behavior Frontiers' will return 'Behavior Frontiers LLC', 'Behavior Frontiers Inc', etc. Use this search strategy: 1) Test the exact company name first 2) If no exact match, start with SHORTENED search terms for wider results: Remove common suffixes (LLC, Inc, Corp, Company, Co, Ltd) first, then try core business name only (e.g. 'Behavior Frontiers' instead of 'Behavior Frontiers Therapy Services LLC') 3) Then try common variations: Add/remove different legal suffixes; Remove punctuation and special characters; Try with/without 'The', 'A', 'An' articles 4) Record all matches found and their quality. The inclusive search means you should start broad and get specific, not the reverse. Return results as JSON: {\"direct_matches\": [{\"company_name\": \"Original Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {...}, \"form5500_match\": {\"legal_name\": \"Matched Legal Name\", \"ein\": \"12-3456789\", \"location\": \"City, State ZIP\", \"match_type\": \"exact/contains/partial\", \"record_count\": 5, \"variation_used\": \"variation tested\"}, \"status\": \"READY_FOR_EXTRACTION\"}], \"companies_needing_resolution\": [{\"company_name\": \"Difficult Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {...}, \"form5500_attempts\": {\"variations_tested\": [\"Name\", \"Name LLC\", \"Name Inc\"], \"best_partial_matches\": [{\"legal_name\": \"Similar Name LLC\", \"match_type\": \"partial\", \"location\": \"Different City, ST\"}]}, \"status\": \"NEEDS_ADVANCED_RESOLUTION\"}], \"summary\": {\"total_tested\": 10, \"direct_matches\": 7, \"need_resolution\": 3, \"match_rate\": \"70%\"}}. Use form5500_name_test multiple times per company as needed. Test systematic variations starting broad then getting specific. A 'direct match' means exact or very close match with good confidence. Companies with only poor partial matches go to 'needs_resolution'. Document all variations attempted."
+      }
+    ]
+  }
+}

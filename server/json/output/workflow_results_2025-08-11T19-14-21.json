@@ -1,0 +1,244 @@
+{
+  "batchInfo": {
+    "totalItems": 1,
+    "startedAt": "2025-08-11T19:14:21.051Z",
+    "workflowName": "workflow",
+    "results": [
+      "Based on these searches, I'll format the results according to the requested JSON structure:\n\n{\n  \"direct_matches\": [],\n  \"companies_needing_resolution\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      },\n      \"form5500_attempts\": {\n        \"variations_tested\": [\n          \"Behavior Frontiers\",\n          \"Behavior Frontiers LLC\",\n          \"Behavior Frontiers Inc\",\n          \"BehaviorFrontiers\"\n        ],\n        \"best_partial_matches\": []\n      },\n      \"status\": \"NEEDS_ADVANCED_RESOLUTION\"\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"direct_matches\": 0,\n    \"need_resolution\": 1,\n    \"match_rate\": \"0%\"\n  }\n}\n\nNo matches were found in the Form 5500 database for Behavior Frontiers under any of the common variations tested. This could be because:\n1. The company might be too new (acquired in 2025)\n2. The company might file under a different legal name\n3. The company might be part of a larger entity's filing\n\nGiven the company's size (3,300 employees) and the fact that no matches were found, this case would benefit from advanced resolution techniques such as:\n1. Researching the previous owner's name (Lorient Capital)\n2. Checking parent company NexPhase Capital's holdings\n3. Investigating any DBA (Doing Business As) names\n4. Checking state business registration records for other legal names"
+    ]
+  },
+  "items": [
+    {
+      "itemIndex": 0,
+      "input": "Firm: NexPhase Capital, Company: Behavior Frontiers",
+      "tasks": {
+        "1": {
+          "success": true,
+          "taskId": 1,
+          "taskName": "ResearchCompanyLocations",
+          "outputKey": "companies_with_locations",
+          "result": "{\"companies_with_locations\": [{\"company_name\": \"Behavior Frontiers\", \"headquarters_location\": {\"city\": \"El Segundo\", \"state\": \"California\", \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\", \"research_confidence\": \"high\"}}]}",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For the given portfolio company, find their headquarters location. Use the PE firm name as context to help identify the correct company. Use perplexity_search or research_legal_entity to find city and state of headquarters, complete address if possible, and verify this is the main operational headquarters. Include the PE firm context in your searches to ensure accuracy. Return results as JSON: {\"companies_with_locations\": [{\"company_name\": \"Company Name\", \"headquarters_location\": {\"city\": \"City Name\", \"state\": \"State\", \"full_address\": \"Complete address if found\", \"research_confidence\": \"high/medium/low\"}}]}. Include only the formatted JSON in your response, exclude any other text or comments.\n\nInputs:\ninput: Firm: NexPhase Capital, Company: Behavior Frontiers\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Let me search for information about Behavior Frontiers, using NexPhase Capital as context to ensure accuracy."
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_011qHcRXLCgVpuGGg2ykAJ46",
+                  "name": "search_web",
+                  "input": {
+                    "query": "Behavior Frontiers headquarters location NexPhase Capital portfolio company"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_011qHcRXLCgVpuGGg2ykAJ46",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"Behavior Frontiers’ headquarters is located at 100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245.[1]\\n\\n- According to the company’s contact page, the corporate address is the above El Segundo location, with the main phone 888-922-2843.[1]  \\n- Industry coverage also identifies Behavior Frontiers as Los Angeles–based, consistent with the El Segundo headquarters in the LA area.[4]  \\n- Additional company materials list the same headquarters address.[3]\\n\\nSources:\\n1. https://www.behaviorfrontiers.com/contact\\n2. https://www.prnewswire.com/news-releases/nexphase-announces-acquisition-of-behavior-frontiers-302445786.html\\n3. https://www.behaviorfrontiers.com/employment-interest-form\\n4. https://www.beckersbehavioralhealth.com/behavioral-health-capital-investment/aba-clinic-chain-changes-hands/\\n5. https://www.bhcoe.org/aba-therapy/behavior-frontiers-el-segundo-california-90245/\\n\\n\\n(Results from Perplexity sonar-pro)\"\n    }\n  ],\n  \"isError\": false\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\"companies_with_locations\": [{\"company_name\": \"Behavior Frontiers\", \"headquarters_location\": {\"city\": \"El Segundo\", \"state\": \"California\", \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\", \"research_confidence\": \"high\"}}]}"
+                }
+              ]
+            }
+          ]
+        },
+        "2": {
+          "success": true,
+          "taskId": 2,
+          "taskName": "VerifyPortfolioStatus",
+          "outputKey": "verified_portfolio_companies",
+          "result": "{\n  \"verified_portfolio_companies\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      }\n    }\n  ],\n  \"invalid_companies\": []\n}",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For each company from the previous task, verify if it is currently an active portfolio company of the given PE firm. Use perplexity_search to research each company and verify: Is it currently an active portfolio company of the firm? When was the investment made? Has the company been exited/sold? Any recent news about the investment status? Return results as JSON: {\"verified_portfolio_companies\": [{\"company_name\": \"Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {\"is_active_portfolio\": true, \"verification_confidence\": \"high/medium/low\", \"investment_details\": \"Brief description\", \"investment_date\": \"Year if found\", \"status_notes\": \"Relevant notes\"}}], \"invalid_companies\": [{\"company_name\": \"Exited Company\", \"reason\": \"Company was exited in 2022\", \"headquarters_location\": {...}}]}. Only include companies that are confirmed active portfolio investments. Include only the formatted JSON in your response, exclude any other text or comments.\n\nInputs:\ncompanies_with_locations: {\"companies_with_locations\": [{\"company_name\": \"Behavior Frontiers\", \"headquarters_location\": {\"city\": \"El Segundo\", \"state\": \"California\", \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\", \"research_confidence\": \"high\"}}]}\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "I'll help verify if Behavior Frontiers is currently an active portfolio company. Let me search for information about their investment status."
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_013z1DgyfzYg8YCgSSKZUPVG",
+                  "name": "search_web",
+                  "input": {
+                    "query": "Behavior Frontiers private equity investment ownership current portfolio company status"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_013z1DgyfzYg8YCgSSKZUPVG",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"Behavior Frontiers is currently owned by the private equity firm NexPhase Capital following a sale announced on May 5, 2025.[2] The company had previously been backed by Lorient Capital; the May 2025 announcements indicate NexPhase acquired the business, while not disclosing deal terms or whether Lorient retained any minority stake.[1][5]\\n\\nKey details\\n- Buyer: NexPhase Capital, a lower middle‑market PE firm focused on healthcare, software, and consumer, targeting control buyouts.[3]\\n- Announcement date: May 5, 2025.[2]\\n- Seller/previous sponsor: Lorient Capital; under Lorient’s ownership (roughly 2019–2025), Behavior Frontiers expanded to 26 centers/home-based branches across 12 states and grew active clients from ~900 to 2,850 and employees from ~1,300 to >3,300.[1][2][5]\\n- Current leadership: The existing Behavior Frontiers executive team remains in place post-transaction.[1][5]\\n- Portfolio context: NexPhase has prior autism therapy investments (e.g., Action Behavior Centers), signaling sector experience relevant to Behavior Frontiers’ growth plan.[5]\\n\\nNotes and limitations\\n- None of the releases disclose deal terms (valuation, ownership percentage) or explicitly confirm whether Lorient fully exited; trade coverage states it is “not clear” if Lorient remains involved.[1]\\n\\nSources:\\n1. https://bhbusiness.com/2025/05/05/national-autism-therapy-provider-behavior-frontiers-sells-to-nexphase-capital/\\n2. https://www.prnewswire.com/news-releases/behavior-frontiers-announces-sale-to-nexphase-capital-302445660.html\\n3. https://www.jdsupra.com/legalnews/healthcare-life-sciences-private-equity-6786343/\\n4. https://www.vistaequitypartners.com/companies/portfolio/\\n5. https://www.beckersbehavioralhealth.com/behavioral-health-capital-investment/aba-clinic-chain-changes-hands/\\n\\n\\n(Results from Perplexity sonar-pro)\"\n    }\n  ],\n  \"isError\": false\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "{\n  \"verified_portfolio_companies\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      }\n    }\n  ],\n  \"invalid_companies\": []\n}"
+                }
+              ]
+            }
+          ]
+        },
+        "3": {
+          "success": true,
+          "taskId": 3,
+          "taskName": "TestForm5500Matches",
+          "outputKey": "form5500_test_results",
+          "result": "Based on these searches, I'll format the results according to the requested JSON structure:\n\n{\n  \"direct_matches\": [],\n  \"companies_needing_resolution\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      },\n      \"form5500_attempts\": {\n        \"variations_tested\": [\n          \"Behavior Frontiers\",\n          \"Behavior Frontiers LLC\",\n          \"Behavior Frontiers Inc\",\n          \"BehaviorFrontiers\"\n        ],\n        \"best_partial_matches\": []\n      },\n      \"status\": \"NEEDS_ADVANCED_RESOLUTION\"\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"direct_matches\": 0,\n    \"need_resolution\": 1,\n    \"match_rate\": \"0%\"\n  }\n}\n\nNo matches were found in the Form 5500 database for Behavior Frontiers under any of the common variations tested. This could be because:\n1. The company might be too new (acquired in 2025)\n2. The company might file under a different legal name\n3. The company might be part of a larger entity's filing\n\nGiven the company's size (3,300 employees) and the fact that no matches were found, this case would benefit from advanced resolution techniques such as:\n1. Researching the previous owner's name (Lorient Capital)\n2. Checking parent company NexPhase Capital's holdings\n3. Investigating any DBA (Doing Business As) names\n4. Checking state business registration records for other legal names",
+          "conversationHistory": [
+            {
+              "role": "user",
+              "content": "For each verified active portfolio company, test for matches in the Form 5500 database. Use form5500_name_test to check for matches: 1) Test the exact company name first 2) Try common variations: Add/remove LLC, Inc, Corp, Company suffixes; Remove punctuation and special characters; Try with/without 'The', 'A', 'An' articles 3) Record all matches found and their quality. Return results as JSON: {\"direct_matches\": [{\"company_name\": \"Original Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {...}, \"form5500_match\": {\"legal_name\": \"Matched Legal Name\", \"ein\": \"12-3456789\", \"location\": \"City, State ZIP\", \"match_type\": \"exact/contains/partial\", \"record_count\": 5, \"variation_used\": \"variation tested\"}, \"status\": \"READY_FOR_EXTRACTION\"}], \"companies_needing_resolution\": [{\"company_name\": \"Difficult Company Name\", \"headquarters_location\": {...}, \"portfolio_verification\": {...}, \"form5500_attempts\": {\"variations_tested\": [\"Name\", \"Name LLC\", \"Name Inc\"], \"best_partial_matches\": [{\"legal_name\": \"Similar Name LLC\", \"match_type\": \"partial\", \"location\": \"Different City, ST\"}]}, \"status\": \"NEEDS_ADVANCED_RESOLUTION\"}], \"summary\": {\"total_tested\": 10, \"direct_matches\": 7, \"need_resolution\": 3, \"match_rate\": \"70%\"}}. Use form5500_name_test multiple times per company as needed. Test systematic variations, not random guesses. A 'direct match' means exact or very close match with good confidence. Companies with only poor partial matches go to 'needs_resolution'. Document all variations attempted.\n\nInputs:\nverified_portfolio_companies: {\n  \"verified_portfolio_companies\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      }\n    }\n  ],\n  \"invalid_companies\": []\n}\n"
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "I'll help test the company name \"Behavior Frontiers\" against the Form 5500 database using systematic variations. I'll start with the exact name and then try common variations.\n\n1. First, let's test the exact name:"
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_01MNScZyuosCgE5gWqa2YVK6",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "Behavior Frontiers",
+                    "exactOnly": true
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_01MNScZyuosCgE5gWqa2YVK6",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"Behavior Frontiers\\\",\\n  \\\"searchType\\\": \\\"exact\\\",\\n  \\\"success\\\": false,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 0,\\n  \\\"results\\\": [],\\n  \\\"timestamp\\\": \\\"2025-08-11T19:14:01.309Z\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Let's try some common variations:"
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_01M8mauj8rBvuAwjq3ALwQgq",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "Behavior Frontiers LLC"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_01M8mauj8rBvuAwjq3ALwQgq",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"Behavior Frontiers LLC\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": false,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 0,\\n  \\\"results\\\": [],\\n  \\\"timestamp\\\": \\\"2025-08-11T19:14:04.592Z\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool_use",
+                  "id": "toolu_01TFkedj2nZpquPtJEJm2M36",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "Behavior Frontiers Inc"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_01TFkedj2nZpquPtJEJm2M36",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"Behavior Frontiers Inc\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": false,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 0,\\n  \\\"results\\\": [],\\n  \\\"timestamp\\\": \\\"2025-08-11T19:14:07.551Z\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Let's try without the space:"
+                },
+                {
+                  "type": "tool_use",
+                  "id": "toolu_01GfEramuntQiAsXvdx3AzrA",
+                  "name": "form5500_name_test",
+                  "input": {
+                    "companyName": "BehaviorFrontiers"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "toolu_01GfEramuntQiAsXvdx3AzrA",
+                  "content": "{\n  \"content\": [\n    {\n      \"type\": \"text\",\n      \"text\": \"{\\n  \\\"searchTerm\\\": \\\"BehaviorFrontiers\\\",\\n  \\\"searchType\\\": \\\"partial\\\",\\n  \\\"success\\\": false,\\n  \\\"exactMatch\\\": false,\\n  \\\"resultCount\\\": 0,\\n  \\\"results\\\": [],\\n  \\\"timestamp\\\": \\\"2025-08-11T19:14:10.487Z\\\"\\n}\"\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Based on these searches, I'll format the results according to the requested JSON structure:\n\n{\n  \"direct_matches\": [],\n  \"companies_needing_resolution\": [\n    {\n      \"company_name\": \"Behavior Frontiers\",\n      \"headquarters_location\": {\n        \"city\": \"El Segundo\",\n        \"state\": \"California\",\n        \"full_address\": \"100 N Pacific Coast Highway, Suite 1400, El Segundo, CA 90245\",\n        \"research_confidence\": \"high\"\n      },\n      \"portfolio_verification\": {\n        \"is_active_portfolio\": true,\n        \"verification_confidence\": \"high\",\n        \"investment_details\": \"Acquired by NexPhase Capital from previous owner Lorient Capital\",\n        \"investment_date\": \"2025\",\n        \"status_notes\": \"NexPhase Capital acquired the company in May 2025; company has 26 centers across 12 states with over 3,300 employees\"\n      },\n      \"form5500_attempts\": {\n        \"variations_tested\": [\n          \"Behavior Frontiers\",\n          \"Behavior Frontiers LLC\",\n          \"Behavior Frontiers Inc\",\n          \"BehaviorFrontiers\"\n        ],\n        \"best_partial_matches\": []\n      },\n      \"status\": \"NEEDS_ADVANCED_RESOLUTION\"\n    }\n  ],\n  \"summary\": {\n    \"total_tested\": 1,\n    \"direct_matches\": 0,\n    \"need_resolution\": 1,\n    \"match_rate\": \"0%\"\n  }\n}\n\nNo matches were found in the Form 5500 database for Behavior Frontiers under any of the common variations tested. This could be because:\n1. The company might be too new (acquired in 2025)\n2. The company might file under a different legal name\n3. The company might be part of a larger entity's filing\n\nGiven the company's size (3,300 employees) and the fact that no matches were found, this case would benefit from advanced resolution techniques such as:\n1. Researching the previous owner's name (Lorient Capital)\n2. Checking parent company NexPhase Capital's holdings\n3. Investigating any DBA (Doing Business As) names\n4. Checking state business registration records for other legal names"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "workflowExecutionId": 6
+    }
+  ]
+}
