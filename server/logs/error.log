@@ -180,3 +180,10 @@
 {"level":"error","message":"Query:","service":"database","timestamp":"2025-08-11T19:14:25.237Z"}
 {"0":6,"1":"Based on these searches, I'll format the results according to the requested JSON structure","2":"\"match_rate\": \"0%\"\n  }\n}\n\nNo matches were found in the Form 5500 database for Behavior Frontiers under any of the common variations tested. This could be because:\n1. The company might be too new (acquired in 2025)\n2. The company might file under a different legal name\n3. The company might be part of a larger entity's filing\n\nGiven the company's size (3","level":"error","message":"Params:","service":"database","timestamp":"2025-08-11T19:14:25.237Z"}
 {"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-11T19:14:25.237Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T19:18:33.099Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-11T19:19:18.579Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-11T19:19:18.579Z"}
+{"0":7,"1":"Based on these test results, I can provide a sample JSON response format for this single company","2":"I can:\n1. Test each company systematically using the approach demonstrated\n2. Document all variations attempted\n3. Categorize matches as either direct matches or needing resolution\n4. Provide a complete JSON response with all companies tested\n\nWould you please provide the complete list of verified active portfolio companies and their associated information?","level":"error","message":"Params:","service":"database","timestamp":"2025-08-11T19:19:18.579Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-11T19:19:18.579Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T19:25:54.149Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T19:52:21.573Z"}
