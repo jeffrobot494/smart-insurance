@@ -7,6 +7,7 @@ const TaskExecution = require('../workflow/TaskExecution');
 const ToolManager = require('../workflow/ToolManager');
 const WorkflowManager = require('../workflow/WorkflowManager');
 const F5500TestClaudeResponseParser = require('../utils/F5500TestClaudeResponseParser');
+const { generateWorkflowSummary } = require('../utils/WorkflowSummaryGenerator');
 
 // POST /api/testing/legal-entity-resolution
 router.post('/legal-entity-resolution', async (req, res) => {
@@ -54,76 +55,6 @@ router.post('/legal-entity-resolution', async (req, res) => {
     });
   }
 });
-
-/**
- * Execute workflow test in isolation without database persistence or portfolio extraction
- */
-async function executeIsolatedWorkflowTest(workflowName, companies) {
-  try {
-    // Load workflow definition
-    const workflowFile = workflowName.endsWith('.json') ? workflowName : `${workflowName}.json`;
-    const workflowPath = path.join(__dirname, '../json', workflowFile);
-    
-    if (!fs.existsSync(workflowPath)) {
-      throw new Error(`Workflow file not found: ${workflowFile}`);
-    }
-    
-    const workflowData = JSON.parse(fs.readFileSync(workflowPath, 'utf8'));
-    const workflow = workflowData.workflow;
-    
-    if (!workflow || !workflow.tasks || workflow.tasks.length === 0) {
-      throw new Error('Invalid workflow structure');
-    }
-    
-    logger.info(`📋 Loaded workflow: ${workflow.name} with ${workflow.tasks.length} tasks`);
-    
-    // Get the global tool manager (already initialized by server.js)
-    const { getToolManager } = require('../server');
-    const toolManager = getToolManager();
-    
-    if (!toolManager) {
-      throw new Error('Tool manager not available - MCP servers may not be initialized');
-    }
-    
-    // Execute first task (assuming single task for testing workflows)
-    const task = workflow.tasks[0];
-    const taskExecution = new TaskExecution(task);
-    taskExecution.setToolManager(toolManager);
-    
-    logger.info(`🏃 Executing task: ${task.name}`);
-    
-    // Prepare input based on task's inputKeys
-    const taskInput = {};
-    if (task.inputKeys && task.inputKeys.includes('companies')) {
-      taskInput.companies = companies;
-    }
-    if (task.inputKeys && task.inputKeys.includes('input')) {
-      taskInput.input = companies.join(', ');
-    }
-    
-    // Execute task
-    const taskResult = await taskExecution.run(taskInput);
-    
-    if (!taskResult.success) {
-      throw new Error(`Task execution failed: ${taskResult.error}`);
-    }
-    
-    // Debug: Log the full task result structure
-    logger.info(`🔍 Full task result: ${JSON.stringify(taskResult, null, 2)}`);
-    
-    // Parse JSON from Claude's response using the dedicated parser
-    const parsedResult = F5500TestClaudeResponseParser.parseResult(taskResult.result, taskResult);
-    
-    logger.info(`🔍 Parsed result: ${JSON.stringify(parsedResult)}`);
-    logger.info(`✅ Task completed successfully`);
-    
-    return parsedResult;
-    
-  } catch (error) {
-    logger.error('❌ Isolated workflow execution failed:', error);
-    throw error;
-  }
-}
 
 // POST /api/testing/full-workflow
 router.post('/full-workflow', async (req, res) => {
@@ -230,6 +161,12 @@ async function executeFullWorkflowTestDirect(workflowName, companies, firmName) 
     
     logger.info(`✅ Full workflow completed successfully`);
     logger.info(`📊 Results: ${results.length} workflow executions completed`);
+    
+    // Generate summary for all companies
+    const summary = generateWorkflowSummary(results);
+    logger.info('\n📋 WORKFLOW SUMMARY');
+    logger.info('='.repeat(80));
+    logger.info(summary);
     
     return results;
     

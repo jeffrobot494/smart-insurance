@@ -187,3 +187,6 @@
 {"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-11T19:19:18.579Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T19:25:54.149Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T19:52:21.573Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T20:17:09.728Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T20:27:40.035Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T00:25:46.190Z"}
