@@ -117,20 +117,13 @@ class Form5500MCPServer {
     if (!this.databaseManager) {
       return {
         searchTerm: companyName,
-        searchType: exactOnly ? 'exact' : 'partial',
         success: true,
-        exactMatch: companyName.toLowerCase().includes('test'),
         resultCount: 1,
         results: [{
-          legalName: `Mock ${companyName} Corporation`,
-          ein: '12-3456789',
-          location: 'Mock City, ST 12345',
-          planYear: 2023,
-          recordCount: 5,
-          matchType: companyName.toLowerCase().includes('test') ? 'exact' : 'partial'
-        }],
-        timestamp: new Date().toISOString(),
-        note: 'Mock data - database not available'
+          name: `Mock ${companyName} Corporation`,
+          city: 'Mock City',
+          state: 'ST'
+        }]
       };
     }
     
@@ -173,23 +166,27 @@ class Form5500MCPServer {
     
     const searchResults = await this.databaseManager.query(query, params);
     
-    const results = searchResults.rows.map(row => ({
-      legalName: row.sponsor_dfe_name,
-      ein: row.spons_dfe_ein,
-      location: `${row.spons_dfe_mail_us_city}, ${row.spons_dfe_mail_us_state} ${row.spons_dfe_mail_us_zip}`,
-      planYear: parseInt(row.year),
-      recordCount: parseInt(row.record_count),
-      matchType: this.determineMatchType(companyName, row.sponsor_dfe_name)
-    }));
+    // Create a simplified list of unique companies (deduplicate by name and location)
+    const uniqueCompanies = new Map();
+    
+    searchResults.rows.forEach(row => {
+      const key = `${row.sponsor_dfe_name}|${row.spons_dfe_mail_us_city}|${row.spons_dfe_mail_us_state}`;
+      if (!uniqueCompanies.has(key)) {
+        uniqueCompanies.set(key, {
+          name: row.sponsor_dfe_name,
+          city: row.spons_dfe_mail_us_city,
+          state: row.spons_dfe_mail_us_state
+        });
+      }
+    });
+    
+    const results = Array.from(uniqueCompanies.values());
 
     return {
       searchTerm: companyName,
-      searchType: exactOnly ? 'exact' : 'partial',
       success: results.length > 0,
-      exactMatch: results.some(r => r.matchType === 'exact'),
       resultCount: results.length,
-      results: results,
-      timestamp: new Date().toISOString()
+      results: results
     };
   }
 

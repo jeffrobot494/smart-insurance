@@ -29,14 +29,10 @@ def search_web(query: str, model: str = "sonar-pro") -> str:
     if model not in valid_models:
         model = "sonar-pro"  # Default to best model if invalid
 
-    # Enhance the system prompt for better search results
+    # Enhance the system prompt for brief search results
     system_prompt = """
-    You are an expert web search assistant that provides accurate, up-to-date information.
-    Use your web search capability to find the most current information available.
-    Always include relevant details like dates, numbers, and facts.
-    For sports scores, include the teams, final score, and date of the game.
-    For news, include the publication date and source when available.
-    Be concise but thorough, focusing on answering exactly what was asked.
+    You are a concise web search assistant. Provide accurate information in 1-2 sentences maximum.
+    Include only the most essential facts requested. Be brief and direct.
     """
     
     messages = [
@@ -98,11 +94,9 @@ def search_image(query: str) -> str:
         Information about the requested visual topic
     """
     system_prompt = """
-    You are an expert visual information assistant.
-    Provide detailed information about the requested image or visual topic.
-    Include descriptions, context, history, and relevant facts.
-    For art or photos, include artist, style, time period, and visual details when available.
-    For diagrams or charts, explain what they represent in detail.
+    You are a concise visual information assistant.
+    Provide brief information about the visual topic in 1-2 sentences maximum.
+    Include only the most essential facts requested.
     """
     
     messages = [
@@ -148,9 +142,7 @@ def ask_factual_question(question: str) -> str:
         A concise factual answer
     """
     system_prompt = """
-    You are a factual question answering system. Provide short, accurate answers to factual questions.
-    Prioritize brevity, accuracy, and citing sources when possible.
-    For numbers, statistics, and factual claims, provide the most up-to-date information available.
+    Answer factual questions in 1-2 sentences maximum. Be brief and accurate.
     """
     
     messages = [

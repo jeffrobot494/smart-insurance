@@ -58,7 +58,8 @@ if (process.env.NODE_ENV !== 'production') {
           polling: '\x1b[33m',    // yellow
           files: '\x1b[31m',      // red
           parsing: '\x1b[37m',    // white
-          manager: '\x1b[95m'     // bright magenta
+          manager: '\x1b[95m',    // bright magenta
+          temporary: '\x1b[93m'   // bright yellow
         };
         
         const serviceColor = colors[service] || '\x1b[37m';
@@ -91,7 +92,8 @@ const loggers = {
   polling: baseLogger.child({ service: 'polling' }),
   files: baseLogger.child({ service: 'files' }),
   parsing: baseLogger.child({ service: 'parsing' }),
-  manager: baseLogger.child({ service: 'manager' })
+  manager: baseLogger.child({ service: 'manager' }),
+  temporary: baseLogger.child({ service: 'temporary' })
 };
 
 module.exports = loggers;

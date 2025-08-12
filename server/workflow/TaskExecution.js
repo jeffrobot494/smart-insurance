@@ -1,4 +1,4 @@
-const { workflow: logger } = require('../utils/logger');
+const { workflow: logger, temporary: tempLogger } = require('../utils/logger');
 const ClaudeManager = require('../mcp/ClaudeManager');
 
 class TaskExecution {
@@ -37,6 +37,9 @@ class TaskExecution {
       // Main conversation loop - continues while Claude makes tool calls
       while (iterations < this.maxIterations) {
         try {
+          // Log the full prompt being sent to Claude
+          tempLogger.info(`🚀 PROMPT TO CLAUDE:\n${JSON.stringify(this.conversationHistory, null, 2)}`);
+          
           // Send message to Claude with tools available
           const response = await this.claudeManager.sendMessage('', {
             conversationHistory: this.conversationHistory,

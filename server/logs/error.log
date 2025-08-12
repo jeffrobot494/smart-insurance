@@ -196,3 +196,20 @@
 {"level":"error","message":"Query:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
 {"0":28,"1":"{\n    \"company_name\"","2":"\"evidence\": \"Multiple sources indicate employee count well over 100 in 2024. LeadIQ lists 501-1000 employees with estimate of ~725. Even the lowest estimate from Crustdata (~90) combined with Growjo's estimate (142) and reported growth suggests the company very likely exceeded 100 employees in 2024.\"","level":"error","message":"Params:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
 {"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:17:22.846Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-12T01:18:49.498Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-12T01:18:49.499Z"}
+{"0":45,"1":"I notice this is a follow-up request but I'm missing crucial information - specifically the company name(s) that need to be tested against the Form 5500 database. Without at least one company name to search for, I cannot proceed with the form5500_name_test function.\n\nTo help you effectively, I need","2":"1. The company name(s) you want to test\n2. If available","level":"error","message":"Params:","service":"database","timestamp":"2025-08-12T01:18:49.499Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-12T01:18:49.499Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:20:56.250Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-12T01:22:04.922Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-12T01:22:04.923Z"}
+{"0":46,"1":"I understand that you want me to test Form 5500 matches despite the previous research suggesting the entity might not file Form 5500s. Since you want to be thorough and start with inclusive search, I'll need some key information that's missing from your input","2":"Could you please provide:\n1. The original company name to search for\n2. Any known legal entity name (if different from company name)\n\nWithout at least one of these names to search","level":"error","message":"Params:","service":"database","timestamp":"2025-08-12T01:22:04.923Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-12T01:22:04.923Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:26:17.642Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:28:33.826Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:33:15.906Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:36:40.815Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T01:41:43.887Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T03:06:12.941Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T03:09:14.973Z"}
