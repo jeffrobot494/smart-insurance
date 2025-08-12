@@ -190,3 +190,9 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T20:17:09.728Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-11T20:27:40.035Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T00:25:46.190Z"}
+{"level":"error","message":"❌ Task 2 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-12T00:46:23.430Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"}}","service":"workflow","timestamp":"2025-08-12T00:46:31.252Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-12T00:46:36.077Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
+{"0":28,"1":"{\n    \"company_name\"","2":"\"evidence\": \"Multiple sources indicate employee count well over 100 in 2024. LeadIQ lists 501-1000 employees with estimate of ~725. Even the lowest estimate from Crustdata (~90) combined with Growjo's estimate (142) and reported growth suggests the company very likely exceeded 100 employees in 2024.\"","level":"error","message":"Params:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-12T00:46:36.078Z"}
