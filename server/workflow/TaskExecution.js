@@ -4,6 +4,7 @@ const ClaudeManager = require('../mcp/ClaudeManager');
 class TaskExecution {
   constructor(task) {
     this.task = task;
+    this.allowedTools = task.allowed_tools || null;
     this.claudeManager = new ClaudeManager();
     this.conversationHistory = [];
     this.status = 'pending';
@@ -187,6 +188,11 @@ class TaskExecution {
       throw new Error('ToolManager not available. Ensure TaskExecution is configured with a ToolManager.');
     }
     
+    // Validate tool is allowed if restrictions are in place
+    if (this.allowedTools && !this.allowedTools.includes(toolName)) {
+      throw new Error(`Tool '${toolName}' is not allowed for this task. Allowed tools: ${this.allowedTools.join(', ')}`);
+    }
+    
     return await this.toolManager.callTool(toolName, parameters);
   }
 
@@ -195,7 +201,15 @@ class TaskExecution {
       return [];
     }
     
-    return this.toolManager.getAvailableTools();
+    const allTools = this.toolManager.getAvailableTools();
+    
+    // If no allowed_tools specified, return all tools (backward compatibility)
+    if (!this.allowedTools || !Array.isArray(this.allowedTools)) {
+      return allTools;
+    }
+    
+    // Filter tools to only include allowed ones
+    return allTools.filter(tool => this.allowedTools.includes(tool.name));
   }
 
   setToolManager(toolManager) {

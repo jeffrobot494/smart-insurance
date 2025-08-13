@@ -8,27 +8,31 @@
         "name": "ResearchCompanyLocations",
         "outputKey": "companies_with_locations",
         "inputKeys": ["input"],
-        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find city, state, and full address. Return JSON: {company_name, firm_name, headquarters_location: {city, state, full_address, research_confidence}}. If there are two possibilities and it's unclear which is true, use both. Include no comments in your response."
+        "allowed_tools": ["search_web"],
+        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find the city and state. Full address is NOT needed. Return JSON: {company_name, firm_name, headquarters_location: {city, state, research_confidence}}. If there are two possibilities and it's unclear which is true, INCLUDE BOTH. Include no comments in your response."
       },
       {
         "id": 2,
         "name": "VerifyPortfolioStatus", 
         "outputKey": "verified_portfolio_companies",
         "inputKeys": ["companies_with_locations"],
-        "instructions": "Verify if company is active portfolio of PE firm using perplexity_search. If you find acquisition by 'unnamed' or 'undisclosed' PE firm, assume this refers to the firm in question. Only mark inactive if sold to a specifically named different firm. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification: {is_active_portfolio: bool, verification_confidence, investment_details, status_notes}} OR {company_name, firm_name, reason, headquarters_location, is_active_portfolio: false} if not active. Include no comments in your response."
+        "allowed_tools": ["search_web"],
+        "instructions": "Your task is to check if there is conclusive proof that the company is NO LONGER an active portfolio company of the PE firm. Start with the assumption that it IS an active portfolio company. Perform a single web search. If you do not find conclusive evidence that it is NO LONGER an active portfolio company, indicate as such. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification: {is_active_portfolio: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response."
       },
       {
         "id": 3,
         "name": "CheckEmployeeCount",
         "outputKey": "employee_count_check",
         "inputKeys": ["verified_portfolio_companies"],
-        "instructions": "Research 2024 employee count using perplexity_search. Only proceed if 'is_active_portfolio: true'. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment: {likely_under_100_employees: bool, confidence, evidence, year: '2024'}, status: 'LIKELY_NO_FORM_5500' or 'PROCEED_TO_FORM_5500'}. If not active portfolio, return 'status: LIKELY_NO_FORM_5500'. Include no comments in your response."
+        "allowed_tools": ["search_web"],
+        "instructions": "Determine whether the company likely had more or less than 100 employees in the previous calendar year. Only proceed if 'is_active_portfolio: true'. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment: {likely_under_100_employees: bool, confidence, evidence, year: '2024'}, status: 'LIKELY_NO_FORM_5500' (if less than 100 employees) or 'PROCEED_TO_FORM_5500' (if 100 employees or more)}. If not active portfolio, return 'status: LIKELY_NO_FORM_5500'. Include no comments in your response."
       },
       {
         "id": 4,
         "name": "FindLegalEntityName",
         "outputKey": "legal_entity_research",
         "inputKeys": ["employee_count_check"],
+        "allowed_tools": ["search_web"],
         "instructions": "Find legal entity name using perplexity_search query: 'What legal entity is DBA [company name], a portfolio company of [pe firm name]?' Only proceed if status: 'PROCEED_TO_FORM_5500'. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment, legal_entity_research: {legal_entity_name, research_confidence, source_info}, status: 'LEGAL_ENTITY_FOUND' or 'LEGAL_ENTITY_UNCLEAR'}. Include no comments in your response."
       },
       {
