@@ -8,8 +8,10 @@ const ToolManager = require('../workflow/ToolManager');
 const WorkflowManager = require('../workflow/WorkflowManager');
 const F5500TestClaudeResponseParser = require('../utils/F5500TestClaudeResponseParser');
 const { generateWorkflowSummary } = require('../utils/WorkflowSummaryGenerator');
+const VerificationResultsConverter = require('../utils/VerificationResultsConverter');
 
 // POST /api/testing/legal-entity-resolution
+/* NOT USED
 router.post('/legal-entity-resolution', async (req, res) => {
   const startTime = Date.now();
   
@@ -55,6 +57,7 @@ router.post('/legal-entity-resolution', async (req, res) => {
     });
   }
 });
+*/
 
 // POST /api/testing/full-workflow
 router.post('/full-workflow', async (req, res) => {
@@ -83,18 +86,40 @@ router.post('/full-workflow', async (req, res) => {
     // Execute full multi-task workflow using WorkflowManager directly
     const results = await executeFullWorkflowTestDirect(workflow, companies, firmName);
     
+    // Test the conversion if this is portfolio_company_verification workflow
+    let convertedResults = null;
+    let consolidatedResults = null;
+    
+    if (workflow === 'portfolio_company_verification') {
+      logger.info(`📋 Converting ${results.length} verification results to portfolio format`);
+      convertedResults = VerificationResultsConverter.convertToPortfolioFormat(results);
+      consolidatedResults = VerificationResultsConverter.consolidateByFirm(results);
+      logger.info(`🔄 Converted to ${convertedResults.length} individual results, ${consolidatedResults.length} consolidated firms`);
+      
+      // Log the consolidated results for easy viewing
+      consolidatedResults.forEach((result, index) => {
+        const taskIds = Object.keys(result.tasks).map(id => parseInt(id));
+        const finalTaskId = Math.max(...taskIds);
+        const portfolioString = result.tasks[finalTaskId]?.result;
+        logger.info(`📊 Consolidated Result ${index + 1}: ${portfolioString}`);
+      });
+    }
+    
     const executionTime = Date.now() - startTime;
     
-    // Return clean results with pretty formatting
+    // Return all three result types for testing
     const response = {
       success: true,
-      results: results,
+      original_results: results,
+      converted_results: convertedResults,
+      consolidated_results: consolidatedResults,
       metadata: {
         workflow_used: `${workflow}.json`,
         execution_time_ms: executionTime,
         companies_processed: companies.length,
         firm_name: firmName,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        note: "consolidated_results will be passed to extractData function in Manager.js"
       }
     };
     

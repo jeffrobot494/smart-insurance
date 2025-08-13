@@ -17,7 +17,7 @@
         "outputKey": "verified_portfolio_companies",
         "inputKeys": ["companies_with_locations"],
         "allowed_tools": ["search_web"],
-        "instructions": "Your task is to check if there is conclusive proof that the company is NO LONGER an active portfolio company of the PE firm. Start with the assumption that it IS an active portfolio company. Perform a single web search. If you do not find conclusive evidence that it is NO LONGER an active portfolio company, indicate as such. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification: {is_active_portfolio: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response."
+        "instructions": "Your task is to check if there is conclusive proof that the company is NO LONGER an active portfolio company of the PE firm. Start with the assumption that it IS an active portfolio company. Perform a single web search. If you find conclusive evidence that it is NO LONGER an active portfolio company, indicate as such. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification: {is_active_portfolio: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response."
       },
       {
         "id": 3,
@@ -25,7 +25,7 @@
         "outputKey": "employee_count_check",
         "inputKeys": ["verified_portfolio_companies"],
         "allowed_tools": ["search_web"],
-        "instructions": "Determine whether the company likely had more or less than 100 employees in the previous calendar year. Only proceed if 'is_active_portfolio: true'. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment: {likely_under_100_employees: bool, confidence, evidence, year: '2024'}, status: 'LIKELY_NO_FORM_5500' (if less than 100 employees) or 'PROCEED_TO_FORM_5500' (if 100 employees or more)}. If not active portfolio, return 'status: LIKELY_NO_FORM_5500'. Include no comments in your response."
+        "instructions": "Determine whether the company likely had more or less than 100 employees in the previous calendar year. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment: {likely_under_100_employees: bool, confidence, evidence, year: '2024'}, status: 'LIKELY_NO_FORM_5500' (if less than 100 employees) or 'PROCEED_TO_FORM_5500' (if 100 employees or more)}. If not active portfolio, return 'status: LIKELY_NO_FORM_5500'. Include no comments in your response."
       },
       {
         "id": 4,
@@ -33,14 +33,14 @@
         "outputKey": "legal_entity_research",
         "inputKeys": ["employee_count_check"],
         "allowed_tools": ["search_web"],
-        "instructions": "Find legal entity name using perplexity_search query: 'What legal entity is DBA [company name], a portfolio company of [pe firm name]?' Only proceed if status: 'PROCEED_TO_FORM_5500'. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment, legal_entity_research: {legal_entity_name, research_confidence, source_info}, status: 'LEGAL_ENTITY_FOUND' or 'LEGAL_ENTITY_UNCLEAR'}. Include no comments in your response."
+        "instructions": "Find legal entity name using perplexity_search query: 'What legal entity is DBA [company name], a portfolio company of [pe firm name]?' Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment, legal_entity_research: {legal_entity_name, research_confidence, source_info}, status: 'LEGAL_ENTITY_FOUND' or 'LEGAL_ENTITY_UNCLEAR'}. Include no comments in your response."
       },
       {
         "id": 5,
         "name": "TestForm5500Matches",
         "outputKey": "form5500_test_results", 
         "inputKeys": ["legal_entity_research"],
-        "instructions": "Test Form 5500 matches using form5500_name_test. Only proceed if status: 'LEGAL_ENTITY_FOUND' or 'LEGAL_ENTITY_UNCLEAR'. Search order: 1) Legal entity name from previous task 2) Original company name 3) Shortened versions (remove suffixes) 4) Common variations. Inclusive search returns broader results, so start broad. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment, legal_entity_research, form5500_match: {legal_name, ein, location, match_type, record_count, variation_used}, status: 'READY_FOR_EXTRACTION' or 'NEEDS_ADVANCED_RESOLUTION'}. Include no comments in your response."
+        "instructions": "Test Form 5500 matches using form5500_name_test. Search order: 1) Legal entity name from previous task 2) Original company name 3) Shortened versions (remove suffixes) 4) Common variations. Inclusive search returns broader results, so start broad. Return JSON: {company_name, firm_name, headquarters_location, portfolio_verification, employee_count_assessment, legal_entity_research, form5500_match: {legal_name, ein, location, match_type, record_count, variation_used}, status: 'READY_FOR_EXTRACTION' or 'NEEDS_ADVANCED_RESOLUTION'}. Include only the JSON. Include no comments in your response under any conditions."
       }
     ]
   }
