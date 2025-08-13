@@ -2,9 +2,11 @@ const { mcp: logger } = require('../utils/logger');
 const Anthropic = require('@anthropic-ai/sdk');
 
 class ClaudeManager {
-  constructor(apiKey = null, model = 'claude-3-5-sonnet-20241022') {
+  constructor(apiKey = null, model = 'claude-3-7-sonnet-latest') {
     this.apiKey = apiKey || process.env.ANTHROPIC_API_KEY;
     this.model = model;
+    //TRYING THE CHEAPER MODEL
+    //this.model = 'claude-3-5-haiku-latest';
     
     if (!this.apiKey) {
       throw new Error('Anthropic API key is required. Set ANTHROPIC_API_KEY environment variable or pass it to the constructor.');

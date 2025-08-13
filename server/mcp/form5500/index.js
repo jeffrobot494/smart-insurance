@@ -46,7 +46,7 @@ class Form5500MCPServer {
       tools: [
         {
           name: "form5500_name_test",
-          description: "Test if a company name returns results from Form 5500 dataset. Supports partial matching and returns detailed match information.",
+          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them.",
           inputSchema: {
             type: "object",
             properties: {

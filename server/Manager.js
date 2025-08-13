@@ -132,56 +132,6 @@ class Manager {
   }
 
   /**
-   * Second workflow - Legal entity extraction
-   */
-  /*
-  async run2() {
-    try {
-      await this.initializeTaskManager();
-
-      logger.info('\n🔗 Starting second workflow: Legal entity extraction');
-      
-      // 1. Parse companies from most recent output file
-      const outputDir = path.join(__dirname, 'json', 'output');
-      const mostRecentFile = this.outputManager.getMostRecentOutputFile(outputDir, 'pe_firm_research');
-      logger.info("[DEBUG] - Most recent file:", mostRecentFile);
-
-      const firstWorkflowResults = JSON.parse(fs.readFileSync(mostRecentFile, 'utf8'));
-      const firmAndCompanyNames = this.parser.parseCompaniesFromResults(firstWorkflowResults);
-
-      // Validate parsed companies
-      if (!this.parser.validateCompanies(firmAndCompanyNames)) {
-        logger.warn('⚠️ Company parsing validation failed, but continuing with workflow');
-      }
-      
-      // 2. Load and execute legal entities workflow
-      const getLegalEntitiesWorkflow = readWorkflow('get_legal_entities.json');
-      
-      // Set workflow name in environment for SaveTaskResults
-      process.env.WORKFLOW_NAME = getLegalEntitiesWorkflow.workflow.name.replace(/\s+/g, '_').toLowerCase();
-      
-      logger.info(`🏢 Executing legal entities workflow for ${firmAndCompanyNames.length} companies`);
-      
-      // Pass company names as individual items in the input array
-      // WorkflowManager will process each company name separately
-      const legal_names = await this.taskManager.executeWorkflow(getLegalEntitiesWorkflow, { input: firmAndCompanyNames });
-      
-      // 3. Log results
-      logger.info('\n📋 Legal entity extraction completed:');
-      logger.info('Legal names:', legal_names);
-      
-      return {
-        firmAndCompanyNames,
-        legalEntities: legal_names 
-      };
-      
-    } catch (error) {
-      logger.error('💥 Workflow execution failed:', error.message);
-      throw error;
-    }
-  }
-*/
-  /**
    * Extract Form 5500 data for portfolio companies from a specific workflow execution
    * @param {number} workflowExecutionId - The workflow execution ID to get companies from
    */

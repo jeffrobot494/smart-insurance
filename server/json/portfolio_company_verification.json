@@ -8,7 +8,7 @@
         "name": "ResearchCompanyLocations",
         "outputKey": "companies_with_locations",
         "inputKeys": ["input"],
-        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find city, state, and full address. Return JSON: {company_name, firm_name, headquarters_location: {city, state, full_address, research_confidence}}. Include no comments in your response."
+        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find city, state, and full address. Return JSON: {company_name, firm_name, headquarters_location: {city, state, full_address, research_confidence}}. If there are two possibilities and it's unclear which is true, use both. Include no comments in your response."
       },
       {
         "id": 2,
