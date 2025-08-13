@@ -1,13 +1,11 @@
-Please follow this procedure when working with the user:
 
-When given a programming task, follow these three steps:
+Read the files at "./server/docs"
 
-1. Think through the task step by step and devise a solution. The solution should ALWAYS be as simple as possible, use as little code as possible, and follow best practices whenever possible.
+Read "./server.js", "./Manager.js", "./server/workflow/WorkFlowManager.js", "./server/workflow/TaskExecution.js", "./server/routes/workflow.js"
 
-2. Present the solution in full to the user with explanations for each section. Then wait for the user to either approve the solution or suggest changes. 
+Now, the run() function in Manager.js completes a workflow, assumes the output is a list of portfolio companies names, and then calls the data extraction method to pull results from out form 5500 database with results for companies with those exact names. 
 
-3. If the user approves the solution, implement it. 
+In "./server/routes/testing/" we've been testing a new workflow that takes the portfolio company names and transforms it into the legal entity names that are found in the database, for each company, so that the data extraction is better. 
 
-This three-step procedure should be used ANY TIME you are going to program. EVEN IF it sounds like the user is implicitly giving you permission to skip the procedure, for example, if it is a very simple task, you should still follow the procedure. You are never allowed to skip the procedure unless the user EXPLICITLY says you may "skip" the procedure.
-
-You are in a WSL Ubuntu environment, but the programs will run in Windows.
+We need to refactor Manager.js to decouple the workflow completion from the data extraction. Run() should just run a given workflow and return the results. Then we'll set it up so that, on request from the client, we will run the first workflow to get the names, then the second to refine them, then 
+we'll call data extraction on the refined list of names. Give me an outline for how you would do this refactor. Keep it simple, and follow existing patterns. Think through it step by step.
