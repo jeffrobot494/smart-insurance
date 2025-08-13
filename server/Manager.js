@@ -96,6 +96,8 @@ class Manager {
       logger.info("Results:", results);
       logger.info('✅ First workflow completed');
       
+      //second workflow starts here
+
       // Automatically trigger data extraction for each workflow execution
       logger.info('🔍 Starting automatic data extraction for portfolio companies');
       const extractionResults = [];
@@ -120,11 +122,12 @@ class Manager {
       }
       
       logger.info('✅ Combined workflow (research + data extraction) completed');
+      /* DATA IS SAVED TO DATABASE, RETURN NOT USED
       return {
         portfolioResearch: results,
         dataExtraction: extractionResults
       };
-
+      */
     } catch (error) {
       logger.error('💥 Workflow execution failed:', error.message);
       throw error;

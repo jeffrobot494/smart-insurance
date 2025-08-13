@@ -67,6 +67,31 @@ class Form5500MCPServer {
             },
             required: ["companyName"]
           }
+        },
+        {
+          name: "form5500_batch_name_test",
+          description: "Performs batch search in the database for multiple companies with search terms in their names. Returns full legal entity name, city, and state for each company. More efficient than individual calls for multiple companies.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              companyNames: { 
+                type: "array",
+                items: { type: "string" },
+                description: "Array of company names to search in Form 5500 data"
+              },
+              limit: {
+                type: "number",
+                description: "Maximum number of results to return per company (default: 10)",
+                default: 10
+              },
+              exactOnly: {
+                type: "boolean", 
+                description: "If true, only return exact matches (default: false)",
+                default: false
+              }
+            },
+            required: ["companyNames"]
+          }
         }
       ]
     }));
@@ -78,6 +103,8 @@ class Form5500MCPServer {
         switch (name) {
           case "form5500_name_test":
             return await this.handleForm5500NameTest(args);
+          case "form5500_batch_name_test":
+            return await this.handleForm5500BatchNameTest(args);
           default:
             throw new Error(`Unknown tool: ${name}`);
         }
@@ -187,6 +214,137 @@ class Form5500MCPServer {
       success: results.length > 0,
       resultCount: results.length,
       results: results
+    };
+  }
+
+  async handleForm5500BatchNameTest(args) {
+    const { companyNames, limit = 10, exactOnly = false } = args;
+    
+    if (!companyNames || !Array.isArray(companyNames) || companyNames.length === 0) {
+      throw new Error('Company names array is required and must not be empty');
+    }
+
+    if (companyNames.length > 50) {
+      throw new Error('Maximum 50 companies allowed per batch request');
+    }
+
+    // Validate all company names are strings
+    if (!companyNames.every(name => typeof name === 'string' && name.trim())) {
+      throw new Error('All company names must be non-empty strings');
+    }
+
+    const results = await this.batchTestCompanyNames(companyNames, { limit, exactOnly });
+    
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify(results, null, 2)
+      }]
+    };
+  }
+
+  async batchTestCompanyNames(companyNames, options = {}) {
+    const { limit = 10, exactOnly = false } = options;
+    
+    // If no database connection, return mock data
+    if (!this.databaseManager) {
+      return {
+        success: true,
+        totalCompanies: companyNames.length,
+        results: companyNames.map(name => ({
+          searchTerm: name,
+          success: true,
+          resultCount: 1,
+          results: [{
+            name: `Mock ${name} Corporation`,
+            city: 'Mock City',
+            state: 'ST'
+          }]
+        }))
+      };
+    }
+    
+    const batchResults = [];
+    
+    // Build batch query with UNION ALL for efficiency
+    let query;
+    let params = [];
+    let paramIndex = 1;
+    
+    const queryParts = companyNames.map(companyName => {
+      let whereClause;
+      if (exactOnly) {
+        whereClause = `LOWER(sponsor_dfe_name) = LOWER($${paramIndex})`;
+        params.push(companyName);
+      } else {
+        whereClause = `LOWER(sponsor_dfe_name) LIKE LOWER($${paramIndex})`;
+        params.push(`%${companyName}%`);
+      }
+      
+      const searchTermParam = `$${paramIndex + 1}`;
+      params.push(companyName);
+      paramIndex += 2;
+      
+      return `
+        SELECT DISTINCT 
+          ${searchTermParam} as search_term,
+          sponsor_dfe_name,
+          spons_dfe_ein,
+          spons_dfe_mail_us_city,
+          spons_dfe_mail_us_state,
+          spons_dfe_mail_us_zip,
+          year,
+          COUNT(*) OVER (PARTITION BY sponsor_dfe_name, spons_dfe_ein) as record_count
+        FROM form_5500_records 
+        WHERE ${whereClause}
+        ORDER BY record_count DESC, year DESC
+        LIMIT ${limit}
+      `;
+    });
+    
+    query = queryParts.join(' UNION ALL ');
+    
+    const searchResults = await this.databaseManager.query(query, params);
+    
+    // Group results by search term
+    const groupedResults = new Map();
+    
+    searchResults.rows.forEach(row => {
+      const searchTerm = row.search_term;
+      if (!groupedResults.has(searchTerm)) {
+        groupedResults.set(searchTerm, new Map());
+      }
+      
+      const uniqueCompanies = groupedResults.get(searchTerm);
+      const key = `${row.sponsor_dfe_name}|${row.spons_dfe_mail_us_city}|${row.spons_dfe_mail_us_state}`;
+      
+      if (!uniqueCompanies.has(key)) {
+        uniqueCompanies.set(key, {
+          name: row.sponsor_dfe_name,
+          city: row.spons_dfe_mail_us_city,
+          state: row.spons_dfe_mail_us_state
+        });
+      }
+    });
+    
+    // Format results for each company
+    companyNames.forEach(companyName => {
+      const companyResults = groupedResults.get(companyName);
+      const results = companyResults ? Array.from(companyResults.values()) : [];
+      
+      batchResults.push({
+        searchTerm: companyName,
+        success: results.length > 0,
+        resultCount: results.length,
+        results: results
+      });
+    });
+    
+    return {
+      success: true,
+      totalCompanies: companyNames.length,
+      companiesWithResults: batchResults.filter(r => r.success).length,
+      results: batchResults
     };
   }
 

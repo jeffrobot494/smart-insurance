@@ -221,3 +221,8 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T18:01:23.194Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T18:02:59.696Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-12T18:53:15.074Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-13T15:16:03.097Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-13T15:21:06.966Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-13T15:21:06.967Z"}
+{"0":115,"1":"{\n  \"company_name\"","2":"\"status_notes\": \"DataLink is currently listed as an active portfolio company on Revelstoke Capital's website and appears in their current investments section. The company continues to operate independently while pursuing growth initiatives under Revelstoke's ownership.\"\n  }","level":"error","message":"Params:","service":"database","timestamp":"2025-08-13T15:21:06.968Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-13T15:21:06.968Z"}
