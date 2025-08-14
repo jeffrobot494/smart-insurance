@@ -41,7 +41,7 @@ class WorkflowManager {
     this.currentIndex = 0;
   }
 
-  async by the executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
+  async executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
     this.workflowData = workflowData;
     if (!this.workflowData) {
       throw new Error('workflorData must be provided to WorkflowManager');
@@ -154,8 +154,8 @@ class WorkflowManager {
       }
     }
     
-    // Save all results at once
-    await this.resultsSaver.saveBatchResults(allResults);
+    // Note: Results saving moved to Manager.js for better control over conversion
+    // await this.resultsSaver.saveBatchResults(allResults);
     
     logger.info('🏁 Workflow execution completed');
     logger.info(`📊 Processed ${allResults.length} items`);

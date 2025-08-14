@@ -11,6 +11,7 @@ const CLIInputParser = require('./utils/CLIInputParser');
 const OutputFileManager = require('./utils/OutputFileManager');
 const ResultsParser = require('./utils/ResultsParser');
 const ResultsExtractor = require('./utils/ResultsExtractor');
+const VerificationResultsConverter = require('./utils/VerificationResultsConverter');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 const DatabaseManager = require('./data-extraction/DatabaseManager');
 
@@ -96,28 +97,84 @@ class Manager {
       logger.info("Results:", results);
       logger.info('✅ First workflow completed');
       
-      //second workflow starts here
-
-      // Automatically trigger data extraction for each workflow execution
-      logger.info('🔍 Starting automatic data extraction for portfolio companies');
-      const extractionResults = [];
+      // Save first workflow results in original format
+      const resultsSaver = new SaveTaskResults();
+      await resultsSaver.saveBatchResults(results);
+      logger.info('💾 First workflow results saved to database');
       
+      // Second workflow - Legal entity name resolution
+      logger.info('🔍 Starting legal entity name resolution workflow');
+      const refinedWorkflowExecutionIds = [];
+
       for (const result of results) {
         if (result.workflowExecutionId) {
           try {
-            logger.info(`📊 Extracting data for workflow execution ID: ${result.workflowExecutionId}`);
-            const extractionResult = await this.extractPortfolioCompanyData(result.workflowExecutionId);
-            extractionResults.push({
-              workflowExecutionId: result.workflowExecutionId,
-              extraction: extractionResult
-            });
+            // Get portfolio company names from database using original workflow execution ID
+            const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(result.workflowExecutionId);
+            
+            if (portfolioCompanies.length > 0) {
+              logger.info(`🏢 Found ${portfolioCompanies.length} portfolio companies for workflow ${result.workflowExecutionId}: ${portfolioCompanies.join(', ')}`);
+              
+              // Load the legal entity resolution workflow
+              const entityWorkflowData = readWorkflow('portfolio_company_verification.json');
+              
+              // Get firm name from original result for input formatting
+              // For PE research workflow, input is just the firm name directly
+              const firmName = result.input || 'Unknown Firm';
+              
+              // Prepare inputs for entity resolution workflow (format: "Firm: X, Company: Y")
+              const formattedInputs = portfolioCompanies.map(company => `Firm: ${firmName}, Company: ${company}`);
+              const entityUserInputs = {
+                input: formattedInputs
+              };
+              
+              // Execute the legal entity resolution workflow (WorkflowManager no longer saves automatically)
+              const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs);
+              
+              // Convert verification results to portfolio format before saving
+              const convertedResults = VerificationResultsConverter.consolidateByFirm(entityResults);
+              
+              // Save converted results to database in portfolio format
+              await resultsSaver.saveBatchResults(convertedResults);
+              logger.info('💾 Refined workflow results saved to database');
+              
+              // Extract the new workflow execution IDs from the converted results
+              for (const convertedResult of convertedResults) {
+                if (convertedResult.workflowExecutionId) {
+                  refinedWorkflowExecutionIds.push(convertedResult.workflowExecutionId);
+                }
+              }
+              
+              logger.info(`✅ Legal entity resolution completed for workflow ${result.workflowExecutionId}`);
+            } else {
+              logger.info(`⚠️ No portfolio companies found for workflow ${result.workflowExecutionId}, skipping refinement`);
+            }
           } catch (error) {
-            logger.error(`❌ Data extraction failed for workflow ID ${result.workflowExecutionId}:`, error.message);
-            extractionResults.push({
-              workflowExecutionId: result.workflowExecutionId,
-              extraction: { success: false, error: error.message }
-            });
+            logger.error(`❌ Failed to refine names for workflow ${result.workflowExecutionId}:`, error.message);
           }
+        }
+      }
+
+      logger.info(`🔍 Name refinement completed. Generated ${refinedWorkflowExecutionIds.length} refined workflow execution IDs`);
+
+      // Automatically trigger data extraction for each refined workflow execution
+      logger.info('🔍 Starting automatic data extraction for refined portfolio companies');
+      const extractionResults = [];
+      
+      for (const refinedWorkflowExecutionId of refinedWorkflowExecutionIds) {
+        try {
+          logger.info(`📊 Extracting data for refined workflow execution ID: ${refinedWorkflowExecutionId}`);
+          const extractionResult = await this.extractPortfolioCompanyData(refinedWorkflowExecutionId);
+          extractionResults.push({
+            workflowExecutionId: refinedWorkflowExecutionId,
+            extraction: extractionResult
+          });
+        } catch (error) {
+          logger.error(`❌ Data extraction failed for refined workflow ID ${refinedWorkflowExecutionId}:`, error.message);
+          extractionResults.push({
+            workflowExecutionId: refinedWorkflowExecutionId,
+            extraction: { success: false, error: error.message }
+          });
         }
       }
       
