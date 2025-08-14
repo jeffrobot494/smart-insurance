@@ -7,19 +7,53 @@ This guide details the implementation of name refinement workflow in the Manager
 ## Current Flow
 1. User submits multiple PE firms
 2. WorkflowManager executes portfolio research workflow for each firm
-3. Results contain `workflow_execution_id` for each firm
-4. `extractData()` uses `workflow_execution_id` to lookup portfolio companies and extract Form 5500 data
+3. WorkflowManager saves results automatically via SaveTaskResults
+4. Results contain `workflow_execution_id` for each firm
+5. `extractData()` uses `workflow_execution_id` to lookup portfolio companies and extract Form 5500 data
 
 ## New Flow with Name Refinement
 1. User submits multiple PE firms (unchanged)
-2. WorkflowManager executes portfolio research workflow (unchanged)
-3. **NEW**: For each `workflow_execution_id`, get portfolio companies from database and run refinement workflow
-4. **NEW**: Refinement workflow creates new `workflow_execution_id`s with refined company names
-5. `extractData()` uses refined `workflow_execution_id`s instead of original ones
+2. WorkflowManager executes portfolio research workflow (returns results without saving)
+3. **NEW**: Manager.run() saves first workflow results in original format
+4. **NEW**: For each `workflow_execution_id`, get portfolio companies from database and run refinement workflow
+5. **NEW**: Manager.run() converts refinement results to portfolio format and saves them
+6. **NEW**: Refinement workflow creates new `workflow_execution_id`s with refined company names
+7. `extractData()` uses refined `workflow_execution_id`s instead of original ones
+
+## Architecture Changes Required
+
+### 1. Remove Auto-Saving from WorkflowManager
+Remove the automatic saving from `WorkflowManager.executeWorkflow()` (around line 157-158):
+```javascript
+// Remove this line:
+// await this.resultsSaver.saveBatchResults(allResults);
+```
+
+### 2. Move Saving Control to Manager.run()
+Manager.run() will now control when and how results are saved, allowing for conversion of the second workflow results.
 
 ## Implementation
 
-### Step 1: Add Name Refinement Code
+### Step 1: Add Required Imports to Manager.js
+
+Add these imports at the top of Manager.js:
+```javascript
+const VerificationResultsConverter = require('./utils/VerificationResultsConverter');
+const SaveTaskResults = require('./workflow/SaveTaskResults');
+```
+
+### Step 2: Add Result Saving After First Workflow
+
+Add this code right after line 97 (`logger.info('✅ First workflow completed');`):
+
+```javascript
+// Save first workflow results in original format
+const resultsSaver = new SaveTaskResults();
+await resultsSaver.saveBatchResults(results);
+logger.info('💾 First workflow results saved to database');
+```
+
+### Step 3: Add Name Refinement Code
 
 Add the following code at line 99 in Manager.js (where the `//second workflow starts here` comment is located):
 
@@ -38,20 +72,32 @@ for (const result of results) {
         logger.info(`🏢 Found ${portfolioCompanies.length} portfolio companies for workflow ${result.workflowExecutionId}: ${portfolioCompanies.join(', ')}`);
         
         // Load the legal entity resolution workflow
+        const { readWorkflow } = require('./utils/workflowReader');
         const entityWorkflowData = readWorkflow('portfolio_company_verification.json');
         
-        // Prepare inputs for entity resolution workflow
+        // Get firm name from original result for input formatting
+        const firmName = result.input?.match(/Firm:\s*([^,]+)/)?.[1] || 'Unknown Firm';
+        
+        // Prepare inputs for entity resolution workflow (format: "Firm: X, Company: Y")
+        const formattedInputs = portfolioCompanies.map(company => `Firm: ${firmName}, Company: ${company}`);
         const entityUserInputs = {
-          input: portfolioCompanies
+          input: formattedInputs
         };
         
-        // Execute the legal entity resolution workflow (creates new workflow execution IDs)
+        // Execute the legal entity resolution workflow (WorkflowManager no longer saves automatically)
         const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs);
         
-        // Extract the new workflow execution IDs from the refinement results
-        for (const entityResult of entityResults) {
-          if (entityResult.workflowExecutionId) {
-            refinedWorkflowExecutionIds.push(entityResult.workflowExecutionId);
+        // Convert verification results to portfolio format before saving
+        const convertedResults = VerificationResultsConverter.consolidateByFirm(entityResults);
+        
+        // Save converted results to database in portfolio format
+        await resultsSaver.saveBatchResults(convertedResults);
+        logger.info('💾 Refined workflow results saved to database');
+        
+        // Extract the new workflow execution IDs from the converted results
+        for (const convertedResult of convertedResults) {
+          if (convertedResult.workflowExecutionId) {
+            refinedWorkflowExecutionIds.push(convertedResult.workflowExecutionId);
           }
         }
         
@@ -68,7 +114,7 @@ for (const result of results) {
 logger.info(`🔍 Name refinement completed. Generated ${refinedWorkflowExecutionIds.length} refined workflow execution IDs`);
 ```
 
-### Step 2: Modify Data Extraction Loop
+### Step 4: Modify Data Extraction Loop
 
 Replace the existing data extraction loop (around line 105) to use the refined workflow execution IDs:
 
@@ -103,9 +149,12 @@ for (const refinedWorkflowExecutionId of refinedWorkflowExecutionIds) {
 
 ## Prerequisites
 
-1. **Workflow File**: Ensure `portfolio_company_verification.json` exists and is properly configured
-2. **Database Method**: Confirm `this.databaseManager.getPortfolioCompaniesByWorkflowId()` method is available
-3. **Error Handling**: The implementation includes try-catch blocks for robust error handling
+1. **WorkflowManager Changes**: Remove automatic saving from `WorkflowManager.executeWorkflow()` method
+2. **Workflow File**: Ensure `portfolio_company_verification.json` exists and is properly configured
+3. **Database Method**: Confirm `this.databaseManager.getPortfolioCompaniesByWorkflowId()` method is available
+4. **Converter Utility**: Ensure `VerificationResultsConverter.js` exists in `./utils/` directory
+5. **Import Dependencies**: Add imports for `VerificationResultsConverter`, `SaveTaskResults`, and `readWorkflow`
+6. **Error Handling**: The implementation includes try-catch blocks for robust error handling
 
 ## Benefits
 

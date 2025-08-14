@@ -41,7 +41,7 @@ class WorkflowManager {
     this.currentIndex = 0;
   }
 
-  async executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
+  async by the executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
     this.workflowData = workflowData;
     if (!this.workflowData) {
       throw new Error('workflorData must be provided to WorkflowManager');
