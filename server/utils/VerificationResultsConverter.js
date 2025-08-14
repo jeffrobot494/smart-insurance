@@ -132,9 +132,14 @@ class VerificationResultsConverter {
    * @returns {Array} Array of consolidated results grouped by firm
    */
   static consolidateByFirm(verificationResults) {
-    const firmGroups = new Map();
+    if (verificationResults.length === 0) {
+      return [];
+    }
     
-    // Group companies by firm
+    // Get firm name from the first valid result to use for all companies
+    let masterFirmName = 'Unknown Firm';
+    let templateResult = null;
+    
     for (const result of verificationResults) {
       try {
         const finalTaskId = Math.max(...Object.keys(result.tasks).map(id => parseInt(id)));
@@ -144,22 +149,41 @@ class VerificationResultsConverter {
         
         const verificationData = this.extractJsonFromResponse(finalTask.result);
         if (!verificationData) continue;
-        const validStatuses = ['READY_FOR_EXTRACTION', 'NEEDS_ADVANCED_RESOLUTION'];
         
+        masterFirmName = verificationData.firm_name || 'Unknown Firm';
+        templateResult = result;
+        console.log(`📋 Using firm name from first result: "${masterFirmName}"`);
+        break;
+      } catch (error) {
+        console.error('❌ Failed to get firm name from result:', error.message);
+        continue;
+      }
+    }
+    
+    if (!templateResult) {
+      console.error('❌ Could not find any valid results to get firm name');
+      return [];
+    }
+    
+    // Collect all valid companies using the master firm name
+    const companies = [];
+    
+    for (const result of verificationResults) {
+      try {
+        const finalTaskId = Math.max(...Object.keys(result.tasks).map(id => parseInt(id)));
+        const finalTask = result.tasks[finalTaskId];
+        
+        if (!finalTask || !finalTask.success) continue;
+        
+        const verificationData = this.extractJsonFromResponse(finalTask.result);
+        if (!verificationData) continue;
+        
+        const validStatuses = ['READY_FOR_EXTRACTION', 'NEEDS_ADVANCED_RESOLUTION'];
         if (!validStatuses.includes(verificationData.status)) continue;
         
-        const firmName = verificationData.firm_name || 'Unknown Firm';
         // Use form5500_match.legal_name if available, otherwise original company name
         const refinedCompanyName = verificationData.form5500_match?.legal_name || verificationData.company_name;
-        
-        if (!firmGroups.has(firmName)) {
-          firmGroups.set(firmName, {
-            companies: [],
-            firstResult: result // Use first result as template
-          });
-        }
-        
-        firmGroups.get(firmName).companies.push(refinedCompanyName);
+        companies.push(refinedCompanyName);
         
       } catch (error) {
         console.error('❌ Failed to process result for consolidation:', error.message);
@@ -167,26 +191,25 @@ class VerificationResultsConverter {
       }
     }
     
-    // Create consolidated results
-    const consolidatedResults = [];
-    for (const [firmName, data] of firmGroups) {
-      const portfolioFormatString = `${firmName}: ${data.companies.join(', ')}`;
-      
-      const finalTaskId = Math.max(...Object.keys(data.firstResult.tasks).map(id => parseInt(id)));
-      
-      consolidatedResults.push({
-        ...data.firstResult,
-        tasks: {
-          ...data.firstResult.tasks,
-          [finalTaskId]: {
-            ...data.firstResult.tasks[finalTaskId],
-            result: portfolioFormatString
-          }
-        }
-      });
+    if (companies.length === 0) {
+      console.log('⚠️ No valid companies found for consolidation');
+      return [];
     }
     
-    return consolidatedResults;
+    // Create single consolidated result with master firm name
+    const portfolioFormatString = `${masterFirmName}: ${companies.join(', ')}`;
+    const finalTaskId = Math.max(...Object.keys(templateResult.tasks).map(id => parseInt(id)));
+    
+    return [{
+      ...templateResult,
+      tasks: {
+        ...templateResult.tasks,
+        [finalTaskId]: {
+          ...templateResult.tasks[finalTaskId],
+          result: portfolioFormatString
+        }
+      }
+    }];
   }
 }
 

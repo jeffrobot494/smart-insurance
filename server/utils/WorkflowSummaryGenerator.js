@@ -2,6 +2,7 @@
  * Generate a summary table of workflow results for all companies
  */
 function generateWorkflowSummary(results) {
+  
   const stats = {
     total: results.length,
     activePortfolio: 0,
@@ -16,7 +17,6 @@ function generateWorkflowSummary(results) {
   
   results.forEach((result, index) => {
     const input = result.input || `Company ${index + 1}`;
-    const tasks = result.tasks || {};
     
     // Extract company name from input string format "Firm: X, Company: Y"
     const companyMatch = input.match(/Company:\s*(.+)/);
@@ -32,72 +32,74 @@ function generateWorkflowSummary(results) {
     };
     
     try {
-      // Task 1: Location
-      if (tasks[1] && tasks[1].success && tasks[1].result) {
-        const locationData = JSON.parse(tasks[1].result);
-        if (locationData.headquarters_location) {
-          detail.location = `${locationData.headquarters_location.city || 'Unknown'}, ${locationData.headquarters_location.state || 'Unknown'}`;
+      if (!result.finalResult) {
+        throw new Error('No final result available');
+      }
+      
+      // Parse the final consolidated result
+      let data;
+      try {
+        data = JSON.parse(result.finalResult);
+      } catch (parseError) {
+        // Try to extract JSON from response with commentary
+        const firstBrace = result.finalResult.indexOf('{');
+        const lastBrace = result.finalResult.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+          const jsonString = result.finalResult.substring(firstBrace, lastBrace + 1);
+          data = JSON.parse(jsonString);
+        } else {
+          throw parseError;
         }
       }
       
-      // Task 2: Portfolio verification
-      if (tasks[2] && tasks[2].success && tasks[2].result) {
-        const portfolioData = JSON.parse(tasks[2].result);
-        // Check for active portfolio company format
-        if (portfolioData.portfolio_verification && portfolioData.portfolio_verification.is_active_portfolio === true) {
+      // Extract location
+      if (data.headquarters_location) {
+        detail.location = `${data.headquarters_location.city || 'Unknown'}, ${data.headquarters_location.state || 'Unknown'}`;
+      }
+      
+      // Extract portfolio status
+      if (data.portfolio_verification) {
+        if (data.portfolio_verification.is_active_portfolio === true) {
           detail.portfolioStatus = 'Active';
           stats.activePortfolio++;
-        } 
-        // Check for direct is_active_portfolio field (inactive company format)
-        else if (portfolioData.is_active_portfolio === false) {
+        } else if (data.portfolio_verification.is_active_portfolio === false) {
           detail.portfolioStatus = 'Exited';
           stats.exitedCompanies++;
         }
-        // Check for direct is_active_portfolio field (active company format - fallback)
-        else if (portfolioData.is_active_portfolio === true) {
-          detail.portfolioStatus = 'Active';
-          stats.activePortfolio++;
+      }
+      
+      // Extract employee count
+      if (data.employee_count_assessment) {
+        if (data.employee_count_assessment.likely_under_100_employees === true) {
+          detail.employeeCount = '<100';
+          stats.smallCompanies++;
+        } else {
+          detail.employeeCount = '100+';
         }
       }
       
-      // Task 3: Employee count
-      if (tasks[3] && tasks[3].success && tasks[3].result) {
-        const employeeData = JSON.parse(tasks[3].result);
-        if (employeeData.employee_count_assessment) {
-          if (employeeData.employee_count_assessment.likely_under_100_employees) {
-            detail.employeeCount = '<100';
-            stats.smallCompanies++;
-          } else {
-            detail.employeeCount = '100+';
-          }
-        }
+      // Extract legal entity
+      if (data.legal_entity_research && data.legal_entity_research.legal_entity_name) {
+        detail.legalEntity = data.legal_entity_research.legal_entity_name;
       }
       
-      // Task 4: Legal entity
-      if (tasks[4] && tasks[4].success && tasks[4].result) {
-        const legalData = JSON.parse(tasks[4].result);
-        if (legalData.legal_entity_research && legalData.legal_entity_research.legal_entity_name) {
-          detail.legalEntity = legalData.legal_entity_research.legal_entity_name;
-        }
-      }
-      
-      // Task 5: Form 5500 results
-      if (tasks[5] && tasks[5].success && tasks[5].result) {
-        const form5500Data = JSON.parse(tasks[5].result);
-        if (form5500Data.status === 'READY_FOR_EXTRACTION') {
+      // Extract Form 5500 status
+      if (data.status) {
+        if (data.status === 'READY_FOR_EXTRACTION') {
           detail.form5500Status = 'MATCHED';
           stats.form5500Matches++;
-        } else if (form5500Data.status === 'NEEDS_ADVANCED_RESOLUTION') {
+        } else if (data.status === 'NEEDS_ADVANCED_RESOLUTION') {
           detail.form5500Status = 'NEEDS_RESOLUTION';
           stats.needsResolution++;
-        } else if (form5500Data.status === 'SKIPPED_SMALL_COMPANY') {
+        } else if (data.status === 'SKIPPED_SMALL_COMPANY') {
           detail.form5500Status = 'SKIPPED_SMALL';
         } else {
-          detail.form5500Status = form5500Data.status || 'Unknown';
+          detail.form5500Status = data.status;
         }
       }
       
     } catch (error) {
+      console.error(`❌ Failed to parse result for ${companyName}:`, error.message);
       detail.form5500Status = 'ERROR';
       stats.errors++;
     }

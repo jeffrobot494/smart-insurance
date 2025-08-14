@@ -187,8 +187,22 @@ async function executeFullWorkflowTestDirect(workflowName, companies, firmName) 
     logger.info(`✅ Full workflow completed successfully`);
     logger.info(`📊 Results: ${results.length} workflow executions completed`);
     
-    // Generate summary for all companies
-    const summary = generateWorkflowSummary(results);
+    // Extract just the final task results for summary (much more efficient)
+    const finalTaskResults = results.map(result => {
+      const taskIds = Object.keys(result.tasks).map(id => parseInt(id));
+      const finalTaskId = Math.max(...taskIds);
+      const finalTask = result.tasks[finalTaskId];
+      
+      return {
+        input: result.input,
+        itemIndex: result.itemIndex,
+        workflowExecutionId: result.workflowExecutionId,
+        finalResult: finalTask?.result || null
+      };
+    });
+    
+    // Generate summary using only the essential data
+    const summary = generateWorkflowSummary(finalTaskResults);
     logger.info('\n📋 WORKFLOW SUMMARY');
     logger.info('='.repeat(80));
     logger.info(summary);
