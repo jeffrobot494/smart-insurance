@@ -107,8 +107,20 @@ function generateWorkflowSummary(results) {
     companyDetails.push(detail);
   });
   
+  // Extract firm name from JSON result format or fallback to input parsing
+  let firmName = 'Unknown';
+  if (results[0]?.finalResult) {
+    try {
+      const resultData = JSON.parse(results[0].finalResult);
+      firmName = resultData.firm || 'Unknown';
+    } catch (parseError) {
+      // Fallback to input parsing for backward compatibility
+      firmName = results[0]?.input?.match(/Firm:\s*([^,]+)/)?.[1] || 'Unknown';
+    }
+  }
+  
   // Generate summary table
-  let summary = `Firm: ${results[0]?.input?.match(/Firm:\s*([^,]+)/)?.[1] || 'Unknown'}\n`;
+  let summary = `Firm: ${firmName}\n`;
   summary += `Total Companies: ${stats.total}\n\n`;
   
   // Stats breakdown

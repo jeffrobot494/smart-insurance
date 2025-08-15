@@ -109,9 +109,12 @@ class VerificationResultsConverter {
     // Get firm name
     const firmName = verificationData.firm_name || 'Unknown Firm';
     
-    // Create the expected format: "Firm Name: Company1, Company2, ..."
+    // Create the expected JSON format: {"firm": "Firm Name", "companies": ["Company1"]}
     // Since this is a single company result, we'll just have one company per result
-    const portfolioFormatString = `${firmName}: ${refinedCompanyName}`;
+    const portfolioFormatObject = {
+      firm: firmName,
+      companies: [refinedCompanyName]
+    };
     
     // Return in the structure expected by SaveTaskResults
     return {
@@ -120,7 +123,7 @@ class VerificationResultsConverter {
         ...result.tasks,
         [finalTaskId]: {
           ...finalTask,
-          result: portfolioFormatString // Replace with portfolio format
+          result: JSON.stringify(portfolioFormatObject) // Replace with JSON portfolio format
         }
       }
     };
@@ -196,8 +199,11 @@ class VerificationResultsConverter {
       return [];
     }
     
-    // Create single consolidated result with master firm name
-    const portfolioFormatString = `${masterFirmName}: ${companies.join(', ')}`;
+    // Create single consolidated result with master firm name in JSON format
+    const portfolioFormatObject = {
+      firm: masterFirmName,
+      companies: companies
+    };
     const finalTaskId = Math.max(...Object.keys(templateResult.tasks).map(id => parseInt(id)));
     
     return [{
@@ -206,7 +212,7 @@ class VerificationResultsConverter {
         ...templateResult.tasks,
         [finalTaskId]: {
           ...templateResult.tasks[finalTaskId],
-          result: portfolioFormatString
+          result: JSON.stringify(portfolioFormatObject)
         }
       }
     }];

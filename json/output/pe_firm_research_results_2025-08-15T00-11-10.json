@@ -1,0 +1,44 @@
+{
+  "batchInfo": {
+    "totalItems": 1,
+    "startedAt": "2025-08-15T00:11:10.190Z",
+    "workflowName": "pe_firm_research",
+    "results": [
+      "{\"firm\":\"American Discovery Capital\",\"companies\":[\"TEST COMPANY LLC\",\"TEST COMPANY LLC\",\"TEST COMPANY LLC\"]}"
+    ]
+  },
+  "items": [
+    {
+      "itemIndex": 0,
+      "input": "Firm: American Discovery Capital, Company: DataLink Service Fund Solutions, LLC",
+      "tasks": {
+        "1": {
+          "success": true,
+          "result": "{\n          \"company_name\": \"DataLink Service Fund Solutions, LLC\",\n          \"firm_name\": \"American Discovery Capital\",\n          \"headquarters_location\": {\"city\": \"Austin\", \"state\": \"TX\"},\n          \"portfolio_verification\": {\"is_active_portfolio\": true},\n          \"employee_count_assessment\": {\"likely_under_100_employees\": false},\n          \"legal_entity_research\": {\"legal_entity_name\": \"DATALINK SERVICE FUND SOLUTIONS LLC\"},\n          \"form5500_match\": {\"legal_name\": \"DATALINK SERVICE FUND SOLUTIONS LLC\"},\n          \"status\": \"READY_FOR_EXTRACTION\"\n        }",
+          "executionTime": 468.5565776907589
+        },
+        "2": {
+          "success": true,
+          "result": "{\n        \"company_name\": \"Test Company\",\n        \"firm_name\": \"American Discovery Capital\",\n        \"headquarters_location\": {\"city\": \"Austin\", \"state\": \"TX\"},\n        \"portfolio_verification\": {\"is_active_portfolio\": true},\n        \"employee_count_assessment\": {\"likely_under_100_employees\": false},\n        \"legal_entity_research\": {\"legal_entity_name\": \"TEST COMPANY LLC\"},\n        \"form5500_match\": {\"legal_name\": \"TEST COMPANY LLC\", \"ein\": \"12-3456789\", \"location\": \"Austin, TX\", \"match_type\": \"exact\", \"record_count\": 1, \"variation_used\": \"original\"},\n        \"status\": \"READY_FOR_EXTRACTION\"\n      }",
+          "executionTime": 526.4703605262298
+        },
+        "3": {
+          "success": true,
+          "result": "{\n        \"company_name\": \"Test Company\",\n        \"firm_name\": \"American Discovery Capital\",\n        \"headquarters_location\": {\"city\": \"Austin\", \"state\": \"TX\"},\n        \"portfolio_verification\": {\"is_active_portfolio\": true},\n        \"employee_count_assessment\": {\"likely_under_100_employees\": false},\n        \"legal_entity_research\": {\"legal_entity_name\": \"TEST COMPANY LLC\"},\n        \"form5500_match\": {\"legal_name\": \"TEST COMPANY LLC\", \"ein\": \"12-3456789\", \"location\": \"Austin, TX\", \"match_type\": \"exact\", \"record_count\": 1, \"variation_used\": \"original\"},\n        \"status\": \"READY_FOR_EXTRACTION\"\n      }",
+          "executionTime": 360.63982358362875
+        },
+        "4": {
+          "success": true,
+          "result": "{\n        \"company_name\": \"Test Company\",\n        \"firm_name\": \"American Discovery Capital\",\n        \"headquarters_location\": {\"city\": \"Austin\", \"state\": \"TX\"},\n        \"portfolio_verification\": {\"is_active_portfolio\": true},\n        \"employee_count_assessment\": {\"likely_under_100_employees\": false},\n        \"legal_entity_research\": {\"legal_entity_name\": \"TEST COMPANY LLC\"},\n        \"form5500_match\": {\"legal_name\": \"TEST COMPANY LLC\", \"ein\": \"12-3456789\", \"location\": \"Austin, TX\", \"match_type\": \"exact\", \"record_count\": 1, \"variation_used\": \"original\"},\n        \"status\": \"READY_FOR_EXTRACTION\"\n      }",
+          "executionTime": 483.6323325185083
+        },
+        "5": {
+          "success": true,
+          "result": "{\"firm\":\"American Discovery Capital\",\"companies\":[\"TEST COMPANY LLC\",\"TEST COMPANY LLC\",\"TEST COMPANY LLC\"]}",
+          "executionTime": 221.29038618457213
+        }
+      },
+      "workflowExecutionId": 186
+    }
+  ]
+}

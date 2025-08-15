@@ -1,3 +1,18 @@
 {"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T03:28:23.038Z"}
 {"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T03:28:23.038Z"}
 {"0":"%American Pain Consortium Holdings, LLC%","1":"American Pain Consortium Holdings, LLC","10":"%APC Holdings%","11":"APC Holdings","12":"%APC Management%","13":"APC Management","2":"%American Pain Consortium Holdings%","3":"American Pain Consortium Holdings","4":"%American Pain Consortium Management, LLC%","5":"American Pain Consortium Management, LLC","6":"%American Pain Consortium Management%","7":"American Pain Consortium Management","8":"%American Pain Consortium%","9":"American Pain Consortium","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T03:28:23.039Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T15:54:33.136Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T15:54:33.137Z"}
+{"0":"%Entertainment Partners, LLC%","1":"Entertainment Partners, LLC","2":"%Entertainment Partners%","3":"Entertainment Partners","4":"%Entertainment%","5":"Entertainment","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T15:54:33.137Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T15:58:28.038Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T15:58:28.039Z"}
+{"0":"%Majestic Realty Company%","1":"Majestic Realty Company","2":"%Majestic Real Estate%","3":"Majestic Real Estate","4":"%Majestic Realty Collective Inc%","5":"Majestic Realty Collective Inc","6":"%Majestic Realty Collective LLC%","7":"Majestic Realty Collective LLC","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T15:58:28.039Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T15:58:31.186Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T15:58:31.187Z"}
+{"0":"%Majestic Realty Company%","1":"Majestic Realty Company","2":"%Majestic Real Estate%","3":"Majestic Real Estate","4":"%Majestic Realty Collective Inc%","5":"Majestic Realty Collective Inc","6":"%Majestic Realty Collective LLC%","7":"Majestic Realty Collective LLC","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T15:58:31.187Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T23:37:51.920Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T23:37:51.921Z"}
+{"0":"%SmartBug Operating LLC%","1":"SmartBug Operating LLC","2":"%SmartBug Media%","3":"SmartBug Media","4":"%SmartBug%","5":"SmartBug","6":"%SmartBug LLC%","7":"SmartBug LLC","8":"%SmartBug Media Inc%","9":"SmartBug Media Inc","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T23:37:51.921Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-14T23:37:54.426Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-14T23:37:54.427Z"}
+{"0":"%SmartBug Operating LLC%","1":"SmartBug Operating LLC","2":"%SmartBug Media%","3":"SmartBug Media","4":"%SmartBug%","5":"SmartBug","6":"%SmartBug LLC%","7":"SmartBug LLC","8":"%SmartBug Media Inc%","9":"SmartBug Media Inc","level":"error","message":"Params:","service":"database","timestamp":"2025-08-14T23:37:54.427Z"}

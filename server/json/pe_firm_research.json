@@ -27,7 +27,7 @@
         {
           "id": 4,
           "name": "ExtractCompanies",
-          "instructions": "Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. All portfolio pages show both current/actively investment companies AND exited companies. You must find the current/actively invested companies. Return ONLY the name of the firm then the list of company names separated by commas, and with zero commentary. Like this: American Discovery Capital: Bubba Gump Shrimp, Nintendo of America, Peeboy Food Cans, etc",
+          "instructions": "Use firecrawl_scrape to scrape the portfolio pages and extract the names of current, active portfolio companies. All portfolio pages show both current/actively investment companies AND exited companies. You must find the current/actively invested companies. Return ONLY a JSON object with 'firm' and 'companies' keys, with zero commentary. Like this: {\"firm\": \"American Discovery Capital\", \"companies\": [\"Bubba Gump Shrimp\", \"Nintendo of America\", \"Peeboy Food Cans\"]}",
           "inputKeys": ["portfolio_pages", "domain"],
           "outputKey": "portfolio_companies"
         }

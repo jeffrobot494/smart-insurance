@@ -68,18 +68,35 @@ class SaveTaskResults {
         const result = finalResults[i];
         const workflowExecutionId = batchResults[i]?.workflowExecutionId;
         
-        // Check if result looks like PE firm portfolio format: "Firm Name: Company1, Company2, Company3"
-        if (result && typeof result === 'string' && result.includes(':') && workflowExecutionId) {
-          const parts = result.split(':');
-          if (parts.length >= 2) {
-            const firmName = parts[0].trim();
-            const companiesStr = parts.slice(1).join(':').trim(); // Handle case where company names have colons
-            const companies = companiesStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
-            
-            // Save each portfolio company to database
-            await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
-            
-            console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database`);
+        // Check if result looks like PE firm portfolio format: JSON object with firm and companies
+        if (result && typeof result === 'string' && workflowExecutionId) {
+          try {
+            // Try to parse as JSON first
+            const portfolioData = JSON.parse(result);
+            if (portfolioData.firm && portfolioData.companies && Array.isArray(portfolioData.companies)) {
+              const firmName = portfolioData.firm;
+              const companies = portfolioData.companies.filter(c => c && c.trim().length > 0);
+              
+              // Save each portfolio company to database
+              await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
+              
+              console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database`);
+            }
+          } catch (parseError) {
+            // Fallback to old string format for backward compatibility
+            if (result.includes(':')) {
+              const parts = result.split(':');
+              if (parts.length >= 2) {
+                const firmName = parts[0].trim();
+                const companiesStr = parts.slice(1).join(':').trim(); // Handle case where company names have colons
+                const companies = companiesStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
+                
+                // Save each portfolio company to database
+                await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
+                
+                console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database (legacy format)`);
+              }
+            }
           }
         }
       }

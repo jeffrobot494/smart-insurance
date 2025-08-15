@@ -1,0 +1,39 @@
+{
+  "batchInfo": {
+    "totalItems": 1,
+    "startedAt": "2025-08-15T00:01:23.675Z",
+    "workflowName": "pe_firm_research",
+    "results": [
+      "{\"firm\": \"American Discovery Capital\", \"companies\": [\"DataLink Service Fund Solutions, LLC\", \"TechCorp Industries, Inc\", \"Healthcare Partners Group\"]}"
+    ]
+  },
+  "items": [
+    {
+      "itemIndex": 0,
+      "input": "American Discovery Capital",
+      "tasks": {
+        "1": {
+          "success": true,
+          "result": "www.americandiscovery.com",
+          "executionTime": 580.2822864823079
+        },
+        "2": {
+          "success": true,
+          "result": "https://www.americandiscovery.com/\nhttps://www.americandiscovery.com/portfolio\nhttps://www.americandiscovery.com/about\nhttps://www.americandiscovery.com/team",
+          "executionTime": 381.6409397367741
+        },
+        "3": {
+          "success": true,
+          "result": "https://www.americandiscovery.com/portfolio",
+          "executionTime": 398.3087687692903
+        },
+        "4": {
+          "success": true,
+          "result": "{\"firm\": \"American Discovery Capital\", \"companies\": [\"DataLink Service Fund Solutions, LLC\", \"TechCorp Industries, Inc\", \"Healthcare Partners Group\"]}",
+          "executionTime": 556.8848679800951
+        }
+      },
+      "workflowExecutionId": 169
+    }
+  ]
+}
