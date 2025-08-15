@@ -297,14 +297,20 @@ class Form5500MCPServer {
           COUNT(*) OVER (PARTITION BY sponsor_dfe_name, spons_dfe_ein) as record_count
         FROM form_5500_records 
         WHERE ${whereClause}
-        ORDER BY record_count DESC, year DESC
-        LIMIT ${limit}
       `;
     });
     
-    query = queryParts.join(' UNION ALL ');
+    query = queryParts.join(' UNION ALL ') + ' ORDER BY record_count DESC, year DESC';
     
-    const searchResults = await this.databaseManager.query(query, params);
+    let searchResults;
+    try {
+      searchResults = await this.databaseManager.query(query, params);
+    } catch (error) {
+      console.error('❌ Batch query failed:', error.message);
+      console.error('Query:', query.substring(0, 500) + '...');
+      console.error('Params count:', params.length);
+      throw error;
+    }
     
     // Group results by search term
     const groupedResults = new Map();

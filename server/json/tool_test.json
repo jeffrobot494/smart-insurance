@@ -1,0 +1,15 @@
+{
+    "workflow": {
+      "name": "batch-tool-test",
+      "description": "Use the tool",
+      "tasks": [
+        {
+          "id": 1,
+          "name": "ToolTest",
+          "instructions": "This is a test. Use the form5500_batch_name_test tool. Use 'Smart', 'Smartbug', 'SmartbugMedia'",
+          "inputKeys": ["input"],
+          "outputKey": "results"
+        }
+      ]
+    }
+  }

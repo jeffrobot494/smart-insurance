@@ -278,3 +278,4 @@
 {"level":"error","message":"  ✗ form5500_batch_name_test failed:","service":"workflow","timestamp":"2025-08-14T23:37:54.428Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-14T23:37:54.431Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-14T23:37:54.431Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-15T00:42:41.344Z"}
