@@ -279,3 +279,11 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-14T23:37:54.431Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-14T23:37:54.431Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-15T00:42:41.344Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-15T01:16:41.013Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-16T21:40:32.773Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-16T21:52:27.164Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-16T21:55:28.239Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-16T21:55:28.240Z"}
+{"0":9,"1":"Based on my research, I can now identify the current portfolio companies for Revelstoke Capital Partners. The Dealroom.co data shows that Sound Physicians is marked as \"exited\" while others appear to be current investments. \n\nSince I can only see 6 out of 25 companies in the Dealroom data, I'll rely primarily on the comprehensive list from the Revelstoke website, excluding only the companies explicitly marked as exited.\n\nFrom the available information, I can determine that the current, active portfolio companies of Revelstoke Capital Partners are","2":"{\"firm\": \"Revelstoke Capital Partners\"","level":"error","message":"Params:","service":"database","timestamp":"2025-08-16T21:55:28.241Z"}
+{"level":"error","message":"❌ Failed to save portfolio companies:","service":"database","timestamp":"2025-08-16T21:55:28.241Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-16T22:13:19.214Z"}

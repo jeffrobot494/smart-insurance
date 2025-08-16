@@ -38,7 +38,7 @@ class DataExtractionService {
       
       // Add polling message for Form 5500 results
       if (workflowId) {
-        const foundCount = form5500Results.filter(r => r.matchCount > 0).length;
+        const foundCount = form5500Results.filter(r => r.recordCount > 0).length;
         pollingService.addMessage(workflowId, firmId, 'progress', `📋 Found Form 5500 records for ${foundCount} companies`);
       }
       

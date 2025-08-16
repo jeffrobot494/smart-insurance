@@ -83,18 +83,41 @@ class SaveTaskResults {
               console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database`);
             }
           } catch (parseError) {
-            // Fallback to old string format for backward compatibility
-            if (result.includes(':')) {
-              const parts = result.split(':');
-              if (parts.length >= 2) {
-                const firmName = parts[0].trim();
-                const companiesStr = parts.slice(1).join(':').trim(); // Handle case where company names have colons
-                const companies = companiesStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
-                
-                // Save each portfolio company to database
-                await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
-                
-                console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database (legacy format)`);
+            // Try to extract JSON from response with commentary
+            const firstBrace = result.indexOf('{');
+            const lastBrace = result.lastIndexOf('}');
+            
+            if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+              const jsonString = result.substring(firstBrace, lastBrace + 1);
+              
+              try {
+                const portfolioData = JSON.parse(jsonString);
+                if (portfolioData.firm && portfolioData.companies && Array.isArray(portfolioData.companies)) {
+                  const firmName = portfolioData.firm;
+                  const companies = portfolioData.companies.filter(c => c && c.trim().length > 0);
+                  
+                  // Save each portfolio company to database
+                  await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
+                  
+                  console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database (extracted JSON)`);
+                }
+              } catch (innerParseError) {
+                // Final fallback to old string format for backward compatibility
+                if (result.includes(':') && result.length < 1000) { // Avoid saving very long strings
+                  const parts = result.split(':');
+                  if (parts.length >= 2) {
+                    const firmName = parts[0].trim();
+                    const companiesStr = parts.slice(1).join(':').trim();
+                    const companies = companiesStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
+                    
+                    // Save each portfolio company to database
+                    await this.databaseManager.savePortfolioCompanies(workflowExecutionId, firmName, companies);
+                    
+                    console.log(`💾 Saved ${companies.length} portfolio companies for ${firmName} to database (legacy format)`);
+                  }
+                } else {
+                  console.log(`⚠️ Skipping database save - result too long or unparseable: ${result.substring(0, 100)}...`);
+                }
               }
             }
           }

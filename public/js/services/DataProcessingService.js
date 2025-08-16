@@ -6,35 +6,18 @@
 class DataProcessingService {
     
     /**
-     * Get the preferred year based on priority: 2023 > 2022 > other years > 2024
-     * Only use 2024 if it's the only year available
+     * Get the preferred year based on priority: most recent year first (2024 > 2023 > 2022 > etc.)
      */
     static getPreferredYear(availableYears) {
         if (!availableYears || availableYears.length === 0) {
             return null;
         }
         
-        // Convert to integers for proper sorting
+        // Convert to integers and sort descending (newest first)
         const years = availableYears.map(year => parseInt(year)).sort((a, b) => b - a);
         
-        // Check for preferred years in order
-        if (years.includes(2023)) {
-            return "2023";
-        } else if (years.includes(2022)) {
-            return "2022";
-        } else if (years.length === 1 && years.includes(2024)) {
-            // Only use 2024 if it's the only option
-            return "2024";
-        } else {
-            // Use the most recent year that's not 2024
-            for (const year of years) {
-                if (year !== 2024) {
-                    return year.toString();
-                }
-            }
-            // If all we have is 2024, use it
-            return years[0].toString();
-        }
+        // Return the most recent year
+        return years[0].toString();
     }
 
     /**
@@ -191,17 +174,11 @@ class DataProcessingService {
             }
         }
         
-        let mostRecentYear = "2023"; // Default
+        let mostRecentYear = "2024"; // Default to most recent
         if (yearsFound.size > 0) {
-            // Get the most recent year that's not 2024, or 2024 if it's all we have
+            // Get the most recent year available
             const sortedYears = Array.from(yearsFound).sort((a, b) => parseInt(b) - parseInt(a));
-            if (yearsFound.has("2023")) {
-                mostRecentYear = "2023";
-            } else if (yearsFound.has("2022")) {
-                mostRecentYear = "2022";
-            } else {
-                mostRecentYear = sortedYears[0];
-            }
+            mostRecentYear = sortedYears[0];
         }
         
         return {
