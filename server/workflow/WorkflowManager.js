@@ -75,6 +75,8 @@ class WorkflowManager {
         );
       } else {
         // Create new workflow execution record in database
+        //If we are creating them here, we are in the legal entity (2nd) workflow, and we need to pass the firm name. 
+        
         workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
       }
       

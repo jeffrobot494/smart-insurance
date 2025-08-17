@@ -94,7 +94,7 @@ class Manager {
 
       // Execute the workflow with user inputs and optional pre-generated IDs
       const results = await this.taskManager.executeWorkflow(workflowData, userInputs, preGeneratedIds);
-      logger.info("Results:", results);
+      //logger.info("Results:", results);
       logger.info('✅ First workflow completed');
       
       // Save first workflow results in original format
@@ -111,28 +111,28 @@ class Manager {
     }
   }
 
-  async legalEntityWorkflow(results = {})
+  async legalEntityWorkflow(all_workflow_results = {})
   {
     const resultsSaver = new SaveTaskResults();
     await this.initializeTaskManager();
     logger.info('🔍 Starting legal entity name resolution workflow');
     const refinedWorkflowExecutionIds = [];
 
-    for (const result of results) {
-      if (result.workflowExecutionId) {
+    for (const workflow_result of all_workflow_results) {
+      if (workflow_result.workflowExecutionId) {
         try {
           // Get portfolio company names from database using original workflow execution ID
-          const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(result.workflowExecutionId);
+          const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(workflow_result.workflowExecutionId);
           
           if (portfolioCompanies.length > 0) {
-            logger.info(`🏢 Found ${portfolioCompanies.length} portfolio companies for workflow ${result.workflowExecutionId}: ${portfolioCompanies.join(', ')}`);
+            logger.info(`🏢 Found ${portfolioCompanies.length} portfolio companies for workflow ${workflow_result.workflowExecutionId}: ${portfolioCompanies.join(', ')}`);
             
             // Load the legal entity resolution workflow
             const entityWorkflowData = readWorkflow('portfolio_company_verification.json');
             
             // Get firm name from original result for input formatting
             // For PE research workflow, input is just the firm name directly
-            const firmName = result.input || 'Unknown Firm';
+            const firmName = workflow_result.input || 'Unknown Firm';
             
             // Prepare inputs for entity resolution workflow (format: "Firm: X, Company: Y")
             const formattedInputs = portfolioCompanies.map(company => `Firm: ${firmName}, Company: ${company}`);
@@ -140,8 +140,13 @@ class Manager {
               input: formattedInputs
             };
             
-            // Execute the legal entity resolution workflow (WorkflowManager no longer saves automatically)
-            const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs);
+            // Pre-generate workflow execution IDs with firm name for verification workflow
+            // All executions are for portfolio companies of the same firm
+            const firmNamesArray = new Array(formattedInputs.length).fill(firmName);
+            const verificationInitResult = await this.initializeWorkflows('portfolio_company_verification.json', { input: firmNamesArray });
+            
+            // Execute the legal entity resolution workflow with pre-generated IDs
+            const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs, verificationInitResult.workflowExecutionIds);
             
             // Convert verification results to portfolio format before saving
             const convertedResults = VerificationResultsConverter.consolidateByFirm(entityResults);
@@ -157,12 +162,12 @@ class Manager {
               }
             }
             
-            logger.info(`✅ Legal entity resolution completed for workflow ${result.workflowExecutionId}`);
+            logger.info(`✅ Legal entity resolution completed for workflow ${workflow_result.workflowExecutionId}`);
           } else {
-            logger.info(`⚠️ No portfolio companies found for workflow ${result.workflowExecutionId}, skipping refinement`);
+            logger.info(`⚠️ No portfolio companies found for workflow ${workflow_result.workflowExecutionId}, skipping refinement`);
           }
         } catch (error) {
-          logger.error(`❌ Failed to refine names for workflow ${result.workflowExecutionId}:`, error.message);
+          logger.error(`❌ Failed to refine names for workflow ${workflow_result.workflowExecutionId}:`, error.message);
         }
       }
     }
