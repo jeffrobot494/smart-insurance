@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 3px solid #2c3e50;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.header p {
+    font-size: 16px;
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+
+.table-section {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    font-size: 13px;
+}
+
+.company-row {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.company-row:nth-child(even) {
+    background-color: #fafbfc;
+}
+
+.company-row:hover {
+    background-color: #f1f3f4;
+}
+
+.company-row td {
+    padding: 12px;
+    vertical-align: middle;
+    border-right: 1px solid #f0f0f0;
+}
+
+.company-row td:last-child {
+    border-right: none;
+}
+
+.company-name {
+    color: #2980b9;
+    font-weight: 600;
+}
+
+.revenue, .funding {
+    color: #95a5a6;
+    text-align: center;
+    font-style: italic;
+}
+
+.employees {
+    text-align: right;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.brokers {
+    color: #8e44ad;
+    font-size: 13px;
+}
+
+.premiums, .commissions {
+    text-align: right;
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.total-row {
+    background: #2c3e50 !important;
+    color: white;
+    font-weight: 700;
+    border-top: 2px solid #34495e;
+}
+
+.total-row td {
+    padding: 15px 12px;
+    border-right: 1px solid #34495e;
+    font-weight: 700;
+}
+
+.total-row td:last-child {
+    border-right: none;
+}
+
+.total-label {
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.total-revenue, .total-funding {
+    color: #bdc3c7;
+    text-align: center;
+    font-style: italic;
+}
+
+.total-employees {
+    text-align: right;
+    color: white;
+}
+
+.total-brokers {
+    color: #e8daef;
+    font-size: 13px;
+}
+
+.total-premiums, .total-commissions {
+    text-align: right;
+    color: #2ecc71;
+    font-weight: 700;
+}
+
+@media print {
+    body { background-color: white; }
+    .header, .table-section { box-shadow: none; }
+}

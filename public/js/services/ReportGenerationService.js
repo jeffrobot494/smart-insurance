@@ -9,6 +9,9 @@ import { PDFConversionService } from './PDFConversionService.js';
 
 class ReportGenerationService {
     
+    // Template Configuration - Change this to use a different template
+    static TEMPLATE_NAME = 'default';
+    
     /**
      * Validate browser support for PDF generation
      */
@@ -81,11 +84,11 @@ class ReportGenerationService {
             
             // Step 3: Generate HTML report
             console.log('Generating HTML report...');
-            const htmlContent = HTMLReportService.generateHTMLReport(processedData);
+            const reportResult = await HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
             
             // Step 4: Convert to PDF and download
             console.log('Converting to PDF and downloading...');
-            await PDFConversionService.convertToPDF(htmlContent, processedData.firm_name);
+            await PDFConversionService.convertToPDF(reportResult.html, processedData.firm_name, reportResult.config);
             
             // Step 5: Log completion stats
             this.logGenerationStats(processedData, startTime);
@@ -123,10 +126,10 @@ class ReportGenerationService {
             this.validateInputData(rawData, firmName);
             
             const processedData = DataProcessingService.processJSONData(rawData, firmName);
-            const htmlContent = HTMLReportService.generateHTMLReport(processedData);
+            const reportResult = await HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
             
             return {
-                html: htmlContent,
+                html: reportResult.html,
                 processedData: processedData
             };
         } catch (error) {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{firmName}} Portfolio Companies - Insurance Costs Report</title>
+    <style>{{styles}}</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{firmName}} Portfolio Companies</h1>
+            <p>Insurance Costs & Brokerage Fees Report</p>
+        </div>
+        
+        <div class="table-section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Revenue</th>
+                            <th>Employees Covered</th>
+                            <th>Funding</th>
+                            <th>Brokers</th>
+                            <th>Total Premiums</th>
+                            <th>Total Brokerage Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{companyRows}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        {{javascript}}
+    </script>
+</body>
+</html>

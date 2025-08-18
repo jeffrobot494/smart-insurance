@@ -24,25 +24,59 @@ class PDFConversionService {
     /**
      * Create temporary DOM container for HTML content
      */
-    static createTempContainer(htmlContent) {
-        const tempContainer = document.createElement('div');
-        tempContainer.innerHTML = htmlContent;
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px';
-        tempContainer.style.top = '-9999px';
-        tempContainer.style.width = '1200px'; // Fixed width for consistent PDF layout
-        tempContainer.style.background = '#f8f9fa'; // Match body background
+    static async createTempContainer(htmlContent) {
+        // Create iframe for proper HTML document rendering
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.left = '0px';
+        iframe.style.top = '0px';
+        iframe.style.width = '1200px';
+        iframe.style.height = '1600px';
+        iframe.style.border = 'none';
+        iframe.style.zIndex = '-1000';
+        iframe.style.visibility = 'hidden';
         
-        document.body.appendChild(tempContainer);
-        return tempContainer;
+        document.body.appendChild(iframe);
+        
+        // Write HTML content to iframe
+        iframe.contentDocument.open();
+        iframe.contentDocument.write(htmlContent);
+        iframe.contentDocument.close();
+        
+        // Wait for content to render, then resize iframe to match content
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+        const body = iframe.contentDocument.body;
+        const contentHeight = Math.max(body.scrollHeight, body.offsetHeight);
+        
+        // Resize iframe to match actual content height
+        iframe.style.height = contentHeight + 'px';
+        
+        console.log('DEBUG: Content dimensions:', {
+            bodyHeight: body.scrollHeight,
+            bodyWidth: body.scrollWidth,
+            originalIframeHeight: '1600px',
+            newIframeHeight: iframe.style.height,
+            actualContentHeight: contentHeight
+        });
+        
+        // Return the iframe's body for canvas rendering
+        return iframe.contentDocument.body;
     }
 
     /**
      * Clean up temporary DOM container
      */
     static cleanupTempContainer(container) {
-        if (container && container.parentNode) {
-            document.body.removeChild(container);
+        if (container && container.ownerDocument && container.ownerDocument.defaultView && container.ownerDocument.defaultView.frameElement) {
+            // This is an iframe body, remove the iframe
+            const iframe = container.ownerDocument.defaultView.frameElement;
+            if (iframe.parentNode) {
+                document.body.removeChild(iframe);
+            }
+        } else if (container && container.parentNode) {
+            // Fallback for regular containers
+            container.parentNode.removeChild(container);
         }
     }
 
@@ -51,14 +85,16 @@ class PDFConversionService {
      */
     static getCanvasOptions() {
         return {
-            scale: 2, // Higher scale for better quality
+            scale: 1, // Reduced scale to prevent memory issues
             useCORS: true,
             allowTaint: false,
             backgroundColor: '#f8f9fa',
-            logging: false, // Reduce console noise
+            logging: true, // Enable logging to debug issues
             removeContainer: false, // We'll handle cleanup manually
-            foreignObjectRendering: true,
-            imageTimeout: 0,
+            foreignObjectRendering: false, // Disable to prevent rendering issues
+            imageTimeout: 5000,
+            width: 1200,
+            height: null, // Let it calculate automatically
             onclone: (clonedDoc) => {
                 // Ensure all detail rows are expanded in the clone for PDF
                 const detailRows = clonedDoc.querySelectorAll('.detail-rows');
@@ -89,7 +125,7 @@ class PDFConversionService {
         let tempContainer = null;
         
         try {
-            tempContainer = this.createTempContainer(htmlContent);
+            tempContainer = await this.createTempContainer(htmlContent);
             
             console.log('Temp container HTML length:', tempContainer.innerHTML.length);
             console.log('Temp container dimensions:', tempContainer.offsetWidth, tempContainer.offsetHeight);
@@ -111,28 +147,49 @@ class PDFConversionService {
     }
 
     /**
-     * Calculate PDF dimensions and layout
+     * Calculate PDF dimensions and layout based on orientation
      */
-    static calculatePDFLayout(canvas) {
-        const imgWidth = 210; // A4 width in mm
-        const pageHeight = 295; // A4 height in mm
+    static calculatePDFLayout(canvas, orientation = 'portrait') {
+        let imgWidth, pageHeight;
+        
+        if (orientation === 'landscape') {
+            imgWidth = 295; // A4 landscape width in mm
+            pageHeight = 210; // A4 landscape height in mm
+        } else {
+            imgWidth = 210; // A4 portrait width in mm
+            pageHeight = 295; // A4 portrait height in mm
+        }
+        
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
-        return {
+        const layout = {
             imgWidth,
             pageHeight,
             imgHeight,
             totalPages: Math.ceil(imgHeight / pageHeight)
         };
+
+        console.log('DEBUG: PDF Layout calculations:', {
+            canvasWidth: canvas.width,
+            canvasHeight: canvas.height,
+            pdfImgWidth: imgWidth,
+            pdfPageHeight: pageHeight,
+            pdfImgHeight: imgHeight,
+            totalPages: layout.totalPages,
+            heightRatio: imgHeight / pageHeight
+        });
+
+        return layout;
     }
 
     /**
      * Create PDF from canvas
      */
-    static createPDFFromCanvas(canvas, jsPDF) {
-        const layout = this.calculatePDFLayout(canvas);
+    static createPDFFromCanvas(canvas, jsPDF, orientation = 'portrait') {
+        const layout = this.calculatePDFLayout(canvas, orientation);
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        const orientationCode = orientation === 'landscape' ? 'l' : 'p';
+        const pdf = new jsPDF(orientationCode, 'mm', 'a4');
         
         let heightLeft = layout.imgHeight;
         let position = 0;
@@ -147,6 +204,13 @@ class PDFConversionService {
             position = heightLeft - layout.imgHeight;
             pdf.addPage();
             pageNumber++;
+            
+            console.log('DEBUG: Adding page', pageNumber, {
+                heightLeft: heightLeft,
+                position: position,
+                remainingHeight: heightLeft
+            });
+            
             pdf.addImage(imgData, 'PNG', 0, position, layout.imgWidth, layout.imgHeight);
             heightLeft -= layout.pageHeight;
         }
@@ -215,7 +279,7 @@ class PDFConversionService {
     /**
      * Main method to convert HTML to PDF and trigger download
      */
-    static async convertToPDF(htmlContent, firmName) {
+    static async convertToPDF(htmlContent, firmName, templateConfig = null) {
         let progressIndicator = null;
         
         try {
@@ -238,8 +302,11 @@ class PDFConversionService {
                 progressIndicator.textContent = 'Creating PDF...';
             }
             
+            // Get orientation from template config
+            const orientation = templateConfig?.pdfSettings?.orientation || 'portrait';
+            
             // Create PDF from canvas
-            const pdf = this.createPDFFromCanvas(canvas, jsPDF);
+            const pdf = this.createPDFFromCanvas(canvas, jsPDF, orientation);
             
             // Generate filename and download
             const filename = this.generateFilename(firmName);

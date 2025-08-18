@@ -1,0 +1,24 @@
+{
+  "name": "Default Report Template",
+  "description": "Modern interactive report with expandable company details",
+  "version": "1.0.0",
+  "author": "Smart Insurance System",
+  "features": {
+    "expandableRows": true,
+    "summarySection": true,
+    "interactiveElements": true,
+    "colorScheme": "gradient"
+  },
+  "columns": [
+    "companyName",
+    "dataYear", 
+    "totalPremiums",
+    "totalBrokerageFees",
+    "peopleCovered"
+  ],
+  "pdfSettings": {
+    "scale": 1,
+    "pageSize": "A4",
+    "orientation": "landscape"
+  }
+}
