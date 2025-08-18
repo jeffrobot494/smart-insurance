@@ -85,8 +85,7 @@ class ReportGenerationService {
             
             // Step 4: Convert to PDF and download
             console.log('Converting to PDF and downloading...');
-            // TEMPORARY: Skip PDF conversion and download HTML instead
-            this.downloadHTMLFile(htmlContent, processedData.firm_name);
+            await PDFConversionService.convertToPDF(htmlContent, processedData.firm_name);
             
             // Step 5: Log completion stats
             this.logGenerationStats(processedData, startTime);

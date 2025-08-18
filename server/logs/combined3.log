@@ -1384,3 +1384,22 @@
 {"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-08-17T22:42:00.941Z"}
 {"level":"info","message":"📋 [RESULTS] Getting workflow results for ID:","service":"server","timestamp":"2025-08-17T22:42:03.336Z"}
 {"level":"info","message":"📋 [RESULTS] Returning results for workflow:","service":"server","timestamp":"2025-08-17T22:42:03.411Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Getting all saved workflow results","service":"server","timestamp":"2025-08-17T23:59:55.599Z"}
+{"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-08-17T23:59:55.600Z"}
+{"level":"info","message":"📋 [MANAGER] Found 4 saved workflow results","service":"manager","timestamp":"2025-08-17T23:59:55.900Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-08-17T23:59:55.900Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Getting all saved workflow results","service":"server","timestamp":"2025-08-18T00:00:22.426Z"}
+{"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-08-18T00:00:22.427Z"}
+{"level":"info","message":"📋 [MANAGER] Found 4 saved workflow results","service":"manager","timestamp":"2025-08-18T00:00:22.465Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-08-18T00:00:22.466Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Getting all saved workflow results","service":"server","timestamp":"2025-08-18T00:02:19.100Z"}
+{"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-08-18T00:02:19.101Z"}
+{"level":"info","message":"📋 [MANAGER] Found 4 saved workflow results","service":"manager","timestamp":"2025-08-18T00:02:19.367Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-08-18T00:02:19.368Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Getting all saved workflow results","service":"server","timestamp":"2025-08-18T05:47:02.100Z"}
+{"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-08-18T05:47:02.102Z"}
+{"level":"info","message":"📋 [MANAGER] Found 4 saved workflow results","service":"manager","timestamp":"2025-08-18T05:47:02.414Z"}
+{"level":"info","message":"📋 [RESULTS_ENDPOINT] Returning","service":"server","timestamp":"2025-08-18T05:47:02.414Z"}
+{"level":"info","message":"📋 [RESULTS] Getting workflow results for ID:","service":"server","timestamp":"2025-08-18T05:47:06.366Z"}
+{"level":"info","message":"📋 [RESULTS] Returning results for workflow:","service":"server","timestamp":"2025-08-18T05:47:06.446Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-18T05:50:40.383Z"}

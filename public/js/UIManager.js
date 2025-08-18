@@ -5,6 +5,12 @@ class UIManager {
             tabContents: null,
             csvFile: null,
             uploadBtn: null,
+            firmNamesText: null,
+            processTextBtn: null,
+            confirmationDialog: null,
+            firmsList: null,
+            confirmBtn: null,
+            cancelBtn: null,
             startBtn: null,
             tableSection: null,
             tableBody: null,
@@ -19,6 +25,13 @@ class UIManager {
         this.startButtonManager = new StartButtonManager(this.elements.startBtn);
         this.tableManager = new TableManager(this.elements.tableBody, this.elements.tableSection);
         this.fileUploadManager = new FileUploadManager(this.elements.csvFile, this.elements.uploadBtn);
+        this.textInputManager = new TextInputManager(this.elements.firmNamesText, this.elements.processTextBtn);
+        this.confirmationDialogManager = new ConfirmationDialogManager(
+            this.elements.confirmationDialog, 
+            this.elements.firmsList, 
+            this.elements.confirmBtn, 
+            this.elements.cancelBtn
+        );
         this.notificationManager = new NotificationManager();
         this.savedReportsManager = new SavedReportsManager(this.elements.savedTableBody);
         
@@ -32,6 +45,18 @@ class UIManager {
         
         document.addEventListener('csvUploadError', (event) => {
             this.handleCsvUploadError(event);
+        });
+        
+        document.addEventListener('textParsed', (event) => {
+            this.handleTextParsed(event);
+        });
+        
+        document.addEventListener('textInputError', (event) => {
+            this.handleTextInputError(event);
+        });
+        
+        document.addEventListener('confirmationCancelled', (event) => {
+            this.handleConfirmationCancelled(event);
         });
         
         document.addEventListener('startButtonClicked', (event) => {
@@ -57,6 +82,25 @@ class UIManager {
     handleCsvUploadError(event) {
         console.log('CSV upload error:', event.detail.error);
         this.notificationManager.showCsvUploadError(event.detail.error);
+    }
+
+    handleTextParsed(event) {
+        console.log('Text parsed with firm names:', event.detail.firmNames);
+        // Show confirmation dialog instead of immediately proceeding
+        this.confirmationDialogManager.showConfirmation(event.detail.firmNames);
+    }
+
+    handleTextInputError(event) {
+        console.log('Text input error:', event.detail.error);
+        this.notificationManager.showCsvUploadError(event.detail.error);
+    }
+
+    handleConfirmationCancelled(event) {
+        console.log('User cancelled confirmation');
+        // Focus back on text area for editing
+        if (this.elements.firmNamesText) {
+            this.elements.firmNamesText.focus();
+        }
     }
 
     handleStartButtonClicked(event) {
@@ -100,7 +144,13 @@ class UIManager {
             tabButtons: document.querySelectorAll('.tab-button'),
             tabContents: document.querySelectorAll('.tab-content'),
             csvFile: document.getElementById('csvFile'),
-            uploadBtn: document.querySelector('.upload-btn'),
+            uploadBtn: document.getElementById('csvUploadBtn'),
+            firmNamesText: document.getElementById('firmNamesText'),
+            processTextBtn: document.getElementById('processTextBtn'),
+            confirmationDialog: document.getElementById('confirmationDialog'),
+            firmsList: document.getElementById('firmsList'),
+            confirmBtn: document.getElementById('confirmBtn'),
+            cancelBtn: document.getElementById('cancelBtn'),
             startBtn: document.getElementById('startBtn'),
             tableSection: document.getElementById('tableSection'),
             tableBody: document.getElementById('tableBody'),

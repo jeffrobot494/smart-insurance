@@ -21,15 +21,28 @@
         <!-- New Tab Content -->
         <div id="new-tab" class="tab-content active">
             <div class="upload-section">
+                <!-- Text Input Method -->
+                <div class="text-input-container">
+                    <textarea id="firmNamesText" placeholder="Enter firm names separated by commas (e.g., KKR, Blackstone, Apollo)"></textarea>
+                    <button id="processTextBtn" class="upload-btn">
+                        Process Names
+                    </button>
+                </div>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <!-- CSV Upload Method -->
                 <div class="upload-container">
                     <input type="file" id="csvFile" accept=".csv" class="file-input">
-                    <button class="upload-btn">
+                    <button id="csvUploadBtn" class="upload-btn">
                         Import CSV
                     </button>
                 </div>
                 
                 <p class="instructions">
-                    Upload a CSV file with the names of the PE firms here
+                    Enter firm names above or upload a CSV file with PE firm names
                 </p>
             </div>
             
@@ -67,10 +80,26 @@
         </div>
     </div>
 
+    <!-- Confirmation Dialog -->
+    <div id="confirmationDialog" class="dialog-overlay">
+        <div class="dialog-content">
+            <h3>Confirm Firm Names</h3>
+            <p>We found the following firms:</p>
+            <ul id="firmsList"></ul>
+            <p>Is this correct?</p>
+            <div class="dialog-buttons">
+                <button id="confirmBtn" class="confirm-btn">Yes, Continue</button>
+                <button id="cancelBtn" class="cancel-btn">No, Edit</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript modules -->
     <!-- UI Manager Classes -->
     <script src="js/ui/TableManager.js"></script>
     <script src="js/ui/FileUploadManager.js"></script>
+    <script src="js/ui/TextInputManager.js"></script>
+    <script src="js/ui/ConfirmationDialogManager.js"></script>
     <script src="js/ui/StartButtonManager.js"></script>
     <script src="js/ui/TabManager.js"></script>
     <script src="js/ui/NotificationManager.js"></script>
