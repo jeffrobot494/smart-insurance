@@ -59,10 +59,10 @@ function generateWorkflowSummary(results) {
       
       // Extract portfolio status
       if (data.portfolio_verification) {
-        if (data.portfolio_verification.is_active_portfolio === true) {
+        if (data.portfolio_verification.exited !== true) {
           detail.portfolioStatus = 'Active';
           stats.activePortfolio++;
-        } else if (data.portfolio_verification.is_active_portfolio === false) {
+        } else if (data.portfolio_verification.exited === true) {
           detail.portfolioStatus = 'Exited';
           stats.exitedCompanies++;
         }

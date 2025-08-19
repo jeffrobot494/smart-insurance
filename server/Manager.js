@@ -159,6 +159,14 @@ class Manager {
           // Filter out inactive portfolio companies and small companies (<100 employees)
           const filteredEntityResults = PortfolioCompanyFilter.filterValidCompanies(entityResults);
 
+          // Debug: Check what we're passing to converter
+          logger.info(`🔍 Passing ${filteredEntityResults.length} filtered results to VerificationResultsConverter`);
+          if (filteredEntityResults.length > 0) {
+            const firstFiltered = filteredEntityResults[0];
+            logger.info(`🔍 First filtered result keys: [${Object.keys(firstFiltered).join(', ')}]`);
+            logger.info(`🔍 Has workflowExecutionId: ${!!firstFiltered.workflowExecutionId}`);
+          }
+
           // Convert verification results to portfolio format before saving
           const convertedResults = VerificationResultsConverter.consolidateByFirm(filteredEntityResults);
           

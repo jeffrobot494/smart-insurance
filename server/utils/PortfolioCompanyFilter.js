@@ -28,7 +28,6 @@ class PortfolioCompanyFilter {
     
     // Track filtering statistics
     let removedInactive = 0;
-    let removedSmallCompanies = 0;
     
     // Filter out inactive portfolio companies
     filteredResults = filteredResults.filter(result => {
@@ -40,7 +39,7 @@ class PortfolioCompanyFilter {
       }
       return isActive;
     });
-    
+    /*
     // Filter out companies with less than 100 employees
     filteredResults = filteredResults.filter(result => {
       const hasEnoughEmployees = this.hasMinimumEmployeeCount(result);
@@ -51,12 +50,11 @@ class PortfolioCompanyFilter {
       }
       return hasEnoughEmployees;
     });
-    
+    */
     // Log filtering summary
     logger.info(`📊 Portfolio company filtering complete:`);
     logger.info(`   Initial companies: ${initialCount}`);
     logger.info(`   Removed inactive: ${removedInactive}`);
-    logger.info(`   Removed small companies: ${removedSmallCompanies}`);
     logger.info(`   Final companies: ${filteredResults.length}`);
     
     return filteredResults;
@@ -75,8 +73,8 @@ class PortfolioCompanyFilter {
         return false;
       }
       
-      const isActive = output.portfolio_verification.is_active_portfolio;
-      return isActive === true;
+      const hasExited = output.portfolio_verification.exited;
+      return hasExited !== true;
       
     } catch (error) {
       logger.debug(`⚠️ Error checking portfolio status: ${error.message}, treating as inactive`);

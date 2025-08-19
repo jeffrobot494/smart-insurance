@@ -181,8 +181,8 @@ class VerificationResultsConverter {
         const verificationData = this.extractJsonFromResponse(finalTask.result);
         if (!verificationData) continue;
         
-        const validStatuses = ['READY_FOR_EXTRACTION', 'NEEDS_ADVANCED_RESOLUTION'];
-        if (!validStatuses.includes(verificationData.status)) continue;
+        // All valid companies are now treated as ready for extraction
+        // Filtering is handled by PortfolioCompanyFilter before this point
         
         // Use form5500_match.legal_name if available, otherwise original company name
         const refinedCompanyName = verificationData.form5500_match?.legal_name || verificationData.company_name;
