@@ -359,6 +359,45 @@ class DatabaseManager {
   }
 
   /**
+   * Get workflow execution details including firm name
+   * @param {number} workflowExecutionId - The workflow execution ID
+   * @returns {Object} Workflow execution details
+   */
+  async getWorkflowExecution(workflowExecutionId) {
+    try {
+      // Initialize database connection if not already done
+      if (!this.pool) {
+        await this.initialize();
+      }
+
+      const query = `
+        SELECT 
+          we.id,
+          we.workflow_name,
+          we.started_at,
+          we.completed_at,
+          we.status,
+          pc.firm_name
+        FROM workflow_executions we
+        LEFT JOIN portfolio_companies pc ON we.id = pc.workflow_execution_id
+        WHERE we.id = $1
+        LIMIT 1
+      `;
+      
+      const result = await this.query(query, [workflowExecutionId]);
+      
+      if (result.rows.length === 0) {
+        return null;
+      }
+      
+      return result.rows[0];
+    } catch (error) {
+      logger.error('❌ Failed to get workflow execution:', error.message);
+      throw error;
+    }
+  }
+
+  /**
    * Get all completed workflow execution results
    * @returns {Array} Array of workflow execution records
    */

@@ -1,0 +1,609 @@
+{
+  "success": true,
+  "summary": {
+    "totalCompanies": 6,
+    "companiesWithEIN": 6,
+    "companiesWithForm5500": 6,
+    "companiesWithScheduleA": 6
+  },
+  "companies": [
+    {
+      "ein": "200939510",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "200939510",
+              "year": 2022,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC 401(K) PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": false,
+              "active_participants": 744
+            },
+            {
+              "ein": "200939510",
+              "year": 2022,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC WELFARE BENEFIT PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 1354
+            }
+          ],
+          "2023": [
+            {
+              "ein": "200939510",
+              "year": 2023,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC WELFARE BENEFIT PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 437
+            },
+            {
+              "ein": "200939510",
+              "year": 2023,
+              "plan_name": "BEHAVIOR FRONTIERS, LLC 401(K) PLAN",
+              "sponsor_name": "BEHAVIOR FRONTIERS, LLC",
+              "has_schedule_a": false,
+              "active_participants": 1135
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 2,
+          "2023": 2
+        }
+      },
+      "companyName": "BEHAVIOR FRONTIERS, LLC"
+    },
+    {
+      "ein": "464352686",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "464352686",
+              "year": 2022,
+              "plan_name": "CALCIUM USA 401(K) PLAN",
+              "sponsor_name": "CALCIUM USA, LLC",
+              "has_schedule_a": true,
+              "active_participants": 94
+            }
+          ],
+          "2023": [
+            {
+              "ein": "464352686",
+              "year": 2023,
+              "plan_name": "CALCIUM USA 401(K) PLAN",
+              "sponsor_name": "CALCIUM USA, LLC",
+              "has_schedule_a": true,
+              "active_participants": 108
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 1,
+          "2023": 1
+        }
+      },
+      "companyName": "CALCIUM USA, LLC"
+    },
+    {
+      "ein": "364849207",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "364849207",
+              "year": 2022,
+              "plan_name": "MEDUIT, LLC 401(K) RETIREMENT PLAN",
+              "sponsor_name": "MEDUIT. LLC ILK/A RECEIVABLES",
+              "has_schedule_a": true,
+              "active_participants": 1273
+            }
+          ],
+          "2023": [
+            {
+              "ein": "364849207",
+              "year": 2023,
+              "plan_name": "MEDUIT, LLC 401(K) RETIREMENT PLAN",
+              "sponsor_name": "MEDUIT. LLC ILK/A RECEIVABLES",
+              "has_schedule_a": true,
+              "active_participants": 1439
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 1,
+          "2023": 1
+        }
+      },
+      "companyName": "MEDUIT. LLC ILK/A RECEIVABLES"
+    },
+    {
+      "ein": "232766461",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "232766461",
+              "year": 2022,
+              "plan_name": "METZ CULINARY MANAGEMENT, LLC 401(K) PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT, LLC",
+              "has_schedule_a": false,
+              "active_participants": 5435
+            }
+          ],
+          "2023": [
+            {
+              "ein": "232766461",
+              "year": 2023,
+              "plan_name": "METZ CULINARY MANAGEMENT, LLC 401(K) PLAN",
+              "sponsor_name": "METZ CULINARY MANAGEMENT, LLC",
+              "has_schedule_a": false,
+              "active_participants": 6436
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 4,
+          "2023": 3
+        }
+      },
+      "companyName": "METZ CULINARY MANAGEMENT, LLC"
+    },
+    {
+      "ein": "800236699",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "800236699",
+              "year": 2022,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 121
+            },
+            {
+              "ein": "800236699",
+              "year": 2022,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 116
+            }
+          ],
+          "2023": [
+            {
+              "ein": "800236699",
+              "year": 2023,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 122
+            },
+            {
+              "ein": "800236699",
+              "year": 2023,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 119
+            }
+          ],
+          "2024": [
+            {
+              "ein": "800236699",
+              "year": 2024,
+              "plan_name": "SELERIX SYSTEMS, INC.",
+              "sponsor_name": "SELERIX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 117
+            }
+          ]
+        },
+        "recordCount": 5
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2024": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 3,
+          "2023": 3,
+          "2024": 3
+        }
+      },
+      "companyName": "SELERIX SYSTEMS, INC."
+    },
+    {
+      "ein": "342037648",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "342037648",
+              "year": 2022,
+              "plan_name": "SURGENT MCCOY CPE, LLC 401(K) PLAN",
+              "sponsor_name": "SURGENT MCCOY CPE, LLC",
+              "has_schedule_a": false,
+              "active_participants": 207
+            },
+            {
+              "ein": "342037648",
+              "year": 2022,
+              "plan_name": "KNOWFULLY HEALTH AND WELFARE PLAN",
+              "sponsor_name": "SURGENT MCCOY CPE, LLC",
+              "has_schedule_a": true,
+              "active_participants": 189
+            }
+          ],
+          "2023": [
+            {
+              "ein": "342037648",
+              "year": 2023,
+              "plan_name": "KNOWFULLY HEALTH AND WELFARE PLAN",
+              "sponsor_name": "SURGENT MCCOY CPE, LLC",
+              "has_schedule_a": true,
+              "active_participants": 140
+            },
+            {
+              "ein": "342037648",
+              "year": 2023,
+              "plan_name": "SURGENT MCCOY CPE, LLC 401(K) PLAN",
+              "sponsor_name": "SURGENT MCCOY CPE, LLC",
+              "has_schedule_a": false,
+              "active_participants": 190
+            }
+          ],
+          "2024": [
+            {
+              "ein": "342037648",
+              "year": 2024,
+              "plan_name": "KNOWFULLY HEALTH AND WELFARE PLAN",
+              "sponsor_name": "SURGENT MCCOY CPE, LLC",
+              "has_schedule_a": true,
+              "active_participants": 137
+            }
+          ]
+        },
+        "recordCount": 5
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ],
+          "2024": [
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "",
+              "carrierName": "",
+              "totalCharges": "",
+              "personsCovered": "",
+              "brokerCommission": ""
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 3,
+          "2023": 3,
+          "2024": 5
+        }
+      },
+      "companyName": "SURGENT MCCOY CPE, LLC"
+    }
+  ],
+  "timestamp": "2025-08-18T23:30:39.051Z"
+}

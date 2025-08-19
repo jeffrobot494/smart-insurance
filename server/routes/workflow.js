@@ -1,7 +1,7 @@
 const { server: logger } = require('../utils/logger');
 const express = require('express');
 const router = express.Router();
-const { run, run2, extractPortfolioCompanyData, initializeWorkflows, getAllSavedResults } = require('../Manager');
+const { findPortfolioCompaniesWorkflow, run2, extractPortfolioCompanyData, initializeWorkflows, getAllSavedResults } = require('../Manager');
 
 // POST /api/workflow
 router.post('/', async (req, res) => {
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 
     // Execute workflow asynchronously with pre-generated IDs
     logger.info(`Starting workflow: ${workflowname} with ${inputArray.length} inputs`);
-    run(workflowFile, { input: inputArray }, initResult.workflowExecutionIds)
+    findPortfolioCompaniesWorkflow(workflowFile, { input: inputArray }, initResult.workflowExecutionIds)
 
   } catch (error) {
     logger.error('Workflow startup error:', error);

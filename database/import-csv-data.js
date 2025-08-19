@@ -16,7 +16,7 @@ class CSVImporter {
     this.pool = null;
     this.batchProcessor = null;
     this.dataMapper = new DataMapper();
-    this.dataPath = path.join(__dirname, '..', 'server', 'data');
+    this.dataPath = path.join(__dirname, '..', 'tests', 'data');
     this.stats = {
       totalProcessed: 0,
       totalErrors: 0,

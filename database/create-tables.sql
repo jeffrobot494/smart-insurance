@@ -67,7 +67,10 @@ CREATE TABLE form_5500_records (
   
   -- Timestamps
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  -- Unique constraint for idempotent imports
+  CONSTRAINT unique_form_5500_ack_year UNIQUE (ack_id, year)
 );
 
 -- ===========================================
@@ -129,7 +132,10 @@ CREATE TABLE schedule_a_records (
   
   -- Timestamps
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  -- Unique constraint for idempotent imports
+  CONSTRAINT unique_schedule_a_ack_form_year UNIQUE (ack_id, form_id, year)
 );
 
 -- ===========================================
@@ -144,12 +150,16 @@ CREATE INDEX idx_form_5500_ack_id ON form_5500_records(ack_id);
 CREATE INDEX idx_form_5500_plan_name ON form_5500_records(plan_name);
 CREATE INDEX idx_form_5500_year_ein ON form_5500_records(year, spons_dfe_ein);  -- Composite index
 
+-- Indexes to support unique constraints for optimal performance
+CREATE INDEX idx_form_5500_ack_year ON form_5500_records(ack_id, year);
+
 -- Schedule A indexes
 CREATE INDEX idx_schedule_a_ein ON schedule_a_records(sch_a_ein);
 CREATE INDEX idx_schedule_a_carrier_name ON schedule_a_records(ins_carrier_name);
 CREATE INDEX idx_schedule_a_year ON schedule_a_records(year);
 CREATE INDEX idx_schedule_a_ack_id ON schedule_a_records(ack_id);
 CREATE INDEX idx_schedule_a_year_ein ON schedule_a_records(year, sch_a_ein);  -- Composite index
+CREATE INDEX idx_schedule_a_ack_form_year ON schedule_a_records(ack_id, form_id, year);
 
 -- ===========================================
 -- UTILITY VIEWS FOR COMMON QUERIES

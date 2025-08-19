@@ -9,6 +9,7 @@ const WorkflowManager = require('../workflow/WorkflowManager');
 const F5500TestClaudeResponseParser = require('../utils/F5500TestClaudeResponseParser');
 const { generateWorkflowSummary } = require('../utils/WorkflowSummaryGenerator');
 const VerificationResultsConverter = require('../utils/VerificationResultsConverter');
+const { legalEntityWorkflow, extractBatchPortfolioCompanyData } = require('../Manager');
 
 // POST /api/testing/legal-entity-resolution
 /* NOT USED
@@ -128,6 +129,121 @@ router.post('/full-workflow', async (req, res) => {
     
   } catch (error) {
     logger.error('❌ Full workflow test failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      execution_time_ms: Date.now() - startTime
+    });
+  }
+});
+
+// POST /api/testing/legal-entity-workflow
+router.post('/legal-entity-workflow', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const { workflowExecutionIds } = req.body;
+    
+    // Validate input
+    if (!workflowExecutionIds || !Array.isArray(workflowExecutionIds) || workflowExecutionIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'workflowExecutionIds array is required and must not be empty'
+      });
+    }
+    
+    // Validate that all IDs are numbers
+    const invalidIds = workflowExecutionIds.filter(id => !Number.isInteger(id));
+    if (invalidIds.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: `All workflow execution IDs must be integers. Invalid IDs: ${invalidIds.join(', ')}`
+      });
+    }
+    
+    logger.info(`🧪 Testing legal entity workflow for ${workflowExecutionIds.length} workflow execution IDs: ${workflowExecutionIds.join(', ')}`);
+    
+    // Execute the legal entity workflow
+    await legalEntityWorkflow(workflowExecutionIds);
+    
+    const executionTime = Date.now() - startTime;
+    
+    // Return success response
+    const response = {
+      success: true,
+      message: 'Legal entity workflow completed successfully',
+      metadata: {
+        workflow_execution_ids_processed: workflowExecutionIds,
+        execution_time_ms: executionTime,
+        timestamp: new Date().toISOString(),
+        note: "Results are saved to database. Check workflow_executions and portfolio_companies tables for refined data."
+      }
+    };
+    
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(response, null, 2));
+    
+  } catch (error) {
+    logger.error('❌ Legal entity workflow test failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      execution_time_ms: Date.now() - startTime
+    });
+  }
+});
+
+// POST /api/testing/batch-data-extraction
+router.post('/batch-data-extraction', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const { workflowExecutionIds } = req.body;
+    
+    // Validate input
+    if (!workflowExecutionIds || !Array.isArray(workflowExecutionIds) || workflowExecutionIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'workflowExecutionIds array is required and must not be empty'
+      });
+    }
+    
+    // Validate that all IDs are numbers
+    const invalidIds = workflowExecutionIds.filter(id => !Number.isInteger(id));
+    if (invalidIds.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: `All workflow execution IDs must be integers. Invalid IDs: ${invalidIds.join(', ')}`
+      });
+    }
+    
+    logger.info(`🧪 Testing batch data extraction for ${workflowExecutionIds.length} workflow execution IDs: ${workflowExecutionIds.join(', ')}`);
+    
+    // Execute the batch data extraction
+    const extractionResults = await extractBatchPortfolioCompanyData(workflowExecutionIds);
+    
+    const executionTime = Date.now() - startTime;
+    
+    // Return results
+    const response = {
+      success: true,
+      message: 'Batch data extraction completed successfully',
+      results: extractionResults,
+      metadata: {
+        workflow_execution_ids_processed: workflowExecutionIds,
+        execution_time_ms: executionTime,
+        successful_extractions: extractionResults.filter(r => r.extraction.success).length,
+        failed_extractions: extractionResults.filter(r => !r.extraction.success).length,
+        timestamp: new Date().toISOString(),
+        note: "Extraction results are also saved to database workflow_executions.results field."
+      }
+    };
+    
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(response, null, 2));
+    
+  } catch (error) {
+    logger.error('❌ Batch data extraction test failed:', error);
     res.status(500).json({
       success: false,
       error: error.message,

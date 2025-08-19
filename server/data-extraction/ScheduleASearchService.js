@@ -124,11 +124,11 @@ class ScheduleASearchService {
    */
   extractKeyFields(record) {
     const keyFields = {
-      carrierName: record.fieldsMap['INS_CARRIER_NAME'] || '',
-      personsCovered: record.fieldsMap['INS_PRSN_COVERED_EOY_CNT'] || '',
-      brokerCommission: record.fieldsMap['INS_BROKER_COMM_TOT_AMT'] || '',
-      benefitType: record.fieldsMap['WLFR_TYPE_BNFT_OTH_TEXT'] || '',
-      totalCharges: record.fieldsMap['WLFR_TOT_CHARGES_PAID_AMT'] || ''
+      carrierName: record.fieldsMap['CARRIER_NAME'] || '',
+      personsCovered: record.fieldsMap['PERSONS_COVERED'] || '',
+      brokerCommission: record.fieldsMap['BROKER_COMMISSION'] || '',
+      benefitType: record.fieldsMap['BENEFIT_TYPES'] || '',
+      totalCharges: record.fieldsMap['TOTAL_CHARGES'] || ''
     };
 
     return keyFields;
