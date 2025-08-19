@@ -12,6 +12,7 @@ const OutputFileManager = require('./utils/OutputFileManager');
 const ResultsParser = require('./utils/ResultsParser');
 const ResultsExtractor = require('./utils/ResultsExtractor');
 const VerificationResultsConverter = require('./utils/VerificationResultsConverter');
+const PortfolioCompanyFilter = require('./utils/PortfolioCompanyFilter');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 const DatabaseManager = require('./data-extraction/DatabaseManager');
 
@@ -112,6 +113,7 @@ class Manager {
 
       //Use results from second workflow and perform data extraction
       await this.extractBatchPortfolioCompanyData(refinedWorkflowExecutionIds)
+
     } catch (error) {
       logger.error('💥 Workflow execution failed:', error.message);
       throw error;
@@ -154,8 +156,11 @@ class Manager {
           // Execute the legal entity resolution workflow with pre-generated IDs
           const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs, verificationInitResult.workflowExecutionIds);
           
+          // Filter out inactive portfolio companies and small companies (<100 employees)
+          const filteredEntityResults = PortfolioCompanyFilter.filterValidCompanies(entityResults);
+
           // Convert verification results to portfolio format before saving
-          const convertedResults = VerificationResultsConverter.consolidateByFirm(entityResults);
+          const convertedResults = VerificationResultsConverter.consolidateByFirm(filteredEntityResults);
           
           // Save converted results to database in portfolio format
           await resultsSaver.saveBatchResults(convertedResults);

@@ -339,8 +339,8 @@ class CSVImporter {
       // Initialize
       await this.initialize();
       
-      // Clear existing data
-      await this.clearExistingData();
+      // Skip clearing data to test idempotent behavior
+      // await this.clearExistingData();
       
       // Start batch processor
       this.batchProcessor.start();
