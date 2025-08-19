@@ -1,6 +1,11 @@
 -- Migration: Fix Schedule A column names to match reporting expectations
 -- Created: 2025-07-18
 -- Description: Update get_schedule_a_by_ein function to return original column names
+-- 
+-- NOTE: This migration is NOT currently being used.
+-- The application code expects simplified column names (CARRIER_NAME, PERSONS_COVERED, etc.)
+-- from the original function definition in create-tables.sql, not the original database 
+-- column names that this migration provides. Keep for reference only.
 
 -- Drop the existing function
 DROP FUNCTION IF EXISTS get_schedule_a_by_ein(VARCHAR(9));

@@ -162,6 +162,48 @@ CREATE INDEX idx_schedule_a_year_ein ON schedule_a_records(year, sch_a_ein);  --
 CREATE INDEX idx_schedule_a_ack_form_year ON schedule_a_records(ack_id, form_id, year);
 
 -- ===========================================
+-- WORKFLOW AND PORTFOLIO TRACKING TABLES
+-- ===========================================
+
+-- Create workflow_executions table
+CREATE TABLE workflow_executions (
+    id SERIAL PRIMARY KEY,
+    workflow_name VARCHAR(255) NOT NULL,
+    started_at TIMESTAMP DEFAULT NOW(),
+    completed_at TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'running',
+    results JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create portfolio_companies table with both original and legal names
+CREATE TABLE portfolio_companies (
+    id SERIAL PRIMARY KEY,
+    workflow_execution_id INTEGER REFERENCES workflow_executions(id),
+    firm_name VARCHAR(255) NOT NULL,
+    original_company_name VARCHAR(255) NOT NULL,
+    legal_entity_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(workflow_execution_id, original_company_name)
+);
+
+-- Add indexes for performance
+CREATE INDEX idx_workflow_executions_workflow_name ON workflow_executions(workflow_name);
+CREATE INDEX idx_workflow_executions_status ON workflow_executions(status);
+CREATE INDEX idx_portfolio_companies_firm_name ON portfolio_companies(firm_name);
+CREATE INDEX idx_portfolio_companies_original_name ON portfolio_companies(original_company_name);
+CREATE INDEX idx_portfolio_companies_legal_name ON portfolio_companies(legal_entity_name);
+CREATE INDEX idx_portfolio_companies_workflow_execution_id ON portfolio_companies(workflow_execution_id);
+
+-- Add comments for documentation
+COMMENT ON TABLE workflow_executions IS 'Tracks each execution of a workflow';
+COMMENT ON TABLE portfolio_companies IS 'Stores portfolio companies with both original and legal entity names';
+COMMENT ON COLUMN workflow_executions.status IS 'Status: running, completed, failed';
+COMMENT ON COLUMN portfolio_companies.firm_name IS 'Name of the private equity firm';
+COMMENT ON COLUMN portfolio_companies.original_company_name IS 'Original company name from research';
+COMMENT ON COLUMN portfolio_companies.legal_entity_name IS 'Legal entity name for Form 5500 matching';
+
+-- ===========================================
 -- UTILITY VIEWS FOR COMMON QUERIES
 -- ===========================================
 

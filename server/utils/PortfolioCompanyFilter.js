@@ -16,10 +16,10 @@ class PortfolioCompanyFilter {
     // Debug: Log structure of first result
     if (entityResults.length > 0) {
       const firstResult = entityResults[0];
-      logger.debug(`📋 First result structure: keys = [${Object.keys(firstResult).join(', ')}]`);
+      logger.info(`📋 First result structure: keys = [${Object.keys(firstResult).join(', ')}]`);
       if (firstResult.tasks) {
         const taskIds = Object.keys(firstResult.tasks);
-        logger.debug(`📋 Task IDs found: [${taskIds.join(', ')}]`);
+        logger.info(`📋 Task IDs found: [${taskIds.join(', ')}]`);
       }
     }
     
@@ -35,7 +35,7 @@ class PortfolioCompanyFilter {
       if (!isActive) {
         removedInactive++;
         const companyName = this.extractCompanyName(result);
-        logger.debug(`❌ Filtered out inactive company: ${companyName}`);
+        logger.info(`❌ Filtered out inactive company: ${companyName}`);
       }
       return isActive;
     });
@@ -46,7 +46,7 @@ class PortfolioCompanyFilter {
       if (!hasEnoughEmployees) {
         removedSmallCompanies++;
         const companyName = this.extractCompanyName(result);
-        logger.debug(`❌ Filtered out small company (<100 employees): ${companyName}`);
+        logger.info(`❌ Filtered out small company (<100 employees): ${companyName}`);
       }
       return hasEnoughEmployees;
     });
@@ -69,7 +69,7 @@ class PortfolioCompanyFilter {
     try {
       const output = this.extractOutput(result);
       if (!output || !output.portfolio_verification) {
-        logger.debug('⚠️ Missing portfolio_verification data, treating as inactive');
+        logger.info('⚠️ Missing portfolio_verification data, treating as inactive');
         return false;
       }
       
@@ -77,7 +77,7 @@ class PortfolioCompanyFilter {
       return hasExited !== true;
       
     } catch (error) {
-      logger.debug(`⚠️ Error checking portfolio status: ${error.message}, treating as inactive`);
+      logger.info(`⚠️ Error checking portfolio status: ${error.message}, treating as inactive`);
       return false;
     }
   }
@@ -91,7 +91,7 @@ class PortfolioCompanyFilter {
     try {
       const output = this.extractOutput(result);
       if (!output || !output.employee_count_assessment) {
-        logger.debug('⚠️ Missing employee_count_assessment data, treating as small company');
+        logger.info('⚠️ Missing employee_count_assessment data, treating as small company');
         return false;
       }
       
@@ -99,7 +99,7 @@ class PortfolioCompanyFilter {
       return likelyUnder100 !== true;
       
     } catch (error) {
-      logger.debug(`⚠️ Error checking employee count: ${error.message}, treating as small company`);
+      logger.info(`⚠️ Error checking employee count: ${error.message}, treating as small company`);
       return false;
     }
   }
@@ -113,7 +113,7 @@ class PortfolioCompanyFilter {
     try {
       // Handle different possible result structures
       if (result.output) {
-        logger.debug(`📋 Found result.output directly`);
+        logger.info(`📋 Found result.output directly`);
         return result.output;
       }
       
@@ -123,17 +123,17 @@ class PortfolioCompanyFilter {
         const finalTaskId = Math.max(...taskIds);
         const finalTask = result.tasks[finalTaskId];
         
-        logger.debug(`📋 Using final task ${finalTaskId}, result type: ${typeof finalTask?.result}`);
+        logger.info(`📋 Using final task ${finalTaskId}, result type: ${typeof finalTask?.result}`);
         
         if (finalTask && finalTask.result) {
           // Try to parse if it's a string
           if (typeof finalTask.result === 'string') {
             try {
               const parsed = JSON.parse(finalTask.result);
-              logger.debug(`📋 Parsed JSON successfully, has portfolio_verification: ${!!parsed.portfolio_verification}`);
+              logger.info(`📋 Parsed JSON successfully, has portfolio_verification: ${!!parsed.portfolio_verification}`);
               return parsed;
             } catch {
-              logger.debug(`📋 Failed to parse JSON from string result`);
+              logger.info(`📋 Failed to parse JSON from string result`);
               return null;
             }
           }
@@ -141,10 +141,10 @@ class PortfolioCompanyFilter {
         }
       }
       
-      logger.debug(`📋 No valid output structure found`);
+      logger.info(`📋 No valid output structure found`);
       return null;
     } catch (error) {
-      logger.debug(`⚠️ Error extracting output: ${error.message}`);
+      logger.info(`⚠️ Error extracting output: ${error.message}`);
       return null;
     }
   }
