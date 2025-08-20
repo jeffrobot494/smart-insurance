@@ -184,9 +184,14 @@ class VerificationResultsConverter {
         // All valid companies are now treated as ready for extraction
         // Filtering is handled by PortfolioCompanyFilter before this point
         
-        // Use form5500_match.legal_name if available, otherwise original company name
-        const refinedCompanyName = verificationData.form5500_match?.legal_name || verificationData.company_name;
-        companies.push(refinedCompanyName);
+        // Extract both original and legal entity names
+        const originalName = verificationData.company_name;
+        const legalName = verificationData.form5500_match?.legal_name || verificationData.legal_entity_research?.legal_entity_name;
+        
+        companies.push({
+          originalName,
+          legalName: legalName || originalName // fallback to original if no legal name found
+        });
         
       } catch (error) {
         console.error('❌ Failed to process result for consolidation:', error.message);

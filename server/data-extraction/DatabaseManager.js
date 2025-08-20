@@ -234,11 +234,11 @@ class DatabaseManager {
         await this.initialize();
       }
       
-      // Insert each company
-      for (const companyName of companies) {
+      // Insert each company with both original and legal names
+      for (const company of companies) {
         await this.query(
-          'INSERT INTO portfolio_companies (workflow_execution_id, firm_name, company_name) VALUES ($1, $2, $3) ON CONFLICT (workflow_execution_id, company_name) DO NOTHING',
-          [workflowExecutionId, firmName, companyName]
+          'INSERT INTO portfolio_companies (workflow_execution_id, firm_name, original_company_name, legal_entity_name) VALUES ($1, $2, $3, $4) ON CONFLICT (workflow_execution_id, original_company_name) DO NOTHING',
+          [workflowExecutionId, firmName, company.originalName, company.legalName]
         );
       }
       
