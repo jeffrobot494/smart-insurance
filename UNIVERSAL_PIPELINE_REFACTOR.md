@@ -339,6 +339,7 @@ module.exports = WorkflowResultsParser;
 - **Flexible format support** - handles multiple result structures
 - **Easy to extend** for new workflow types
 - **Clear separation of concerns** from Manager.js
+- **Integrated exit detection** - replaces PortfolioCompanyFilter.js by setting `exited: true` flag instead of removing companies
 
 ## 3. DatabaseManager.js Complete Rewrite
 
@@ -1323,7 +1324,10 @@ describe('Pipeline Management', () => {
       const updated = await manager.runLegalResolution(pipeline.pipeline_id);
       
       expect(updated.status).toBe('legal_resolution_complete');
-      expect(updated.legal_entity_names).toEqual(['Company A, LLC', 'Company B, LLC']);
+      expect(updated.companies).toEqual([
+        { name: 'Company A', legal_name: 'Company A, LLC', city: 'Austin', state: 'TX', exited: false },
+        { name: 'Company B', legal_name: 'Company B, LLC', city: 'Boston', state: 'MA', exited: false }
+      ]);
       expect(updated.legal_resolution_completed_at).toBeTruthy();
     });
   });
@@ -1334,8 +1338,10 @@ describe('Pipeline Management', () => {
       const pipeline = await manager.createPipeline('Test Firm');
       await dbManager.updatePipeline(pipeline.pipeline_id, {
         status: 'legal_resolution_complete',
-        portfolio_company_names: ['Company A', 'Company B'],
-        legal_entity_names: ['Company A, LLC', 'Company B, LLC']
+        companies: [
+          { name: 'Company A', legal_name: 'Company A, LLC', city: 'Austin', state: 'TX', exited: false },
+          { name: 'Company B', legal_name: 'Company B, LLC', city: 'Boston', state: 'MA', exited: false }
+        ]
       });
       
       // Mock data extraction
@@ -1367,8 +1373,9 @@ describe('Pipeline Management', () => {
       const result = await manager.runCompletePipeline('Test Firm');
       
       expect(result.status).toBe('data_extraction_complete');
-      expect(result.portfolio_company_names).toEqual(['Company A']);
-      expect(result.legal_entity_names).toEqual(['Company A, LLC']);
+      expect(result.companies).toEqual([
+        { name: 'Company A', legal_name: 'Company A, LLC', city: 'Austin', state: 'TX', exited: false }
+      ]);
       expect(result.form5500_data).toBeTruthy();
     });
   });
@@ -1503,9 +1510,11 @@ This universal pipeline object refactor would deliver:
 
 ### Quantified Improvements
 - **Database complexity**: 2 tables with foreign keys → 1 simple table (**50% reduction**)
+- **Data structure**: 2 separate arrays → 1 unified companies array (**50% data structure reduction**)
 - **Manager.js size**: 318 lines → ~150 lines (**53% reduction**)
 - **DatabaseManager methods**: 7 complex methods → 6 simple CRUD methods (**15% method reduction, 80% complexity reduction**)
 - **API routes**: 4 complex routes → 8 simple RESTful routes (**100% more endpoints, 70% less complexity per route**)
+- **Exit handling**: Filter removal → status flag (**simpler client-side filtering**)
 
 ### Architectural Benefits
 - **Decoupled operations**: Each step can be run independently
@@ -1841,12 +1850,8 @@ class PipelineManager {
     this.updateStepButton('extraction', status === 'legal_resolution_complete');
     
     // Show results if available
-    if (this.currentPipeline.portfolio_company_names) {
-      this.displayPortfolioCompanies(this.currentPipeline.portfolio_company_names);
-    }
-    
-    if (this.currentPipeline.legal_entities) {
-      this.displayLegalEntities(this.currentPipeline.legal_entities);
+    if (this.currentPipeline.companies && this.currentPipeline.companies.length > 0) {
+      this.displayCompanies(this.currentPipeline.companies);
     }
     
     if (this.currentPipeline.form5500_data) {
@@ -1867,8 +1872,7 @@ class PipelineManager {
   // UI helper methods
   updateStepIndicator(step, completed) { /* Update step indicator visual state */ }
   updateStepButton(step, enabled) { /* Enable/disable step button */ }
-  displayPortfolioCompanies(companies) { /* Display research results */ }
-  displayLegalEntities(entities) { /* Display legal resolution results with city/state */ }
+  displayCompanies(companies) { /* Display companies with research/legal resolution results */ }
   displayForm5500Data(data) { /* Display final extraction results */ }
   showNotification(type, message) { /* Show user notification */ }
 }
@@ -1905,20 +1909,16 @@ class PipelineManager {
     </div>
     
     <div class="pipeline-results">
-      <div id="research-results" style="display: none;">
-        <h3>Portfolio Companies Found:</h3>
-        <ul id="portfolio-companies"></ul>
-      </div>
-      
-      <div id="legal-results" style="display: none;">
-        <h3>Legal Entities:</h3>
-        <table id="legal-entities">
+      <div id="companies-results" style="display: none;">
+        <h3>Portfolio Companies:</h3>
+        <table id="companies-table">
           <thead>
             <tr>
-              <th>Original Name</th>
+              <th>Company Name</th>
               <th>Legal Entity Name</th>
               <th>City</th>
               <th>State</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody></tbody>
