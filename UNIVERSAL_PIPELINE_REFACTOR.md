@@ -30,25 +30,32 @@ Data Extraction → WorkflowExecutionID_3 → Workflow Results
   "pipeline_id": 1,
   "firm_name": "American Discovery Capital",
   "status": "data_extraction_complete", // pending, research_complete, legal_resolution_complete, data_extraction_complete, failed
-  "portfolio_company_names": ["DataLink Service Fund Solutions", "TechCorp Industries", "Healthcare Partners Group"],
-  "legal_entities": [
+  "companies": [
     {
-      "legal_entity_name": "DataLink Service Fund Solutions, LLC",
-      "city": "Austin",
-      "state": "TX"
+      "name": "DataLink Service Fund Solutions",           // From research step
+      "legal_entity_name": "DataLink Service Fund Solutions, LLC",  // From legal resolution step
+      "city": "Austin",                                    // From legal resolution step  
+      "state": "TX",                                       // From legal resolution step
+      "exited": false,                                     // From legal resolution step
+      "form5500_data": {...}                             // From data extraction step (optional)
     },
     {
-      "legal_entity_name": "TechCorp Industries, Inc",
-      "city": "San Francisco", 
-      "state": "CA"
+      "name": "TechCorp Industries",
+      "legal_entity_name": "TechCorp Industries, Inc", 
+      "city": "San Francisco",
+      "state": "CA",
+      "exited": false,
+      "form5500_data": {...}
     },
     {
+      "name": "Healthcare Partners Group",
       "legal_entity_name": "Healthcare Partners Group",
-      "city": "Boston",
-      "state": "MA"
+      "city": "Boston", 
+      "state": "MA",
+      "exited": true,                                      // This company has been sold/exited
+      "form5500_data": null  // No Form 5500 data found (because exited)
     }
   ],
-  "form5500_data": {...}, // Final Form 5500 extraction results
   "research_completed_at": "2025-08-20T10:30:00Z",
   "legal_resolution_completed_at": "2025-08-20T10:45:00Z", 
   "data_extraction_completed_at": "2025-08-20T11:00:00Z",
@@ -61,11 +68,11 @@ Data Extraction → WorkflowExecutionID_3 → Workflow Results
 ```
 Create Pipeline → Pipeline Object
     ↓
-Run Research → Updates Pipeline Object (portfolio_company_names)
+Run Research → Updates Pipeline Object (companies: [{name}])
     ↓
-Run Legal Resolution → Updates Pipeline Object (legal_entities: [{legal_entity_name, city, state}])
+Run Legal Resolution → Enriches Pipeline Object (companies: [{name, legal_entity_name, city, state, exited}])
     ↓
-Run Data Extraction → Updates Pipeline Object (form5500_data)
+Run Data Extraction → Enriches Pipeline Object (companies: [{name, legal_entity_name, city, state, exited, form5500_data}])
 ```
 
 ## Detailed Implementation Changes
@@ -87,16 +94,12 @@ CREATE TABLE pipelines (
     firm_name VARCHAR(255) NOT NULL,
     status VARCHAR(50) DEFAULT 'pending',
     
-    -- Research step results
-    portfolio_company_names TEXT[], -- Array of original company names
+    -- Unified company data - progressively enriched at each step
+    companies JSONB, -- Array of company objects: [{name, legal_entity_name, city, state, exited, form5500_data}]
+    
+    -- Step completion timestamps
     research_completed_at TIMESTAMP,
-    
-    -- Legal resolution step results  
-    legal_entities JSONB, -- Array of legal entity objects with name, city, state
     legal_resolution_completed_at TIMESTAMP,
-    
-    -- Data extraction step results
-    form5500_data JSONB, -- Final Form 5500 extraction results
     data_extraction_completed_at TIMESTAMP,
     
     -- Audit fields
@@ -108,12 +111,11 @@ CREATE TABLE pipelines (
 CREATE INDEX idx_pipelines_firm_name ON pipelines(firm_name);
 CREATE INDEX idx_pipelines_status ON pipelines(status);
 CREATE INDEX idx_pipelines_created_at ON pipelines(created_at);
+CREATE INDEX idx_pipelines_companies ON pipelines USING GIN (companies);
 
 -- Add comments for documentation
 COMMENT ON TABLE pipelines IS 'Unified pipeline tracking for PE firm research, legal resolution, and data extraction';
-COMMENT ON COLUMN pipelines.portfolio_company_names IS 'Array of original company names from research workflow';
-COMMENT ON COLUMN pipelines.legal_entities IS 'Array of legal entity objects with legal_entity_name, city, state for each company';
-COMMENT ON COLUMN pipelines.form5500_data IS 'Final Form 5500 extraction results in JSON format';
+COMMENT ON COLUMN pipelines.companies IS 'Array of company objects progressively enriched: research adds name, legal resolution adds legal_entity_name/city/state/exited, data extraction adds form5500_data';
 ```
 
 ### C. Benefits of New Schema
@@ -121,12 +123,14 @@ COMMENT ON COLUMN pipelines.form5500_data IS 'Final Form 5500 extraction results
 - **No complex joins** needed to get complete pipeline data
 - **Atomic updates** for each pipeline step
 - **Clear progression tracking** with timestamp fields
-- **Structured legal entities** with name, city, state for each company
+- **Unified company data** - no need to correlate separate arrays
+- **Progressive enrichment** - each step adds fields to same company objects
+- **Better data integrity** - company data stays together as cohesive units
 
 ## 2. WorkflowResultsParser Class (New)
 
 ### A. Purpose
-Replace the opaque workflow results object handling with a clean parser class that can interpret results from different workflow types.
+Replace the opaque workflow results object handling with a clean parser class that can interpret results from different workflow types. **Significantly simplified** due to the new standardized result objects with `workflow_name` and `output` fields. **Returns unified company objects** that are progressively enriched at each pipeline step.
 
 ### B. Implementation
 ```javascript
@@ -136,55 +140,67 @@ const { manager: logger } = require('./logger');
 class WorkflowResultsParser {
   
   /**
-   * Parse workflow results based on workflow type
-   * @param {Array} results - Raw results from WorkflowManager.executeWorkflow()
-   * @param {string} workflowType - 'research' or 'legal_resolution'
-   * @returns {Object} Parsed results
+   * Parse workflow results using the standardized result objects
+   * @param {Array|Object} results - Results from WorkflowManager.executeWorkflow()
+   * @returns {Array} Array of company objects
    */
-  static parseResults(results, workflowType) {
-    if (!results || !Array.isArray(results)) {
-      throw new Error('Invalid results format: expected array');
+  static parseResults(results) {
+    // Handle both single result and array of results
+    const resultsArray = Array.isArray(results) ? results : [results];
+    
+    if (!resultsArray || resultsArray.length === 0) {
+      throw new Error('Invalid results: expected non-empty array or object');
     }
 
-    switch (workflowType) {
-      case 'research':
-        return this.parseResearchResults(results);
-      case 'legal_resolution':
-        return this.parseLegalResolutionResults(results);
+    // Use workflow_name from the result object instead of guessing
+    const firstResult = resultsArray[0];
+    const workflowName = firstResult.workflow_name;
+    
+    if (!workflowName) {
+      throw new Error('Invalid result format: missing workflow_name field');
+    }
+
+    switch (workflowName) {
+      case 'PE firm research':
+        return this.parseResearchResults(resultsArray);
+      case 'Portfolio Company Verification and Form 5500 Matching':
+        return this.parseLegalResolutionResults(resultsArray);
       default:
-        throw new Error(`Unsupported workflow type: ${workflowType}`);
+        throw new Error(`Unsupported workflow: ${workflowName}`);
     }
   }
 
   /**
    * Parse PE firm research workflow results
-   * @param {Array} results - Raw workflow results
-   * @returns {Array} Array of company names
+   * @param {Array} results - Standardized workflow results
+   * @returns {Array} Array of company objects with name field
    */
   static parseResearchResults(results) {
-    const companies = [];
+    const companyObjects = [];
     
     for (const result of results) {
       try {
-        // Research workflow stores company list in task 4 result
-        if (result.tasks && result.tasks[4] && result.tasks[4].result) {
-          const taskResult = result.tasks[4].result;
-          
-          // Handle both string and object results
-          let parsed;
-          if (typeof taskResult === 'string') {
-            parsed = JSON.parse(taskResult);
-          } else {
-            parsed = taskResult;
-          }
-          
-          // Extract companies array
-          if (parsed.companies && Array.isArray(parsed.companies)) {
-            companies.push(...parsed.companies);
-          } else if (parsed.firm && parsed.firm.companies) {
-            companies.push(...parsed.firm.companies);
-          } else {
-            logger.warn('Unexpected research result format:', parsed);
+        // Use the output field directly - no more task navigation!
+        const output = result.output;
+        if (!output) {
+          logger.warn('Research result missing output field:', result);
+          continue;
+        }
+        
+        // Parse JSON output from workflow
+        const parsed = JSON.parse(output);
+        
+        // Extract companies array from standardized format
+        const companyNames = parsed.companies || [];
+        if (companyNames.length === 0) {
+          logger.warn('No companies found in research output:', parsed);
+          continue;
+        }
+        
+        // Convert company names to company objects
+        for (const name of companyNames) {
+          if (name && typeof name === 'string' && name.trim().length > 0) {
+            companyObjects.push({ name: name.trim() });
           }
         }
       } catch (error) {
@@ -193,56 +209,44 @@ class WorkflowResultsParser {
       }
     }
     
-    // Filter out empty/invalid company names
-    const validCompanies = companies
-      .filter(company => company && typeof company === 'string' && company.trim().length > 0)
-      .map(company => company.trim());
+    // Remove duplicates based on company name
+    const uniqueCompanies = companyObjects.filter((company, index, arr) => 
+      arr.findIndex(c => c.name === company.name) === index
+    );
     
-    // Remove duplicates
-    return [...new Set(validCompanies)];
+    return uniqueCompanies;
   }
 
   /**
    * Parse legal entity resolution workflow results  
-   * @param {Array} results - Raw workflow results
-   * @returns {Array} Array of legal entity objects {legal_entity_name, city, state}
+   * @param {Array} results - Standardized workflow results
+   * @returns {Array} Array of enriched company objects {name, legal_entity_name, city, state, exited}
    */
   static parseLegalResolutionResults(results) {
-    const legalEntities = [];
+    const companyObjects = [];
     
     for (const result of results) {
       try {
-        // Legal resolution workflow stores result in final task
-        if (result.tasks) {
-          // Find the last successful task (workflow may have different task counts)
-          const taskIds = Object.keys(result.tasks).map(id => parseInt(id)).sort((a, b) => b - a);
-          
-          for (const taskId of taskIds) {
-            const task = result.tasks[taskId];
-            if (task && task.success && task.result) {
-              const taskResult = task.result;
-              
-              // Handle both string and object results
-              let parsed;
-              if (typeof taskResult === 'string') {
-                try {
-                  parsed = JSON.parse(taskResult);
-                } catch {
-                  // If not JSON, treat as plain text legal entity name
-                  parsed = { legal_entity_name: taskResult };
-                }
-              } else {
-                parsed = taskResult;
-              }
-              
-              // Extract legal entity information
-              const legalEntity = this.extractLegalEntity(parsed);
-              if (legalEntity) {
-                legalEntities.push(legalEntity);
-                break; // Found valid result for this workflow
-              }
-            }
-          }
+        // Use the output field directly - no more complex task navigation!
+        const output = result.output;
+        if (!output) {
+          logger.warn('Legal resolution result missing output field:', result);
+          continue;
+        }
+        
+        // Parse JSON output from workflow
+        let parsed;
+        try {
+          parsed = JSON.parse(output);
+        } catch {
+          // If not JSON, treat as plain text legal entity name
+          parsed = { legal_entity_name: output };
+        }
+        
+        // Extract company information and create enriched company object
+        const companyObject = this.extractCompanyObject(parsed, result.input);
+        if (companyObject) {
+          companyObjects.push(companyObject);
         }
       } catch (error) {
         logger.error('Failed to parse legal resolution result:', error.message);
@@ -250,78 +254,78 @@ class WorkflowResultsParser {
       }
     }
     
-    return legalEntities;
+    return companyObjects;
   }
 
   /**
-   * Extract legal entity object from parsed result
-   * @param {Object} parsed - Parsed task result
-   * @returns {Object|null} Legal entity object or null if invalid
+   * Extract company object from parsed legal entity result
+   * @param {Object} parsed - Parsed output result
+   * @param {string} originalInput - Original input to extract company name from
+   * @returns {Object|null} Company object or null if invalid
    */
-  static extractLegalEntity(parsed) {
-    let legalEntity = {
-      legal_entity_name: null,
-      city: null,
-      state: null
-    };
+  static extractCompanyObject(parsed, originalInput) {
+    // Extract original company name from input like "Firm: ADC, Company: DataLink Service Fund Solutions"
+    const companyNameMatch = originalInput.match(/Company:\s*(.+)/);
+    const originalCompanyName = companyNameMatch ? companyNameMatch[1].trim() : null;
     
-    // Handle different result formats
-    if (parsed.form5500_match) {
-      // Format: { form5500_match: { legal_name: "...", city: "...", state: "..." } }
-      legalEntity.legal_entity_name = parsed.form5500_match.legal_name;
-      legalEntity.city = parsed.form5500_match.city;
-      legalEntity.state = parsed.form5500_match.state;
-    } else if (parsed.legal_entity_research) {
-      // Format: { legal_entity_research: { legal_entity_name: "...", location: { city: "...", state: "..." } } }
-      legalEntity.legal_entity_name = parsed.legal_entity_research.legal_entity_name;
-      if (parsed.legal_entity_research.location) {
-        legalEntity.city = parsed.legal_entity_research.location.city;
-        legalEntity.state = parsed.legal_entity_research.location.state;
-      }
-    } else if (parsed.legal_entity_name) {
-      // Format: { legal_entity_name: "...", city: "...", state: "..." }
-      legalEntity.legal_entity_name = parsed.legal_entity_name;
-      legalEntity.city = parsed.city;
-      legalEntity.state = parsed.state;
-    } else if (typeof parsed === 'string') {
-      // Format: just the legal entity name as string
-      legalEntity.legal_entity_name = parsed;
-    } else {
-      // Try to find any field that looks like a legal entity name
-      const possibleNameFields = ['name', 'company_name', 'legal_name', 'entity_name'];
-      for (const field of possibleNameFields) {
-        if (parsed[field]) {
-          legalEntity.legal_entity_name = parsed[field];
-          break;
-        }
-      }
-    }
-    
-    // Return null if no legal entity name found
-    if (!legalEntity.legal_entity_name || legalEntity.legal_entity_name.trim().length === 0) {
+    if (!originalCompanyName) {
+      logger.warn('Could not extract company name from input:', originalInput);
       return null;
     }
     
-    // Clean up the data
-    legalEntity.legal_entity_name = legalEntity.legal_entity_name.trim();
-    legalEntity.city = legalEntity.city ? legalEntity.city.trim() : null;
-    legalEntity.state = legalEntity.state ? legalEntity.state.trim() : null;
+    let companyObject = {
+      name: originalCompanyName,
+      legal_entity_name: null,
+      city: null,
+      state: null,
+      exited: false
+    };
     
-    return legalEntity;
+    // Extract legal entity data from standardized format
+    if (parsed.form5500_match) {
+      companyObject.legal_entity_name = parsed.form5500_match.legal_name;
+      companyObject.city = parsed.form5500_match.city;
+      companyObject.state = parsed.form5500_match.state;
+    }
+    
+    // Extract exited flag from portfolio verification step
+    if (parsed.portfolio_verification && typeof parsed.portfolio_verification.exited === 'boolean') {
+      companyObject.exited = parsed.portfolio_verification.exited;
+    }
+    
+    // Use original company name as fallback if no legal entity name found
+    if (!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) {
+      companyObject.legal_entity_name = originalCompanyName;
+    }
+    
+    // Clean up the data
+    companyObject.legal_entity_name = companyObject.legal_entity_name.trim();
+    companyObject.city = companyObject.city ? companyObject.city.trim() : null;
+    companyObject.state = companyObject.state ? companyObject.state.trim() : null;
+    
+    return companyObject;
   }
 
   /**
    * Validate parsed results
    * @param {*} results - Results to validate
-   * @param {string} workflowType - Expected workflow type
+   * @param {string} workflowName - Expected workflow name
    * @returns {boolean} True if valid
    */
-  static validateResults(results, workflowType) {
-    if (workflowType === 'research') {
-      return Array.isArray(results) && results.every(item => typeof item === 'string');
-    } else if (workflowType === 'legal_resolution') {
-      return Array.isArray(results) && results.every(item => 
+  static validateResults(results, workflowName) {
+    if (!Array.isArray(results)) {
+      return false;
+    }
+    
+    if (workflowName === 'PE firm research') {
+      return results.every(item => 
         item && typeof item === 'object' && 
+        typeof item.name === 'string'
+      );
+    } else if (workflowName === 'Portfolio Company Verification and Form 5500 Matching') {
+      return results.every(item => 
+        item && typeof item === 'object' && 
+        typeof item.name === 'string' &&
         typeof item.legal_entity_name === 'string'
       );
     }
@@ -333,13 +337,16 @@ class WorkflowResultsParser {
 module.exports = WorkflowResultsParser;
 ```
 
-### C. Benefits of WorkflowResultsParser
-- **Centralized parsing logic** for different workflow types
-- **Robust error handling** for malformed results
-- **Flexible format support** - handles multiple result structures
-- **Easy to extend** for new workflow types
-- **Clear separation of concerns** from Manager.js
-- **Integrated exit detection** - replaces PortfolioCompanyFilter.js by setting `exited: true` flag instead of removing companies
+### C. Benefits of Simplified WorkflowResultsParser
+- **Dramatic simplification**: ~200 lines → ~120 lines (40% reduction)
+- **No task navigation**: Direct access via `result.output` instead of complex task structure logic
+- **Automatic workflow detection**: Uses `result.workflow_name` instead of guessing from parameters
+- **Unified company objects**: Returns consistent company objects instead of separate arrays
+- **Progressive enrichment**: Research returns `{name}`, Legal Resolution returns `{name, legal_entity_name, city, state}`
+- **More reliable**: No risk of accessing wrong task or missing task data
+- **Better data integrity**: Company data stays together throughout the pipeline
+- **Easier to maintain**: Single point of truth for each workflow's output format
+- **Better error handling**: Clear validation of required fields (`workflow_name`, `output`)
 
 ## 3. DatabaseManager.js Complete Rewrite
 
@@ -448,21 +455,32 @@ class DatabaseManager {
     
     if (fromStep === 'research') {
       updates.status = 'pending';
-      updates.portfolio_company_names = null;
-      updates.legal_entity_names = null;
-      updates.form5500_data = null;
+      updates.companies = null;
       updates.research_completed_at = null;
       updates.legal_resolution_completed_at = null;
       updates.data_extraction_completed_at = null;
     } else if (fromStep === 'legal_resolution') {
       updates.status = 'research_complete';
-      updates.legal_entity_names = null;
-      updates.form5500_data = null;
+      // Reset companies to only have name field (remove legal entity data)
+      const pipeline = await this.getPipeline(pipelineId);
+      if (pipeline.companies) {
+        updates.companies = pipeline.companies.map(company => ({ name: company.name }));
+      }
       updates.legal_resolution_completed_at = null;
       updates.data_extraction_completed_at = null;
     } else if (fromStep === 'data_extraction') {
       updates.status = 'legal_resolution_complete';
-      updates.form5500_data = null;
+      // Reset companies to remove form5500_data only
+      const pipeline = await this.getPipeline(pipelineId);
+      if (pipeline.companies) {
+        updates.companies = pipeline.companies.map(company => ({
+          name: company.name,
+          legal_entity_name: company.legal_entity_name,
+          city: company.city,
+          state: company.state,
+          exited: company.exited
+        }));
+      }
       updates.data_extraction_completed_at = null;
     }
     
@@ -478,7 +496,81 @@ class DatabaseManager {
 - **Built-in retry/reset functionality**
 - **Clear, atomic operations**
 
-## 3. Manager.js Complete Refactoring
+## 3. DataExtractionService.js Refactoring
+
+### A. Current Method Signature (Complex)
+```javascript
+// Current: Takes multiple parameters and requires external data preparation
+async extractData(legalNames, workflowId = null, firmId = null) {
+  // Caller must:
+  // 1. Extract legal entity names from workflow results
+  // 2. Pass workflowId for polling
+  // 3. Pass firmId for context
+  // 4. Handle data mapping externally
+}
+```
+
+### B. Refactored Method Signature (Simplified)
+```javascript
+// New: Takes only pipelineId and looks up everything internally
+async extractData(pipelineId) {
+  // Service handles:
+  // 1. Load pipeline from database
+  // 2. Extract legal entity names from pipeline.companies
+  // 3. Use pipelineId for polling messages
+  // 4. Return results in format that maps back to companies array
+  
+  const pipeline = await this.databaseManager.getPipeline(pipelineId);
+  
+  if (!pipeline || !pipeline.companies) {
+    throw new Error(`Pipeline ${pipelineId} not found or has no companies`);
+  }
+  
+  // Extract legal entity names for active companies
+  const companyNamesToSearch = pipeline.companies
+    .filter(company => company.legal_entity_name) // Skip companies without legal names
+    .map(company => company.legal_entity_name);
+    
+  if (companyNamesToSearch.length === 0) {
+    return { success: true, companies: [], message: 'No companies with legal entity names found' };
+  }
+  
+  // Existing Form 5500 extraction logic...
+  const form5500Results = await this.performForm5500Search(companyNamesToSearch);
+  
+  // Map results back to companies structure
+  return {
+    success: true,
+    companies: this.mapResultsToCompanies(pipeline.companies, form5500Results),
+    pipelineId: pipelineId,
+    extractedAt: new Date().toISOString()
+  };
+}
+```
+
+### C. Benefits of Refactored DataExtractionService
+- **Single parameter**: Only needs `pipelineId` instead of multiple parameters
+- **Self-contained**: Looks up all required data internally
+- **Better error handling**: Can validate pipeline exists and has required data
+- **Cleaner interface**: No external data preparation required
+- **Consistent polling**: Uses `pipelineId` for all polling messages
+- **Future-proof**: If pipeline structure changes, only this service needs updates
+
+### D. Updated Manager.js Integration
+```javascript
+// Old way (complex):
+const companyNamesToSearch = pipeline.companies.map(company => 
+  company.legal_entity_name || company.name
+);
+const form5500Data = await this.dataExtractionService.extractData(
+  companyNamesToSearch, pipelineId, 0
+);
+
+// New way (simple):
+const form5500Data = await this.dataExtractionService.extractData(pipelineId);
+```
+
+## 4. Manager.js Complete Refactoring
 
 ### A. Current Manager.js Issues
 - **Lines 77-121**: `findPortfolioCompaniesWorkflow()` does everything
@@ -538,24 +630,24 @@ class Manager {
       // Load and execute research workflow
       const workflowData = readWorkflow('pe_firm_research.json');
       const results = await this.taskManager.executeWorkflow(workflowData, { 
-        input: [pipeline.firm_name] 
-      });
+        input: pipeline.firm_name 
+      }, pipelineId);
 
-      // Parse company names from results using WorkflowResultsParser
-      const portfolioCompanyNames = WorkflowResultsParser.parseResults(results, 'research');
+      // Parse company objects from results using WorkflowResultsParser
+      const companyObjects = WorkflowResultsParser.parseResults(results);
       
-      if (portfolioCompanyNames.length === 0) {
+      if (companyObjects.length === 0) {
         throw new Error('No portfolio companies found during research');
       }
 
       // Update pipeline with research results
       await this.databaseManager.updatePipeline(pipelineId, {
-        portfolio_company_names: portfolioCompanyNames,
+        companies: companyObjects,
         status: 'research_complete',
         research_completed_at: new Date()
       });
 
-      logger.info(`✅ Research completed. Found ${portfolioCompanyNames.length} companies`);
+      logger.info(`✅ Research completed. Found ${companyObjects.length} companies`);
       
       return await this.databaseManager.getPipeline(pipelineId);
       
@@ -588,7 +680,7 @@ class Manager {
       throw new Error(`Legal resolution requires research to be completed first. Current status: ${pipeline.status}`);
     }
 
-    logger.info(`🏢 Starting legal entity resolution for ${pipeline.portfolio_company_names.length} companies`);
+    logger.info(`🏢 Starting legal entity resolution for ${pipeline.companies.length} companies`);
     
     try {
       // Update status to indicate legal resolution is starting
@@ -596,38 +688,43 @@ class Manager {
         status: 'legal_resolution_running' 
       });
 
-      // Prepare inputs for legal entity resolution workflow
-      const legalResolutionInputs = pipeline.portfolio_company_names.map(companyName => 
-        `Firm: ${pipeline.firm_name}, Company: ${companyName}`
-      );
-
-      // Load and execute legal entity resolution workflow
-      const workflowData = readWorkflow('portfolio_company_verification.json');
-      const results = await this.taskManager.executeWorkflow(workflowData, { 
-        input: legalResolutionInputs
-      });
-
-      // Parse legal entity results using WorkflowResultsParser
-      const legalEntities = WorkflowResultsParser.parseResults(results, 'legal_resolution');
+      // Run legal entity resolution for each company individually
+      const enrichedCompanies = [];
       
-      // Ensure we have the same number of legal entities as portfolio companies
-      // Fill in missing entries with fallback data
-      const completeLegalEntities = [];
-      for (let i = 0; i < pipeline.portfolio_company_names.length; i++) {
-        const companyName = pipeline.portfolio_company_names[i];
-        const legalEntity = legalEntities[i] || {
-          legal_entity_name: companyName, // Fallback to original name
-          city: null,
-          state: null
-        };
-        completeLegalEntities.push(legalEntity);
+      for (const company of pipeline.companies) {
+        const legalResolutionInput = `Firm: ${pipeline.firm_name}, Company: ${company.name}`;
         
-        logger.info(`   ✓ ${companyName} → ${legalEntity.legal_entity_name}${legalEntity.city ? ` (${legalEntity.city}, ${legalEntity.state})` : ''}`);
+        // Load and execute legal entity resolution workflow for single company
+        const workflowData = readWorkflow('portfolio_company_verification.json');
+        const result = await this.taskManager.executeWorkflow(workflowData, { 
+          input: legalResolutionInput
+        }, pipelineId);
+
+        // Parse legal entity result using WorkflowResultsParser
+        const enrichedCompanyObjects = WorkflowResultsParser.parseResults(result);
+        
+        if (enrichedCompanyObjects.length > 0) {
+          const enrichedCompany = enrichedCompanyObjects[0]; // Should be one company
+          enrichedCompanies.push(enrichedCompany);
+          
+          logger.info(`   ✓ ${enrichedCompany.name} → ${enrichedCompany.legal_entity_name}${enrichedCompany.city ? ` (${enrichedCompany.city}, ${enrichedCompany.state})` : ''}`);
+        } else {
+          // Fallback: keep original company with legal_entity_name as fallback
+          enrichedCompanies.push({
+            name: company.name,
+            legal_entity_name: company.name,
+            city: null,
+            state: null,
+            exited: false
+          });
+          
+          logger.info(`   ✓ ${company.name} → ${company.name} (fallback)`);
+        }
       }
 
-      // Update pipeline with legal resolution results
+      // Update pipeline with enriched company objects
       await this.databaseManager.updatePipeline(pipelineId, {
-        legal_entities: completeLegalEntities,
+        companies: enrichedCompanies,
         status: 'legal_resolution_complete',
         legal_resolution_completed_at: new Date()
       });
@@ -662,7 +759,7 @@ class Manager {
       throw new Error(`Data extraction requires legal resolution to be completed first. Current status: ${pipeline.status}`);
     }
 
-    logger.info(`📊 Starting Form 5500 data extraction for ${pipeline.legal_entities.length} companies`);
+    logger.info(`📊 Starting Form 5500 data extraction for ${pipeline.companies.length} companies`);
     
     try {
       // Update status to indicate data extraction is starting
@@ -670,21 +767,15 @@ class Manager {
         status: 'data_extraction_running' 
       });
 
-      // Use legal entity names for Form 5500 lookup (with fallback to original names)
-      const companyNamesToSearch = pipeline.legal_entities.map((legalEntity, index) => 
-        legalEntity.legal_entity_name || pipeline.portfolio_company_names[index]
-      );
+      // Extract Form 5500 data using simplified DataExtractionService
+      const form5500Data = await this.dataExtractionService.extractData(pipelineId);
 
-      // Extract Form 5500 data
-      const form5500Data = await this.dataExtractionService.extractData(
-        companyNamesToSearch, 
-        pipelineId, 
-        0
-      );
+      // The service returns companies with Form 5500 data already mapped
+      const companiesWithForm5500 = form5500Data.companies || pipeline.companies;
 
       // Update pipeline with final results
       await this.databaseManager.updatePipeline(pipelineId, {
-        form5500_data: form5500Data,
+        companies: companiesWithForm5500,
         status: 'data_extraction_complete',
         data_extraction_completed_at: new Date()
       });
@@ -707,7 +798,7 @@ class Manager {
   /**
    * Run complete pipeline (all 3 steps) - convenience method
    * @param {string} firmName 
-   * @returns {Object} Final pipeline object
+   * @returns {Object} Final pipeline object with enriched companies
    */
   async runCompletePipeline(firmName) {
     // Create pipeline
@@ -899,7 +990,7 @@ router.post('/:id/research', async (req, res) => {
     try {
       const updatedPipeline = await manager.runResearch(pipelineId);
       // pollingService.addMessage(pipelineId, null, 'complete', 
-      //   `Research completed. Found ${updatedPipeline.portfolio_company_names.length} companies`);
+      //   `Research completed. Found ${updatedPipeline.companies.length} companies`);
     } catch (error) {
       // pollingService.addMessage(pipelineId, null, 'error', 
       //   `Research failed: ${error.message}`);
@@ -1131,22 +1222,88 @@ class WorkflowManager {
   // Remove complex ID passing and database integration
   // Focus only on executing workflows and returning results
   // Manager.js handles all database operations
+  // IMPORTANT: Changed to process single input instead of multiple inputs
   
-  async executeWorkflow(workflowData, userInputs, pipelineId = null) {
-    // Same workflow execution logic
-    // But remove all database saving - just return results
-    // Manager.js will handle saving to pipeline object
-    
-    const results = await this.executeWorkflowSteps(workflowData, userInputs);
-    
-    // Optional: Add pipeline ID to results for reference
-    if (pipelineId) {
-      results.forEach(result => {
-        result.pipelineId = pipelineId;
-      });
+  async executeWorkflow(workflowData, userInput, pipelineId = null) {
+    this.workflowData = workflowData;
+    if (!this.workflowData) {
+      throw new Error('workflowData must be provided to WorkflowManager');
+    }
+
+    if (!this.toolManager) {
+      throw new Error('ToolManager must be provided to WorkflowManager');
     }
     
-    return results;
+    this.tasks = workflowData.workflow.tasks;
+
+    // userInput is now a single value, not an array
+    const currentInput = userInput.input;
+    if (!currentInput) {
+      throw new Error('input is required');
+    }
+    
+    logger.info(`📋 Processing single input: ${currentInput}`);
+    
+    // Reset task index for execution
+    this.reset();
+    
+    // Execute workflow for this single input
+    const itemInputs = { input: currentInput };
+    const taskResults = {};
+    let output = null;
+    
+    while (this.hasMoreTasks()) {
+      const task = this.getNextTask();
+      
+      logger.info(`🎯 Executing Task ${task.id}: ${task.name}`);
+      
+      // Gather inputs for this task
+      const inputs = {};
+      task.inputKeys.forEach(key => {
+        if (itemInputs[key]) {
+          inputs[key] = itemInputs[key];
+          logger.info(`📥 Input ${key}: ${itemInputs[key]}`);
+        }
+      });
+      
+      try {
+        const execution = new TaskExecution(task);
+        execution.setToolManager(this.toolManager);
+        const result = await execution.run(inputs);
+        
+        if (result.success) {
+          logger.info(`✅ Task ${task.id} completed successfully`);
+          logger.info(`📤 Output (${task.outputKey}): ${result.result}`);
+          itemInputs[task.outputKey] = result.result;
+          taskResults[task.id] = result;
+          
+          // Check if this is the last task and set output
+          if (!this.hasMoreTasks()) {
+            output = result.result;
+          }
+        } else {
+          logger.error(`❌ Task ${task.id} failed: ${result.error}`);
+          taskResults[task.id] = result;
+          break;
+        }
+      } catch (error) {
+        logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
+        break;
+      }
+    }
+    
+    // Return single result object instead of array
+    const result = {
+      workflow_name: workflowData.workflow.name,
+      input: currentInput,
+      output: output,
+      tasks: taskResults,
+      pipelineId: pipelineId || null
+    };
+    
+    logger.info('🏁 Workflow execution completed');
+    
+    return result; // Single result object, not array
   }
 }
 ```
@@ -1265,9 +1422,7 @@ describe('Pipeline Management', () => {
         status: 'pending',
         pipeline_id: expect.any(Number)
       });
-      expect(pipeline.portfolio_company_names).toBeNull();
-      expect(pipeline.legal_entity_names).toBeNull();
-      expect(pipeline.form5500_data).toBeNull();
+      expect(pipeline.companies).toBeNull();
     });
     
     it('should reject empty firm names', async () => {
@@ -1294,7 +1449,7 @@ describe('Pipeline Management', () => {
       const updated = await manager.runResearch(pipeline.pipeline_id);
       
       expect(updated.status).toBe('research_complete');
-      expect(updated.portfolio_company_names).toEqual(['Company A', 'Company B']);
+      expect(updated.companies).toEqual([{name: 'Company A'}, {name: 'Company B'}]);
       expect(updated.research_completed_at).toBeTruthy();
     });
     
