@@ -782,7 +782,7 @@ const express = require('express');
 const router = express.Router();
 const { manager: logger } = require('../utils/logger');
 const { Manager } = require('../Manager');
-const pollingService = require('../services/PollingService');
+// const pollingService = require('../services/PollingService');
 
 const manager = new Manager();
 
@@ -893,15 +893,15 @@ router.post('/:id/research', async (req, res) => {
     });
 
     // Run research asynchronously
-    pollingService.addMessage(pipelineId, null, 'progress', 'Starting portfolio company research');
+    // pollingService.addMessage(pipelineId, null, 'progress', 'Starting portfolio company research');
     
     try {
       const updatedPipeline = await manager.runResearch(pipelineId);
-      pollingService.addMessage(pipelineId, null, 'complete', 
-        `Research completed. Found ${updatedPipeline.portfolio_company_names.length} companies`);
+      // pollingService.addMessage(pipelineId, null, 'complete', 
+      //   `Research completed. Found ${updatedPipeline.portfolio_company_names.length} companies`);
     } catch (error) {
-      pollingService.addMessage(pipelineId, null, 'error', 
-        `Research failed: ${error.message}`);
+      // pollingService.addMessage(pipelineId, null, 'error', 
+      //   `Research failed: ${error.message}`);
     }
 
   } catch (error) {
@@ -930,15 +930,15 @@ router.post('/:id/legal-resolution', async (req, res) => {
       pipeline_id: pipelineId
     });
 
-    pollingService.addMessage(pipelineId, null, 'progress', 'Starting legal entity resolution');
+    // pollingService.addMessage(pipelineId, null, 'progress', 'Starting legal entity resolution');
     
     try {
       const updatedPipeline = await manager.runLegalResolution(pipelineId);
-      pollingService.addMessage(pipelineId, null, 'complete', 
-        'Legal entity resolution completed');
+      // pollingService.addMessage(pipelineId, null, 'complete', 
+      //   'Legal entity resolution completed');
     } catch (error) {
-      pollingService.addMessage(pipelineId, null, 'error', 
-        `Legal resolution failed: ${error.message}`);
+      // pollingService.addMessage(pipelineId, null, 'error', 
+      //   `Legal resolution failed: ${error.message}`);
     }
 
   } catch (error) {
@@ -967,15 +967,15 @@ router.post('/:id/data-extraction', async (req, res) => {
       pipeline_id: pipelineId
     });
 
-    pollingService.addMessage(pipelineId, null, 'progress', 'Starting Form 5500 data extraction');
+    // pollingService.addMessage(pipelineId, null, 'progress', 'Starting Form 5500 data extraction');
     
     try {
       const updatedPipeline = await manager.runDataExtraction(pipelineId);
-      pollingService.addMessage(pipelineId, null, 'complete', 
-        'Data extraction completed');
+      // pollingService.addMessage(pipelineId, null, 'complete', 
+      //   'Data extraction completed');
     } catch (error) {
-      pollingService.addMessage(pipelineId, null, 'error', 
-        `Data extraction failed: ${error.message}`);
+      // pollingService.addMessage(pipelineId, null, 'error', 
+      //   `Data extraction failed: ${error.message}`);
     }
 
   } catch (error) {
@@ -1006,11 +1006,11 @@ router.post('/:id/run-all', async (req, res) => {
 
     try {
       const pipeline = await manager.runCompletePipeline(firm_name);
-      pollingService.addMessage(pipeline.pipeline_id, null, 'complete', 
-        'Complete pipeline finished successfully');
+      // pollingService.addMessage(pipeline.pipeline_id, null, 'complete', 
+      //   'Complete pipeline finished successfully');
     } catch (error) {
-      pollingService.addMessage(null, null, 'error', 
-        `Complete pipeline failed: ${error.message}`);
+      // pollingService.addMessage(null, null, 'error', 
+      //   `Complete pipeline failed: ${error.message}`);
     }
 
   } catch (error) {
@@ -1046,15 +1046,15 @@ router.post('/:id/retry/:step', async (req, res) => {
       pipeline_id: pipelineId
     });
 
-    pollingService.addMessage(pipelineId, null, 'progress', `Retrying ${step} step`);
+    // pollingService.addMessage(pipelineId, null, 'progress', `Retrying ${step} step`);
     
     try {
       const updatedPipeline = await manager.retryStep(pipelineId, step);
-      pollingService.addMessage(pipelineId, null, 'complete', 
-        `${step} retry completed successfully`);
+      // pollingService.addMessage(pipelineId, null, 'complete', 
+      //   `${step} retry completed successfully`);
     } catch (error) {
-      pollingService.addMessage(pipelineId, null, 'error', 
-        `${step} retry failed: ${error.message}`);
+      // pollingService.addMessage(pipelineId, null, 'error', 
+      //   `${step} retry failed: ${error.message}`);
     }
 
   } catch (error) {
