@@ -2,26 +2,16 @@
 require('./utils/load-env');
 
 const path = require('path');
-const fs = require('fs');
 const { manager: logger } = require('./utils/logger');
 const { readWorkflow } = require('./utils/workflowReader');
 const WorkflowManager = require('./workflow/WorkflowManager');
-const SaveTaskResults = require('./workflow/SaveTaskResults');
-const CLIInputParser = require('./utils/CLIInputParser');
-const OutputFileManager = require('./utils/OutputFileManager');
-const ResultsParser = require('./utils/ResultsParser');
-const ResultsExtractor = require('./utils/ResultsExtractor');
-const VerificationResultsConverter = require('./utils/VerificationResultsConverter');
-const PortfolioCompanyFilter = require('./utils/PortfolioCompanyFilter');
+const WorkflowResultsParser = require('./utils/WorkflowResultsParser');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 const DatabaseManager = require('./data-extraction/DatabaseManager');
 
 class Manager {
   constructor() {
     this.taskManager = null;
-    this.outputManager = new OutputFileManager();
-    this.parser = new ResultsParser();
-    this.extractor = new ResultsExtractor();
     this.dataExtractionService = new DataExtractionService();
     this.databaseManager = DatabaseManager.getInstance();
   }
@@ -43,261 +33,259 @@ class Manager {
   }
 
   /**
-   * Initialize workflows and return IDs immediately for polling
+   * Create a new pipeline for a firm
+   * @param {string} firmName - Name of the PE firm
+   * @returns {Object} New pipeline object
    */
-  async initializeWorkflows(workflowFilename, userInputs) {
-    try {
-      await this.initializeTaskManager();
-      
-      const inputArray = Array.isArray(userInputs.input) ? userInputs.input : [userInputs.input];
-      const workflowData = readWorkflow(workflowFilename);
-      
-      // Pre-generate workflow execution IDs with firm names
-      const workflowExecutionIds = await this.databaseManager.createBatchWorkflowExecutions(
-        workflowData.workflow.name, 
-        inputArray
-      );
-      
-      logger.info(`🆔 Pre-generated ${workflowExecutionIds.length} workflow execution IDs for immediate polling`);
-      
-      return {
-        workflowExecutionIds,
-        firmNames: inputArray,
-        workflowData
-      };
-    } catch (error) {
-      logger.error('💥 Workflow initialization failed:', error.message);
-      throw error;
+  async createPipeline(firmName) {
+    if (!firmName || firmName.trim().length === 0) {
+      throw new Error('firmName is required and cannot be empty');
     }
+    
+    const pipelineId = await this.databaseManager.createPipeline(firmName.trim());
+    return await this.databaseManager.getPipeline(pipelineId);
   }
 
   /**
-   * First workflow - Find portfolio companies through PE research
+   * Step 1: Run research workflow to find portfolio companies
+   * @param {number} pipelineId 
+   * @returns {Object} Updated pipeline object
    */
-  async findPortfolioCompaniesWorkflow(workflowFilename = null, userInputs = {}, preGeneratedIds = null) {
-    try {
-      await this.initializeTaskManager();
-
-      const cliParser = new CLIInputParser();
-      const filename = workflowFilename || cliParser.getWorkflowFilename();
-      
-      logger.info(`🚀 Starting workflow execution for: ${filename}`);
-      
-      // Log user inputs if provided
-      if (Object.keys(userInputs).length > 0) {
-        logger.info('📥 User inputs provided:', userInputs);
-      }
-      
-      const workflowData = readWorkflow(filename);
-      
-      // Set workflow name in environment for SaveTaskResults
-      process.env.WORKFLOW_NAME = workflowData.workflow.name.replace(/\s+/g, '_').toLowerCase();
-
-      // Execute the workflow with user inputs and optional pre-generated IDs
-      const results = await this.taskManager.executeWorkflow(workflowData, userInputs, preGeneratedIds);
-      //logger.info("Results:", results);
-      logger.info('✅ First workflow completed');
-      
-      // Save first workflow results in original format
-      const resultsSaver = new SaveTaskResults();
-      await resultsSaver.saveBatchResults(results);
-      logger.info('💾 First workflow results saved to database');
-      
-      // Extract workflow execution IDs from results
-      const workflowExecutionIds = results
-        .filter(result => result.workflowExecutionId)
-        .map(result => result.workflowExecutionId);
-      
-      //Perform second workflow
-      const refinedWorkflowExecutionIds = await this.legalEntityWorkflow(workflowExecutionIds);
-
-      //Use results from second workflow and perform data extraction
-      await this.extractBatchPortfolioCompanyData(refinedWorkflowExecutionIds)
-
-    } catch (error) {
-      logger.error('💥 Workflow execution failed:', error.message);
-      throw error;
-    }
-  }
-
-  async legalEntityWorkflow(workflowExecutionIds = [])
-  {
-    const resultsSaver = new SaveTaskResults();
+  async runResearch(pipelineId) {
     await this.initializeTaskManager();
-    logger.info('🔍 Starting legal entity name resolution workflow');
-    const refinedWorkflowExecutionIds = [];
+    
+    // Get current pipeline state
+    const pipeline = await this.databaseManager.getPipeline(pipelineId);
+    if (!pipeline) {
+      throw new Error(`Pipeline ${pipelineId} not found`);
+    }
+    
+    if (pipeline.status !== 'pending') {
+      throw new Error(`Research can only be run on pending pipelines. Current status: ${pipeline.status}`);
+    }
 
-    for (const workflowExecutionId of workflowExecutionIds) {
-      try {
-        // Get portfolio company names from database using original workflow execution ID
-        const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(workflowExecutionId);
+    logger.info(`🔍 Starting research for firm: ${pipeline.firm_name}`);
+    
+    try {
+      // Update status to indicate research is starting
+      await this.databaseManager.updatePipeline(pipelineId, { 
+        status: 'research_running' 
+      });
+
+      // Load and execute research workflow
+      const workflowData = readWorkflow('pe_firm_research.json');
+      const results = await this.taskManager.executeWorkflow(workflowData, { 
+        input: pipeline.firm_name 
+      }, pipelineId);
+
+      // Parse company objects from results using WorkflowResultsParser
+      const companyObjects = WorkflowResultsParser.parseResults(results);
+      
+      if (companyObjects.length === 0) {
+        throw new Error('No portfolio companies found during research');
+      }
+
+      // Update pipeline with research results
+      await this.databaseManager.updatePipeline(pipelineId, {
+        companies: companyObjects,
+        status: 'research_complete',
+        research_completed_at: new Date()
+      });
+
+      logger.info(`✅ Research completed. Found ${companyObjects.length} companies`);
+      
+      return await this.databaseManager.getPipeline(pipelineId);
+      
+    } catch (error) {
+      logger.error(`❌ Research failed for pipeline ${pipelineId}:`, error.message);
+      
+      // Update pipeline with error status
+      await this.databaseManager.updatePipeline(pipelineId, {
+        status: 'research_failed'
+      });
+      
+      throw error;
+    }
+  }
+
+  /**
+   * Step 2: Run legal entity resolution workflow
+   * @param {number} pipelineId 
+   * @returns {Object} Updated pipeline object
+   */
+  async runLegalResolution(pipelineId) {
+    await this.initializeTaskManager();
+    
+    const pipeline = await this.databaseManager.getPipeline(pipelineId);
+    if (!pipeline) {
+      throw new Error(`Pipeline ${pipelineId} not found`);
+    }
+    
+    if (pipeline.status !== 'research_complete') {
+      throw new Error(`Legal resolution requires research to be completed first. Current status: ${pipeline.status}`);
+    }
+
+    logger.info(`🏢 Starting legal entity resolution for ${pipeline.companies.length} companies`);
+    
+    try {
+      // Update status to indicate legal resolution is starting
+      await this.databaseManager.updatePipeline(pipelineId, { 
+        status: 'legal_resolution_running' 
+      });
+
+      // Run legal entity resolution for each company individually
+      const enrichedCompanies = [];
+      
+      for (const company of pipeline.companies) {
+        const legalResolutionInput = `Firm: ${pipeline.firm_name}, Company: ${company.name}`;
         
-        if (portfolioCompanies.length > 0) {
-          logger.info(`🏢 Found ${portfolioCompanies.length} portfolio companies for workflow ${workflowExecutionId}: ${portfolioCompanies.join(', ')}`);
-          
-          // Load the legal entity resolution workflow
-          const entityWorkflowData = readWorkflow('portfolio_company_verification.json');
-          
-          // Get firm name from database using workflow execution ID
-          const workflowExecution = await this.databaseManager.getWorkflowExecution(workflowExecutionId);
-          const firmName = workflowExecution?.firm_name || 'Unknown Firm';
-          
-          // Prepare inputs for entity resolution workflow (format: "Firm: X, Company: Y")
-          const formattedInputs = portfolioCompanies.map(company => `Firm: ${firmName}, Company: ${company}`);
-          const entityUserInputs = {
-            input: formattedInputs
-          };
-          
-          // Pre-generate workflow execution IDs with firm name for verification workflow
-          // All executions are for portfolio companies of the same firm
-          const firmNamesArray = new Array(formattedInputs.length).fill(firmName);
-          const verificationInitResult = await this.initializeWorkflows('portfolio_company_verification.json', { input: firmNamesArray });
-          
-          // Execute the legal entity resolution workflow with pre-generated IDs
-          const entityResults = await this.taskManager.executeWorkflow(entityWorkflowData, entityUserInputs, verificationInitResult.workflowExecutionIds);
-          
-          // Filter out inactive portfolio companies and small companies (<100 employees)
-          const filteredEntityResults = PortfolioCompanyFilter.filterValidCompanies(entityResults);
+        // Load and execute legal entity resolution workflow for single company
+        const workflowData = readWorkflow('portfolio_company_verification.json');
+        const result = await this.taskManager.executeWorkflow(workflowData, { 
+          input: legalResolutionInput
+        }, pipelineId);
 
-          // Debug: Check what we're passing to converter
-          logger.info(`🔍 Passing ${filteredEntityResults.length} filtered results to VerificationResultsConverter`);
-          if (filteredEntityResults.length > 0) {
-            const firstFiltered = filteredEntityResults[0];
-            logger.info(`🔍 First filtered result keys: [${Object.keys(firstFiltered).join(', ')}]`);
-            logger.info(`🔍 Has workflowExecutionId: ${!!firstFiltered.workflowExecutionId}`);
-          }
-
-          // Convert verification results to portfolio format before saving
-          const convertedResults = VerificationResultsConverter.consolidateByFirm(filteredEntityResults);
+        // Parse legal entity result using WorkflowResultsParser
+        const enrichedCompanyObjects = WorkflowResultsParser.parseResults(result);
+        
+        if (enrichedCompanyObjects.length > 0) {
+          const enrichedCompany = enrichedCompanyObjects[0]; // Should be one company
+          enrichedCompanies.push(enrichedCompany);
           
-          // Save converted results to database in portfolio format
-          await resultsSaver.saveBatchResults(convertedResults);
-          logger.info('💾 Refined workflow results saved to database');
-          
-          // Extract the new workflow execution IDs from the converted results
-          for (const convertedResult of convertedResults) {
-            if (convertedResult.workflowExecutionId) {
-              refinedWorkflowExecutionIds.push(convertedResult.workflowExecutionId);
-            }
-          }
-          
-          logger.info(`✅ Legal entity resolution completed for workflow ${workflowExecutionId}`);
+          logger.info(`   ✓ ${enrichedCompany.name} → ${enrichedCompany.legal_entity_name}${enrichedCompany.city ? ` (${enrichedCompany.city}, ${enrichedCompany.state})` : ''}`);
         } else {
-          logger.info(`⚠️ No portfolio companies found for workflow ${workflowExecutionId}, skipping refinement`);
+          // Fallback: keep original company with legal_entity_name as fallback
+          enrichedCompanies.push({
+            name: company.name,
+            legal_entity_name: company.name,
+            city: null,
+            state: null,
+            exited: false
+          });
+          
+          logger.info(`   ✓ ${company.name} → ${company.name} (fallback)`);
         }
-      } catch (error) {
-        logger.error(`❌ Failed to refine names for workflow ${workflowExecutionId}:`, error.message);
       }
-    }
 
-    logger.info(`🔍 Name refinement completed. Generated ${refinedWorkflowExecutionIds.length} refined workflow execution IDs`);
-    
-    return refinedWorkflowExecutionIds;
-  }
+      // Update pipeline with enriched company objects
+      await this.databaseManager.updatePipeline(pipelineId, {
+        companies: enrichedCompanies,
+        status: 'legal_resolution_complete',
+        legal_resolution_completed_at: new Date()
+      });
 
-  /**
-   * Extract Form 5500 data for portfolio companies from multiple workflow executions
-   * @param {Array} workflowExecutionIds - Array of workflow execution IDs to extract data for
-   */
-  async extractBatchPortfolioCompanyData(workflowExecutionIds = []) {
-    logger.info(`🔍 Starting batch data extraction for ${workflowExecutionIds.length} workflow executions`);
-    const extractionResults = [];
-    
-    for (const workflowExecutionId of workflowExecutionIds) {
-      try {
-        logger.info(`📊 Extracting data for workflow execution ID: ${workflowExecutionId}`);
-        const extractionResult = await this.extractPortfolioCompanyData(workflowExecutionId);
-        extractionResults.push({
-          workflowExecutionId,
-          extraction: extractionResult
-        });
-      } catch (error) {
-        logger.error(`❌ Data extraction failed for workflow ID ${workflowExecutionId}:`, error.message);
-        extractionResults.push({
-          workflowExecutionId,
-          extraction: { success: false, error: error.message }
-        });
-      }
-    }
-    
-    logger.info(`✅ Batch data extraction completed. Processed ${workflowExecutionIds.length} workflow executions`);
-    return extractionResults;
-  }
-
-  /**
-   * Extract Form 5500 data for portfolio companies from a specific workflow execution
-   * @param {number} workflowExecutionId - The workflow execution ID to get companies from
-   */
-  async extractPortfolioCompanyData(workflowExecutionId) {
-    try {
-      logger.info(`🔍 Extracting Form 5500 data for portfolio companies from workflow execution: ${workflowExecutionId}`);
+      logger.info(`✅ Legal entity resolution completed`);
       
-      // Get portfolio companies from database using workflowExecutionId
-      const portfolioCompanies = await this.databaseManager.getPortfolioCompaniesByWorkflowId(workflowExecutionId);
-      
-      if (portfolioCompanies.length === 0) {
-        logger.info('⚠️ No portfolio companies found for this workflow execution');
-        const errorResult = { 
-          success: false, 
-          message: 'No portfolio companies found',
-          timestamp: new Date().toISOString()
-        };
-        await this.databaseManager.updateWorkflowResults(workflowExecutionId, errorResult);
-        return errorResult;
-      }
-      
-      logger.info(`📊 Found ${portfolioCompanies.length} portfolio companies:`, portfolioCompanies);
-      
-      // Extract Form 5500 data for those companies
-      const results = await this.dataExtractionService.extractData(portfolioCompanies, workflowExecutionId, 0);
-      
-      // Save results to database
-      await this.databaseManager.updateWorkflowResults(workflowExecutionId, results);
-      
-      logger.info('✅ Data extraction completed and results saved to database');
-      return results;
+      return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
-      logger.error('❌ Failed to extract portfolio company data:', error.message);
+      logger.error(`❌ Legal resolution failed for pipeline ${pipelineId}:`, error.message);
       
-      // Save error result to database
-      const errorResult = { 
-        success: false, 
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-      
-      try {
-        await this.databaseManager.updateWorkflowResults(workflowExecutionId, errorResult);
-      } catch (dbError) {
-        logger.error('❌ Failed to save error result to database:', dbError.message);
-      }
+      await this.databaseManager.updatePipeline(pipelineId, {
+        status: 'legal_resolution_failed'
+      });
       
       throw error;
     }
   }
 
   /**
-   * Get all saved workflow results
-   * @returns {Array} Array of saved workflow results
+   * Step 3: Run Form 5500 data extraction
+   * @param {number} pipelineId 
+   * @returns {Object} Updated pipeline object
    */
-  async getAllSavedResults() {
+  async runDataExtraction(pipelineId) {
+    const pipeline = await this.databaseManager.getPipeline(pipelineId);
+    if (!pipeline) {
+      throw new Error(`Pipeline ${pipelineId} not found`);
+    }
+    
+    if (pipeline.status !== 'legal_resolution_complete') {
+      throw new Error(`Data extraction requires legal resolution to be completed first. Current status: ${pipeline.status}`);
+    }
+
+    logger.info(`📊 Starting Form 5500 data extraction for ${pipeline.companies.length} companies`);
+    
     try {
-      logger.info('📋 [MANAGER] Getting all saved workflow results');
+      // Update status to indicate data extraction is starting
+      await this.databaseManager.updatePipeline(pipelineId, { 
+        status: 'data_extraction_running' 
+      });
+
+      // Extract Form 5500 data using simplified DataExtractionService
+      const form5500Data = await this.dataExtractionService.extractData(pipelineId);
+
+      // The service returns companies with Form 5500 data already mapped
+      const companiesWithForm5500 = form5500Data.companies || pipeline.companies;
+
+      // Update pipeline with final results
+      await this.databaseManager.updatePipeline(pipelineId, {
+        companies: companiesWithForm5500,
+        status: 'data_extraction_complete',
+        data_extraction_completed_at: new Date()
+      });
+
+      logger.info(`✅ Data extraction completed`);
       
-      // Initialize database if needed
-      if (!this.databaseManager.initialized) {
-        await this.databaseManager.initialize();
-      }
+      return await this.databaseManager.getPipeline(pipelineId);
       
-      const results = await this.databaseManager.getAllWorkflowResults();
-      logger.info(`📋 [MANAGER] Found ${results.length} saved workflow results`);
-      
-      return results;
     } catch (error) {
-      logger.error('❌ Failed to get all saved results:', error.message);
+      logger.error(`❌ Data extraction failed for pipeline ${pipelineId}:`, error.message);
+      
+      await this.databaseManager.updatePipeline(pipelineId, {
+        status: 'data_extraction_failed'
+      });
+      
       throw error;
     }
+  }
+
+  /**
+   * Run complete pipeline (all 3 steps) - convenience method
+   * @param {string} firmName 
+   * @returns {Object} Final pipeline object with enriched companies
+   */
+  async runCompletePipeline(firmName) {
+    // Create pipeline
+    const pipeline = await this.createPipeline(firmName);
+    
+    // Run all steps sequentially
+    await this.runResearch(pipeline.pipeline_id);
+    await this.runLegalResolution(pipeline.pipeline_id);
+    await this.runDataExtraction(pipeline.pipeline_id);
+    
+    return await this.databaseManager.getPipeline(pipeline.pipeline_id);
+  }
+
+  /**
+   * Retry a failed pipeline step
+   * @param {number} pipelineId 
+   * @param {string} step - 'research', 'legal_resolution', or 'data_extraction'
+   * @returns {Object} Updated pipeline object
+   */
+  async retryStep(pipelineId, step) {
+    // Reset pipeline state for the specified step
+    await this.databaseManager.resetPipeline(pipelineId, step);
+    
+    // Run the step
+    if (step === 'research') {
+      return await this.runResearch(pipelineId);
+    } else if (step === 'legal_resolution') {
+      return await this.runLegalResolution(pipelineId);
+    } else if (step === 'data_extraction') {
+      return await this.runDataExtraction(pipelineId);
+    } else {
+      throw new Error(`Invalid step: ${step}. Must be 'research', 'legal_resolution', or 'data_extraction'`);
+    }
+  }
+
+  /**
+   * Get all pipelines with optional filtering
+   * @param {Object} filters - Optional status, firm_name filters
+   * @returns {Array} Array of pipeline objects
+   */
+  async getAllPipelines(filters = {}) {
+    return await this.databaseManager.getAllPipelines(filters);
   }
 }
 
@@ -305,19 +293,27 @@ class Manager {
 const manager = new Manager();
 
 // Export functions that use the singleton
-const findPortfolioCompaniesWorkflow = (workflowFilename = null, userInputs = {}, preGeneratedIds = null) => manager.findPortfolioCompaniesWorkflow(workflowFilename, userInputs, preGeneratedIds);
-const run = (workflowFilename = null, userInputs = {}, preGeneratedIds = null) => manager.findPortfolioCompaniesWorkflow(workflowFilename, userInputs, preGeneratedIds); // Backwards compatibility
-const run2 = () => manager.run2();
-const runBoth = (workflowFilename = null, userInputs = {}) => manager.runBoth(workflowFilename, userInputs);
-const extractPortfolioCompanyData = (workflowExecutionId) => manager.extractPortfolioCompanyData(workflowExecutionId);
-const extractBatchPortfolioCompanyData = (workflowExecutionIds) => manager.extractBatchPortfolioCompanyData(workflowExecutionIds);
-const legalEntityWorkflow = (workflowExecutionIds) => manager.legalEntityWorkflow(workflowExecutionIds);
-const initializeWorkflows = (workflowFilename, userInputs) => manager.initializeWorkflows(workflowFilename, userInputs);
-const getAllSavedResults = () => manager.getAllSavedResults();
+const createPipeline = (firmName) => manager.createPipeline(firmName);
+const runResearch = (pipelineId) => manager.runResearch(pipelineId);
+const runLegalResolution = (pipelineId) => manager.runLegalResolution(pipelineId);
+const runDataExtraction = (pipelineId) => manager.runDataExtraction(pipelineId);
+const runCompletePipeline = (firmName) => manager.runCompletePipeline(firmName);
+const retryStep = (pipelineId, step) => manager.retryStep(pipelineId, step);
+const getAllPipelines = (filters) => manager.getAllPipelines(filters);
 
-module.exports = { findPortfolioCompaniesWorkflow, run, run2, runBoth, extractPortfolioCompanyData, extractBatchPortfolioCompanyData, legalEntityWorkflow, initializeWorkflows, getAllSavedResults, Manager };
+module.exports = { 
+  createPipeline, 
+  runResearch, 
+  runLegalResolution, 
+  runDataExtraction, 
+  runCompletePipeline, 
+  retryStep, 
+  getAllPipelines, 
+  Manager 
+};
 
-// If called directly from command line, run with no user inputs
+// If called directly from command line, run complete pipeline
 if (require.main === module) {
-  run().catch(logger.error);
+  const firmName = process.argv[2] || 'Test Firm';
+  runCompletePipeline(firmName).catch(logger.error);
 }

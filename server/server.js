@@ -23,8 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 const healthcheckRoutes = require('./routes/healthcheck');
 app.use('/api/health', healthcheckRoutes);
 
-const workflowRoutes = require('./routes/workflow');
-app.use('/api/workflow', workflowRoutes);
+const pipelineRoutes = require('./routes/pipeline');
+app.use('/api/pipeline', pipelineRoutes);
 
 const testingRoutes = require('./routes/testing');
 app.use('/api/testing', testingRoutes);

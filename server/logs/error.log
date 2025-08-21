@@ -2,3 +2,18 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-19T18:59:01.668Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-19T19:01:50.941Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-19T19:10:46.154Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-21T04:08:32.130Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-21T04:08:38.457Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-21T04:08:41.998Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-21T04:09:18.443Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-21T04:09:18.443Z"}
+{"0":"Test Firm for Refactor","1":"pending","level":"error","message":"Params:","service":"database","timestamp":"2025-08-21T04:09:18.443Z"}
+{"level":"error","message":"❌ Failed to create pipeline:","service":"database","timestamp":"2025-08-21T04:09:18.443Z"}
+{"code":"42P01","file":"parse_relation.c","length":108,"level":"error","line":"1449","message":"Pipeline creation error: relation \"pipelines\" does not exist","name":"error","position":"13","routine":"parserOpenTable","service":"manager","severity":"ERROR","stack":"error: relation \"pipelines\" does not exist\n    at /mnt/c/Users/jeffr/OneDrive/Documents/smart-insurance/node_modules/pg-pool/index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async DatabaseManager.query (/mnt/c/Users/jeffr/OneDrive/Documents/smart-insurance/server/data-extraction/DatabaseManager.js:86:22)\n    at async DatabaseManager.createPipeline (/mnt/c/Users/jeffr/OneDrive/Documents/smart-insurance/server/data-extraction/DatabaseManager.js:177:22)\n    at async Manager.createPipeline (/mnt/c/Users/jeffr/OneDrive/Documents/smart-insurance/server/Manager.js:45:24)\n    at async /mnt/c/Users/jeffr/OneDrive/Documents/smart-insurance/server/routes/pipeline.js:20:22","timestamp":"2025-08-21T04:09:18.444Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-21T04:15:37.184Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-21T04:15:41.234Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-21T04:15:42.626Z"}
+{"level":"error","message":"Failed to parse research result:","service":"manager","timestamp":"2025-08-21T04:16:40.174Z"}
+{"level":"error","message":"❌ Research failed for pipeline 1:","service":"manager","timestamp":"2025-08-21T04:16:40.175Z"}
+{"level":"error","message":"Research failed for pipeline 1:","service":"manager","timestamp":"2025-08-21T04:16:40.213Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-21T16:20:24.449Z"}

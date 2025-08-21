@@ -164,111 +164,176 @@ class DatabaseManager {
   }
 
   /**
-   * Create a workflow execution record in the database
-   * @param {string} workflowName - Name of the workflow
-   * @param {string} firmName - Name of the firm (optional)
-   * @returns {number} The workflow execution ID
-   */
-  async createWorkflowExecution(workflowName, firmName = null) {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      const result = await this.query(
-        'INSERT INTO workflow_executions (workflow_name, firm_name, status) VALUES ($1, $2, $3) RETURNING id',
-        [workflowName, firmName, 'running']
-      );
-      
-      return result.rows[0].id;
-    } catch (error) {
-      logger.error('❌ Failed to create workflow execution record:', error.message);
-      // Return null instead of throwing to not break workflow execution
-      return null;
-    }
-  }
-
-  /**
-   * Create multiple workflow execution records at once
-   * @param {string} workflowName - Name of the workflow
-   * @param {Array} firmNames - Array of firm names
-   * @returns {number[]} Array of workflow execution IDs
-   */
-  async createBatchWorkflowExecutions(workflowName, firmNames) {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      const workflowExecutionIds = [];
-      
-      for (let i = 0; i < firmNames.length; i++) {
-        const firmName = firmNames[i];
-        const result = await this.query(
-          'INSERT INTO workflow_executions (workflow_name, firm_name, status) VALUES ($1, $2, $3) RETURNING id',
-          [workflowName, firmName, 'initialized']
-        );
-        workflowExecutionIds.push(result.rows[0].id);
-      }
-      
-      logger.info(`✅ Created ${firmNames.length} workflow execution records with IDs:`, workflowExecutionIds);
-      return workflowExecutionIds;
-    } catch (error) {
-      logger.error('❌ Failed to create batch workflow execution records:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Save portfolio companies to database
-   * @param {number} workflowExecutionId - The workflow execution ID
+   * Create a new pipeline for a firm
    * @param {string} firmName - Name of the PE firm
-   * @param {Array} companies - Array of company names
+   * @returns {number} pipeline_id
    */
-  async savePortfolioCompanies(workflowExecutionId, firmName, companies) {
+  async createPipeline(firmName) {
     try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      // Insert each company with both original and legal names
-      for (const company of companies) {
-        await this.query(
-          'INSERT INTO portfolio_companies (workflow_execution_id, firm_name, original_company_name, legal_entity_name) VALUES ($1, $2, $3, $4) ON CONFLICT (workflow_execution_id, original_company_name) DO NOTHING',
-          [workflowExecutionId, firmName, company.originalName, company.legalName]
-        );
-      }
-      
-      logger.info(`✅ Saved ${companies.length} portfolio companies for ${firmName}`);
-    } catch (error) {
-      logger.error('❌ Failed to save portfolio companies:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Get portfolio companies by workflow execution ID
-   * @param {number} workflowExecutionId - The workflow execution ID
-   * @returns {Array} Array of company names
-   */
-  async getPortfolioCompaniesByWorkflowId(workflowExecutionId) {
-    try {
-      // Initialize database connection if not already done
       if (!this.pool) {
         await this.initialize();
       }
       
       const result = await this.query(
-        'SELECT company_name FROM portfolio_companies WHERE workflow_execution_id = $1 ORDER BY company_name',
-        [workflowExecutionId]
+        'INSERT INTO pipelines (firm_name, status) VALUES ($1, $2) RETURNING pipeline_id',
+        [firmName, 'pending']
       );
-      
-      return result.rows.map(row => row.company_name);
+      return result.rows[0].pipeline_id;
     } catch (error) {
-      logger.error('❌ Failed to get portfolio companies:', error.message);
+      logger.error('❌ Failed to create pipeline:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get complete pipeline data by ID
+   * @param {number} pipelineId 
+   * @returns {Object} Complete pipeline object
+   */
+  async getPipeline(pipelineId) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const result = await this.query(
+        'SELECT * FROM pipelines WHERE pipeline_id = $1',
+        [pipelineId]
+      );
+      return result.rows[0] || null;
+    } catch (error) {
+      logger.error('❌ Failed to get pipeline:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Update specific fields in a pipeline
+   * @param {number} pipelineId 
+   * @param {Object} updates - Fields to update
+   */
+  async updatePipeline(pipelineId, updates) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      // Build dynamic SET clause
+      const setClause = Object.keys(updates).map((key, index) => 
+        `${key} = $${index + 2}`
+      ).join(', ');
+      
+      const values = [pipelineId, ...Object.values(updates), new Date()];
+      
+      await this.query(
+        `UPDATE pipelines SET ${setClause}, updated_at = $${values.length} WHERE pipeline_id = $1`,
+        values
+      );
+    } catch (error) {
+      logger.error('❌ Failed to update pipeline:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Get all pipelines with optional filtering
+   * @param {Object} filters - Optional status, firm_name filters
+   * @returns {Array} Array of pipeline objects
+   */
+  async getAllPipelines(filters = {}) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      let whereClause = '';
+      let values = [];
+      
+      if (filters.status) {
+        whereClause = ' WHERE status = $1';
+        values.push(filters.status);
+      }
+      
+      if (filters.firm_name) {
+        whereClause += (whereClause ? ' AND' : ' WHERE') + ` firm_name ILIKE $${values.length + 1}`;
+        values.push(`%${filters.firm_name}%`);
+      }
+      
+      const result = await this.query(
+        `SELECT * FROM pipelines${whereClause} ORDER BY created_at DESC`,
+        values
+      );
+      return result.rows;
+    } catch (error) {
+      logger.error('❌ Failed to get all pipelines:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a pipeline and all its data
+   * @param {number} pipelineId 
+   */
+  async deletePipeline(pipelineId) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      await this.query('DELETE FROM pipelines WHERE pipeline_id = $1', [pipelineId]);
+    } catch (error) {
+      logger.error('❌ Failed to delete pipeline:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Reset pipeline to pending state (for retries)
+   * @param {number} pipelineId 
+   * @param {string} fromStep - Which step to reset from ('research', 'legal_resolution', 'data_extraction')
+   */
+  async resetPipeline(pipelineId, fromStep) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      const updates = { updated_at: new Date() };
+      
+      if (fromStep === 'research') {
+        updates.status = 'pending';
+        updates.companies = null;
+        updates.research_completed_at = null;
+        updates.legal_resolution_completed_at = null;
+        updates.data_extraction_completed_at = null;
+      } else if (fromStep === 'legal_resolution') {
+        updates.status = 'research_complete';
+        // Reset companies to only have name field (remove legal entity data)
+        const pipeline = await this.getPipeline(pipelineId);
+        if (pipeline.companies) {
+          updates.companies = pipeline.companies.map(company => ({ name: company.name }));
+        }
+        updates.legal_resolution_completed_at = null;
+        updates.data_extraction_completed_at = null;
+      } else if (fromStep === 'data_extraction') {
+        updates.status = 'legal_resolution_complete';
+        // Reset companies to remove form5500_data only
+        const pipeline = await this.getPipeline(pipelineId);
+        if (pipeline.companies) {
+          updates.companies = pipeline.companies.map(company => ({
+            name: company.name,
+            legal_entity_name: company.legal_entity_name,
+            city: company.city,
+            state: company.state,
+            exited: company.exited
+          }));
+        }
+        updates.data_extraction_completed_at = null;
+      }
+      
+      await this.updatePipeline(pipelineId, updates);
+    } catch (error) {
+      logger.error('❌ Failed to reset pipeline:', error.message);
       throw error;
     }
   }
@@ -301,130 +366,6 @@ class DatabaseManager {
     }
   }
 
-  /**
-   * Update workflow execution with results
-   * @param {number} workflowExecutionId - Workflow execution ID
-   * @param {Object} results - JSON results to store
-   */
-  async updateWorkflowResults(workflowExecutionId, results) {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      const result = await this.query(
-        'UPDATE workflow_executions SET results = $1, completed_at = NOW(), status = $2 WHERE id = $3',
-        [JSON.stringify(results), 'completed', workflowExecutionId]
-      );
-      
-      return result.rowCount > 0;
-    } catch (error) {
-      logger.error('❌ Failed to update workflow results:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Get workflow execution results
-   * @param {number} workflowExecutionId - Workflow execution ID
-   * @returns {Object|null} Workflow results or null if not found
-   */
-  async getWorkflowResults(workflowExecutionId) {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      const result = await this.query(
-        'SELECT results, status, completed_at FROM workflow_executions WHERE id = $1',
-        [workflowExecutionId]
-      );
-      
-      if (result.rows.length === 0) {
-        return null;
-      }
-      
-      const row = result.rows[0];
-      return {
-        status: row.status,
-        completed_at: row.completed_at,
-        results: row.results
-      };
-    } catch (error) {
-      logger.error('❌ Failed to get workflow results:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Get workflow execution details including firm name
-   * @param {number} workflowExecutionId - The workflow execution ID
-   * @returns {Object} Workflow execution details
-   */
-  async getWorkflowExecution(workflowExecutionId) {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-
-      const query = `
-        SELECT 
-          we.id,
-          we.workflow_name,
-          we.started_at,
-          we.completed_at,
-          we.status,
-          pc.firm_name
-        FROM workflow_executions we
-        LEFT JOIN portfolio_companies pc ON we.id = pc.workflow_execution_id
-        WHERE we.id = $1
-        LIMIT 1
-      `;
-      
-      const result = await this.query(query, [workflowExecutionId]);
-      
-      if (result.rows.length === 0) {
-        return null;
-      }
-      
-      return result.rows[0];
-    } catch (error) {
-      logger.error('❌ Failed to get workflow execution:', error.message);
-      throw error;
-    }
-  }
-
-  /**
-   * Get all completed workflow execution results
-   * @returns {Array} Array of workflow execution records
-   */
-  async getAllWorkflowResults() {
-    try {
-      // Initialize database connection if not already done
-      if (!this.pool) {
-        await this.initialize();
-      }
-      
-      const result = await this.query(
-        'SELECT id, workflow_name, firm_name, status, created_at, completed_at FROM workflow_executions WHERE status = $1 ORDER BY completed_at DESC',
-        ['completed']
-      );
-      
-      return result.rows.map(row => ({
-        id: row.id,
-        firmName: row.firm_name || row.workflow_name, // Use firm_name if available, fallback to workflow_name
-        status: row.status,
-        createdAt: row.created_at,
-        completedAt: row.completed_at
-      }));
-    } catch (error) {
-      logger.error('❌ Failed to get all workflow results:', error.message);
-      throw error;
-    }
-  }
 }
 
 module.exports = DatabaseManager;

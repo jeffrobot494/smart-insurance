@@ -2,7 +2,7 @@ const { database: logger } = require('../utils/logger');
 const Form5500SearchService = require('./Form5500SearchService');
 const ScheduleASearchService = require('./ScheduleASearchService');
 const ReportGenerator = require('./ReportGenerator');
-const pollingService = require('../services/PollingService');
+const DatabaseManager = require('./DatabaseManager');
 
 /**
  * Main service for orchestrating data extraction from database
@@ -12,94 +12,117 @@ class DataExtractionService {
     this.form5500SearchService = new Form5500SearchService();
     this.scheduleASearchService = new ScheduleASearchService();
     this.reportGenerator = new ReportGenerator();
+    this.databaseManager = DatabaseManager.getInstance();
     
     // Set up report generator with Schedule A service for key field extraction
     this.reportGenerator.setScheduleASearchService(this.scheduleASearchService);
   }
 
   /**
-   * Main entry point for data extraction process using database
-   * @param {Array} legalNames - Array of legal company names from run2()
-   * @param {string|number} workflowId - Optional workflow ID for polling messages
-   * @param {string|number} firmId - Optional firm ID for polling messages
-   * @returns {Object} Complete extraction results
+   * Main entry point for data extraction process using pipeline ID
+   * @param {number} pipelineId - Pipeline ID to extract data for
+   * @returns {Object} Complete extraction results with companies array
    */
-  async extractData(legalNames, workflowId = null, firmId = null) {
+  async extractData(pipelineId) {
     try {
-      logger.info(`🔍 Processing ${legalNames.length} companies for Form 5500/Schedule A data`);
+      // Load pipeline from database
+      const pipeline = await this.databaseManager.getPipeline(pipelineId);
       
-      // Add polling message for data extraction start
-      if (workflowId) {
-        pollingService.addMessage(workflowId, firmId, 'progress', `🔍 Starting Form 5500 research for ${legalNames.length} companies`);
+      if (!pipeline || !pipeline.companies) {
+        throw new Error(`Pipeline ${pipelineId} not found or has no companies`);
       }
-
+      
+      logger.info(`🔍 Processing ${pipeline.companies.length} companies for Form 5500/Schedule A data`);
+      
+      // Extract legal entity names for companies that have them
+      const companyNamesToSearch = pipeline.companies
+        .filter(company => company.legal_entity_name) // Skip companies without legal names
+        .map(company => company.legal_entity_name);
+        
+      if (companyNamesToSearch.length === 0) {
+        return { 
+          success: true, 
+          companies: pipeline.companies, 
+          message: 'No companies with legal entity names found',
+          pipelineId: pipelineId,
+          extractedAt: new Date().toISOString()
+        };
+      }
+      
       // Phase 1: Search companies in Form 5500 using database
-      const form5500Results = await this.form5500SearchService.searchCompanies(legalNames);
+      const form5500Results = await this.form5500SearchService.searchCompanies(companyNamesToSearch);
       
-      // Add polling message for Form 5500 results
-      if (workflowId) {
-        const foundCount = form5500Results.filter(r => r.recordCount > 0).length;
-        pollingService.addMessage(workflowId, firmId, 'progress', `📋 Found Form 5500 records for ${foundCount} companies`);
-      }
+      logger.info(`📋 Found Form 5500 records for ${form5500Results.filter(r => r.recordCount > 0).length} companies`);
       
       // Phase 2: Extract EINs from Form 5500 results
       const companiesWithEIN = this.form5500SearchService.extractEINs(form5500Results);
       
-      // Add polling message for Schedule A research start
-      if (workflowId) {
-        const einCount = companiesWithEIN.filter(c => c.ein).length;
-        pollingService.addMessage(workflowId, firmId, 'progress', `🔍 Starting Schedule A research for ${einCount} EINs`);
-      }
-
       // Phase 3: Search EINs in Schedule A using database
       const finalResults = await this.scheduleASearchService.searchEINs(companiesWithEIN);
       
-      // Add polling message for Schedule A results
-      if (workflowId) {
-        const scheduleACount = finalResults.filter(r => r.scheduleAResults && r.scheduleAResults.length > 0).length;
-        pollingService.addMessage(workflowId, firmId, 'progress', `📋 Found Schedule A records for ${scheduleACount} EINs`);
-      }
+      logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.scheduleAResults && r.scheduleAResults.length > 0).length} EINs`);
       
       // Phase 4: Generate comprehensive reports
-      if (workflowId) {
-        pollingService.addMessage(workflowId, firmId, 'progress', `📊 Generating final report`);
-      }
-      
       const reportData = this.reportGenerator.generateFinalReport(finalResults);
+      
+      // Phase 5: Map results back to companies structure
+      const companiesWithForm5500 = this.mapResultsToCompanies(pipeline.companies, reportData);
 
       logger.info('✅ Data extraction completed');
       
-      // Add polling message for completion
-      if (workflowId) {
-        pollingService.addMessage(workflowId, firmId, 'progress', `✅ Data extraction completed`);
-      }
-      
-      return reportData;
+      return {
+        success: true,
+        companies: companiesWithForm5500,
+        pipelineId: pipelineId,
+        extractedAt: new Date().toISOString()
+      };
 
     } catch (error) {
       logger.error('❌ Data extraction failed:', error.message);
       
-      // Add polling message for error
-      if (workflowId) {
-        pollingService.addMessage(workflowId, firmId, 'error', `❌ Data extraction failed: ${error.message}`);
-      }
-      
       return {
         success: false,
         error: error.message,
+        pipelineId: pipelineId,
         timestamp: new Date().toISOString()
       };
     }
   }
-
+  
   /**
-   * Extract data from a single company name (for testing)
-   * @param {string} companyName - Single company name
-   * @returns {Object} Extraction results for single company
+   * Map Form 5500 extraction results back to company objects
+   * @param {Array} originalCompanies - Original company objects from pipeline
+   * @param {Object} reportData - Report data from extraction
+   * @returns {Array} Companies with form5500_data added
    */
-  async extractSingleCompany(companyName) {
-    return await this.extractData([companyName]);
+  mapResultsToCompanies(originalCompanies, reportData) {
+    const companiesWithData = [...originalCompanies];
+    
+    // Create a lookup map from the report data
+    const reportLookup = new Map();
+    if (reportData.companies) {
+      reportData.companies.forEach(company => {
+        reportLookup.set(company.companyName, company);
+      });
+    }
+    
+    // Add form5500_data to matching companies
+    companiesWithData.forEach(company => {
+      const reportCompany = reportLookup.get(company.legal_entity_name);
+      if (reportCompany) {
+        company.form5500_data = {
+          ein: reportCompany.ein,
+          form5500: reportCompany.form5500,
+          scheduleA: reportCompany.scheduleA
+        };
+      } else {
+        company.form5500_data = null; // No data found
+      }
+    });
+    
+    return companiesWithData;
   }
+
 
 }
 

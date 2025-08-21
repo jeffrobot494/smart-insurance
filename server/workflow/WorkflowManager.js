@@ -1,15 +1,10 @@
 const { workflow: logger } = require('../utils/logger');
 const TaskExecution = require('./TaskExecution');
-const SaveTaskResults = require('./SaveTaskResults');
-const DatabaseManager = require('../data-extraction/DatabaseManager');
-const pollingService = require('../services/PollingService');
 
 class WorkflowManager {
   constructor(toolManager) {
     this.currentIndex = 0;
-    this.resultsSaver = new SaveTaskResults();
     this.toolManager = toolManager; // Use injected ToolManager
-    this.databaseManager = DatabaseManager.getInstance();
   }
 
 
@@ -41,10 +36,10 @@ class WorkflowManager {
     this.currentIndex = 0;
   }
 
-  async executeWorkflow(workflowData, userInputs = {}, preGeneratedIds = null) {
+  async executeWorkflow(workflowData, userInput, pipelineId = null) {
     this.workflowData = workflowData;
     if (!this.workflowData) {
-      throw new Error('workflorData must be provided to WorkflowManager');
+      throw new Error('workflowData must be provided to WorkflowManager');
     }
 
     if (!this.toolManager) {
@@ -53,116 +48,76 @@ class WorkflowManager {
     
     this.tasks = workflowData.workflow.tasks;
 
-    // userInputs.input is always an array
-    const inputList = userInputs.input || [];
-    const allResults = [];
-    
-    logger.info(`📋 Processing ${inputList.length} input(s) through ${this.getAllTasks().length} tasks\n`);
-    
-    for (let i = 0; i < inputList.length; i++) {
-      const currentInput = inputList[i];
-      logger.info(`\n🔄 Processing item ${i + 1}/${inputList.length}: ${currentInput}`);
-      
-      let workflowExecutionId;
-      
-      if (preGeneratedIds && preGeneratedIds.length > i) {
-        // Use pre-generated ID and update status
-        workflowExecutionId = preGeneratedIds[i];
-        logger.info(`🆔 Using pre-generated workflow execution ID: ${workflowExecutionId}`);
-        await this.databaseManager.query(
-          'UPDATE workflow_executions SET status = $1 WHERE id = $2',
-          ['running', workflowExecutionId]
-        );
-      } else {
-        // Create new workflow execution record in database
-        //If we are creating them here, we are in the legal entity (2nd) workflow, and we need to pass the firm name. 
-        
-        workflowExecutionId = await this.databaseManager.createWorkflowExecution(this.workflowData.workflow.name);
-      }
-      
-      // Add polling message for workflow start
-      pollingService.addMessage(workflowExecutionId, i, 'progress', `Starting research for ${currentInput}`);
-      
-      // Reset task index for each input
-      this.reset();
-      
-      // Execute workflow for this single input
-      const itemInputs = { input: currentInput };
-      const taskResults = {};
-      
-      while (this.hasMoreTasks()) {
-        const task = this.getNextTask();
-        
-        logger.info(`🎯 Executing Task ${task.id}: ${task.name}`);
-        logger.info(`📝 Instructions: ${task.instructions}`);
-        
-        // Add polling message for task start
-        pollingService.addMessage(workflowExecutionId, i, 'progress', `Task ${task.id}/${this.tasks.length}: ${task.name}`);
-        
-        // Gather inputs for this task
-        const inputs = {};
-        task.inputKeys.forEach(key => {
-          if (itemInputs[key]) {
-            inputs[key] = itemInputs[key];
-            logger.info(`📥 Input ${key}: ${itemInputs[key]}`);
-          }
-        });
-        
-        try {
-          const execution = new TaskExecution(task);
-          execution.setToolManager(this.toolManager);
-          const result = await execution.run(inputs);
-          
-          if (result.success) {
-            logger.info(`✅ Task ${task.id} completed successfully`);
-            logger.info(`📤 Output (${task.outputKey}): ${result.result}`);
-            itemInputs[task.outputKey] = result.result;
-            taskResults[task.id] = result;
-            
-            // Add polling message for task success
-            pollingService.addMessage(workflowExecutionId, i, 'progress', `✅ Completed ${task.name}`);
-          } else {
-            logger.error(`❌ Task ${task.id} failed: ${result.error}`);
-            taskResults[task.id] = result;
-            
-            // Add polling message for task failure
-            pollingService.addMessage(workflowExecutionId, i, 'error', `❌ ${task.name} failed: ${result.error}`);
-            break;
-          }
-        } catch (error) {
-          logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
-          
-          // Add polling message for task exception
-          pollingService.addMessage(workflowExecutionId, i, 'error', `💥 ${task.name} error: ${error.message}`);
-          break;
-        }
-        
-        logger.info(''); // Empty line for readability
-      }
-      
-      allResults.push({
-        itemIndex: i,
-        input: currentInput,
-        tasks: taskResults,
-        workflowExecutionId: workflowExecutionId
-      });
-      
-      // Add polling message for individual firm completion
-      const completedTasks = Object.keys(taskResults).length;
-      if (completedTasks === this.tasks.length) {
-        pollingService.addMessage(workflowExecutionId, i, 'complete', `🎉 Research completed for ${currentInput}`);
-      } else {
-        pollingService.addMessage(workflowExecutionId, i, 'error', `⚠️ Research incomplete for ${currentInput} (${completedTasks}/${this.tasks.length} tasks)`);
-      }
+    // userInput is now a single value, not an array
+    const currentInput = userInput.input;
+    if (!currentInput) {
+      throw new Error('input is required');
     }
     
-    // Note: Results saving moved to Manager.js for better control over conversion
-    // await this.resultsSaver.saveBatchResults(allResults);
+    logger.info(`📋 Processing single input: ${currentInput}`);
+    
+    // Reset task index for execution
+    this.reset();
+    
+    // Execute workflow for this single input
+    const itemInputs = { input: currentInput };
+    const taskResults = {};
+    let output = null;
+    
+    while (this.hasMoreTasks()) {
+      const task = this.getNextTask();
+      
+      logger.info(`🎯 Executing Task ${task.id}: ${task.name}`);
+      
+      // Gather inputs for this task
+      const inputs = {};
+      task.inputKeys.forEach(key => {
+        if (itemInputs[key]) {
+          inputs[key] = itemInputs[key];
+          logger.info(`📥 Input ${key}: ${itemInputs[key]}`);
+        }
+      });
+      
+      try {
+        const execution = new TaskExecution(task);
+        execution.setToolManager(this.toolManager);
+        const result = await execution.run(inputs);
+        
+        if (result.success) {
+          logger.info(`✅ Task ${task.id} completed successfully`);
+          logger.info(`📤 Output (${task.outputKey}): ${result.result}`);
+          itemInputs[task.outputKey] = result.result;
+          taskResults[task.id] = result;
+          
+          // Check if this is the last task and set output
+          if (!this.hasMoreTasks()) {
+            output = result.result;
+          }
+        } else {
+          logger.error(`❌ Task ${task.id} failed: ${result.error}`);
+          taskResults[task.id] = result;
+          break;
+        }
+      } catch (error) {
+        logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
+        break;
+      }
+      
+      logger.info(''); // Empty line for readability
+    }
+    
+    // Return single result object instead of array
+    const result = {
+      workflow_name: workflowData.workflow.name,
+      input: currentInput,
+      output: output,
+      tasks: taskResults,
+      pipelineId: pipelineId || null
+    };
     
     logger.info('🏁 Workflow execution completed');
-    logger.info(`📊 Processed ${allResults.length} items`);
     
-    return allResults;
+    return result; // Single result object, not array
   }
 
 }

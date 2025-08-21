@@ -5,7 +5,7 @@
 -- FORM 5500 RECORDS TABLE
 -- ===========================================
 
-CREATE TABLE form_5500_records (
+CREATE TABLE IF NOT EXISTS form_5500_records (
   id SERIAL PRIMARY KEY,
   year INTEGER NOT NULL,
   
@@ -77,7 +77,7 @@ CREATE TABLE form_5500_records (
 -- SCHEDULE A RECORDS TABLE
 -- ===========================================
 
-CREATE TABLE schedule_a_records (
+CREATE TABLE IF NOT EXISTS schedule_a_records (
   id SERIAL PRIMARY KEY,
   year INTEGER NOT NULL,
   
@@ -143,72 +143,63 @@ CREATE TABLE schedule_a_records (
 -- ===========================================
 
 -- Form 5500 indexes
-CREATE INDEX idx_form_5500_sponsor_name ON form_5500_records(sponsor_dfe_name);
-CREATE INDEX idx_form_5500_sponsor_ein ON form_5500_records(spons_dfe_ein);
-CREATE INDEX idx_form_5500_year ON form_5500_records(year);
-CREATE INDEX idx_form_5500_ack_id ON form_5500_records(ack_id);
-CREATE INDEX idx_form_5500_plan_name ON form_5500_records(plan_name);
-CREATE INDEX idx_form_5500_year_ein ON form_5500_records(year, spons_dfe_ein);  -- Composite index
+CREATE INDEX IF NOT EXISTS idx_form_5500_sponsor_name ON form_5500_records(sponsor_dfe_name);
+CREATE INDEX IF NOT EXISTS idx_form_5500_sponsor_ein ON form_5500_records(spons_dfe_ein);
+CREATE INDEX IF NOT EXISTS idx_form_5500_year ON form_5500_records(year);
+CREATE INDEX IF NOT EXISTS idx_form_5500_ack_id ON form_5500_records(ack_id);
+CREATE INDEX IF NOT EXISTS idx_form_5500_plan_name ON form_5500_records(plan_name);
+CREATE INDEX IF NOT EXISTS idx_form_5500_year_ein ON form_5500_records(year, spons_dfe_ein);  -- Composite index
 
 -- Indexes to support unique constraints for optimal performance
-CREATE INDEX idx_form_5500_ack_year ON form_5500_records(ack_id, year);
+CREATE INDEX IF NOT EXISTS idx_form_5500_ack_year ON form_5500_records(ack_id, year);
 
 -- Schedule A indexes
-CREATE INDEX idx_schedule_a_ein ON schedule_a_records(sch_a_ein);
-CREATE INDEX idx_schedule_a_carrier_name ON schedule_a_records(ins_carrier_name);
-CREATE INDEX idx_schedule_a_year ON schedule_a_records(year);
-CREATE INDEX idx_schedule_a_ack_id ON schedule_a_records(ack_id);
-CREATE INDEX idx_schedule_a_year_ein ON schedule_a_records(year, sch_a_ein);  -- Composite index
-CREATE INDEX idx_schedule_a_ack_form_year ON schedule_a_records(ack_id, form_id, year);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_ein ON schedule_a_records(sch_a_ein);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_carrier_name ON schedule_a_records(ins_carrier_name);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_year ON schedule_a_records(year);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_ack_id ON schedule_a_records(ack_id);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_year_ein ON schedule_a_records(year, sch_a_ein);  -- Composite index
+CREATE INDEX IF NOT EXISTS idx_schedule_a_ack_form_year ON schedule_a_records(ack_id, form_id, year);
 
 -- ===========================================
--- WORKFLOW AND PORTFOLIO TRACKING TABLES
+-- UNIFIED PIPELINE TRACKING TABLE
 -- ===========================================
 
--- Create workflow_executions table
-CREATE TABLE workflow_executions (
-    id SERIAL PRIMARY KEY,
-    workflow_name VARCHAR(255) NOT NULL,
-    started_at TIMESTAMP DEFAULT NOW(),
-    completed_at TIMESTAMP,
-    status VARCHAR(50) DEFAULT 'running',
-    results JSONB,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
--- Create portfolio_companies table with both original and legal names
-CREATE TABLE portfolio_companies (
-    id SERIAL PRIMARY KEY,
-    workflow_execution_id INTEGER REFERENCES workflow_executions(id),
+-- Create unified pipelines table
+CREATE TABLE IF NOT EXISTS pipelines (
+    pipeline_id SERIAL PRIMARY KEY,
     firm_name VARCHAR(255) NOT NULL,
-    original_company_name VARCHAR(255) NOT NULL,
-    legal_entity_name VARCHAR(255),
+    status VARCHAR(50) DEFAULT 'pending',
+    
+    -- Unified company data - progressively enriched at each step
+    companies JSONB, -- Array of company objects: [{name, legal_entity_name, city, state, exited, form5500_data}]
+    
+    -- Step completion timestamps
+    research_completed_at TIMESTAMP,
+    legal_resolution_completed_at TIMESTAMP,
+    data_extraction_completed_at TIMESTAMP,
+    
+    -- Audit fields
     created_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(workflow_execution_id, original_company_name)
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Add indexes for performance
-CREATE INDEX idx_workflow_executions_workflow_name ON workflow_executions(workflow_name);
-CREATE INDEX idx_workflow_executions_status ON workflow_executions(status);
-CREATE INDEX idx_portfolio_companies_firm_name ON portfolio_companies(firm_name);
-CREATE INDEX idx_portfolio_companies_original_name ON portfolio_companies(original_company_name);
-CREATE INDEX idx_portfolio_companies_legal_name ON portfolio_companies(legal_entity_name);
-CREATE INDEX idx_portfolio_companies_workflow_execution_id ON portfolio_companies(workflow_execution_id);
+CREATE INDEX IF NOT EXISTS idx_pipelines_firm_name ON pipelines(firm_name);
+CREATE INDEX IF NOT EXISTS idx_pipelines_status ON pipelines(status);
+CREATE INDEX IF NOT EXISTS idx_pipelines_created_at ON pipelines(created_at);
+CREATE INDEX IF NOT EXISTS idx_pipelines_companies ON pipelines USING GIN (companies);
 
 -- Add comments for documentation
-COMMENT ON TABLE workflow_executions IS 'Tracks each execution of a workflow';
-COMMENT ON TABLE portfolio_companies IS 'Stores portfolio companies with both original and legal entity names';
-COMMENT ON COLUMN workflow_executions.status IS 'Status: running, completed, failed';
-COMMENT ON COLUMN portfolio_companies.firm_name IS 'Name of the private equity firm';
-COMMENT ON COLUMN portfolio_companies.original_company_name IS 'Original company name from research';
-COMMENT ON COLUMN portfolio_companies.legal_entity_name IS 'Legal entity name for Form 5500 matching';
+COMMENT ON TABLE pipelines IS 'Unified pipeline tracking for PE firm research, legal resolution, and data extraction';
+COMMENT ON COLUMN pipelines.companies IS 'Array of company objects progressively enriched: research adds name, legal resolution adds legal_entity_name/city/state/exited, data extraction adds form5500_data';
 
 -- ===========================================
 -- UTILITY VIEWS FOR COMMON QUERIES
 -- ===========================================
 
 -- View to join Form 5500 and Schedule A data
-CREATE VIEW company_insurance_summary AS
+CREATE OR REPLACE VIEW company_insurance_summary AS
 SELECT 
     f.year,
     f.sponsor_dfe_name,
@@ -224,7 +215,7 @@ LEFT JOIN schedule_a_records s ON f.spons_dfe_ein = s.sch_a_ein AND f.year = s.y
 GROUP BY f.year, f.sponsor_dfe_name, f.spons_dfe_ein, f.tot_active_partcp_cnt;
 
 -- View for benefit type analysis
-CREATE VIEW benefit_type_analysis AS
+CREATE OR REPLACE VIEW benefit_type_analysis AS
 SELECT 
     year,
     sch_a_ein,
