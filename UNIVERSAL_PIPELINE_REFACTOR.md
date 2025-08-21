@@ -1308,7 +1308,70 @@ class WorkflowManager {
 }
 ```
 
-## 6. Database Deployment Strategy
+## 6. Implementation Strategy
+
+### A. Implementation Order
+The refactoring must be implemented in this specific order due to dependencies:
+
+1. **Database Schema** - Drop old tables, create new pipelines table
+2. **DatabaseManager.js** - Implement new CRUD methods for pipelines
+3. **WorkflowResultsParser.js** - Create new simplified parser class
+4. **WorkflowManager.executeWorkflow()** - Refactor to single-input processing
+5. **DataExtractionService.js** - Simplify to take only pipelineId
+6. **Manager.js** - Complete rewrite with new pipeline methods
+7. **API Routes** - Implement new RESTful pipeline endpoints
+8. **Frontend Integration** - Update to use new API structure
+9. **Tests** - Update all tests to new architecture
+
+### B. File Modification Checklist
+
+#### Files to CREATE:
+- `server/utils/WorkflowResultsParser.js` (new simplified parser)
+
+#### Files to MODIFY:
+- `server/workflow/WorkflowManager.js` (executeWorkflow method - single input)
+- `server/data-extraction/DataExtractionService.js` (simplified interface)
+- `server/data-extraction/DatabaseManager.js` (complete rewrite)
+- `server/Manager.js` (complete rewrite)
+- `server/routes/workflow.js` (new RESTful pipeline routes)
+- `server/server.js` (route updates)
+- All test files
+
+#### Files to DELETE:
+- `server/workflow/SaveTaskResults.js` (functionality moved to Manager.js)
+
+### C. Key Design Decisions Context
+
+1. **Single Input Processing**: WorkflowManager.executeWorkflow() changed from processing arrays to single inputs
+2. **Unified Company Objects**: Pipeline uses single companies array instead of separate portfolio_company_names and legal_entities arrays
+3. **Progressive Enrichment**: Company objects get enriched at each step (research→legal resolution→data extraction)
+4. **Simplified DataExtractionService**: Takes only pipelineId, looks up all data internally
+5. **Eliminated workflowExecutionId**: All references replaced with pipelineId
+6. **Pipeline-Centric Architecture**: Everything revolves around the pipeline object
+
+### D. Testing Strategy
+
+**After each implementation step:**
+
+1. **Database Schema**: Test table creation and basic CRUD
+2. **DatabaseManager**: Test all pipeline CRUD operations
+3. **WorkflowResultsParser**: Test with sample workflow outputs
+4. **WorkflowManager**: Test single-input execution with simple workflow
+5. **DataExtractionService**: Test with sample pipeline data
+6. **Manager**: Test each pipeline step independently
+7. **API Routes**: Test all endpoints with Postman/curl
+8. **Integration**: Test complete pipeline end-to-end
+
+### E. Critical Notes for Implementation
+
+- **Backup existing data** before running database schema changes
+- **Run tests after each step** to catch integration issues early  
+- **The exited flag** is important metadata - don't filter out exited companies from data extraction
+- **Form 5500 data should be extracted for ALL companies** (including exited ones)
+- **Polling integration** may need frontend updates if message formats change
+- **Error handling** should preserve pipeline state for retry functionality
+
+## 7. Database Deployment Strategy
 
 ### A. Clean Slate Approach
 Since all existing data is test data, we can use a clean drop/create approach:
