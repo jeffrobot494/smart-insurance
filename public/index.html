@@ -4,111 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Insurance</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-    <div class="banner">
-        <h1>Smart Insurance</h1>
+    <div class="header">
+        <div class="tab active" id="work-tab" data-tab="work">Work</div>
+        <div class="tab" id="saved-tab" data-tab="saved">Saved</div>
     </div>
-    
+
     <div class="container">
-        <!-- Tab Navigation -->
-        <div class="tabs">
-            <button class="tab-button active">New</button>
-            <button class="tab-button">Saved</button>
-        </div>
-        
-        <!-- New Tab Content -->
-        <div id="new-tab" class="tab-content active">
-            <div class="upload-section">
-                <!-- Text Input Method -->
-                <div class="text-input-container">
-                    <textarea id="firmNamesText" placeholder="Enter firm names separated by commas (e.g., KKR, Blackstone, Apollo)"></textarea>
-                    <button id="processTextBtn" class="upload-btn">
-                        Process Names
-                    </button>
+        <!-- Work Tab Content -->
+        <div id="work-tab-content" class="tab-content active">
+            <!-- Input Section -->
+            <div class="input-section">
+                <div class="input-row">
+                    <input type="text" id="firm-names-input" placeholder="Enter firm names here (comma separated)" 
+                           value="American Discovery Capital, NexPhase Capital, Revelstoke Capital">
                 </div>
-                
-                <div class="divider">
-                    <span>OR</span>
+                <div class="upload-area" id="upload-area">
+                    <div>📁 Upload a list of firms here</div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">Drag & drop or click to browse</div>
+                    <input type="file" id="file-input" accept=".csv,.txt" style="display: none;">
                 </div>
-                
-                <!-- CSV Upload Method -->
-                <div class="upload-container">
-                    <input type="file" id="csvFile" accept=".csv" class="file-input">
-                    <button id="csvUploadBtn" class="upload-btn">
-                        Import CSV
-                    </button>
+                <div class="button-row">
+                    <button class="btn btn-primary" id="start-btn">Start</button>
+                    <button class="btn btn-secondary" id="clear-btn">Clear</button>
+                    <label style="display: flex; align-items: center; margin-left: 20px;">
+                        <input type="checkbox" class="checkbox" id="auto-complete-checkbox" checked> Auto-complete workflow
+                    </label>
                 </div>
-                
-                <p class="instructions">
-                    Enter firm names above or upload a CSV file with PE firm names
-                </p>
             </div>
-            
-            <div class="table-section" id="tableSection" style="display: none;">
-                <button id="startBtn" class="start-btn" disabled>
-                    Start Process
-                </button>
-                
-                <table id="firmsTable" class="progress-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Progress</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
+
+            <!-- Pipeline Results Container -->
+            <div id="pipeline-results">
+                <!-- Pipeline cards will be inserted here dynamically -->
             </div>
         </div>
-        
+
         <!-- Saved Tab Content -->
-        <div id="saved-tab" class="tab-content">
-            <table class="saved-table">
-                <thead>
-                    <tr>
-                        <th>Private Equity Firm</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="savedTableBody">
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <div id="saved-tab-content" class="tab-content">
+            <div class="page-header">
+                <h2>Previously Run Pipelines</h2>
+                <p>View and manage your saved pipeline results</p>
+            </div>
 
-    <!-- Confirmation Dialog -->
-    <div id="confirmationDialog" class="dialog-overlay">
-        <div class="dialog-content">
-            <h3>Confirm Firm Names</h3>
-            <p>We found the following firms:</p>
-            <ul id="firmsList"></ul>
-            <p>Is this correct?</p>
-            <div class="dialog-buttons">
-                <button id="confirmBtn" class="confirm-btn">Yes, Continue</button>
-                <button id="cancelBtn" class="cancel-btn">No, Edit</button>
+            <!-- Saved Pipeline Results Container -->
+            <div id="saved-pipeline-results">
+                <!-- Saved pipeline cards will be inserted here dynamically -->
+            </div>
+
+            <!-- Load More Section -->
+            <div class="load-more" id="load-more" style="display: none;">
+                <p>Showing recent <span id="shown-count">0</span> pipelines. <a href="#" id="load-more-btn">Load more...</a></p>
             </div>
         </div>
+
+        <!-- Report Configuration Modal (Hidden initially) -->
+        <div id="report-config-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h3>Generate Report</h3>
+                
+                <div class="config-section">
+                    <div class="config-title">Output Format</div>
+                    <div class="checkbox-group">
+                        <label><input type="radio" name="format" value="excel" checked> Excel</label>
+                        <label><input type="radio" name="format" value="pdf"> PDF</label>
+                        <label><input type="radio" name="format" value="csv"> CSV</label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <div class="config-title">Include in Report</div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="include-company-info" checked> Company Information</label>
+                        <label><input type="checkbox" id="include-insurance" checked> Insurance Carriers</label>
+                        <label><input type="checkbox" id="include-financial" checked> Financial Data</label>
+                        <label><input type="checkbox" id="include-legal"> Legal Entity Details</label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <div class="config-title">Filters</div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="exclude-exited"> Exclude Exited Companies</label>
+                        <label><input type="checkbox" id="min-employees"> Minimum 100 Employees</label>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-success" id="generate-report-btn">Generate Report</button>
+                    <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing...</div>
+        </div>
     </div>
 
-    <!-- JavaScript modules -->
-    <!-- UI Manager Classes -->
-    <script src="js/ui/TableManager.js"></script>
-    <script src="js/ui/FileUploadManager.js"></script>
-    <script src="js/ui/TextInputManager.js"></script>
-    <script src="js/ui/ConfirmationDialogManager.js"></script>
-    <script src="js/ui/StartButtonManager.js"></script>
-    <script src="js/ui/TabManager.js"></script>
-    <script src="js/ui/NotificationManager.js"></script>
-    <script src="js/ui/SavedReportsManager.js"></script>
-    
-    <!-- Core Application Classes -->
-    <script src="js/APIClient.js"></script>
-    <script src="js/UIManager.js"></script>
-    <script src="js/WorkflowManager.js"></script>
-    <script src="js/main.js"></script>
+    <!-- JavaScript Files -->
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/pipeline-cards.js"></script>
+    <script src="js/company-manager.js"></script>
+    <script src="js/report-manager.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

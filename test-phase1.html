@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1 Test - Smart Insurance</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        .test-section { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; border: none; border-radius: 4px; cursor: pointer; }
+        .test-btn { background: #007bff; color: white; }
+        .test-btn:hover { background: #0056b3; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ddd; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Smart Insurance - Phase 1 Foundation Tests</h1>
+    
+    <div class="test-section">
+        <h3>Test Control Panel</h3>
+        <button class="test-btn" onclick="runAllTests()">Run All Phase 1 Tests</button>
+        <button class="test-btn" onclick="testAppInitialization()">Test 1.1: App Initialization</button>
+        <button class="test-btn" onclick="testAPIFunctionality()">Test 1.2: API Functionality</button>
+        <button class="test-btn" onclick="testTabSwitching()">Test 1.3: Tab Switching</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div id="test-results"></div>
+    
+    <h3>Application Preview</h3>
+    <iframe id="app-frame" src="public/index.html"></iframe>
+    
+    <script>
+        let testResults = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            testResults.push({
+                timestamp,
+                message,
+                type
+            });
+            updateResults();
+        }
+        
+        function updateResults() {
+            const container = document.getElementById('test-results');
+            container.innerHTML = testResults.map(result => 
+                `<div class="test-result ${result.type}">
+                    <strong>[${result.timestamp}]</strong> ${result.message}
+                </div>`
+            ).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function clearResults() {
+            testResults = [];
+            updateResults();
+        }
+        
+        // Test 1.1: App Initialization
+        function testAppInitialization() {
+            log('🧪 Starting Test 1.1: App Initialization', 'info');
+            
+            const frame = document.getElementById('app-frame');
+            const frameWindow = frame.contentWindow;
+            
+            if (!frameWindow) {
+                log('❌ Cannot access iframe content', 'fail');
+                return;
+            }
+            
+            try {
+                // Check if app exists
+                if (frameWindow.app) {
+                    log('✅ App instance exists: window.app', 'pass');
+                } else {
+                    log('❌ App instance not found', 'fail');
+                    return;
+                }
+                
+                // Check app components
+                if (frameWindow.app.api) {
+                    log('✅ API instance exists: app.api', 'pass');
+                } else {
+                    log('❌ API instance not found', 'fail');
+                }
+                
+                if (frameWindow.app.tabs) {
+                    log('✅ Tab controller exists: app.tabs', 'pass');
+                } else {
+                    log('❌ Tab controller not found', 'fail');
+                }
+                
+                if (frameWindow.app.cards) {
+                    log('✅ Pipeline cards manager exists: app.cards', 'pass');
+                } else {
+                    log('❌ Pipeline cards manager not found', 'fail');
+                }
+                
+                // Check initialization status
+                if (frameWindow.app.isReady && frameWindow.app.isReady()) {
+                    log('✅ App is fully initialized', 'pass');
+                } else {
+                    log('⚠️ App may still be initializing', 'info');
+                }
+                
+                log('✅ Test 1.1 Complete: App Initialization', 'pass');
+                
+            } catch (error) {
+                log(`❌ Test 1.1 Failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 1.2: API Functionality
+        async function testAPIFunctionality() {
+            log('🧪 Starting Test 1.2: API Functionality', 'info');
+            
+            const frame = document.getElementById('app-frame');
+            const frameWindow = frame.contentWindow;
+            
+            if (!frameWindow || !frameWindow.app || !frameWindow.app.api) {
+                log('❌ App or API not available', 'fail');
+                return;
+            }
+            
+            try {
+                const api = frameWindow.app.api;
+                
+                // Check API base URL
+                if (api.baseURL !== undefined) {
+                    log(`✅ API base URL configured: "${api.baseURL}"`, 'pass');
+                } else {
+                    log('❌ API base URL not set', 'fail');
+                }
+                
+                // Test health check
+                log('Testing API health check...', 'info');
+                const healthResult = await api.healthCheck();
+                
+                if (healthResult.success) {
+                    log('✅ API health check passed', 'pass');
+                } else {
+                    log(`⚠️ API health check failed: ${healthResult.error}`, 'info');
+                    log('This is expected if server is not running', 'info');
+                }
+                
+                // Test getAllPipelines (should fail gracefully)
+                log('Testing getAllPipelines endpoint...', 'info');
+                try {
+                    await api.getAllPipelines({ limit: 5 });
+                    log('✅ getAllPipelines request succeeded', 'pass');
+                } catch (error) {
+                    log(`⚠️ getAllPipelines failed (expected): ${error.message}`, 'info');
+                }
+                
+                log('✅ Test 1.2 Complete: API Functionality', 'pass');
+                
+            } catch (error) {
+                log(`❌ Test 1.2 Failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 1.3: Tab Switching
+        function testTabSwitching() {
+            log('🧪 Starting Test 1.3: Tab Switching', 'info');
+            
+            const frame = document.getElementById('app-frame');
+            const frameWindow = frame.contentWindow;
+            
+            if (!frameWindow || !frameWindow.app || !frameWindow.app.tabs) {
+                log('❌ App or tabs controller not available', 'fail');
+                return;
+            }
+            
+            try {
+                const tabs = frameWindow.app.tabs;
+                
+                // Test initial state
+                const initialTab = tabs.getCurrentTab();
+                log(`✅ Initial tab: ${initialTab}`, 'pass');
+                
+                // Test switching to work tab
+                const workResult = tabs.switchTab('work');
+                if (workResult && tabs.getCurrentTab() === 'work') {
+                    log('✅ Switch to work tab successful', 'pass');
+                } else {
+                    log('❌ Failed to switch to work tab', 'fail');
+                }
+                
+                // Test switching to saved tab
+                const savedResult = tabs.switchTab('saved');
+                if (savedResult && tabs.getCurrentTab() === 'saved') {
+                    log('✅ Switch to saved tab successful', 'pass');
+                } else {
+                    log('❌ Failed to switch to saved tab', 'fail');
+                }
+                
+                // Test invalid tab
+                const invalidResult = tabs.switchTab('invalid');
+                if (!invalidResult) {
+                    log('✅ Invalid tab rejected correctly', 'pass');
+                } else {
+                    log('❌ Invalid tab was accepted (should be rejected)', 'fail');
+                }
+                
+                // Return to original tab
+                tabs.switchTab(initialTab);
+                log(`✅ Returned to initial tab: ${initialTab}`, 'pass');
+                
+                log('✅ Test 1.3 Complete: Tab Switching', 'pass');
+                
+            } catch (error) {
+                log(`❌ Test 1.3 Failed: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Run all tests
+        async function runAllTests() {
+            log('🚀 Starting Phase 1 Foundation Tests', 'info');
+            clearResults();
+            
+            // Wait for iframe to load
+            const frame = document.getElementById('app-frame');
+            if (!frame.contentWindow) {
+                log('⏳ Waiting for application to load...', 'info');
+                setTimeout(runAllTests, 2000);
+                return;
+            }
+            
+            // Run tests in sequence
+            testAppInitialization();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testAPIFunctionality();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            testTabSwitching();
+            
+            log('🎉 Phase 1 Foundation Tests Complete!', 'pass');
+        }
+        
+        // Auto-run tests when iframe loads
+        document.getElementById('app-frame').addEventListener('load', () => {
+            setTimeout(() => {
+                log('📱 Application loaded, ready for testing', 'info');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

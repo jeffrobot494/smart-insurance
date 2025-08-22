@@ -2903,3 +2903,24 @@
 {"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T23:02:31.792Z","url":"http://localhost:3000/api/health"}
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:32.374Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T23:02:32.378Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T23:47:51.453Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T23:48:07.594Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T23:48:07.838Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T23:48:07.839Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T23:48:07.839Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T23:48:07.840Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T23:48:07.852Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T23:48:08.005Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-22T23:48:08.011Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:48:14.050Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:48:15.634Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T23:48:15.636Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T23:48:15.638Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T23:48:15.815Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test, form5500_batch_name_test\n","service":"mcp","timestamp":"2025-08-22T23:48:15.816Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T23:48:15.816Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T23:48:15.819Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T23:48:15.819Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T23:48:16.109Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T23:48:16.110Z"}
+{"level":"info","message":"📋 Created new pipeline 65 for firm: American Discovery Capital","service":"manager","timestamp":"2025-08-22T23:49:34.522Z"}
