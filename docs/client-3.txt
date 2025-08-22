@@ -1,0 +1,43 @@
+  Data Quality & Review Features:
+  - Company details preview - Click to expand each company row to show legal entity name, location, exit status
+  - Data confidence indicators - Green/yellow/red badges showing match confidence levels
+  - Edit capabilities - Let users correct company names or legal entities before final report
+
+  Report Preview & Configuration:
+  - Output format options - Excel, PDF, CSV download choices
+  - Data filtering - Include/exclude exited companies, minimum employee thresholds
+  - Report sections - Checkboxes for which data to include (company info, insurance carriers, financials)
+
+  Workflow Management:
+  - Bulk actions - Select multiple firms and run them together
+  - Historical results - Quick access to previously generated reports <- This is what the "Saved" tab is for
+
+
+> You know what might be very helpful for the client - is if, after the research step is complete, they could review the companies found and add/edit them.
+
+● That's a brilliant idea! This would add significant value because:
+
+  User Benefits:
+  - Catch missed companies - AI research might miss some portfolio companies
+  - Remove false positives - Sometimes websites list companies that aren't actually in the portfolio
+  - Add known companies - Users often know of companies not listed on the website
+  - Correct company names - Fix variations or ensure proper legal names for better matching
+
+  Implementation suggestions:
+
+  After Research Step UI:
+  - Editable company list with add/remove buttons
+  - Confidence indicators showing how certain the AI was about each company
+  - "Add Company" button, no autocomplete
+  - Mark as "Exited" checkbox for each company (since users know portfolio status)
+
+  Enhanced Workflow:
+  1. Research finds initial company list
+  2. User review & edit step (new)
+  3. Legal resolution runs on the curated list
+  4. Data extraction proceeds
+
+  API Enhancement:
+  We'd need a new endpoint like:
+  PUT /api/pipeline/:id/companies
+  To allow users to update the company list before proceeding to legal resolution.

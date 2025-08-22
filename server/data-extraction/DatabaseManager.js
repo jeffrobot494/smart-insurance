@@ -269,6 +269,64 @@ class DatabaseManager {
   }
 
   /**
+   * Get all pipelines with pagination
+   * @param {Object} filters - Optional status, firm_name filters
+   * @param {number} limit - Maximum number of pipelines to return
+   * @param {number} offset - Number of pipelines to skip
+   * @returns {Object} { pipelines: Array, total: number }
+   */
+  async getAllPipelinesPaginated(filters = {}, limit = 20, offset = 0) {
+    try {
+      if (!this.pool) {
+        await this.initialize();
+      }
+      
+      let whereClause = '';
+      let values = [];
+      
+      if (filters.status) {
+        whereClause = ' WHERE status = $1';
+        values.push(filters.status);
+      }
+      
+      if (filters.firm_name) {
+        whereClause += (whereClause ? ' AND' : ' WHERE') + ` firm_name ILIKE $${values.length + 1}`;
+        values.push(`%${filters.firm_name}%`);
+      }
+      
+      // Get total count
+      const countResult = await this.query(
+        `SELECT COUNT(*) as total FROM pipelines${whereClause}`,
+        values
+      );
+      const total = parseInt(countResult.rows[0].total);
+      
+      // Get paginated results
+      const pipelineValues = [...values, limit, offset];
+      const result = await this.query(
+        `SELECT * FROM pipelines${whereClause} ORDER BY created_at DESC LIMIT $${values.length + 1} OFFSET $${values.length + 2}`,
+        pipelineValues
+      );
+      
+      // Parse JSONB companies field back to JavaScript objects
+      const pipelines = result.rows.map(pipeline => {
+        if (pipeline.companies && typeof pipeline.companies === 'string') {
+          pipeline.companies = JSON.parse(pipeline.companies);
+        }
+        return pipeline;
+      });
+      
+      return {
+        pipelines,
+        total
+      };
+    } catch (error) {
+      logger.error('❌ Failed to get paginated pipelines:', error.message);
+      throw error;
+    }
+  }
+
+  /**
    * Delete a pipeline and all its data
    * @param {number} pipelineId 
    */

@@ -2678,3 +2678,228 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-22T01:46:47.902Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-08-22T01:46:47.955Z"}
 {"level":"info","message":"Data extraction completed for pipeline 8","service":"manager","timestamp":"2025-08-22T01:46:47.992Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T19:59:19.822Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T19:59:23.525Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T19:59:23.829Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T19:59:23.830Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T19:59:23.831Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T19:59:23.831Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T19:59:23.837Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T19:59:23.844Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T19:59:24.278Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T19:59:24.281Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T19:59:24.283Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T19:59:24.292Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T19:59:24.294Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T19:59:24.457Z"}
+{"level":"info","message":"✓ Available tools: form5500_name_test, form5500_batch_name_test, firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-22T19:59:24.457Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T19:59:24.458Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T19:59:24.461Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T19:59:24.461Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T19:59:25.026Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T19:59:25.031Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T21:07:55.994Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T21:07:59.969Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T21:08:00.268Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T21:08:00.268Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T21:08:00.269Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T21:08:00.269Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T21:08:00.275Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T21:08:00.280Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T21:08:00.651Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T21:08:00.652Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T21:08:00.687Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-22T21:08:00.688Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T21:08:00.688Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T21:08:00.690Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T21:08:00.690Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T21:08:00.775Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T21:08:00.778Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T21:08:00.780Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T21:08:01.392Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T21:08:01.397Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 8. Company count: 2","service":"manager","timestamp":"2025-08-22T21:08:13.652Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T21:17:04.552Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T21:17:09.375Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T21:17:09.638Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T21:17:09.638Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T21:17:09.638Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T21:17:09.639Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T21:17:09.644Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T21:17:09.651Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T21:17:09.985Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T21:17:09.987Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T21:17:10.072Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-22T21:17:10.073Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T21:17:10.073Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T21:17:10.075Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T21:17:10.075Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T21:17:10.128Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T21:17:10.130Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T21:17:10.132Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T21:17:10.677Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T21:17:10.681Z"}
+{"level":"info","message":"📋 Created new pipeline 11 for firm: Apollo Global Management","service":"manager","timestamp":"2025-08-22T21:17:59.078Z"}
+{"level":"info","message":"📋 Created new pipeline 12 for firm: Blackstone Capital Partners","service":"manager","timestamp":"2025-08-22T21:18:06.139Z"}
+{"level":"info","message":"📋 Created new pipeline 13 for firm: KKR & Co","service":"manager","timestamp":"2025-08-22T21:18:13.036Z"}
+{"level":"info","message":"📋 Created new pipeline 14 for firm: Carlyle Group","service":"manager","timestamp":"2025-08-22T21:18:19.954Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T21:18:21.959Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T21:20:10.369Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T21:20:10.573Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T21:20:10.574Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T21:20:10.575Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T21:20:10.575Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T21:20:10.581Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T21:20:10.587Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T21:20:10.855Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T21:20:10.857Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T21:20:11.003Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T21:20:11.006Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T21:20:11.006Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-22T21:20:11.006Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T21:20:11.007Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T21:20:11.009Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T21:20:11.009Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T21:20:11.010Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T21:20:11.552Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T21:20:11.557Z"}
+{"level":"info","message":"📋 Created new pipeline 15 for firm: Test Firm 1","service":"manager","timestamp":"2025-08-22T21:20:29.782Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 15. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:30.005Z"}
+{"level":"info","message":"📋 Created new pipeline 16 for firm: Test Firm 2","service":"manager","timestamp":"2025-08-22T21:20:30.253Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 16. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:30.684Z"}
+{"level":"info","message":"📋 Created new pipeline 17 for firm: Test Firm 3","service":"manager","timestamp":"2025-08-22T21:20:30.925Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 17. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:31.120Z"}
+{"level":"info","message":"📋 Created new pipeline 18 for firm: Test Firm 4","service":"manager","timestamp":"2025-08-22T21:20:31.360Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 18. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:31.549Z"}
+{"level":"info","message":"📋 Created new pipeline 19 for firm: Test Firm 5","service":"manager","timestamp":"2025-08-22T21:20:31.823Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 19. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:32.019Z"}
+{"level":"info","message":"📋 Created new pipeline 20 for firm: Test Firm 6","service":"manager","timestamp":"2025-08-22T21:20:32.260Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 20. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:32.449Z"}
+{"level":"info","message":"📋 Created new pipeline 21 for firm: Test Firm 7","service":"manager","timestamp":"2025-08-22T21:20:32.716Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 21. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:32.923Z"}
+{"level":"info","message":"📋 Created new pipeline 22 for firm: Test Firm 8","service":"manager","timestamp":"2025-08-22T21:20:33.173Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 22. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:33.370Z"}
+{"level":"info","message":"📋 Created new pipeline 23 for firm: Test Firm 9","service":"manager","timestamp":"2025-08-22T21:20:33.639Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 23. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:33.838Z"}
+{"level":"info","message":"📋 Created new pipeline 24 for firm: Test Firm 10","service":"manager","timestamp":"2025-08-22T21:20:34.069Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 24. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:34.291Z"}
+{"level":"info","message":"📋 Created new pipeline 25 for firm: Test Firm 11","service":"manager","timestamp":"2025-08-22T21:20:34.533Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 25. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:34.729Z"}
+{"level":"info","message":"📋 Created new pipeline 26 for firm: Test Firm 12","service":"manager","timestamp":"2025-08-22T21:20:34.965Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 26. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:35.166Z"}
+{"level":"info","message":"📋 Created new pipeline 27 for firm: Test Firm 13","service":"manager","timestamp":"2025-08-22T21:20:35.411Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 27. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:35.601Z"}
+{"level":"info","message":"📋 Created new pipeline 28 for firm: Test Firm 14","service":"manager","timestamp":"2025-08-22T21:20:35.841Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 28. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:36.070Z"}
+{"level":"info","message":"📋 Created new pipeline 29 for firm: Test Firm 15","service":"manager","timestamp":"2025-08-22T21:20:36.540Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 29. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:36.739Z"}
+{"level":"info","message":"📋 Created new pipeline 30 for firm: Test Firm 16","service":"manager","timestamp":"2025-08-22T21:20:36.980Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 30. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:37.165Z"}
+{"level":"info","message":"📋 Created new pipeline 31 for firm: Test Firm 17","service":"manager","timestamp":"2025-08-22T21:20:37.412Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 31. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:37.902Z"}
+{"level":"info","message":"📋 Created new pipeline 32 for firm: Test Firm 18","service":"manager","timestamp":"2025-08-22T21:20:38.147Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 32. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:38.342Z"}
+{"level":"info","message":"📋 Created new pipeline 33 for firm: Test Firm 19","service":"manager","timestamp":"2025-08-22T21:20:38.587Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 33. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:38.793Z"}
+{"level":"info","message":"📋 Created new pipeline 34 for firm: Test Firm 20","service":"manager","timestamp":"2025-08-22T21:20:39.040Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 34. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:39.239Z"}
+{"level":"info","message":"📋 Created new pipeline 35 for firm: Test Firm 21","service":"manager","timestamp":"2025-08-22T21:20:39.479Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 35. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:39.671Z"}
+{"level":"info","message":"📋 Created new pipeline 36 for firm: Test Firm 22","service":"manager","timestamp":"2025-08-22T21:20:39.901Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 36. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:40.084Z"}
+{"level":"info","message":"📋 Created new pipeline 37 for firm: Test Firm 23","service":"manager","timestamp":"2025-08-22T21:20:40.310Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 37. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:40.503Z"}
+{"level":"info","message":"📋 Created new pipeline 38 for firm: Test Firm 24","service":"manager","timestamp":"2025-08-22T21:20:40.748Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 38. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:40.945Z"}
+{"level":"info","message":"📋 Created new pipeline 39 for firm: Test Firm 25","service":"manager","timestamp":"2025-08-22T21:20:41.208Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 39. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:41.410Z"}
+{"level":"info","message":"📋 Created new pipeline 40 for firm: Test Firm 26","service":"manager","timestamp":"2025-08-22T21:20:41.668Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 40. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:41.856Z"}
+{"level":"info","message":"📋 Created new pipeline 41 for firm: Test Firm 27","service":"manager","timestamp":"2025-08-22T21:20:42.120Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 41. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:42.321Z"}
+{"level":"info","message":"📋 Created new pipeline 42 for firm: Test Firm 28","service":"manager","timestamp":"2025-08-22T21:20:42.560Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 42. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:42.760Z"}
+{"level":"info","message":"📋 Created new pipeline 43 for firm: Test Firm 29","service":"manager","timestamp":"2025-08-22T21:20:42.990Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 43. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:43.190Z"}
+{"level":"info","message":"📋 Created new pipeline 44 for firm: Test Firm 30","service":"manager","timestamp":"2025-08-22T21:20:43.506Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 44. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:43.705Z"}
+{"level":"info","message":"📋 Created new pipeline 45 for firm: Test Firm 31","service":"manager","timestamp":"2025-08-22T21:20:43.951Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 45. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:44.160Z"}
+{"level":"info","message":"📋 Created new pipeline 46 for firm: Test Firm 32","service":"manager","timestamp":"2025-08-22T21:20:44.416Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 46. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:44.620Z"}
+{"level":"info","message":"📋 Created new pipeline 47 for firm: Test Firm 33","service":"manager","timestamp":"2025-08-22T21:20:44.855Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 47. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:45.072Z"}
+{"level":"info","message":"📋 Created new pipeline 48 for firm: Test Firm 34","service":"manager","timestamp":"2025-08-22T21:20:45.304Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 48. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:45.496Z"}
+{"level":"info","message":"📋 Created new pipeline 49 for firm: Test Firm 35","service":"manager","timestamp":"2025-08-22T21:20:45.735Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 49. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:45.936Z"}
+{"level":"info","message":"📋 Created new pipeline 50 for firm: Test Firm 36","service":"manager","timestamp":"2025-08-22T21:20:46.162Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 50. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:46.351Z"}
+{"level":"info","message":"📋 Created new pipeline 51 for firm: Test Firm 37","service":"manager","timestamp":"2025-08-22T21:20:46.580Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 51. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:46.773Z"}
+{"level":"info","message":"📋 Created new pipeline 52 for firm: Test Firm 38","service":"manager","timestamp":"2025-08-22T21:20:47.001Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 52. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:47.186Z"}
+{"level":"info","message":"📋 Created new pipeline 53 for firm: Test Firm 39","service":"manager","timestamp":"2025-08-22T21:20:47.430Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 53. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:47.629Z"}
+{"level":"info","message":"📋 Created new pipeline 54 for firm: Test Firm 40","service":"manager","timestamp":"2025-08-22T21:20:47.869Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 54. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:48.257Z"}
+{"level":"info","message":"📋 Created new pipeline 55 for firm: Test Firm 41","service":"manager","timestamp":"2025-08-22T21:20:48.495Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 55. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:48.699Z"}
+{"level":"info","message":"📋 Created new pipeline 56 for firm: Test Firm 42","service":"manager","timestamp":"2025-08-22T21:20:48.937Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 56. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:49.128Z"}
+{"level":"info","message":"📋 Created new pipeline 57 for firm: Test Firm 43","service":"manager","timestamp":"2025-08-22T21:20:49.369Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 57. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:49.559Z"}
+{"level":"info","message":"📋 Created new pipeline 58 for firm: Test Firm 44","service":"manager","timestamp":"2025-08-22T21:20:49.795Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 58. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:50.004Z"}
+{"level":"info","message":"📋 Created new pipeline 59 for firm: Test Firm 45","service":"manager","timestamp":"2025-08-22T21:20:50.247Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 59. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:50.453Z"}
+{"level":"info","message":"📋 Created new pipeline 60 for firm: Test Firm 46","service":"manager","timestamp":"2025-08-22T21:20:50.701Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 60. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:50.899Z"}
+{"level":"info","message":"📋 Created new pipeline 61 for firm: Test Firm 47","service":"manager","timestamp":"2025-08-22T21:20:51.152Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 61. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:51.359Z"}
+{"level":"info","message":"📋 Created new pipeline 62 for firm: Test Firm 48","service":"manager","timestamp":"2025-08-22T21:20:51.586Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 62. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:51.769Z"}
+{"level":"info","message":"📋 Created new pipeline 63 for firm: Test Firm 49","service":"manager","timestamp":"2025-08-22T21:20:52.003Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 63. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:52.189Z"}
+{"level":"info","message":"📋 Created new pipeline 64 for firm: Test Firm 50","service":"manager","timestamp":"2025-08-22T21:20:52.427Z"}
+{"level":"info","message":"✅ Updated companies for pipeline 64. Company count: 2","service":"manager","timestamp":"2025-08-22T21:20:52.626Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T23:02:05.354Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T23:02:08.975Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T23:02:09.285Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T23:02:09.286Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T23:02:09.287Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T23:02:09.287Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T23:02:09.293Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T23:02:09.301Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:09.761Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T23:02:09.763Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:02:09.811Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:09.813Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T23:02:09.816Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T23:02:09.911Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt, form5500_name_test, form5500_batch_name_test\n","service":"mcp","timestamp":"2025-08-22T23:02:09.911Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T23:02:09.912Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T23:02:09.914Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T23:02:09.915Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:10.503Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T23:02:10.508Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-22T23:02:27.773Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-22T23:02:31.100Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-22T23:02:31.358Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-22T23:02:31.358Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-22T23:02:31.358Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-22T23:02:31.359Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-22T23:02:31.364Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-22T23:02:31.370Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:31.636Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-22T23:02:31.639Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:02:31.767Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:31.769Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-22T23:02:31.771Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-22T23:02:31.788Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt, form5500_name_test, form5500_batch_name_test\n","service":"mcp","timestamp":"2025-08-22T23:02:31.789Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-22T23:02:31.790Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-22T23:02:31.792Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-22T23:02:31.792Z","url":"http://localhost:3000/api/health"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-22T23:02:32.374Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-22T23:02:32.378Z"}

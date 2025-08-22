@@ -288,6 +288,17 @@ class Manager {
   async getAllPipelines(filters = {}) {
     return await this.databaseManager.getAllPipelines(filters);
   }
+
+  /**
+   * Get all pipelines with pagination
+   * @param {Object} filters - Optional status, firm_name filters
+   * @param {number} limit - Maximum number of pipelines to return
+   * @param {number} offset - Number of pipelines to skip
+   * @returns {Object} { pipelines: Array, total: number }
+   */
+  async getAllPipelinesPaginated(filters = {}, limit = 20, offset = 0) {
+    return await this.databaseManager.getAllPipelinesPaginated(filters, limit, offset);
+  }
 }
 
 // Create a singleton instance

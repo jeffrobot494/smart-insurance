@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Insurance - Client v3 Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid #ddd;
+        }
+
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .input-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .input-row {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            padding: 40px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .pipeline-card {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .pipeline-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pipeline-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-complete {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-running {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-waiting {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .pipeline-content {
+            padding: 20px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        .company-list {
+            margin-top: 20px;
+        }
+
+        .company-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .company-item {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .company-header {
+            padding: 12px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .company-header:hover {
+            background: #e9ecef;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confidence-badge {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .confidence-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .confidence-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confidence-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .company-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .company-details {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .company-details.expanded {
+            display: block;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            width: 150px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        .editable-input {
+            border: 1px solid #ddd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .checkbox {
+            margin-right: 8px;
+        }
+
+        .add-company-form {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .add-company-form.show {
+            display: block;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .report-config {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .config-section {
+            margin-bottom: 20px;
+        }
+
+        .config-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s;
+        }
+
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tab-content {
+            display: block;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="tab active" onclick="switchTab('work')">Work</div>
+        <div class="tab" onclick="switchTab('saved')">Saved</div>
+    </div>
+
+    <div class="container">
+        <!-- Work Tab Content -->
+        <div id="workTab" class="tab-content">
+            <!-- Input Section -->
+            <div class="input-section">
+            <div class="input-row">
+                <input type="text" placeholder="Enter firm names here (comma separated)" value="American Discovery Capital, NexPhase Capital, Revelstoke Capital">
+            </div>
+            <div class="upload-area">
+                <div>📁 Upload a list of firms here</div>
+                <div style="font-size: 12px; color: #666; margin-top: 5px;">Drag & drop or click to browse</div>
+            </div>
+            <div class="button-row">
+                <button class="btn btn-primary" onclick="startPipeline()">Start</button>
+                <button class="btn btn-secondary">Clear</button>
+                <label style="display: flex; align-items: center; margin-left: 20px;">
+                    <input type="checkbox" class="checkbox" checked> Auto-complete workflow
+                </label>
+            </div>
+        </div>
+
+        <!-- Pipeline Results -->
+        <div id="pipelineResults">
+            <!-- Sheer Vision Partners - Workflow Complete -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">Sheer Vision Partners</div>
+                    <div class="status-badge status-complete">Workflow Complete</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies found: <span class="stat-value">1</span></div>
+                        <div class="stat">Companies with 5500 data found: <span class="stat-value">1</span></div>
+                    </div>
+
+                    <div class="company-list">
+                        <div class="company-section-header">
+                            <h4>Portfolio Companies (Final Results)</h4>
+                        </div>
+
+                        <!-- Complete Company with Form 5500 Data -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>VisionCare Solutions</span>
+                                    <span style="color: #28a745; font-weight: 600; margin-left: 10px;">✓ Form 5500 Data Found</span>
+                                </div>
+                                <div class="company-actions">
+                                    <span style="color: #666; font-size: 12px;">Active</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">VisionCare Solutions</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">VISIONCARE SOLUTIONS LLC</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Austin, Tx</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">EIN:</div>
+                                    <div class="detail-value">47-2841965</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Plan Year:</div>
+                                    <div class="detail-value">2023</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Active Participants:</div>
+                                    <div class="detail-value">485</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Insurance Carriers:</div>
+                                    <div class="detail-value">
+                                        <div>• Aetna Health Inc. (Health)</div>
+                                        <div>• MetLife (Life Insurance, Disability)</div>
+                                        <div>• Delta Dental (Dental)</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Total Charges Paid:</div>
+                                    <div class="detail-value">$2,847,392</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Broker Commission:</div>
+                                    <div class="detail-value">$89,450</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                        <button class="btn btn-secondary" onclick="editCompletedWorkflow('svp')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista Equity Partners - Legal Resolution Complete -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">Vista Equity Partners</div>
+                    <div class="status-badge status-complete">Legal Resolution Complete</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies found: <span class="stat-value">2</span></div>
+                        <div class="stat">Legal entities resolved: <span class="stat-value">2</span></div>
+                    </div>
+
+                    <div class="company-list">
+                        <div class="company-section-header">
+                            <h4>Portfolio Companies (Legal Entities Resolved - Click to edit)</h4>
+                        </div>
+
+                        <!-- Company with resolved legal entity -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>TechFlow Solutions</span>
+                                    <span style="color: #28a745; font-weight: 600; margin-left: 10px;">✓ Legal Entity Found</span>
+                                </div>
+                                <div class="company-actions">
+                                    <span style="color: #666; font-size: 12px;">Active</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="TechFlow Solutions">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="TECHFLOW SOLUTIONS LLC" style="background: #d4edda;">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">San Francisco, Ca</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Match Confidence:</div>
+                                    <div class="detail-value">High - Exact match found in Form 5500 database</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Exit Status:</div>
+                                    <div class="detail-value">
+                                        <label style="display: flex; align-items: center;">
+                                            <input type="checkbox" class="checkbox"> Exited
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Company with questionable legal entity match -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-medium">MED</span>
+                                    <span>DataCore Analytics</span>
+                                    <span style="color: #856404; font-weight: 600; margin-left: 10px;">⚠ Review Needed</span>
+                                </div>
+                                <div class="company-actions">
+                                    <span style="color: #666; font-size: 12px;">Active</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="DataCore Analytics">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="DATACORE ANALYTICS INC" style="background: #fff3cd;">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Chicago, Il</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Match Confidence:</div>
+                                    <div class="detail-value">Medium - Partial match, manual review recommended</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Exit Status:</div>
+                                    <div class="detail-value">
+                                        <label style="display: flex; align-items: center;">
+                                            <input type="checkbox" class="checkbox"> Exited
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="proceedToDataExtraction('vista')">Proceed to Data Extraction</button>
+                        <button class="btn btn-secondary" onclick="editCompletedWorkflow('vista')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- American Discovery Capital - Research Complete -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">American Discovery Capital</div>
+                    <div class="status-badge status-complete">Research Complete</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies found: <span class="stat-value">7</span></div>
+                        <div class="stat">Ready for review</div>
+                    </div>
+
+                    <div class="company-list">
+                        <div class="company-section-header">
+                            <h4>Portfolio Companies (Click to edit)</h4>
+                            <button class="btn btn-success" onclick="toggleAddForm('adc')">+ Add Company</button>
+                        </div>
+
+                        <!-- Company Items -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>American Pain Consortium</span>
+                                </div>
+                                <div class="company-actions">
+                                    <input type="checkbox" class="checkbox"> Exited
+                                    <button class="btn btn-danger" onclick="removeCompany(this, event)">Remove</button>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="American Pain Consortium">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">AMERICAN PAIN CONSORTIUM</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Carmel, In</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Confidence:</div>
+                                    <div class="detail-value">High - Found on portfolio page</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>Entertainment Partners</span>
+                                </div>
+                                <div class="company-actions">
+                                    <input type="checkbox" class="checkbox" checked> Exited
+                                    <button class="btn btn-danger" onclick="removeCompany(this, event)">Remove</button>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="Entertainment Partners">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">Entertainment Partners</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Los Angeles, Ca</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Confidence:</div>
+                                    <div class="detail-value">High - Listed in portfolio section</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-medium">MED</span>
+                                    <span>SmartBug Media</span>
+                                </div>
+                                <div class="company-actions">
+                                    <input type="checkbox" class="checkbox"> Exited
+                                    <button class="btn btn-danger" onclick="removeCompany(this, event)">Remove</button>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">
+                                        <input type="text" class="editable-input" value="SmartBug Media">
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">SMARTBUG OPERATING LLC</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Newport Beach, Ca</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Confidence:</div>
+                                    <div class="detail-value">Medium - Found in news section</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add Company Form -->
+                        <div id="add-form-adc" class="add-company-form">
+                            <h5 style="margin-bottom: 15px;">Add New Company</h5>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Company Name *</label>
+                                    <input type="text" class="editable-input" placeholder="Enter company name">
+                                </div>
+                                <div class="form-group" style="flex: 0 0 120px;">
+                                    <label class="form-label">Status</label>
+                                    <label style="display: flex; align-items: center; margin-top: 8px;">
+                                        <input type="checkbox" class="checkbox"> Exited
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="button-row">
+                                <button class="btn btn-success" onclick="addCompany('adc')">Add Company</button>
+                                <button class="btn btn-secondary" onclick="toggleAddForm('adc')">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="proceedToLegalResolution('adc')">Proceed to Legal Resolution</button>
+                        <button class="btn btn-secondary" onclick="editCompletedWorkflow('adc')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NexPhase Capital - Research Running -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">NexPhase Capital</div>
+                    <div class="status-badge status-running">Research Running...</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Progress: <span class="stat-value">60%</span></div>
+                        <div class="stat">Estimated time: <span class="stat-value">2 minutes</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revelstoke Capital - Waiting -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div class="pipeline-title">Revelstoke Capital</div>
+                    <div class="status-badge status-waiting">Waiting</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Status: <span class="stat-value">Queued</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Configuration (Hidden initially) -->
+        <div id="reportConfig" class="report-config hidden">
+            <h3>Generate Report</h3>
+            
+            <div class="config-section">
+                <div class="config-title">Output Format</div>
+                <div class="checkbox-group">
+                    <label><input type="radio" name="format" value="excel" checked> Excel</label>
+                    <label><input type="radio" name="format" value="pdf"> PDF</label>
+                    <label><input type="radio" name="format" value="csv"> CSV</label>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <div class="config-title">Include in Report</div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> Company Information</label>
+                    <label><input type="checkbox" checked> Insurance Carriers</label>
+                    <label><input type="checkbox" checked> Financial Data</label>
+                    <label><input type="checkbox"> Legal Entity Details</label>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <div class="config-title">Filters</div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox"> Exclude Exited Companies</label>
+                    <label><input type="checkbox"> Minimum 100 Employees</label>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn-success">Generate Report</button>
+                <button class="btn btn-secondary" onclick="hideReportConfig()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Saved Tab Content -->
+        <div id="savedTab" class="tab-content hidden">
+            <div style="margin-bottom: 20px;">
+                <h2>Previously Run Pipelines</h2>
+                <p style="color: #666; margin-top: 5px;">View and manage your saved pipeline results</p>
+            </div>
+
+            <!-- Saved Pipeline Results -->
+            <div class="pipeline-results">
+                <!-- Recent completed pipeline -->
+                <div class="pipeline-card">
+                    <div class="pipeline-header">
+                        <div>
+                            <div class="pipeline-title">Blackstone Capital Partners</div>
+                            <div style="font-size: 12px; color: #666;">Completed: Dec 15, 2024 - 3:42 PM</div>
+                        </div>
+                        <div class="status-badge status-complete">Complete</div>
+                    </div>
+                    <div class="pipeline-content">
+                        <div class="stats-row">
+                            <div class="stat">Portfolio companies: <span class="stat-value">12</span></div>
+                            <div class="stat">With 5500 data: <span class="stat-value">9</span></div>
+                            <div class="stat">Active participants: <span class="stat-value">8,450</span></div>
+                            <div class="stat">Total charges: <span class="stat-value">$12.4M</span></div>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                            <button class="btn btn-secondary" onclick="editSavedPipeline('blackstone')">Edit</button>
+                            <button class="btn btn-secondary" onclick="viewPipelineDetails('blackstone')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another completed pipeline -->
+                <div class="pipeline-card">
+                    <div class="pipeline-header">
+                        <div>
+                            <div class="pipeline-title">Apollo Global Management</div>
+                            <div style="font-size: 12px; color: #666;">Completed: Dec 14, 2024 - 1:15 PM</div>
+                        </div>
+                        <div class="status-badge status-complete">Complete</div>
+                    </div>
+                    <div class="pipeline-content">
+                        <div class="stats-row">
+                            <div class="stat">Portfolio companies: <span class="stat-value">8</span></div>
+                            <div class="stat">With 5500 data: <span class="stat-value">6</span></div>
+                            <div class="stat">Active participants: <span class="stat-value">5,230</span></div>
+                            <div class="stat">Total charges: <span class="stat-value">$7.8M</span></div>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                            <button class="btn btn-secondary" onclick="editSavedPipeline('apollo')">Edit</button>
+                            <button class="btn btn-secondary" onclick="viewPipelineDetails('apollo')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Older pipeline -->
+                <div class="pipeline-card">
+                    <div class="pipeline-header">
+                        <div>
+                            <div class="pipeline-title">KKR & Co</div>
+                            <div style="font-size: 12px; color: #666;">Completed: Dec 12, 2024 - 11:30 AM</div>
+                        </div>
+                        <div class="status-badge status-complete">Complete</div>
+                    </div>
+                    <div class="pipeline-content">
+                        <div class="stats-row">
+                            <div class="stat">Portfolio companies: <span class="stat-value">15</span></div>
+                            <div class="stat">With 5500 data: <span class="stat-value">12</span></div>
+                            <div class="stat">Active participants: <span class="stat-value">11,890</span></div>
+                            <div class="stat">Total charges: <span class="stat-value">$18.2M</span></div>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                            <button class="btn btn-secondary" onclick="editSavedPipeline('kkr')">Edit</button>
+                            <button class="btn btn-secondary" onclick="viewPipelineDetails('kkr')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Failed pipeline example -->
+                <div class="pipeline-card">
+                    <div class="pipeline-header">
+                        <div>
+                            <div class="pipeline-title">Carlyle Group</div>
+                            <div style="font-size: 12px; color: #666;">Failed: Dec 11, 2024 - 4:20 PM</div>
+                        </div>
+                        <div class="status-badge" style="background: #f8d7da; color: #721c24;">Failed</div>
+                    </div>
+                    <div class="pipeline-content">
+                        <div class="stats-row">
+                            <div class="stat">Status: <span style="color: #dc3545;">Research step failed</span></div>
+                            <div class="stat">Error: <span style="color: #dc3545;">Website access blocked</span></div>
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-primary" onclick="retryPipeline('carlyle')">Retry</button>
+                            <button class="btn btn-secondary" onclick="deletePipeline('carlyle')">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Older pipelines summary -->
+                <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: #666;">
+                    <p>Showing recent 5 pipelines. <a href="#" style="color: #007bff;">Load more...</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startPipeline() {
+            document.getElementById('pipelineResults').style.display = 'block';
+        }
+
+        function toggleCompanyDetails(header) {
+            const details = header.nextElementSibling;
+            const icon = header.querySelector('.expand-icon');
+            
+            details.classList.toggle('expanded');
+            icon.classList.toggle('rotated');
+        }
+
+        function removeCompany(button, event) {
+            event.stopPropagation();
+            if (confirm('Remove this company from the list?')) {
+                button.closest('.company-item').remove();
+            }
+        }
+
+        function toggleAddForm(firmId) {
+            const form = document.getElementById('add-form-' + firmId);
+            form.classList.toggle('show');
+            
+            if (form.classList.contains('show')) {
+                form.querySelector('input').focus();
+            }
+        }
+
+        function addCompany(firmId) {
+            const form = document.getElementById('add-form-' + firmId);
+            const companyName = form.querySelector('input[type="text"]').value;
+            const isExited = form.querySelector('input[type="checkbox"]').checked;
+            
+            if (!companyName.trim()) {
+                alert('Please enter a company name');
+                return;
+            }
+
+            // Create new company item
+            const companyList = form.previousElementSibling;
+            const newCompany = document.createElement('div');
+            newCompany.className = 'company-item';
+            newCompany.innerHTML = `
+                <div class="company-header" onclick="toggleCompanyDetails(this)">
+                    <div class="company-info">
+                        <span class="confidence-badge confidence-low">USER</span>
+                        <span>${companyName}</span>
+                    </div>
+                    <div class="company-actions">
+                        <input type="checkbox" class="checkbox" ${isExited ? 'checked' : ''}> Exited
+                        <button class="btn btn-danger" onclick="removeCompany(this, event)">Remove</button>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="company-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Company Name:</div>
+                        <div class="detail-value">
+                            <input type="text" class="editable-input" value="${companyName}">
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Legal Entity:</div>
+                        <div class="detail-value">Pending legal resolution...</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Location:</div>
+                        <div class="detail-value">Pending legal resolution...</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Confidence:</div>
+                        <div class="detail-value">User Added</div>
+                    </div>
+                </div>
+            `;
+
+            companyList.appendChild(newCompany);
+            
+            // Clear form and hide
+            form.querySelector('input[type="text"]').value = '';
+            form.querySelector('input[type="checkbox"]').checked = false;
+            form.classList.remove('show');
+
+            // Update count
+            updateCompanyCount(firmId);
+        }
+
+        function updateCompanyCount(firmId) {
+            // This would update the company count in the stats
+            console.log('Update company count for', firmId);
+        }
+
+        function proceedToLegalResolution(firmId) {
+            alert('Proceeding to Legal Resolution step...');
+            // This would trigger the next pipeline step
+        }
+
+        function proceedToDataExtraction(firmId) {
+            alert('Proceeding to Data Extraction step...\nLegal entity names will be saved and used for Form 5500 database matching.');
+            // This would trigger the data extraction pipeline step
+        }
+
+        function showReportConfig() {
+            document.getElementById('reportConfig').classList.remove('hidden');
+        }
+
+        function hideReportConfig() {
+            document.getElementById('reportConfig').classList.add('hidden');
+        }
+
+        function editCompletedWorkflow(firmId) {
+            alert('Edit mode: This would allow you to modify companies, add/remove entries, and re-run specific pipeline steps if needed.');
+            // This would enable editing mode for completed workflows
+        }
+
+        function switchTab(tabName) {
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide tab content
+            document.getElementById('workTab').classList.toggle('hidden', tabName !== 'work');
+            document.getElementById('savedTab').classList.toggle('hidden', tabName !== 'saved');
+        }
+
+        function editSavedPipeline(pipelineId) {
+            alert(`Edit saved pipeline: ${pipelineId}\nThis would allow you to modify the saved results and regenerate reports.`);
+        }
+
+        function viewPipelineDetails(pipelineId) {
+            alert(`View details for: ${pipelineId}\nThis would show the full company list with all Form 5500 data, similar to the Work tab expanded view.`);
+        }
+
+        function retryPipeline(pipelineId) {
+            alert(`Retry failed pipeline: ${pipelineId}\nThis would restart the pipeline from the failed step.`);
+        }
+
+        function deletePipeline(pipelineId) {
+            if (confirm(`Delete pipeline: ${pipelineId}?\nThis action cannot be undone.`)) {
+                alert('Pipeline deleted.');
+                // Would remove the pipeline from the saved list
+            }
+        }
+
+        // Auto-show report config when all steps complete (for demo)
+        // Removed the automatic "Generate Report" button behavior
+    </script>
+</body>
+</html>

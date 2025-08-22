@@ -68,21 +68,41 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// GET all pipelines
+// GET all pipelines with pagination
 router.get('/', async (req, res) => {
   try {
-    const { status, firm_name } = req.query;
+    const { status, firm_name, limit = 20, offset = 0 } = req.query;
+    
+    // Parse pagination parameters
+    const limitNum = parseInt(limit);
+    const offsetNum = parseInt(offset);
+    
+    if (isNaN(limitNum) || limitNum < 1 || limitNum > 100) {
+      return res.status(400).json({
+        error: 'limit must be a number between 1 and 100'
+      });
+    }
+    
+    if (isNaN(offsetNum) || offsetNum < 0) {
+      return res.status(400).json({
+        error: 'offset must be a non-negative number'
+      });
+    }
     
     const filters = {};
     if (status) filters.status = status;
     if (firm_name) filters.firm_name = firm_name;
     
-    const pipelines = await manager.getAllPipelines(filters);
+    // Get paginated pipelines
+    const result = await manager.getAllPipelinesPaginated(filters, limitNum, offsetNum);
     
     res.json({
       success: true,
-      pipelines: pipelines,
-      count: pipelines.length
+      pipelines: result.pipelines,
+      total: result.total,
+      limit: limitNum,
+      offset: offsetNum,
+      has_more: (offsetNum + limitNum) < result.total
     });
     
   } catch (error) {
@@ -261,6 +281,66 @@ router.post('/:id/retry/:step', async (req, res) => {
 
   } catch (error) {
     logger.error('Retry step error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// PUT update companies in pipeline
+router.put('/:id/companies', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    const { companies } = req.body;
+    
+    if (isNaN(pipelineId)) {
+      return res.status(400).json({
+        error: 'Valid pipeline ID is required'
+      });
+    }
+
+    if (!companies || !Array.isArray(companies)) {
+      return res.status(400).json({
+        error: 'companies array is required in request body'
+      });
+    }
+
+    // Validate company objects
+    for (const company of companies) {
+      if (!company.name || typeof company.name !== 'string' || company.name.trim().length === 0) {
+        return res.status(400).json({
+          error: 'Each company must have a valid name'
+        });
+      }
+    }
+
+    // Get current pipeline to verify it exists
+    const currentPipeline = await manager.databaseManager.getPipeline(pipelineId);
+    if (!currentPipeline) {
+      return res.status(404).json({
+        error: 'Pipeline not found'
+      });
+    }
+
+    // Update companies in the pipeline
+    await manager.databaseManager.updatePipeline(pipelineId, {
+      companies: JSON.stringify(companies) // Convert to JSON string for JSONB storage
+    });
+
+    // Return updated pipeline
+    const updatedPipeline = await manager.databaseManager.getPipeline(pipelineId);
+    
+    logger.info(`✅ Updated companies for pipeline ${pipelineId}. Company count: ${companies.length}`);
+    
+    res.json({
+      success: true,
+      message: 'Companies updated successfully',
+      pipeline: updatedPipeline
+    });
+    
+  } catch (error) {
+    logger.error('Update companies error:', error);
     res.status(500).json({
       success: false,
       error: error.message
