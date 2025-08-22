@@ -87,7 +87,7 @@ class Manager {
 
       // Update pipeline with research results
       await this.databaseManager.updatePipeline(pipelineId, {
-        companies: companyObjects,
+        companies: JSON.stringify(companyObjects), // Convert to JSON string for JSONB storage
         status: 'research_complete',
         research_completed_at: new Date()
       });
@@ -169,7 +169,7 @@ class Manager {
 
       // Update pipeline with enriched company objects
       await this.databaseManager.updatePipeline(pipelineId, {
-        companies: enrichedCompanies,
+        companies: JSON.stringify(enrichedCompanies), // Convert to JSON string for JSONB storage
         status: 'legal_resolution_complete',
         legal_resolution_completed_at: new Date()
       });
@@ -180,6 +180,7 @@ class Manager {
       
     } catch (error) {
       logger.error(`❌ Legal resolution failed for pipeline ${pipelineId}:`, error.message);
+      logger.error('Full error details:', error);
       
       await this.databaseManager.updatePipeline(pipelineId, {
         status: 'legal_resolution_failed'
@@ -220,7 +221,7 @@ class Manager {
 
       // Update pipeline with final results
       await this.databaseManager.updatePipeline(pipelineId, {
-        companies: companiesWithForm5500,
+        companies: JSON.stringify(companiesWithForm5500), // Convert to JSON string for JSONB storage
         status: 'data_extraction_complete',
         data_extraction_completed_at: new Date()
       });

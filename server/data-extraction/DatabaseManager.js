@@ -224,11 +224,9 @@ class DatabaseManager {
       ).join(', ');
       
       const values = [pipelineId, ...Object.values(updates), new Date()];
+      const finalQuery = `UPDATE pipelines SET ${setClause}, updated_at = $${Object.keys(updates).length + 2} WHERE pipeline_id = $1`;
       
-      await this.query(
-        `UPDATE pipelines SET ${setClause}, updated_at = $${values.length} WHERE pipeline_id = $1`,
-        values
-      );
+      await this.query(finalQuery, values);
     } catch (error) {
       logger.error('❌ Failed to update pipeline:', error.message);
       throw error;

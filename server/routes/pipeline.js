@@ -268,6 +268,46 @@ router.post('/:id/retry/:step', async (req, res) => {
   }
 });
 
+// POST update pipeline (for testing database updates directly)
+router.post('/:id/update', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    const { updates } = req.body;
+    
+    if (isNaN(pipelineId)) {
+      return res.status(400).json({
+        error: 'Valid pipeline ID is required'
+      });
+    }
+
+    if (!updates || typeof updates !== 'object') {
+      return res.status(400).json({
+        error: 'updates object is required in request body'
+      });
+    }
+
+    // Convert companies array to JSON string for JSONB storage
+    if (updates.companies && Array.isArray(updates.companies)) {
+      updates.companies = JSON.stringify(updates.companies);
+    }
+
+    await manager.databaseManager.updatePipeline(pipelineId, updates);
+    
+    res.json({
+      success: true,
+      message: 'Pipeline updated successfully',
+      pipeline_id: pipelineId
+    });
+    
+  } catch (error) {
+    logger.error('Update pipeline error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // DELETE pipeline
 router.delete('/:id', async (req, res) => {
   try {

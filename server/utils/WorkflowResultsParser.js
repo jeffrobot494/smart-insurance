@@ -2,6 +2,16 @@
 const { manager: logger } = require('./logger');
 
 class WorkflowResultsParser {
+
+  /**
+   * Helper function to format city/state names (capitalize first letter, lowercase rest)
+   * @param {string} text - Text to format
+   * @returns {string} Properly formatted text
+   */
+  static formatLocationText(text) {
+    if (!text || typeof text !== 'string') return text;
+    return text.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+  }
   
   /**
    * Parse workflow results using the standardized result objects
@@ -51,8 +61,14 @@ class WorkflowResultsParser {
           continue;
         }
         
-        // Parse JSON output from workflow
-        const parsed = JSON.parse(output);
+        // Parse JSON output from workflow - extract JSON from mixed text/JSON output
+        const jsonMatch = output.match(/\{.*\}/s);
+        if (!jsonMatch) {
+          logger.warn('No JSON found in research output:', output);
+          continue;
+        }
+        
+        const parsed = JSON.parse(jsonMatch[0]);
         
         // Extract companies array from standardized format
         const companyNames = parsed.companies || [];
@@ -98,8 +114,14 @@ class WorkflowResultsParser {
           continue;
         }
         
-        // Parse JSON output from workflow
-        const parsed = JSON.parse(output);
+        // Parse JSON output from workflow - extract JSON from mixed text/JSON output
+        const jsonMatch = output.match(/\{.*\}/s);
+        if (!jsonMatch) {
+          logger.warn('No JSON found in legal resolution output:', output);
+          continue;
+        }
+        
+        const parsed = JSON.parse(jsonMatch[0]);
         
         // Extract company information and create enriched company object
         const companyObject = this.extractCompanyObject(parsed, result.input);
@@ -142,8 +164,16 @@ class WorkflowResultsParser {
     // Extract legal entity data from standardized format
     if (parsed.form5500_match) {
       companyObject.legal_entity_name = parsed.form5500_match.legal_name;
-      companyObject.city = parsed.form5500_match.city;
-      companyObject.state = parsed.form5500_match.state;
+      
+      // Handle nested location structure
+      if (parsed.form5500_match.location) {
+        companyObject.city = this.formatLocationText(parsed.form5500_match.location.city);
+        companyObject.state = this.formatLocationText(parsed.form5500_match.location.state);
+      } else if (parsed.headquarters_location) {
+        // Fallback to headquarters_location if form5500_match.location not available
+        companyObject.city = this.formatLocationText(parsed.headquarters_location.city);
+        companyObject.state = this.formatLocationText(parsed.headquarters_location.state);
+      }
     }
     
     // Extract exited flag from portfolio verification step

@@ -1,56 +1,45 @@
-curl -X POST http://localhost:3000/api/workflow     -H "Content-Type: application/json"     -d '{
-      "workflowname": "pe_firm_research.json",
-      "input": ["Firm: American Discovery Capital -> Company: CEI Vision Partners"]
-    }'
+Create a new pipeline:
+curl -X POST http://localhost:3000/api/pipeline -H "Content-Type: application/json" -d '{"firm_name": "American Discovery Capital"}'
 
+Get single pipeline (replace {id} with actual pipeline ID):
+curl -X GET http://localhost:3000/api/pipeline/{id}
 
-curl -X POST http://localhost:3000/api/workflow/2     -H "Content-Type: application/json"     -d '{
-      "workflowname": "pe_research.json",
-      "input": ["American Discovery Capital"]
-    }'
+Get all pipelines:
+curl -X GET http://localhost:3000/api/pipeline
 
-curl -X GET http://localhost:3000/api/workflow/3     -H "Content-Type: application/json"     -d '{
-      "workflowname": "pe_research.json",
-      "input": ["American Discovery Capital"]
-    }'
+Get pipelines with filters:
+# Filter by status
+curl -X GET "http://localhost:3000/api/pipeline?status=pending"
 
-curl -X GET http://localhost:3000/api/workflow/extract5500/1     -H "Content-Type: application/json"     -d '{
-      
-    }'
+# Filter by firm name
+curl -X GET "http://localhost:3000/api/pipeline?firm_name=Test%20Firm"
 
-curl -X GET http://localhost:3000/api/workflow/1/results     -H "Content-Type: application/json"     -d '{
-      
-    }'
+# Multiple filters
+curl -X GET "http://localhost:3000/api/pipeline?status=pending&firm_name=Test%20Firm"
 
-curl -X GET http://localhost:3000/api/polling/1     -H "Content-Type: application/json"     -d '{
-      
-    }'
+Run research step:
+curl -X POST http://localhost:3000/api/pipeline/{id}/research
 
- 11595 N. MERIDIAN ST
-SUITE 400, CARMEL, IN, 46032
+Run legal resolution step:
+curl -X POST http://localhost:3000/api/pipeline/{id}/legal-resolution
 
+Run data extraction step:
+curl -X POST http://localhost:3000/api/pipeline/{id}/data-extraction
 
-curl --request POST \
-  --url https://api.perplexity.ai/chat/completions \
-  --header 'Authorization: Bearer <
->' \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "model": "sonar-deep-research",
-  "messages": [
-    {"role": "user", "content": "Entertainment Partners is a payroll company in Burbank, CA. It does not appear in Department of Labor form 5500 public datasets. This means another entity must file its form 5500s. I need the name of that entity. What entity is doing business as Entertainment Partners? I do not want parent companies or subsidiaries of Entertainment Partners. I am looking for the legal entity name that files Form 5500s for Entertainment Partners employee benefit plans."}
-  ]
-}'
+Run complete pipeline (convenience route):
+curl -X POST http://localhost:3000/api/pipeline/run-complete \
+-H "Content-Type: application/json" \
+-d '{"firm_name": "Test Firm"}'
 
+Retry a failed step:
+# Retry research
+curl -X POST http://localhost:3000/api/pipeline/{id}/retry/research
 
-curl https://api.openai.com/v1/responses \
-  -H "Authorization: Bearer s" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "o3-deep-research",
-    "input": "Entertainment Partners is a payroll company in Burbank, CA. It does not appear in Department of Labor form 5500 public datasets. This means another entity must file its form 5500s. I need the name of that entity. What entity is doing business as Entertainment Partners? I do not want parent companies or subsidiaries of Entertainment Partners. I am looking for the legal entity name that files Form 5500s for Entertainment Partners employee benefit plans.",
-    "tools": [
-      { "type": "web_search_preview" },
-      { "type": "code_interpreter", "container": { "type": "auto" } }
-    ]
-  }'
+# Retry legal resolution
+curl -X POST http://localhost:3000/api/pipeline/{id}/retry/legal_resolution
+
+# Retry data extraction
+curl -X POST http://localhost:3000/api/pipeline/{id}/retry/data_extraction
+
+Delete pipeline:
+curl -X DELETE http://localhost:3000/api/pipeline/{id}
