@@ -22,6 +22,11 @@ class TabController {
         console.log('TabController: Initializing tab controller');
         this.setupEventListeners();
         this.loadTabState();
+        
+        // Set work tab as active (but don't load content during init)
+        this.currentTab = 'work';
+        this.updateTabButtons();
+        this.updateContentVisibility();
     }
 
     setupEventListeners() {
@@ -123,13 +128,10 @@ class TabController {
             return;
         }
 
-        // If app has active pipelines, refresh them
-        if (this.app && this.app.activePipelines && this.app.activePipelines.size > 0) {
+        // Only refresh active pipelines if app is fully initialized
+        if (this.app && this.app.isInitialized && typeof this.app.refreshActivePipelines === 'function') {
             console.log('TabController: Refreshing active pipelines in work tab');
-            // This will be handled by the app's refreshActivePipelines method
-            if (typeof this.app.refreshActivePipelines === 'function') {
-                this.app.refreshActivePipelines();
-            }
+            this.app.refreshActivePipelines();
         }
     }
 

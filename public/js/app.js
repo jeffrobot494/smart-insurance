@@ -35,11 +35,15 @@ class SmartInsuranceApp {
             // Setup event listeners
             this.setupEventListeners();
             
+            // Mark as initialized first (before other methods that check this)
+            this.isInitialized = true;
+            
             // Load any saved state
             this.loadApplicationState();
             
-            // Mark as initialized
-            this.isInitialized = true;
+            // Load initial data for the work tab
+            await this.refreshActivePipelines();
+            
             console.log('✅ SmartInsuranceApp: Initialization complete');
             
         } catch (error) {
@@ -156,8 +160,14 @@ class SmartInsuranceApp {
                 // Show success message
                 this.showSuccess(`Created ${result.totalCreated} pipeline(s) successfully`);
                 
-                // TODO: Phase 2 - Render pipeline cards
-                console.log('SmartInsuranceApp: Pipeline card rendering will be implemented in Phase 2');
+                // Render pipeline cards for created pipelines
+                result.results.forEach(item => {
+                    if (item.success && item.pipeline) {
+                        this.cards.createPipelineCard(item.pipeline);
+                    }
+                });
+                
+                console.log('SmartInsuranceApp: Created and rendered pipeline cards');
                 
             } else {
                 const errorMsg = `Failed to create some pipelines. Created: ${result.totalCreated}, Failed: ${result.totalFailed}`;
@@ -254,7 +264,7 @@ class SmartInsuranceApp {
         this.tabs.loadSavedTab(nextPage);
     }
 
-    // Pipeline action handlers (placeholders for future phases)
+    // Pipeline action handlers
     handleGenerateReport(pipelineId) {
         console.log(`SmartInsuranceApp: Generate report for pipeline ${pipelineId} - Implementation coming in Phase 5`);
         this.showInfo('Report generation will be available in Phase 5');
@@ -265,13 +275,92 @@ class SmartInsuranceApp {
         this.showInfo('Pipeline editing will be available in Phase 3');
     }
 
-    handleDeletePipeline(pipelineId) {
-        console.log(`SmartInsuranceApp: Delete pipeline ${pipelineId} - Implementation coming in Phase 4`);
-        this.showInfo('Pipeline deletion will be available in Phase 4');
+    async handleDeletePipeline(pipelineId) {
+        console.log(`SmartInsuranceApp: Delete pipeline ${pipelineId}`);
+        
+        try {
+            // Show loading state
+            Utils.showLoading('Deleting pipeline...');
+            
+            // Call API to delete pipeline
+            const result = await this.api.deletePipeline(pipelineId);
+            
+            Utils.hideLoading();
+            
+            if (result.success) {
+                // Remove from active pipelines
+                this.activePipelines.delete(pipelineId);
+                
+                // Stop any polling for this pipeline
+                this.cards.stopStatusPolling(pipelineId);
+                
+                // Remove the card from the UI
+                const cardElement = Utils.findElement(`[data-pipeline-id="${pipelineId}"]`);
+                if (cardElement) {
+                    cardElement.remove();
+                }
+                
+                console.log(`SmartInsuranceApp: Pipeline ${pipelineId} deleted successfully`);
+                
+            } else {
+                this.showError(`Failed to delete pipeline: ${result.error}`);
+            }
+            
+        } catch (error) {
+            Utils.hideLoading();
+            console.error(`SmartInsuranceApp: Error deleting pipeline ${pipelineId}:`, error);
+            this.showError(`Failed to delete pipeline: ${error.message}`);
+        }
+    }
+
+    handleRetryPipeline(pipelineId) {
+        console.log(`SmartInsuranceApp: Retry pipeline ${pipelineId}`);
+        this.showInfo('Pipeline retry will be available in Phase 4');
+    }
+
+    async handleProceedToStep(pipelineId, step) {
+        console.log(`SmartInsuranceApp: Proceeding to ${step} for pipeline ${pipelineId}`);
+        
+        try {
+            Utils.showLoading(`Starting ${step.replace('-', ' ')}...`);
+            
+            let result;
+            switch (step) {
+                case 'legal-resolution':
+                    result = await this.api.runLegalResolution(pipelineId);
+                    break;
+                case 'data-extraction':
+                    result = await this.api.runDataExtraction(pipelineId);
+                    break;
+                default:
+                    throw new Error(`Unknown step: ${step}`);
+            }
+            
+            Utils.hideLoading();
+            
+            if (result.success) {
+                this.showSuccess(`${step.replace('-', ' ')} started successfully`);
+                // Start polling for status updates
+                this.cards.startStatusPolling(pipelineId);
+            } else {
+                this.showError(`Failed to start ${step.replace('-', ' ')}: ${result.error}`);
+            }
+            
+        } catch (error) {
+            Utils.hideLoading();
+            console.error(`SmartInsuranceApp: Error proceeding to ${step}:`, error);
+            this.showError(`Failed to start ${step.replace('-', ' ')}: ${error.message}`);
+        }
     }
 
     // State management
     saveApplicationState() {
+        // Safety check - ensure components are initialized
+        if (!this.tabs || !this.activePipelines) {
+            console.warn('SmartInsuranceApp: Components not ready for saveApplicationState');
+            return;
+        }
+        
         const state = {
             currentTab: this.tabs.getCurrentTab(),
             activePipelines: Array.from(this.activePipelines.entries()),
@@ -295,8 +384,54 @@ class SmartInsuranceApp {
     }
 
     // Pipeline management
-    refreshActivePipelines() {
-        console.log('SmartInsuranceApp: Refreshing active pipelines - Implementation coming in Phase 2');
+    async refreshActivePipelines() {
+        console.log('SmartInsuranceApp: Refreshing active pipelines');
+        
+        // Safety check - ensure components are initialized
+        if (!this.cards || !this.api) {
+            console.warn('SmartInsuranceApp: Components not ready for refreshActivePipelines');
+            return;
+        }
+        
+        try {
+            // Clear current pipeline display
+            const container = this.cards.getPipelineContainer();
+            if (container) {
+                container.innerHTML = '';
+            }
+            
+            // Load active pipelines (not completed ones)
+            const result = await this.api.getAllPipelines({
+                limit: 50, // Show up to 50 active pipelines
+                offset: 0
+            });
+            
+            if (result.success && result.pipelines) {
+                // Filter for active pipelines (not fully completed)
+                const activePipelines = result.pipelines.filter(pipeline => 
+                    pipeline.status !== 'data_extraction_complete'
+                );
+                
+                console.log(`SmartInsuranceApp: Found ${activePipelines.length} active pipelines`);
+                
+                // Update active pipelines map
+                this.activePipelines.clear();
+                activePipelines.forEach(pipeline => {
+                    this.activePipelines.set(pipeline.pipeline_id, pipeline);
+                    this.cards.createPipelineCard(pipeline);
+                });
+                
+                // Start status polling for running pipelines
+                activePipelines.forEach(pipeline => {
+                    if (this.cards.isPipelineRunning(pipeline.status)) {
+                        this.cards.startStatusPolling(pipeline.pipeline_id);
+                    }
+                });
+            }
+            
+        } catch (error) {
+            console.error('SmartInsuranceApp: Error refreshing active pipelines:', error);
+        }
     }
 
     // Utility methods
