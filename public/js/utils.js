@@ -127,18 +127,17 @@ const Utils = {
     // Status Helper Functions
     getStatusDisplay(status) {
         const statusMap = {
-            'pending': { text: 'Waiting', class: 'status-waiting' },
-            'research_running': { text: 'Research Running...', class: 'status-running' },
+            'pending': { text: 'Pending', class: 'status-pending' },
+            'research_running': { text: 'Research Running', class: 'status-running' },
             'research_complete': { text: 'Research Complete', class: 'status-complete' },
-            'legal_resolution_running': { text: 'Legal Resolution Running...', class: 'status-running' },
+            'legal_resolution_running': { text: 'Legal Resolution Running', class: 'status-running' },
             'legal_resolution_complete': { text: 'Legal Resolution Complete', class: 'status-complete' },
-            'data_extraction_running': { text: 'Data Extraction Running...', class: 'status-running' },
-            'data_extraction_complete': { text: 'Workflow Complete', class: 'status-complete' },
-            'failed': { text: 'Failed', class: 'status-failed' },
-            'complete': { text: 'Complete', class: 'status-complete' }
+            'data_extraction_running': { text: 'Data Extraction Running', class: 'status-running' },
+            'data_extraction_complete': { text: 'Data Extraction Complete', class: 'status-complete' },
+            'failed': { text: 'Failed', class: 'status-failed' }
         };
 
-        return statusMap[status] || { text: status, class: 'status-waiting' };
+        return statusMap[status] || { text: status, class: 'status-pending' };
     },
 
     // File Helper Functions

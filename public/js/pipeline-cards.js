@@ -111,29 +111,28 @@ class PipelineCardManager {
 
     // Render statistics row
     renderStats(stats) {
-        if (stats.totalCompanies === 0) {
-            return '<div class="stat">Status: <span class="stat-value">Queued</span></div>';
-        }
+        let statsHtml = '';
         
-        let statsHtml = `<div class="stat">Portfolio companies: <span class="stat-value">${stats.totalCompanies}</span></div>`;
-        
-        if (stats.companiesWithData > 0) {
-            statsHtml += `<div class="stat">With 5500 data: <span class="stat-value">${stats.companiesWithData}</span></div>`;
+        if (stats.totalCompanies > 0) {
+            statsHtml += `<div class="stat">Portfolio companies: <span class="stat-value">${stats.totalCompanies}</span></div>`;
             
-            if (stats.totalParticipants > 0) {
-                statsHtml += `<div class="stat">Active participants: <span class="stat-value">${Utils.formatNumber(stats.totalParticipants)}</span></div>`;
-            }
-            
-            if (stats.totalCharges > 0) {
-                statsHtml += `<div class="stat">Total charges: <span class="stat-value">${Utils.formatCurrency(stats.totalCharges)}</span></div>`;
-            }
-        } else if (stats.totalCompanies > 0) {
-            // Show different message based on pipeline status
-            if (stats.totalCompanies > 0) {
+            if (stats.companiesWithData > 0) {
+                statsHtml += `<div class="stat">With 5500 data: <span class="stat-value">${stats.companiesWithData}</span></div>`;
+                
+                if (stats.totalParticipants > 0) {
+                    statsHtml += `<div class="stat">Active participants: <span class="stat-value">${Utils.formatNumber(stats.totalParticipants)}</span></div>`;
+                }
+                
+                if (stats.totalCharges > 0) {
+                    statsHtml += `<div class="stat">Total charges: <span class="stat-value">${Utils.formatCurrency(stats.totalCharges)}</span></div>`;
+                }
+            } else {
+                // Show ready for review message when companies exist but no data yet
                 statsHtml += '<div class="stat">Ready for review</div>';
             }
         }
         
+        // If no companies and no stats to show, return empty (no redundant status)
         return statsHtml;
     }
 
