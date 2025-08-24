@@ -359,13 +359,99 @@ class PipelineCard extends BaseComponent {
 - Integration with app
 - Remove all HTML generation
 
-**Data Management Strategy: Component-Level State**
+**Data Management Strategy: Clean Data Model + Component-Level UI State**
 
-Each component manages its own UI state:
-- **PipelineCard**: Manages `isExpanded` state
-- **CompanyCard**: Manages `isDetailsExpanded` state  
-- **AddCompanyForm**: Manages `isVisible` state
-- **PipelineCardManager**: Only keeps component references, no UI state
+**Data Model Approach:**
+- **PipelineCard**: Maintains clean `pipeline` data model (companies array, status, etc.)
+- **PipelineCard**: Manages UI state (`isExpanded`)
+- **Child components**: Receive data via props, manage own UI state
+- **Data extraction**: Read from DOM elements, update PipelineCard's data model, send to API
+
+**Data Flow Pattern:**
+```javascript
+class PipelineCard extends BaseComponent {
+    constructor(pipeline, callbacks = {}) {
+        super(pipeline, callbacks);
+        this.pipeline = { ...pipeline }; // Clean data model
+        this.isExpanded = false; // UI state
+        this.hasUnsavedChanges = false; // Change tracking
+    }
+    
+    // Data injection - push data to child components
+    update(newPipelineData) {
+        this.pipeline = { ...newPipelineData };
+        this.refreshChildComponents();
+    }
+    
+    // Data extraction - collect from DOM and update model
+    saveChanges() {
+        this.collectDataFromDOM();
+        this.triggerCallback('onSave', this.pipeline);
+        this.hasUnsavedChanges = false;
+    }
+    
+    // Company CRUD operations
+    addCompany(companyData) {
+        this.pipeline.companies.push(companyData);
+        this.hasUnsavedChanges = true;
+        this.refreshCompanyList();
+    }
+    
+    updateCompany(companyIndex, updatedData) {
+        this.pipeline.companies[companyIndex] = updatedData;
+        this.hasUnsavedChanges = true;
+    }
+    
+    removeCompany(companyIndex) {
+        this.pipeline.companies.splice(companyIndex, 1);
+        this.hasUnsavedChanges = true;
+        this.refreshCompanyList();
+    }
+    
+    // DOM Data Collection - called when user saves changes
+    collectDataFromDOM() {
+        // Collect company data from CompanyCard components
+        this.pipeline.companies = this.companyList.getCompaniesData();
+        
+        // Example of collecting from a specific company
+        const companyElements = this.element.querySelectorAll('.company-item');
+        companyElements.forEach((element, index) => {
+            const nameInput = element.querySelector('input[data-field="name"]');
+            const legalNameInput = element.querySelector('input[data-field="legal_entity_name"]');
+            const exitedCheckbox = element.querySelector('input[type="checkbox"]');
+            
+            if (nameInput) this.pipeline.companies[index].name = nameInput.value;
+            if (legalNameInput) this.pipeline.companies[index].legal_entity_name = legalNameInput.value;
+            if (exitedCheckbox) this.pipeline.companies[index].exited = exitedCheckbox.checked;
+        });
+    }
+}
+```
+
+**API Integration Pattern:**
+```javascript
+class PipelineCardManager {
+    handleCompanySave(pipelineId) {
+        const pipelineCard = this.pipelineCards.get(pipelineId);
+        if (pipelineCard) {
+            pipelineCard.saveChanges(); // This triggers callback with clean data
+        }
+    }
+    
+    // Callback from PipelineCard when save is triggered
+    async handlePipelineDataSave(pipeline) {
+        try {
+            const response = await this.api.updatePipeline(pipeline.pipeline_id, pipeline);
+            if (response.success) {
+                // Update UI to reflect saved state
+                this.updatePipelineCard(pipeline.pipeline_id, response.pipeline);
+            }
+        } catch (error) {
+            console.error('Save failed:', error);
+        }
+    }
+}
+```
 
 **New structure:**
 ```javascript
@@ -668,6 +754,13 @@ handleInputChange(event) {
 - [ ] Clear component boundaries
 - [ ] Reusable components
 - [ ] Easy to add new features
+
+### **Data Management**
+- [ ] Clean data injection via `update()` methods
+- [ ] Easy data extraction via `getData()` methods  
+- [ ] Company CRUD operations work seamlessly
+- [ ] Change tracking with `hasUnsavedChanges` flag
+- [ ] Clean API integration pattern
 
 ---
 
