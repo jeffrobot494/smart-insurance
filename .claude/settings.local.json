@@ -6,7 +6,8 @@
       "Bash(npm install:*)",
       "Bash(cp:*)",
       "Bash(npx:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(mkdir:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

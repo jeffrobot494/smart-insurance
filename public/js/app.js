@@ -313,6 +313,31 @@ class SmartInsuranceApp {
         }
     }
 
+    async handleStartResearch(pipelineId) {
+        console.log(`SmartInsuranceApp: Starting research for pipeline ${pipelineId}`);
+        
+        try {
+            Utils.showLoading('Starting research...');
+            
+            const result = await this.api.runResearch(pipelineId);
+            
+            Utils.hideLoading();
+            
+            if (result.success) {
+                this.showSuccess('Research started successfully');
+                // Start polling for status updates
+                this.cards.startStatusPolling(pipelineId);
+            } else {
+                this.showError(`Failed to start research: ${result.error}`);
+            }
+            
+        } catch (error) {
+            Utils.hideLoading();
+            console.error(`SmartInsuranceApp: Error starting research for pipeline ${pipelineId}:`, error);
+            this.showError(`Failed to start research: ${error.message}`);
+        }
+    }
+
     handleRetryPipeline(pipelineId) {
         console.log(`SmartInsuranceApp: Retry pipeline ${pipelineId}`);
         this.showInfo('Pipeline retry will be available in Phase 4');

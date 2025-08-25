@@ -93,3 +93,11 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:48:14.050Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-22T23:48:15.634Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-23T23:22:22.300Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-24T05:59:24.534Z"}
+{"level":"error","message":"❌ Task 4 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CSS5tshjJe4uA9Wa5xQhe\"}","service":"workflow","timestamp":"2025-08-24T06:46:27.104Z"}
+{"level":"error","message":"Data extraction failed for pipeline 78:","service":"manager","timestamp":"2025-08-24T06:46:45.598Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-24T13:13:16.791Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CSSbVueuPcFFkYUfGD5zP\"}","service":"workflow","timestamp":"2025-08-24T13:14:40.058Z"}
+{"level":"error","message":"❌ Research failed for pipeline 85:","service":"manager","timestamp":"2025-08-24T13:14:40.059Z"}
+{"level":"error","message":"Research failed for pipeline 85:","service":"manager","timestamp":"2025-08-24T13:14:40.104Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T03:42:08.793Z"}
