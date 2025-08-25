@@ -236,10 +236,56 @@ const Utils = {
 4. **Pipeline creation** - Start workflow functionality
 
 ### Phase 3: Interactivity (Week 2) 
-1. **Company editing** - Inline editing forms
-2. **Add/Remove companies** - Dynamic company management
-3. **Pipeline actions** - Proceed, Edit, Retry buttons
-4. **Status updates** - Real-time pipeline status
+1. **Company editing** - Inline click-to-edit forms for company data
+2. **Add/Remove companies** - Dynamic company management with form validation
+3. **Pipeline actions** - Proceed and Retry buttons (Edit pipeline removed from scope)
+4. **Manual status refresh** - Update pipeline status on demand (polling deferred to post-completion)
+
+#### **Phase 3 Implementation Details:**
+
+**1. Company Editing System:**
+- **Editable Fields**: name, legal_entity_name, city, state, exited (checkbox)
+- **UX Flow**: Click field → input appears → Enter/Save button saves → Escape/Cancel reverts
+- **Validation**: Required name field, length limits, real-time error display
+- **API Integration**: Debounced auto-save after 2 seconds, immediate feedback on errors
+- **Component**: Enhanced CompanyDetails with startEdit(), saveField(), cancelEdit() methods
+
+**2. Add/Remove Companies:**  
+- **Add Flow**: Click "Add Company" → form appears → validate → save to API → refresh UI
+- **Remove Flow**: Click "Remove" → confirmation dialog → delete from API → update UI
+- **Required API Endpoint**: `PUT /api/pipeline/{id}/companies` with companies array
+- **Validation**: Name required, optional legal_entity_name/city/state fields
+- **Component**: Enhanced CompanyList with handleAddCompany(), handleRemoveCompany() methods
+
+**3. Pipeline Actions (Simplified):**
+- **Proceed Buttons**: Start Research, Proceed to Legal Resolution, Proceed to Data Extraction  
+- **Retry Logic**: Determine failed step from status, call appropriate retry endpoint
+- **Loading States**: Show spinner during API calls, disable buttons to prevent double-clicks
+- **Error Handling**: User-friendly error messages, automatic UI restoration on failure
+- **No Pipeline Editing**: Firm name and pipeline-level data remain read-only
+
+**4. Manual Status Refresh:**
+- **Refresh Button**: Small refresh icon next to pipeline status
+- **Auto-refresh**: After starting actions (research, legal, data extraction)
+- **No Polling**: Real-time status updates deferred until after all simplified plan phases complete
+- **API Integration**: Use existing `GET /api/pipeline/{id}` endpoint
+
+**5. Component Integration Pattern:**
+```javascript
+PipelineCard (orchestrator)
+├── CompanyList (add/remove companies)
+│   ├── CompanyCard (individual company container)  
+│   │   ├── CompanyDetails (inline editing)
+│   │   └── CompanyHeader (actions, status)
+│   └── AddCompanyForm (new company form)
+└── ActionButtons (proceed, retry actions)
+```
+
+**6. Error Handling Strategy:**
+- **Validation Errors**: Show inline next to field, keep focus on input
+- **API Errors**: Show user-friendly message, restore previous state
+- **Network Errors**: Generic "Connection failed" message with retry option
+- **Loading States**: Disable forms/buttons during API calls to prevent conflicts
 
 ### Phase 4: Saved Tab (Week 2)
 1. **Saved pipeline display** - Paginated saved results
