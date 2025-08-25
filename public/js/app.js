@@ -8,7 +8,7 @@ class SmartInsuranceApp {
         this.api = new PipelineAPI();
         this.tabs = new TabController(this);
         this.cards = new PipelineCardManager(this.api);
-        this.companies = new CompanyManager(this.api);
+        this.companyManager = new CompanyManager(this.api);
         this.reports = new ReportManager();
         
         // Application state
@@ -338,9 +338,60 @@ class SmartInsuranceApp {
         }
     }
 
-    handleRetryPipeline(pipelineId) {
+    async handleRetryPipeline(pipelineId) {
         console.log(`SmartInsuranceApp: Retry pipeline ${pipelineId}`);
-        this.showInfo('Pipeline retry will be available in Phase 4');
+        
+        try {
+            const pipeline = this.activePipelines.get(pipelineId);
+            if (!pipeline) {
+                throw new Error('Pipeline not found in active pipelines');
+            }
+            
+            // Determine retry step from failed status
+            let step;
+            if (pipeline.status === 'research_failed') {
+                step = 'research';
+            } else if (pipeline.status === 'legal_resolution_failed') {
+                step = 'legal-resolution';
+            } else if (pipeline.status === 'data_extraction_failed') {
+                step = 'data-extraction';
+            } else {
+                throw new Error(`Cannot retry pipeline with status: ${pipeline.status}`);
+            }
+            
+            Utils.showLoading(`Retrying ${step.replace('-', ' ')}...`);
+            
+            const result = await this.api.retryStep(pipelineId, step);
+            
+            if (result.success) {
+                this.showSuccess(`Retrying ${step.replace('-', ' ')} step...`);
+                // Refresh pipeline status after a short delay
+                setTimeout(() => {
+                    this.refreshSinglePipeline(pipelineId);
+                }, 1000);
+            } else {
+                this.showError(`Failed to retry: ${result.error || 'Unknown error'}`);
+            }
+            
+        } catch (error) {
+            console.error(`SmartInsuranceApp: Error retrying pipeline ${pipelineId}:`, error);
+            this.showError(`Failed to retry pipeline: ${error.message}`);
+        } finally {
+            Utils.hideLoading();
+        }
+    }
+    
+    // Helper method to refresh a single pipeline
+    async refreshSinglePipeline(pipelineId) {
+        try {
+            const result = await this.api.getPipeline(pipelineId);
+            if (result.success && result.pipeline) {
+                this.activePipelines.set(pipelineId, result.pipeline);
+                this.cards.updatePipelineCard(pipelineId, result.pipeline);
+            }
+        } catch (error) {
+            console.error('Failed to refresh pipeline:', error);
+        }
     }
 
     async handleProceedToStep(pipelineId, step) {

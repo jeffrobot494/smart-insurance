@@ -354,7 +354,7 @@ class DatabaseManager {
         await this.initialize();
       }
       
-      const updates = { updated_at: new Date() };
+      const updates = {};
       
       if (fromStep === 'research') {
         updates.status = 'pending';

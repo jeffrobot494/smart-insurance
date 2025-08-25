@@ -22,6 +22,7 @@ class PipelineHeader extends BaseComponent {
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div class="status-badge ${statusDisplay.class}">${statusDisplay.text}</div>
+                <span class="status-refresh" data-pipeline-id="${this.pipeline.pipeline_id}" title="Refresh status">⟲</span>
                 <span class="expand-icon ${this.isExpanded ? 'rotated' : ''}">▼</span>
             </div>
         `;
@@ -34,6 +35,17 @@ class PipelineHeader extends BaseComponent {
     bindEvents() {
         if (this.element) {
             this.clickHandler = (event) => {
+                const target = event.target;
+                
+                // Handle refresh button clicks
+                if (target.classList.contains('status-refresh')) {
+                    event.stopPropagation();
+                    const pipelineId = target.dataset.pipelineId;
+                    this.triggerCallback('onRefreshStatus', pipelineId);
+                    return;
+                }
+                
+                // Handle regular header clicks (toggle expansion)
                 this.triggerCallback('onToggle');
             };
             this.element.addEventListener('click', this.clickHandler);

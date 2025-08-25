@@ -35,7 +35,7 @@ class CompanyList extends BaseComponent {
         companies.forEach((company, index) => {
             const companyCard = new CompanyCard(company, index, this.pipeline.pipeline_id, this.pipeline.status, {
                 onToggleExited: (index) => this.triggerCallback('onToggleExited', index),
-                onRemove: (index) => this.triggerCallback('onRemove', index),
+                onRemove: (index) => this.handleRemoveCompany(index),
                 onFieldChange: (index, field, value) => this.triggerCallback('onFieldChange', index, field, value)
             });
             
@@ -65,10 +65,18 @@ class CompanyList extends BaseComponent {
     bindEvents() {
         if (this.element) {
             this.clickHandler = (event) => {
-                const button = event.target.closest('button[data-action="add-company"]');
+                event.stopPropagation();
+                
+                const button = event.target.closest('button');
                 if (button) {
-                    event.stopPropagation();
-                    this.triggerCallback('onShowAddForm');
+                    const action = button.dataset.action;
+                    
+                    if (action === 'add-company') {
+                        this.showAddCompanyForm();
+                    } else if (action === 'remove-company') {
+                        const companyIndex = parseInt(button.dataset.companyIndex);
+                        this.handleRemoveCompany(companyIndex);
+                    }
                 }
             };
             this.element.addEventListener('click', this.clickHandler);
@@ -113,6 +121,50 @@ class CompanyList extends BaseComponent {
             if (headerElement) {
                 headerElement.textContent = this.getCompanyListHeader(pipeline.status);
             }
+        }
+    }
+    
+    // Add/Remove company functionality
+    showAddCompanyForm() {
+        this.triggerCallback('onShowAddForm');
+    }
+    
+    async handleRemoveCompany(companyIndex) {
+        console.log('🔴 CompanyList.handleRemoveCompany called:', companyIndex);
+        // No confirmation needed here - CompanyHeader already confirmed
+        
+        try {
+            // Trigger callback to parent (PipelineCard) 
+            await this.triggerCallback('onRemoveCompany', companyIndex);
+        } catch (error) {
+            console.error('Failed to remove company:', error);
+            alert('Failed to remove company: ' + (error.message || 'Unknown error'));
+        }
+    }
+    
+    async handleAddCompany(companyData) {
+        try {
+            // Validate required fields
+            if (!companyData.name || companyData.name.trim().length === 0) {
+                throw new Error('Company name is required');
+            }
+            
+            // Create new company object with defaults
+            const newCompany = {
+                name: companyData.name.trim(),
+                legal_entity_name: companyData.legal_entity_name?.trim() || null,
+                city: companyData.city?.trim() || null,
+                state: companyData.state?.trim() || null,
+                exited: false,
+                confidence_level: 'medium'
+            };
+            
+            // Trigger callback to parent (PipelineCard)
+            await this.triggerCallback('onAddCompany', newCompany);
+            
+        } catch (error) {
+            console.error('Failed to add company:', error);
+            throw error; // Re-throw for form to handle
         }
     }
     

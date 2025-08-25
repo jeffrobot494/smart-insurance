@@ -6,7 +6,7 @@ BASE_URL="http://localhost:3000/api/pipeline"
 echo "Creating 10 test pipelines with different statuses..."
 
 # Array of real database statuses
-statuses=("pending" "research_running" "research_complete" "legal_resolution_running" "legal_resolution_complete" "data_extraction_running" "data_extraction_complete" "failed")
+statuses=("pending" "research_running" "research_complete" "legal_resolution_running" "legal_resolution_complete" "data_extraction_running" "data_extraction_complete" "research_failed" "legal_resolution_failed" "data_extraction_failed")
 
 for i in {1..10}; do
     echo "Creating pipeline $i/10..."
@@ -158,9 +158,9 @@ echo "  • Pipeline 4: legal_resolution_running"
 echo "  • Pipeline 5: legal_resolution_complete"
 echo "  • Pipeline 6: data_extraction_running"
 echo "  • Pipeline 7: data_extraction_complete (with Form 5500 data)"
-echo "  • Pipeline 8: failed"
-echo "  • Pipeline 9: pending"
-echo "  • Pipeline 10: research_running"
+echo "  • Pipeline 8: research_failed"
+echo "  • Pipeline 9: legal_resolution_failed"
+echo "  • Pipeline 10: data_extraction_failed"
 echo ""
 echo "Test the API:"
 echo "curl \"http://localhost:3000/api/pipeline?limit=10&offset=0\""

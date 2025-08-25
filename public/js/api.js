@@ -93,6 +93,7 @@ class PipelineAPI {
         return this.get(url);
     }
 
+
     async deletePipeline(pipelineId) {
         console.log('Deleting pipeline:', pipelineId);
         return this.delete(`/api/pipeline/${pipelineId}`);

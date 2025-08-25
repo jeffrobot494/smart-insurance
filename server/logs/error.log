@@ -104,3 +104,19 @@
 {"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CSToVhu8D8aDXBwr7LBkG\"}","service":"workflow","timestamp":"2025-08-25T04:32:34.476Z"}
 {"level":"error","message":"❌ Research failed for pipeline 86:","service":"manager","timestamp":"2025-08-25T04:32:34.478Z"}
 {"level":"error","message":"Research failed for pipeline 86:","service":"manager","timestamp":"2025-08-25T04:32:34.519Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T06:44:39.249Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:03:28.707Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-25T19:03:28.707Z"}
+{"0":111,"1":"2025-08-25T19:03:28.667Z","2":"pending","3":null,"4":null,"5":null,"6":null,"7":"2025-08-25T19:03:28.667Z","level":"error","message":"Params:","service":"database","timestamp":"2025-08-25T19:03:28.708Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:03:28.708Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:03:28.708Z"}
+{"level":"error","message":"research retry failed for pipeline 111:","service":"manager","timestamp":"2025-08-25T19:03:28.708Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:03:47.881Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-25T19:03:47.882Z"}
+{"0":111,"1":"2025-08-25T19:03:47.834Z","2":"pending","3":null,"4":null,"5":null,"6":null,"7":"2025-08-25T19:03:47.834Z","level":"error","message":"Params:","service":"database","timestamp":"2025-08-25T19:03:47.882Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:03:47.882Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:03:47.882Z"}
+{"level":"error","message":"research retry failed for pipeline 111:","service":"manager","timestamp":"2025-08-25T19:03:47.882Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:11:16.322Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:16:08.550Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:20:33.890Z"}

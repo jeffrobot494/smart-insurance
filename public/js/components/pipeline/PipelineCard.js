@@ -6,18 +6,22 @@ class PipelineCard extends BaseComponent {
         this.pipeline = { ...pipeline }; // Clean data model
         this.isExpanded = false; // Component manages own expansion state
         this.hasUnsavedChanges = false; // Change tracking
+        this.autoSaveTimer = null; // Debounced save timer
+        this.autoSaveDelay = 2000; // 2 seconds
         
         // Create child components
         this.header = new PipelineHeader(pipeline, {
             isExpanded: this.isExpanded,
-            onToggle: () => this.toggle()
+            onToggle: () => this.toggle(),
+            onRefreshStatus: (pipelineId) => this.handleRefreshStatus(pipelineId)
         });
         
         this.stats = new PipelineStats(pipeline);
         
         this.companyList = new CompanyList(pipeline, {
             onToggleExited: (index) => this.handleCompanyToggleExited(index),
-            onRemove: (index) => this.handleCompanyRemove(index),
+            onRemoveCompany: (index) => this.handleCompanyRemove(index),
+            onAddCompany: (companyData) => this.handleAddCompany(companyData),
             onFieldChange: (index, field, value) => this.handleCompanyFieldChange(index, field, value),
             onShowAddForm: () => this.showAddCompanyForm()
         });
@@ -26,8 +30,8 @@ class PipelineCard extends BaseComponent {
         
         this.actionButtons = new ActionButtons(pipeline);
         
-        // Create add company form if needed
-        if (pipeline.status === 'research_complete') {
+        // Create add company form if needed  
+        if (pipeline.status === 'research_complete' || pipeline.status === 'legal_resolution_complete') {
             this.addCompanyForm = new AddCompanyForm(pipeline.pipeline_id, {
                 onAdd: (companyData) => this.handleAddCompany(companyData)
             });
@@ -100,19 +104,71 @@ class PipelineCard extends BaseComponent {
         this.hasUnsavedChanges = true;
     }
     
-    handleCompanyRemove(index) {
-        console.log('PipelineCard: Remove company:', { pipelineId: this.pipeline.pipeline_id, index });
-        // This will be fully implemented in Phase 3
-        this.hasUnsavedChanges = true;
+    async handleCompanyRemove(index) {
+        console.log('🔴 PipelineCard.handleCompanyRemove called:', { pipelineId: this.pipeline.pipeline_id, index });
+        
+        try {
+            // Remove from local data
+            if (this.pipeline.companies && index >= 0 && index < this.pipeline.companies.length) {
+                console.log('🔴 Removing company at index:', index, this.pipeline.companies[index].name);
+                this.pipeline.companies.splice(index, 1);
+                this.hasUnsavedChanges = true;
+                
+                // Save to API immediately
+                await this.saveChangesToAPI();
+                
+                // Refresh child components
+                this.refreshChildComponents();
+                
+                console.log('PipelineCard: Company removed successfully');
+            }
+        } catch (error) {
+            console.error('PipelineCard: Failed to remove company:', error);
+            throw error;
+        }
     }
     
-    handleCompanyFieldChange(index, field, value) {
+    async handleCompanyFieldChange(index, field, value) {
         console.log('PipelineCard: Field change:', { pipelineId: this.pipeline.pipeline_id, index, field, value });
+        
         // Update data model immediately for UI responsiveness
         if (this.pipeline.companies[index]) {
             this.pipeline.companies[index][field] = value;
         }
         this.hasUnsavedChanges = true;
+        
+        // Schedule auto-save with debouncing
+        this.scheduleAutoSave();
+    }
+    
+    scheduleAutoSave() {
+        // Clear existing timer
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+        }
+        
+        // Set new timer
+        this.autoSaveTimer = setTimeout(() => {
+            this.saveChangesToAPI();
+        }, this.autoSaveDelay);
+    }
+    
+    async saveChangesToAPI() {
+        if (!this.hasUnsavedChanges) return;
+        
+        try {
+            console.log('PipelineCard: Auto-saving changes for pipeline:', this.pipeline.pipeline_id);
+            
+            // Trigger callback to PipelineCardManager
+            await this.triggerCallback('onSave', this.pipeline);
+            
+            this.hasUnsavedChanges = false;
+            console.log('PipelineCard: Auto-save successful');
+            
+        } catch (error) {
+            console.error('PipelineCard: Auto-save failed:', error);
+            // Could show a subtle notification here, but not blocking
+        }
     }
     
     showAddCompanyForm() {
@@ -121,10 +177,36 @@ class PipelineCard extends BaseComponent {
         }
     }
     
-    handleAddCompany(companyData) {
+    async handleAddCompany(companyData) {
         console.log('PipelineCard: Add company:', { pipelineId: this.pipeline.pipeline_id, companyData });
-        // This will be fully implemented in Phase 3
-        this.hasUnsavedChanges = true;
+        
+        try {
+            // Initialize companies array if needed
+            if (!this.pipeline.companies) {
+                this.pipeline.companies = [];
+            }
+            
+            // Add to local data
+            this.pipeline.companies.push(companyData);
+            this.hasUnsavedChanges = true;
+            
+            // Save to API immediately
+            await this.saveChangesToAPI();
+            
+            // Refresh child components to show new company
+            this.refreshChildComponents();
+            
+            // Hide add form if it exists
+            if (this.addCompanyForm) {
+                this.addCompanyForm.hide();
+            }
+            
+            console.log('PipelineCard: Company added successfully');
+            
+        } catch (error) {
+            console.error('PipelineCard: Failed to add company:', error);
+            throw error;
+        }
     }
     
     // Data management methods
@@ -183,8 +265,40 @@ class PipelineCard extends BaseComponent {
         }
     }
     
+    async handleRefreshStatus(pipelineId) {
+        console.log('PipelineCard: Refreshing status for pipeline:', pipelineId);
+        
+        try {
+            // Show loading feedback
+            const refreshButton = this.element.querySelector('.status-refresh');
+            if (refreshButton) {
+                refreshButton.style.opacity = '0.5';
+                refreshButton.style.pointerEvents = 'none';
+            }
+            
+            // Trigger callback to PipelineCardManager
+            await this.triggerCallback('onRefreshPipeline', pipelineId);
+            
+        } catch (error) {
+            console.error('PipelineCard: Failed to refresh status:', error);
+        } finally {
+            // Restore refresh button
+            const refreshButton = this.element.querySelector('.status-refresh');
+            if (refreshButton) {
+                refreshButton.style.opacity = '1';
+                refreshButton.style.pointerEvents = 'auto';
+            }
+        }
+    }
+    
     // Implement cascading destroy pattern
     destroyChildren() {
+        // Clear auto-save timer
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+            this.autoSaveTimer = null;
+        }
+        
         // Destroy all child components in order
         if (this.header) this.header.destroy();
         if (this.stats) this.stats.destroy();

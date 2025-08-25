@@ -28,6 +28,8 @@ class ActionButtons extends BaseComponent {
         const pipelineId = this.pipeline.pipeline_id;
         const buttons = [];
         
+        console.log('🔴 ActionButtons: getButtonsForStatus called with status:', status);
+        
         switch (status) {
             case 'research_complete':
                 buttons.push(`<button class="btn btn-primary" data-action="proceed-legal">Proceed to Legal Resolution</button>`);
@@ -73,12 +75,24 @@ class ActionButtons extends BaseComponent {
     
     bindEvents() {
         if (this.element) {
-            this.clickHandler = (event) => {
+            this.clickHandler = async (event) => {
                 const button = event.target.closest('button');
                 if (button) {
                     event.stopPropagation(); // Prevent pipeline card from toggling
                     const action = button.dataset.action;
-                    this.handleButtonClick(action);
+                    
+                    // Show loading state
+                    this.setButtonLoading(button, action, true);
+                    
+                    try {
+                        await this.handleButtonClick(action);
+                        // Success state
+                        this.setButtonSuccess(button, action);
+                    } catch (error) {
+                        console.error('ActionButtons: Action failed:', error);
+                        // Restore button on error
+                        this.setButtonLoading(button, action, false);
+                    }
                 }
             };
             this.element.addEventListener('click', this.clickHandler);
@@ -91,31 +105,106 @@ class ActionButtons extends BaseComponent {
         }
     }
     
-    handleButtonClick(action) {
+    setButtonLoading(button, action, isLoading) {
+        if (isLoading) {
+            button.disabled = true;
+            button.dataset.originalText = button.textContent;
+            
+            switch (action) {
+                case 'start-research':
+                    button.innerHTML = '<span class="spinner"></span> Starting...';
+                    break;
+                case 'proceed-legal':
+                    button.innerHTML = '<span class="spinner"></span> Starting...';
+                    break;
+                case 'proceed-data':
+                    button.innerHTML = '<span class="spinner"></span> Starting...';
+                    break;
+                case 'retry':
+                    button.innerHTML = '<span class="spinner"></span> Retrying...';
+                    break;
+                case 'delete':
+                    button.innerHTML = '<span class="spinner"></span> Deleting...';
+                    break;
+                default:
+                    button.innerHTML = '<span class="spinner"></span> Processing...';
+            }
+        } else {
+            button.disabled = false;
+            button.textContent = button.dataset.originalText || 'Action';
+        }
+    }
+    
+    setButtonSuccess(button, action) {
+        switch (action) {
+            case 'start-research':
+                button.innerHTML = '✓ Research Started';
+                break;
+            case 'proceed-legal':
+                button.innerHTML = '✓ Legal Resolution Started';
+                break;
+            case 'proceed-data':
+                button.innerHTML = '✓ Data Extraction Started';
+                break;
+            case 'retry':
+                button.innerHTML = '✓ Retry Started';
+                break;
+            case 'delete':
+                button.innerHTML = '✓ Deleted';
+                break;
+            default:
+                button.innerHTML = '✓ Success';
+        }
+        
+        // Button will be removed/updated when status changes
+        setTimeout(() => {
+            // If button still exists after 2 seconds, restore it
+            if (button.parentNode) {
+                button.disabled = false;
+                button.textContent = button.dataset.originalText || 'Action';
+            }
+        }, 2000);
+    }
+    
+    async handleButtonClick(action) {
         const pipelineId = this.pipeline.pipeline_id;
         
         switch (action) {
             case 'start-research':
-                window.app?.handleStartResearch?.(pipelineId);
+                if (window.app && window.app.handleStartResearch) {
+                    await window.app.handleStartResearch(pipelineId);
+                }
                 break;
             case 'proceed-legal':
-                window.app?.handleProceedToStep?.(pipelineId, 'legal-resolution');
+                if (window.app && window.app.handleProceedToStep) {
+                    await window.app.handleProceedToStep(pipelineId, 'legal-resolution');
+                }
                 break;
             case 'proceed-data':
-                window.app?.handleProceedToStep?.(pipelineId, 'data-extraction');
+                if (window.app && window.app.handleProceedToStep) {
+                    await window.app.handleProceedToStep(pipelineId, 'data-extraction');
+                }
                 break;
             case 'report':
-                window.app?.handleGenerateReport?.(pipelineId);
+                if (window.app && window.app.handleGenerateReport) {
+                    await window.app.handleGenerateReport(pipelineId);
+                }
                 break;
             case 'edit':
-                window.app?.handleEditPipeline?.(pipelineId);
+                if (window.app && window.app.handleEditPipeline) {
+                    await window.app.handleEditPipeline(pipelineId);
+                }
                 break;
             case 'retry':
-                window.app?.handleRetryPipeline?.(pipelineId);
+                if (window.app && window.app.handleRetryPipeline) {
+                    await window.app.handleRetryPipeline(pipelineId);
+                }
                 break;
             case 'delete':
                 if (confirm('Delete this pipeline? This action cannot be undone.')) {
-                    window.app?.handleDeletePipeline?.(pipelineId);
+                    if (window.app && window.app.handleDeletePipeline) {
+                        await window.app.handleDeletePipeline(pipelineId);
+                    }
                 }
                 break;
         }

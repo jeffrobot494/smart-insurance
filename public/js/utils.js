@@ -140,6 +140,47 @@ const Utils = {
         return statusMap[status] || { text: status, class: 'status-pending' };
     },
 
+    // Display Rules - What should be shown at each pipeline status
+    DisplayRules: {
+        shouldShowConfidenceBadge(pipelineStatus) {
+            return ['legal_resolution_complete', 'data_extraction_running', 
+                    'data_extraction_complete', 'data_extraction_failed'].includes(pipelineStatus);
+        },
+        
+        shouldShowLegalEntityName(pipelineStatus) {
+            return ['legal_resolution_complete', 'data_extraction_running',
+                    'data_extraction_complete', 'data_extraction_failed'].includes(pipelineStatus);
+        },
+        
+        shouldShowForm5500Data(pipelineStatus) {
+            return pipelineStatus === 'data_extraction_complete';
+        },
+        
+        isCompanyEditable(pipelineStatus) {
+            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed'].includes(pipelineStatus);
+        },
+
+        shouldShowExitedCheckbox(pipelineStatus) {
+            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed'].includes(pipelineStatus);
+        },
+
+        shouldShowRemoveButton(pipelineStatus) {
+            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed'].includes(pipelineStatus);
+        },
+
+        // Get complete display configuration for a status
+        getCompanyDisplayConfig(pipelineStatus) {
+            return {
+                showConfidenceBadge: this.shouldShowConfidenceBadge(pipelineStatus),
+                showLegalEntityName: this.shouldShowLegalEntityName(pipelineStatus),
+                showForm5500Data: this.shouldShowForm5500Data(pipelineStatus),
+                isEditable: this.isCompanyEditable(pipelineStatus),
+                showExitedCheckbox: this.shouldShowExitedCheckbox(pipelineStatus),
+                showRemoveButton: this.shouldShowRemoveButton(pipelineStatus)
+            };
+        }
+    },
+
     // File Helper Functions
     parseCsvContent(csvContent) {
         try {

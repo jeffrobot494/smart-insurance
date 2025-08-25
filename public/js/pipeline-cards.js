@@ -14,7 +14,8 @@ class PipelineCardManager {
         
         // Create PipelineCard component (starts collapsed)
         const pipelineCard = new PipelineCard(pipeline, {
-            onSave: (pipeline) => this.handlePipelineDataSave(pipeline)
+            onSave: (pipeline) => this.handlePipelineDataSave(pipeline),
+            onRefreshPipeline: (pipelineId) => this.handleRefreshPipeline(pipelineId)
         });
         
         // Render and add to DOM
@@ -73,7 +74,8 @@ class PipelineCardManager {
     async handlePipelineDataSave(pipeline) {
         console.log('PipelineCardManager: Saving pipeline data:', pipeline.pipeline_id);
         try {
-            const response = await this.api.updatePipeline(pipeline.pipeline_id, pipeline);
+            // Use updateCompanies method for the correct endpoint
+            const response = await this.api.updateCompanies(pipeline.pipeline_id, pipeline.companies || []);
             if (response.success) {
                 // Update UI with saved data
                 this.updatePipelineCard(pipeline.pipeline_id, response.pipeline);
@@ -83,6 +85,25 @@ class PipelineCardManager {
             }
         } catch (error) {
             console.error('PipelineCardManager: Save error:', error);
+        }
+    }
+    
+    // Handle pipeline refresh
+    async handleRefreshPipeline(pipelineId) {
+        console.log('PipelineCardManager: Refreshing pipeline:', pipelineId);
+        
+        try {
+            const result = await this.api.getPipeline(pipelineId);
+            if (result.success && result.pipeline) {
+                this.updatePipelineCard(pipelineId, result.pipeline);
+                console.log('PipelineCardManager: Pipeline refreshed successfully');
+            } else {
+                console.error('PipelineCardManager: Failed to refresh pipeline:', result.error);
+            }
+            return result;
+        } catch (error) {
+            console.error('PipelineCardManager: Refresh error:', error);
+            throw error;
         }
     }
     

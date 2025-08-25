@@ -14,29 +14,30 @@ class CompanyHeader extends BaseComponent {
         const confidenceClass = `confidence-${(this.company.confidence_level || 'low')}`;
         const confidenceText = (this.company.confidence_level || 'low').toUpperCase();
         
+        // Get display configuration from Utils
+        const displayConfig = Utils.DisplayRules.getCompanyDisplayConfig(this.pipelineStatus);
+        
         // Determine status indicator
         let statusIndicator = '';
-        if (this.company.form5500_data) {
+        if (this.company.form5500_data && displayConfig.showForm5500Data) {
             statusIndicator = '<span style="color: #28a745; font-weight: 600; margin-left: 10px;">✓ Form 5500 Data Found</span>';
-        } else if (this.company.legal_entity_name && this.pipelineStatus === 'legal_resolution_complete') {
+        } else if (this.company.legal_entity_name && displayConfig.showLegalEntityName) {
             statusIndicator = '<span style="color: #28a745; font-weight: 600; margin-left: 10px;">✓ Legal Entity Found</span>';
-        } else if (this.pipelineStatus === 'legal_resolution_complete') {
+        } else if (this.pipelineStatus === 'legal_resolution_complete' && !this.company.legal_entity_name) {
             statusIndicator = '<span style="color: #856404; font-weight: 600; margin-left: 10px;">⚠ Review Needed</span>';
         }
-        
-        const isEditable = this.pipelineStatus === 'research_complete' || this.pipelineStatus === 'legal_resolution_complete';
         
         this.element = this.createElement('div', 'company-header');
         this.element.innerHTML = `
             <div class="company-info">
-                <span class="confidence-badge ${confidenceClass}">${confidenceText}</span>
+                ${displayConfig.showConfidenceBadge ? `<span class="confidence-badge ${confidenceClass}">${confidenceText}</span>` : ''}
                 <span>${this.company.name}</span>
                 ${statusIndicator}
             </div>
             <div class="company-actions">
-                ${isEditable ? `
-                    <input type="checkbox" class="checkbox" ${this.company.exited ? 'checked' : ''} data-action="toggle-exited"> Exited
-                    <button class="btn btn-danger" data-action="remove">Remove</button>
+                ${displayConfig.isEditable ? `
+                    ${displayConfig.showExitedCheckbox ? `<input type="checkbox" class="checkbox" ${this.company.exited ? 'checked' : ''} data-action="toggle-exited"> Exited` : ''}
+                    ${displayConfig.showRemoveButton ? `<button class="btn btn-danger" data-action="remove">Remove</button>` : ''}
                 ` : `
                     <span style="color: ${this.company.exited ? '#dc3545' : '#666'}; font-size: 12px;">
                         ${this.company.exited ? 'Exited' : 'Active'}
@@ -64,8 +65,10 @@ class CompanyHeader extends BaseComponent {
                 }
                 
                 if (target.dataset.action === 'remove') {
+                    console.log('🔴 REMOVE BUTTON CLICKED:', this.index, this.company.name);
                     event.stopPropagation();
                     if (confirm('Remove this company from the list?')) {
+                        console.log('🔴 REMOVE CONFIRMED, calling callback');
                         this.triggerCallback('onRemove', this.index);
                     }
                     return;
