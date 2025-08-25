@@ -47,7 +47,9 @@ class ActionButtons extends BaseComponent {
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
-            case 'failed':
+            case 'research_failed':
+            case 'legal_resolution_failed':
+            case 'data_extraction_failed':
                 buttons.push(`<button class="btn btn-primary" data-action="retry">Retry</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;

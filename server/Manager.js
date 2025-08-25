@@ -9,6 +9,20 @@ const WorkflowResultsParser = require('./utils/WorkflowResultsParser');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 const DatabaseManager = require('./data-extraction/DatabaseManager');
 
+// Pipeline Status Constants
+const PIPELINE_STATUSES = {
+  PENDING: 'pending',
+  RESEARCH_RUNNING: 'research_running',
+  RESEARCH_COMPLETE: 'research_complete',
+  RESEARCH_FAILED: 'research_failed',
+  LEGAL_RESOLUTION_RUNNING: 'legal_resolution_running',
+  LEGAL_RESOLUTION_COMPLETE: 'legal_resolution_complete',
+  LEGAL_RESOLUTION_FAILED: 'legal_resolution_failed',
+  DATA_EXTRACTION_RUNNING: 'data_extraction_running',
+  DATA_EXTRACTION_COMPLETE: 'data_extraction_complete',
+  DATA_EXTRACTION_FAILED: 'data_extraction_failed'
+};
+
 class Manager {
   constructor() {
     this.taskManager = null;
@@ -60,7 +74,7 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== 'pending') {
+    if (pipeline.status !== PIPELINE_STATUSES.PENDING) {
       throw new Error(`Research can only be run on pending pipelines. Current status: ${pipeline.status}`);
     }
 
@@ -69,7 +83,7 @@ class Manager {
     try {
       // Update status to indicate research is starting
       await this.databaseManager.updatePipeline(pipelineId, { 
-        status: 'research_running' 
+        status: PIPELINE_STATUSES.RESEARCH_RUNNING 
       });
 
       // Load and execute research workflow
@@ -88,7 +102,7 @@ class Manager {
       // Update pipeline with research results
       await this.databaseManager.updatePipeline(pipelineId, {
         companies: JSON.stringify(companyObjects), // Convert to JSON string for JSONB storage
-        status: 'research_complete',
+        status: PIPELINE_STATUSES.RESEARCH_COMPLETE,
         research_completed_at: new Date()
       });
 
@@ -101,7 +115,7 @@ class Manager {
       
       // Update pipeline with error status
       await this.databaseManager.updatePipeline(pipelineId, {
-        status: 'research_failed'
+        status: PIPELINE_STATUSES.RESEARCH_FAILED
       });
       
       throw error;
@@ -121,7 +135,7 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== 'research_complete') {
+    if (pipeline.status !== PIPELINE_STATUSES.RESEARCH_COMPLETE) {
       throw new Error(`Legal resolution requires research to be completed first. Current status: ${pipeline.status}`);
     }
 
@@ -130,7 +144,7 @@ class Manager {
     try {
       // Update status to indicate legal resolution is starting
       await this.databaseManager.updatePipeline(pipelineId, { 
-        status: 'legal_resolution_running' 
+        status: PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING 
       });
 
       // Run legal entity resolution for each company individually
@@ -170,7 +184,7 @@ class Manager {
       // Update pipeline with enriched company objects
       await this.databaseManager.updatePipeline(pipelineId, {
         companies: JSON.stringify(enrichedCompanies), // Convert to JSON string for JSONB storage
-        status: 'legal_resolution_complete',
+        status: PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE,
         legal_resolution_completed_at: new Date()
       });
 
@@ -183,7 +197,7 @@ class Manager {
       logger.error('Full error details:', error);
       
       await this.databaseManager.updatePipeline(pipelineId, {
-        status: 'legal_resolution_failed'
+        status: PIPELINE_STATUSES.LEGAL_RESOLUTION_FAILED
       });
       
       throw error;
@@ -201,7 +215,7 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== 'legal_resolution_complete') {
+    if (pipeline.status !== PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE) {
       throw new Error(`Data extraction requires legal resolution to be completed first. Current status: ${pipeline.status}`);
     }
 
@@ -210,7 +224,7 @@ class Manager {
     try {
       // Update status to indicate data extraction is starting
       await this.databaseManager.updatePipeline(pipelineId, { 
-        status: 'data_extraction_running' 
+        status: PIPELINE_STATUSES.DATA_EXTRACTION_RUNNING 
       });
 
       // Extract Form 5500 data using simplified DataExtractionService
@@ -222,7 +236,7 @@ class Manager {
       // Update pipeline with final results
       await this.databaseManager.updatePipeline(pipelineId, {
         companies: JSON.stringify(companiesWithForm5500), // Convert to JSON string for JSONB storage
-        status: 'data_extraction_complete',
+        status: PIPELINE_STATUSES.DATA_EXTRACTION_COMPLETE,
         data_extraction_completed_at: new Date()
       });
 
@@ -234,7 +248,7 @@ class Manager {
       logger.error(`❌ Data extraction failed for pipeline ${pipelineId}:`, error.message);
       
       await this.databaseManager.updatePipeline(pipelineId, {
-        status: 'data_extraction_failed'
+        status: PIPELINE_STATUSES.DATA_EXTRACTION_FAILED
       });
       
       throw error;
@@ -321,7 +335,8 @@ module.exports = {
   runCompletePipeline, 
   retryStep, 
   getAllPipelines, 
-  Manager 
+  Manager,
+  PIPELINE_STATUSES 
 };
 
 // If called directly from command line, run complete pipeline

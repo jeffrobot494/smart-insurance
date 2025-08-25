@@ -101,3 +101,6 @@
 {"level":"error","message":"❌ Research failed for pipeline 85:","service":"manager","timestamp":"2025-08-24T13:14:40.059Z"}
 {"level":"error","message":"Research failed for pipeline 85:","service":"manager","timestamp":"2025-08-24T13:14:40.104Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T03:42:08.793Z"}
+{"level":"error","message":"❌ Task 1 failed: Claude API error: 400 {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.\"},\"request_id\":\"req_011CSToVhu8D8aDXBwr7LBkG\"}","service":"workflow","timestamp":"2025-08-25T04:32:34.476Z"}
+{"level":"error","message":"❌ Research failed for pipeline 86:","service":"manager","timestamp":"2025-08-25T04:32:34.478Z"}
+{"level":"error","message":"Research failed for pipeline 86:","service":"manager","timestamp":"2025-08-25T04:32:34.519Z"}

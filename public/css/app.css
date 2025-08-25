@@ -152,8 +152,6 @@ input[type="text"]:focus {
 .btn-danger {
     background: #dc3545;
     color: white;
-    padding: 6px 12px;
-    font-size: 12px;
 }
 
 .btn-danger:hover {

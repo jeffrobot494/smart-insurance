@@ -73,7 +73,7 @@ class WorkflowManager {
         try {
             if (format === 'pdf') {
                 // Import and use ReportGenerationService
-                const { ReportGenerationService } = await import('../services/ReportGenerationService.js');
+                const { ReportGenerationService } = await import('./services/ReportGenerationService.js');
                 await ReportGenerationService.generatePDFReport(firmData, firmName);
             }
             // Could handle other formats here in the future
