@@ -87,8 +87,11 @@ class DatabaseManager {
       return result;
     } catch (error) {
       logger.error('❌ Database query failed:', error.message);
-      logger.error('Query:', query);
-      logger.error('Params:', params);
+      logger.error('   PostgreSQL Error Code:', error.code);
+      logger.error('   PostgreSQL Error Detail:', error.detail);
+      logger.error('   Query:', query);
+      logger.error('   Params:', JSON.stringify(params, null, 2));
+      logger.error('   Full Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
       throw error;
     }
   }
@@ -225,6 +228,11 @@ class DatabaseManager {
       
       const values = [pipelineId, ...Object.values(updates), new Date()];
       const finalQuery = `UPDATE pipelines SET ${setClause}, updated_at = $${Object.keys(updates).length + 2} WHERE pipeline_id = $1`;
+      
+      logger.info(`🔍 DEBUG: About to execute update query:`);
+      logger.info(`   Query: ${finalQuery}`);
+      logger.info(`   Values: ${JSON.stringify(values, null, 2)}`);
+      logger.info(`   Updates object: ${JSON.stringify(updates, null, 2)}`);
       
       await this.query(finalQuery, values);
     } catch (error) {
@@ -367,7 +375,7 @@ class DatabaseManager {
         // Reset companies to only have name field (remove legal entity data)
         const pipeline = await this.getPipeline(pipelineId);
         if (pipeline.companies) {
-          updates.companies = pipeline.companies.map(company => ({ name: company.name }));
+          updates.companies = JSON.stringify(pipeline.companies.map(company => ({ name: company.name })));
         }
         updates.legal_resolution_completed_at = null;
         updates.data_extraction_completed_at = null;
@@ -376,16 +384,19 @@ class DatabaseManager {
         // Reset companies to remove form5500_data only
         const pipeline = await this.getPipeline(pipelineId);
         if (pipeline.companies) {
-          updates.companies = pipeline.companies.map(company => ({
+          updates.companies = JSON.stringify(pipeline.companies.map(company => ({
             name: company.name,
             legal_entity_name: company.legal_entity_name,
             city: company.city,
             state: company.state,
             exited: company.exited
-          }));
+          })));
         }
         updates.data_extraction_completed_at = null;
       }
+      
+      logger.info(`🔍 DEBUG: resetPipeline for step '${fromStep}' generated updates:`);
+      logger.info(`   Updates: ${JSON.stringify(updates, null, 2)}`);
       
       await this.updatePipeline(pipelineId, updates);
     } catch (error) {

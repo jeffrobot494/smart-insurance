@@ -352,19 +352,19 @@ class SmartInsuranceApp {
             if (pipeline.status === 'research_failed') {
                 step = 'research';
             } else if (pipeline.status === 'legal_resolution_failed') {
-                step = 'legal-resolution';
+                step = 'legal_resolution';
             } else if (pipeline.status === 'data_extraction_failed') {
-                step = 'data-extraction';
+                step = 'data_extraction';
             } else {
                 throw new Error(`Cannot retry pipeline with status: ${pipeline.status}`);
             }
             
-            Utils.showLoading(`Retrying ${step.replace('-', ' ')}...`);
+            Utils.showLoading(`Retrying ${step.replace('_', ' ')}...`);
             
             const result = await this.api.retryStep(pipelineId, step);
             
             if (result.success) {
-                this.showSuccess(`Retrying ${step.replace('-', ' ')} step...`);
+                this.showSuccess(`Retrying ${step.replace('_', ' ')} step...`);
                 // Refresh pipeline status after a short delay
                 setTimeout(() => {
                     this.refreshSinglePipeline(pipelineId);

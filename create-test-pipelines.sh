@@ -87,6 +87,8 @@ for i in {1..10}; do
                                     \"active_participants\": $((150 + i * 10)),
                                     \"total_charges\": $((50000 + i * 5000)),
                                     \"broker_commission\": $((2500 + i * 250)),
+                                    \"total_brokerage_fees\": $((5000 + i * 500)),
+                                    \"total_premiums\": $((45000 + i * 4500)),
                                     \"insurance_carriers\": [
                                         {\"name\": \"Aetna\", \"type\": \"Health\"},
                                         {\"name\": \"Principal\", \"type\": \"Retirement\"}
@@ -106,6 +108,8 @@ for i in {1..10}; do
                                     \"active_participants\": $((200 + i * 15)),
                                     \"total_charges\": $((75000 + i * 7500)),
                                     \"broker_commission\": $((3750 + i * 375)),
+                                    \"total_brokerage_fees\": $((7500 + i * 750)),
+                                    \"total_premiums\": $((67500 + i * 6750)),
                                     \"insurance_carriers\": [
                                         {\"name\": \"Blue Cross\", \"type\": \"Health\"},
                                         {\"name\": \"Fidelity\", \"type\": \"Retirement\"}

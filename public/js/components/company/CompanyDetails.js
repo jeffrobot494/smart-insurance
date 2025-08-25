@@ -72,6 +72,11 @@ class CompanyDetails extends BaseComponent {
             `;
         }
         
+        // Add Form 5500 data if available
+        if (this.company.form5500_data) {
+            html += this.renderForm5500Data();
+        }
+        
         return html;
     }
     
@@ -120,6 +125,94 @@ class CompanyDetails extends BaseComponent {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+    
+    renderForm5500Data() {
+        const data = this.company.form5500_data;
+        let html = '<div class="form5500-section"><div class="section-header">Form 5500 Data:</div>';
+        
+        // Get the latest year of data
+        const latestYear = data.form5500?.years?.length > 0 ? 
+            Math.max(...data.form5500.years.map(y => parseInt(y))) : null;
+        
+        if (latestYear) {
+            html += `
+                <div class="detail-row">
+                    <div class="detail-label">Latest Plan Year:</div>
+                    <div class="detail-value">${latestYear}</div>
+                </div>
+            `;
+        }
+        
+        // Calculate total active participants for latest year
+        if (latestYear && data.form5500?.records?.[latestYear]) {
+            const totalParticipants = data.form5500.records[latestYear]
+                .reduce((sum, record) => sum + (record.active_participants || 0), 0);
+            
+            if (totalParticipants > 0) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Active Participants:</div>
+                        <div class="detail-value">${Utils.formatNumber(totalParticipants)}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Calculate totals from Schedule A data for latest year
+        if (latestYear && data.scheduleA?.details?.[latestYear]) {
+            const scheduleAData = data.scheduleA.details[latestYear];
+            
+            let totalCharges = 0;
+            let totalBrokerCommission = 0;
+            const carriers = new Set();
+            
+            scheduleAData.forEach(record => {
+                if (record.totalCharges) {
+                    totalCharges += parseFloat(record.totalCharges) || 0;
+                }
+                if (record.brokerCommission) {
+                    totalBrokerCommission += parseFloat(record.brokerCommission) || 0;
+                }
+                if (record.carrierName) {
+                    carriers.add(record.carrierName);
+                }
+            });
+            
+            if (totalCharges > 0) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Total Premiums:</div>
+                        <div class="detail-value">${Utils.formatCurrency(totalCharges)}</div>
+                    </div>
+                `;
+            }
+            
+            if (totalBrokerCommission > 0) {
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Total Brokerage Fees:</div>
+                        <div class="detail-value">${Utils.formatCurrency(totalBrokerCommission)}</div>
+                    </div>
+                `;
+            }
+            
+            if (carriers.size > 0) {
+                const carriersHtml = Array.from(carriers).map(carrier => 
+                    `<div>• ${carrier}</div>`
+                ).join('');
+                
+                html += `
+                    <div class="detail-row">
+                        <div class="detail-label">Insurance Carriers:</div>
+                        <div class="detail-value">${carriersHtml}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        html += '</div>';
+        return html;
     }
     
     bindEvents() {

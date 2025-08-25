@@ -120,3 +120,53 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:11:16.322Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:16:08.550Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:20:33.890Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:23:17.849Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:24:09.783Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:29:52.888Z"}
+{"level":"error","message":"Query:","service":"database","timestamp":"2025-08-25T19:29:52.889Z"}
+{"0":125,"1":"legal_resolution_complete","2":[{"city":"New York","exited":false,"legal_entity_name":"PORTFOLIO COMPANY A10 LLC","name":"Portfolio Company A10","state":"NY"},{"city":"San Francisco","exited":true,"legal_entity_name":"PORTFOLIO COMPANY B10 INC","name":"Portfolio Company B10","state":"CA"},{"city":"Austin","exited":false,"legal_entity_name":"PORTFOLIO COMPANY C10 CORP","name":"Portfolio Company C10","state":"TX"}],"3":null,"4":"2025-08-25T19:29:52.849Z","level":"error","message":"Params:","service":"database","timestamp":"2025-08-25T19:29:52.890Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:29:52.891Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:29:52.891Z"}
+{"level":"error","message":"data_extraction retry failed for pipeline 125:","service":"manager","timestamp":"2025-08-25T19:29:52.892Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:38:45.474Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:38:52.155Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-25T19:38:52.155Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-25T19:38:52.155Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-25T19:38:52.156Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-25T19:38:52.156Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-25T19:38:52.157Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:38:52.157Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:38:52.157Z"}
+{"level":"error","message":"data_extraction retry failed for pipeline 125:","service":"manager","timestamp":"2025-08-25T19:38:52.158Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:41:23.432Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:41:27.828Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-25T19:41:27.832Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-25T19:41:27.833Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-25T19:41:27.833Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-25T19:41:27.833Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-25T19:41:27.834Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:41:27.836Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:41:27.836Z"}
+{"level":"error","message":"legal_resolution retry failed for pipeline 124:","service":"manager","timestamp":"2025-08-25T19:41:27.836Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:41:36.528Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-25T19:41:36.530Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-25T19:41:36.531Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-25T19:41:36.531Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-25T19:41:36.532Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-25T19:41:36.533Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:41:36.533Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:41:36.534Z"}
+{"level":"error","message":"legal_resolution retry failed for pipeline 124:","service":"manager","timestamp":"2025-08-25T19:41:36.535Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-25T19:41:44.079Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-25T19:41:44.079Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-25T19:41:44.080Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-25T19:41:44.080Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-25T19:41:44.081Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-25T19:41:44.081Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-25T19:41:44.082Z"}
+{"level":"error","message":"❌ Failed to reset pipeline:","service":"database","timestamp":"2025-08-25T19:41:44.082Z"}
+{"level":"error","message":"data_extraction retry failed for pipeline 125:","service":"manager","timestamp":"2025-08-25T19:41:44.082Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:42:24.119Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:43:18.580Z"}
+{"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-25T20:56:58.457Z"}
+{"level":"error","message":"Failed to start MCP servers:","service":"mcp","timestamp":"2025-08-25T20:57:08.478Z"}
