@@ -170,3 +170,12 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T19:43:18.580Z"}
 {"level":"error","message":"perplexity MCP error:","service":"mcp","timestamp":"2025-08-25T20:56:58.457Z"}
 {"level":"error","message":"Failed to start MCP servers:","service":"mcp","timestamp":"2025-08-25T20:57:08.478Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T21:41:09.824Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T21:43:21.796Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T21:49:33.421Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-25T21:50:59.422Z"}
+{"level":"error","message":"Research failed for pipeline 131:","service":"manager","timestamp":"2025-08-25T21:56:47.502Z"}
+{"level":"error","message":"Research failed for pipeline 132:","service":"manager","timestamp":"2025-08-25T21:58:55.766Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-26T01:12:13.528Z"}
+{"level":"error","message":"Legal resolution failed for pipeline 134:","service":"manager","timestamp":"2025-08-26T01:27:36.141Z"}
+{"level":"error","message":"Data extraction failed for pipeline 134:","service":"manager","timestamp":"2025-08-26T01:29:19.222Z"}

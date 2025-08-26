@@ -222,6 +222,7 @@ class PipelineCard extends BaseComponent {
         if (this.companyList) this.companyList.update(this.pipeline);
         if (this.progressInfo) this.progressInfo.update(this.pipeline);
         if (this.actionButtons) this.actionButtons.update(this.pipeline);
+        console.log('PipelineCard refreshChildComponents - companyList exists:', !!this.companyList);
     }
     
     // DOM Data Collection - called when user saves changes

@@ -30,7 +30,6 @@ class PollingService {
             interval,
             callback,
             intervalMs,
-            startTime: new Date(),
             active: true
         });
         
@@ -62,25 +61,24 @@ class PollingService {
     }
     
     /**
-     * Get info about active pollers
+     * Check if a poller is active
+     */
+    isPolling(pollerId) {
+        return this.pollers.has(pollerId);
+    }
+    
+    /**
+     * Get info about active pollers (for debugging)
      */
     getActivePollers() {
         const info = {};
         this.pollers.forEach((poller, pollerId) => {
             info[pollerId] = {
                 intervalMs: poller.intervalMs,
-                startTime: poller.startTime,
                 active: poller.active
             };
         });
         return info;
-    }
-    
-    /**
-     * Check if a poller is active
-     */
-    isPolling(pollerId) {
-        return this.pollers.has(pollerId);
     }
 }
 

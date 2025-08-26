@@ -15,6 +15,16 @@ class SmartInsuranceApp {
         this.activePipelines = new Map(); // pipelineId -> pipeline data
         this.isInitialized = false;
         
+        // Auto-complete tracking
+        this.autoCompletePipelines = new Set();
+        
+        // Initialize polling service with status change callback
+        this.pipelinePoller = new PipelinePoller(
+            this.api, 
+            this.cards, 
+            (pipelineId, status, pipeline) => this.handlePipelineStatusChange(pipelineId, status, pipeline)
+        );
+        
         // Initialize the application
         this.init();
     }
@@ -160,10 +170,18 @@ class SmartInsuranceApp {
                 // Show success message
                 this.showSuccess(`Created ${result.totalCreated} pipeline(s) successfully`);
                 
-                // Render pipeline cards for created pipelines
+                // Render pipeline cards and start polling/auto-complete
                 result.results.forEach(item => {
                     if (item.success && item.pipeline) {
                         this.cards.createPipelineCard(item.pipeline);
+                        this.pipelinePoller.startPipelinePolling(item.pipeline.pipeline_id);
+                        
+                        // Auto-complete: mark pipeline and start first workflow
+                        if (autoComplete) {
+                            this.autoCompletePipelines.add(item.pipeline.pipeline_id);
+                            console.log(`Auto-complete: Starting research for pipeline ${item.pipeline.pipeline_id}`);
+                            this.api.runResearch(item.pipeline.pipeline_id);
+                        }
                     }
                 });
                 
@@ -238,6 +256,11 @@ class SmartInsuranceApp {
             reader.readAsText(file);
         });
     }
+    
+    // Helper method to check if status requires polling
+    isRunningStatus(status) {
+        return ['research_running', 'legal_resolution_running', 'data_extraction_running'].includes(status);
+    }
 
     // Tab handling
     handleTabSwitch(newTab, previousTab) {
@@ -292,7 +315,7 @@ class SmartInsuranceApp {
                 this.activePipelines.delete(pipelineId);
                 
                 // Stop any polling for this pipeline
-                this.cards.stopStatusPolling(pipelineId);
+                this.pipelinePoller.stopPipelinePolling(pipelineId);
                 
                 // Remove the card from the UI
                 const cardElement = Utils.findElement(`[data-pipeline-id="${pipelineId}"]`);
@@ -326,7 +349,7 @@ class SmartInsuranceApp {
             if (result.success) {
                 this.showSuccess('Research started successfully');
                 // Start polling for status updates
-                this.cards.startStatusPolling(pipelineId);
+                this.pipelinePoller.startPipelinePolling(pipelineId);
             } else {
                 this.showError(`Failed to start research: ${result.error}`);
             }
@@ -365,10 +388,8 @@ class SmartInsuranceApp {
             
             if (result.success) {
                 this.showSuccess(`Retrying ${step.replace('_', ' ')} step...`);
-                // Refresh pipeline status after a short delay
-                setTimeout(() => {
-                    this.refreshSinglePipeline(pipelineId);
-                }, 1000);
+                // Start polling for the retry
+                this.pipelinePoller.startPipelinePolling(pipelineId);
             } else {
                 this.showError(`Failed to retry: ${result.error || 'Unknown error'}`);
             }
@@ -417,7 +438,7 @@ class SmartInsuranceApp {
             if (result.success) {
                 this.showSuccess(`${step.replace('-', ' ')} started successfully`);
                 // Start polling for status updates
-                this.cards.startStatusPolling(pipelineId);
+                this.pipelinePoller.startPipelinePolling(pipelineId);
             } else {
                 this.showError(`Failed to start ${step.replace('-', ' ')}: ${result.error}`);
             }
@@ -499,8 +520,8 @@ class SmartInsuranceApp {
                 
                 // Start status polling for running pipelines
                 activePipelines.forEach(pipeline => {
-                    if (this.cards.isPipelineRunning(pipeline.status)) {
-                        this.cards.startStatusPolling(pipeline.pipeline_id);
+                    if (this.isRunningStatus(pipeline.status)) {
+                        this.pipelinePoller.startPipelinePolling(pipeline.pipeline_id);
                     }
                 });
             }
@@ -536,6 +557,42 @@ class SmartInsuranceApp {
 
     isReady() {
         return this.isInitialized;
+    }
+    
+    /**
+     * Handle pipeline status changes and auto-complete logic
+     * @param {number} pipelineId - Pipeline ID
+     * @param {string} status - New status
+     * @param {object} pipeline - Pipeline data
+     */
+    handlePipelineStatusChange(pipelineId, status, pipeline) {
+        console.log(`Pipeline ${pipelineId} status changed to: ${status}`);
+        
+        // Update local pipeline data
+        this.activePipelines.set(pipelineId, pipeline);
+        
+        // Update the pipeline card with new data (companies, status, etc.)
+        this.cards.updatePipelineCard(pipelineId, pipeline);
+        
+        // Auto-complete logic
+        if (this.autoCompletePipelines.has(pipelineId)) {
+            if (status === 'research_complete') {
+                console.log('Auto-complete: Starting legal resolution');
+                this.handleProceedToStep(pipelineId, 'legal-resolution');
+            }
+            else if (status === 'legal_resolution_complete') {
+                console.log('Auto-complete: Starting data extraction');
+                this.handleProceedToStep(pipelineId, 'data-extraction');
+            }
+            else if (status === 'data_extraction_complete') {
+                console.log('Auto-complete: Workflow completed');
+                this.autoCompletePipelines.delete(pipelineId);
+            }
+            else if (status.includes('_failed')) {
+                console.log('Auto-complete: Workflow failed, stopping auto-complete');
+                this.autoCompletePipelines.delete(pipelineId);
+            }
+        }
     }
 }
 

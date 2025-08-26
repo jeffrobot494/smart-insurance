@@ -117,9 +117,14 @@ class CompanyList extends BaseComponent {
             }
         } else {
             // Update header text if status changed
-            const headerElement = this.element.querySelector('.company-section-header h4');
-            if (headerElement) {
-                headerElement.textContent = this.getCompanyListHeader(pipeline.status);
+            console.log('CompanyList.update() called - element exists:', !!this.element, 'isRendered:', this.isRendered);
+            
+            // Safety check: don't try to update DOM if component was never rendered
+            if (this.element) {
+                const headerElement = this.element.querySelector('.company-section-header h4');
+                if (headerElement) {
+                    headerElement.textContent = this.getCompanyListHeader(pipeline.status);
+                }
             }
         }
     }

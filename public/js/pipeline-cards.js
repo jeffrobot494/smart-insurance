@@ -233,22 +233,6 @@ class PipelineCardManager {
         this.handlePipelineAction(pipelineId, 'delete');
     }
     
-    // Backward compatibility for status polling (skipped in refactor)
-    stopStatusPolling(pipelineId) {
-        console.log('PipelineCardManager: stopStatusPolling() - Polling was skipped in refactor');
-        // No-op since we skipped status polling in the refactor
-    }
-    
-    startStatusPolling(pipelineId) {
-        console.log('PipelineCardManager: startStatusPolling() - Polling was skipped in refactor');
-        // No-op since we skipped status polling in the refactor
-    }
-    
-    // Check if pipeline is running (used by app.js for polling logic)
-    isPipelineRunning(status) {
-        return status && (status.endsWith('_running') || status.includes('running'));
-    }
-    
     // Cleanup method
     cleanup() {
         console.log('PipelineCardManager: Cleaning up components');
