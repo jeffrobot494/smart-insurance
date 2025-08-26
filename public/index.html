@@ -59,44 +59,6 @@
             </div>
         </div>
 
-        <!-- Report Configuration Modal (Hidden initially) -->
-        <div id="report-config-modal" class="modal-overlay">
-            <div class="modal-content">
-                <h3>Generate Report</h3>
-                
-                <div class="config-section">
-                    <div class="config-title">Output Format</div>
-                    <div class="checkbox-group">
-                        <label><input type="radio" name="format" value="excel" checked> Excel</label>
-                        <label><input type="radio" name="format" value="pdf"> PDF</label>
-                        <label><input type="radio" name="format" value="csv"> CSV</label>
-                    </div>
-                </div>
-
-                <div class="config-section">
-                    <div class="config-title">Include in Report</div>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="include-company-info" checked> Company Information</label>
-                        <label><input type="checkbox" id="include-insurance" checked> Insurance Carriers</label>
-                        <label><input type="checkbox" id="include-financial" checked> Financial Data</label>
-                        <label><input type="checkbox" id="include-legal"> Legal Entity Details</label>
-                    </div>
-                </div>
-
-                <div class="config-section">
-                    <div class="config-title">Filters</div>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="exclude-exited"> Exclude Exited Companies</label>
-                        <label><input type="checkbox" id="min-employees"> Minimum 100 Employees</label>
-                    </div>
-                </div>
-
-                <div class="button-row">
-                    <button class="btn btn-success" id="generate-report-btn">Generate Report</button>
-                    <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
-                </div>
-            </div>
-        </div>
 
         <!-- Loading Overlay -->
         <div id="loading-overlay" class="loading-overlay" style="display: none;">
@@ -129,8 +91,16 @@
 
     <!-- Form Components -->
     <script src="js/components/forms/AddCompanyForm.js"></script>
+    <script src="js/components/forms/ReportConfigModal.js"></script>
 
-    <!-- Services -->
+    <!-- Report Generation Services -->
+    <script src="js/services/DataProcessingService.js"></script>
+    <script src="js/services/HTMLReportService.js"></script>
+    <script src="js/services/TemplateLoader.js"></script>
+    <script src="js/services/PDFConversionService.js"></script>
+    <script src="js/services/ReportGenerationService.js"></script>
+
+    <!-- Other Services -->
     <script src="js/services/PollingService.js"></script>
     <script src="js/services/PipelinePoller.js"></script>
 

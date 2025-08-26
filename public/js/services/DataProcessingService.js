@@ -91,10 +91,13 @@ class DataProcessingService {
      * Process individual company data
      */
     static processCompanyData(company) {
-        const companyName = company.companyName || "Unknown Company";
+        const companyName = company.name || "Unknown Company";
+        
+        // Get form5500_data wrapper object
+        const form5500_data = company.form5500_data || {};
         
         // Get Schedule A data and available years
-        const scheduleA = company.scheduleA || {};
+        const scheduleA = form5500_data.scheduleA || {};
         const scheduleADetails = scheduleA.details || {};
         const availableYears = Object.keys(scheduleADetails);
         
@@ -103,7 +106,7 @@ class DataProcessingService {
         
         // If no Schedule A data, check Form 5500 years for display purposes
         if (!preferredYear) {
-            const form5500 = company.form5500 || {};
+            const form5500 = form5500_data.form5500 || {};
             const form5500Years = form5500.years || [];
             if (form5500Years.length > 0) {
                 preferredYear = this.getPreferredYear(form5500Years);
@@ -127,7 +130,7 @@ class DataProcessingService {
         }
         
         // Get total participants from Form 5500 if available
-        const form5500Records = (company.form5500 || {}).records || {};
+        const form5500Records = (form5500_data.form5500 || {}).records || {};
         const totalParticipants = preferredYear ? this.getTotalParticipants(form5500Records, preferredYear) : 0;
         
         return {
@@ -191,13 +194,13 @@ class DataProcessingService {
     /**
      * Main method to process PE firm data from raw JSON
      */
-    static processJSONData(rawData, firmName) {
-        // Extract or clean firm name
-        const cleanFirmName = this.extractFirmName(firmName);
+    static processJSONData(pipeline) {
+        // Extract or clean firm name from pipeline
+        const cleanFirmName = this.extractFirmName(pipeline.firm_name);
         
         // Process each company
         const processedCompanies = [];
-        for (const company of rawData.companies || []) {
+        for (const company of pipeline.companies || []) {
             const processedCompany = this.processCompanyData(company);
             processedCompanies.push(processedCompany);
         }
@@ -207,11 +210,12 @@ class DataProcessingService {
         
         return {
             firm_name: cleanFirmName,
-            timestamp: rawData.timestamp,
+            timestamp: new Date().toISOString(),
             summary: summary,
             companies: processedCompanies
         };
     }
 }
 
-export { DataProcessingService };
+// Make available globally
+window.DataProcessingService = DataProcessingService;

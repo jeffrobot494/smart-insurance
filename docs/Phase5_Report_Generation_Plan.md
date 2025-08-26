@@ -745,3 +745,62 @@ Keep legacy services in `/public/js/legacy/services/` until refactor is confirme
 - [ ] Error handling provides clear user feedback
 - [ ] Progress indicators show during generation
 - [ ] Modal properly shows/hides with cleanup
+
+## Testing Plan
+
+### Test 1: Basic PDF Generation
+**Objective**: Verify core report generation works with current data format
+
+**Steps**:
+1. Go to Work tab and create a test pipeline with 2-3 companies
+2. Run through the workflow until "Data Extraction Complete" 
+3. Click "Generate Report" button on the completed pipeline
+4. In the modal: Keep all companies selected, choose PDF format
+5. Click "Generate Report"
+
+**Expected Result**: 
+- Modal appears with company checkboxes populated ✅
+- PDF downloads automatically with firm name in filename ✅
+- PDF contains all companies with their Form 5500 data ✅
+
+### Test 2: Company Selection Filtering  
+**Objective**: Verify granular company selection works
+
+**Steps**:
+1. Use the same completed pipeline from Test 1
+2. Click "Generate Report" again
+3. **Uncheck the first company** in the modal
+4. Keep PDF format selected
+5. Click "Generate Report"
+
+**Expected Result**:
+- PDF downloads with only the remaining companies ✅
+- First company data is completely absent from report ✅
+- Report summary shows correct company count ✅
+
+### Test 3: Error Handling
+**Objective**: Verify graceful error handling for edge cases
+
+**Steps**:
+1. Go to Work tab and create a pipeline with just firm name
+2. **Don't run any workflows** - leave it in "Pending" status
+3. Click "Generate Report" on the pending pipeline
+4. Try to generate a PDF report
+
+**Expected Result**:
+- Modal should either not appear OR show "No data available" message ✅
+- No broken PDF downloads ✅
+- Clear error message to user ✅
+
+### Test Success Criteria
+- **Test 1 Pass**: Core integration works with new data format
+- **Test 2 Pass**: Company filtering logic works correctly  
+- **Test 3 Pass**: Error handling prevents crashes
+
+### Test Data Setup
+Run this to create test pipelines quickly:
+```bash
+./create-test-pipelines.sh
+```
+
+This will give you pipelines in various states including completed ones with Form 5500 data for testing.

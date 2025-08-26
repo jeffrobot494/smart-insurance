@@ -356,4 +356,5 @@ class PDFConversionService {
     }
 }
 
-export { PDFConversionService };
+// Make available globally
+window.PDFConversionService = PDFConversionService;

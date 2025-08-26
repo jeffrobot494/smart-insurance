@@ -3,8 +3,6 @@
  * Handles HTML report generation and formatting using templates
  */
 
-import { TemplateLoader } from './TemplateLoader.js';
-
 class HTMLReportService {
     
     /**
@@ -124,8 +122,8 @@ class HTMLReportService {
     static async generateHTMLReport(processedData, templateName = 'default') {
         try {
             // Load the template
-            const template = await TemplateLoader.loadTemplate(templateName);
-            TemplateLoader.validateTemplate(template);
+            const template = await window.TemplateLoader.loadTemplate(templateName);
+            window.TemplateLoader.validateTemplate(template);
             
             // Generate content sections
             let companyRows = "";
@@ -138,7 +136,7 @@ class HTMLReportService {
             companyRows += this.generateTotalRow(totals);
             
             // Create template variables
-            const variables = TemplateLoader.createTemplateVariables(processedData, {
+            const variables = window.TemplateLoader.createTemplateVariables(processedData, {
                 styles: template.css,
                 summarySection: "",
                 companyRows: companyRows,
@@ -146,7 +144,7 @@ class HTMLReportService {
             });
             
             // Process template with variables and return both HTML and config
-            const htmlContent = TemplateLoader.processTemplate(template, variables);
+            const htmlContent = window.TemplateLoader.processTemplate(template, variables);
             return {
                 html: htmlContent,
                 config: template.config
@@ -172,4 +170,5 @@ class HTMLReportService {
     }
 }
 
-export { HTMLReportService };
+// Make available globally
+window.HTMLReportService = HTMLReportService;

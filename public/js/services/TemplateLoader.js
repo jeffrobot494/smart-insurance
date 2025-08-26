@@ -121,4 +121,5 @@ class TemplateLoader {
     }
 }
 
-export { TemplateLoader };
+// Make available globally
+window.TemplateLoader = TemplateLoader;

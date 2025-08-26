@@ -3,10 +3,6 @@
  * Main orchestrator for PDF report generation from PE firm insurance data
  */
 
-import { DataProcessingService } from './DataProcessingService.js';
-import { HTMLReportService } from './HTMLReportService.js';
-import { PDFConversionService } from './PDFConversionService.js';
-
 class ReportGenerationService {
     
     // Template Configuration - Change this to use a different template
@@ -16,7 +12,7 @@ class ReportGenerationService {
      * Validate browser support for PDF generation
      */
     static validateBrowserSupport() {
-        if (!PDFConversionService.isSupportedBrowser()) {
+        if (!window.PDFConversionService.isSupportedBrowser()) {
             throw new Error('Your browser does not support PDF generation. Please use a modern browser like Chrome, Firefox, or Safari.');
         }
     }
@@ -24,21 +20,21 @@ class ReportGenerationService {
     /**
      * Validate input data
      */
-    static validateInputData(rawData, firmName) {
-        if (!rawData) {
-            throw new Error('No data provided for report generation');
+    static validateInputData(pipeline, firmName) {
+        if (!pipeline) {
+            throw new Error('No pipeline data provided for report generation');
         }
         
-        if (!rawData.companies || !Array.isArray(rawData.companies)) {
+        if (!pipeline.companies || !Array.isArray(pipeline.companies)) {
             throw new Error('Invalid data format: companies array not found');
         }
         
-        if (rawData.companies.length === 0) {
-            throw new Error('No companies found in the provided data');
+        if (pipeline.companies.length === 0) {
+            throw new Error('No companies found in the pipeline data');
         }
         
-        if (!firmName || typeof firmName !== 'string') {
-            console.warn('No firm name provided, using default');
+        if (!pipeline.firm_name) {
+            throw new Error('Pipeline missing firm_name field');
         }
     }
 
@@ -64,31 +60,35 @@ class ReportGenerationService {
      * This is the primary entry point for PDF report generation.
      * It orchestrates the entire process:
      * 1. Validates input and browser support
-     * 2. Processes raw data using DataProcessingService
-     * 3. Generates HTML using HTMLReportService
-     * 4. Converts to PDF and downloads using PDFConversionService
+     * 2. Processes raw data using window.DataProcessingService
+     * 3. Generates HTML using window.HTMLReportService
+     * 4. Converts to PDF and downloads using window.PDFConversionService
      */
-    static async generatePDFReport(rawData, firmName) {
+    static async generatePDFReport(pipeline) {
         const startTime = Date.now();
+        
+        // Extract firm name from pipeline
+        const firmName = pipeline.firm_name;
+        
         
         try {
             console.log('Starting PDF report generation for:', firmName);
             
             // Step 1: Validation
             this.validateBrowserSupport();
-            this.validateInputData(rawData, firmName);
+            this.validateInputData(pipeline, firmName);
             
-            // Step 2: Process the raw JSON data
-            console.log('Processing JSON data...');
-            const processedData = DataProcessingService.processJSONData(rawData, firmName);
+            // Step 2: Process the pipeline data
+            console.log('Processing pipeline data...');
+            const processedData = window.DataProcessingService.processJSONData(pipeline);
             
             // Step 3: Generate HTML report
             console.log('Generating HTML report...');
-            const reportResult = await HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
+            const reportResult = await window.HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
             
             // Step 4: Convert to PDF and download
             console.log('Converting to PDF and downloading...');
-            await PDFConversionService.convertToPDF(reportResult.html, processedData.firm_name, reportResult.config);
+            await window.PDFConversionService.convertToPDF(reportResult.html, processedData.firm_name, reportResult.config);
             
             // Step 5: Log completion stats
             this.logGenerationStats(processedData, startTime);
@@ -121,12 +121,13 @@ class ReportGenerationService {
      * Generate HTML preview without PDF conversion
      * Useful for debugging or preview functionality
      */
-    static async generateHTMLPreview(rawData, firmName) {
+    static async generateHTMLPreview(pipeline) {
+        const firmName = pipeline.firm_name;
         try {
-            this.validateInputData(rawData, firmName);
+            this.validateInputData(pipeline, firmName);
             
-            const processedData = DataProcessingService.processJSONData(rawData, firmName);
-            const reportResult = await HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
+            const processedData = window.DataProcessingService.processJSONData(pipeline);
+            const reportResult = await window.HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
             
             return {
                 html: reportResult.html,
@@ -169,11 +170,11 @@ class ReportGenerationService {
      */
     static getCapabilities() {
         return {
-            browserSupported: PDFConversionService.isSupportedBrowser(),
+            browserSupported: window.PDFConversionService.isSupportedBrowser(),
             services: {
-                dataProcessing: typeof DataProcessingService !== 'undefined',
-                htmlGeneration: typeof HTMLReportService !== 'undefined',
-                pdfConversion: typeof PDFConversionService !== 'undefined'
+                dataProcessing: typeof window.DataProcessingService !== 'undefined',
+                htmlGeneration: typeof window.HTMLReportService !== 'undefined',
+                pdfConversion: typeof window.PDFConversionService !== 'undefined'
             },
             features: {
                 yearPreference: true,
@@ -185,5 +186,5 @@ class ReportGenerationService {
     }
 }
 
-// Export for both module and script usage
-export { ReportGenerationService };
+// Make available globally
+window.ReportGenerationService = ReportGenerationService;

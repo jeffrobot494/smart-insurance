@@ -287,10 +287,66 @@ class SmartInsuranceApp {
         this.tabs.loadSavedTab(nextPage);
     }
 
+    /**
+     * Handle tab switching - called by TabController
+     */
+    async handleTabSwitch(newTab, previousTab) {
+        console.log(`SmartInsuranceApp: Tab switched from ${previousTab} to ${newTab}`);
+        
+        try {
+            // Initialize saved tab when first accessed
+            if (newTab === 'saved') {
+                await this.initializeSavedTab();
+            }
+            
+            // Could add work tab initialization here if needed
+            // if (newTab === 'work') {
+            //     await this.initializeWorkTab();
+            // }
+            
+        } catch (error) {
+            console.error(`SmartInsuranceApp: Error handling tab switch to ${newTab}:`, error);
+            this.showError(`Failed to initialize ${newTab} tab: ${error.message}`);
+        }
+    }
+
     // Pipeline action handlers
-    handleGenerateReport(pipelineId) {
-        console.log(`SmartInsuranceApp: Generate report for pipeline ${pipelineId} - Implementation coming in Phase 5`);
-        this.showInfo('Report generation will be available in Phase 5');
+    async handleGenerateReport(pipelineId) {
+        console.log(`SmartInsuranceApp: Generate report for pipeline ${pipelineId}`);
+        
+        try {
+            // Get pipeline data from memory
+            const pipeline = this.activePipelines.get(pipelineId);
+            
+            if (!pipeline) {
+                console.error('SmartInsuranceApp: Pipeline not found in active pipelines');
+                this.showError('Pipeline data not found. Please refresh the page and try again.');
+                return;
+            }
+            
+            // Validate pipeline has companies
+            if (!pipeline.companies || pipeline.companies.length === 0) {
+                this.showError('This pipeline has no companies to include in the report.');
+                return;
+            }
+            
+            // Check if pipeline has any data extraction results
+            const hasFormData = pipeline.companies.some(company => 
+                company.form5500_data && Object.keys(company.form5500_data).length > 0
+            );
+            
+            if (!hasFormData) {
+                this.showWarning('This pipeline has no Form 5500 data yet. You may want to complete data extraction first.');
+                // Still allow report generation - user might want to generate report with basic company info
+            }
+            
+            // Show report configuration modal
+            await this.reports.showReportConfig(pipelineId, pipeline);
+            
+        } catch (error) {
+            console.error(`SmartInsuranceApp: Error generating report for pipeline ${pipelineId}:`, error);
+            this.showError(`Failed to generate report: ${error.message}`);
+        }
     }
 
     handleEditPipeline(pipelineId) {
@@ -528,6 +584,41 @@ class SmartInsuranceApp {
             
         } catch (error) {
             console.error('SmartInsuranceApp: Error refreshing active pipelines:', error);
+        }
+    }
+
+    /**
+     * Initialize saved tab by loading completed pipelines and adding to activePipelines
+     * This ensures saved pipelines are available for report generation
+     */
+    async initializeSavedTab() {
+        console.log('SmartInsuranceApp: Initializing saved tab...');
+        
+        try {
+            // Load saved/completed pipelines from API
+            const result = await this.api.getAllPipelines({
+                status: 'data_extraction_complete', // Only get completed pipelines for saved tab
+                limit: 50 // Load more since these are for viewing/reports
+            });
+            
+            if (result.success && result.pipelines) {
+                console.log(`SmartInsuranceApp: Found ${result.pipelines.length} saved pipelines`);
+                
+                // Add saved pipelines to activePipelines for report generation
+                result.pipelines.forEach(pipeline => {
+                    this.activePipelines.set(pipeline.pipeline_id, pipeline);
+                    console.log(`SmartInsuranceApp: Added saved pipeline ${pipeline.pipeline_id} (${pipeline.firm_name}) to activePipelines`);
+                });
+                
+                console.log(`SmartInsuranceApp: Saved tab initialized with ${result.pipelines.length} pipelines available for reports`);
+                
+            } else {
+                console.warn('SmartInsuranceApp: No saved pipelines found or API error');
+            }
+            
+        } catch (error) {
+            console.error('SmartInsuranceApp: Error initializing saved tab:', error);
+            this.showError(`Failed to load saved pipelines: ${error.message}`);
         }
     }
 
