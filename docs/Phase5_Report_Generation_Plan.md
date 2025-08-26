@@ -249,6 +249,438 @@ class ReportGenerationService {
 - `TemplateLoader` - Loads templates from `/js/templates/`
 - `PDFConversionService` - Converts HTML to PDF using html2canvas + jsPDF
 
+## Legacy Service Refactor Plan
+
+### Overview
+
+Instead of creating data adapters, we will refactor the legacy services to work directly with our current pipeline data format. This approach provides a cleaner, more maintainable solution with a single source of truth.
+
+### Data Format Comparison
+
+**Our Current Pipeline Data:**
+```javascript
+pipeline = {
+    firm_name: "PE Firm Name",
+    companies: [
+        {
+            name: "Company A",                    // ← Different field name
+            legal_entity_name: "Company A LLC",  // ← Extra field
+            city: "New York",                     // ← Extra field  
+            state: "NY",                          // ← Extra field
+            exited: false,                        // ← Extra field
+            form5500_data: {                      // ← Different structure
+                form5500: { years: [...], records: {...} },
+                scheduleA: { details: {...} }
+            }
+        }
+    ]
+}
+```
+
+**Legacy Expected Data:**
+```javascript
+rawData = {
+    companies: [
+        {
+            companyName: "Company A",             // ← Different field name
+            form5500: { years: [...], records: {...} },    // ← Flat structure
+            scheduleA: { details: {...} }                  // ← Flat structure
+        }
+    ],
+    timestamp: "2024-01-01T00:00:00.000Z"       // ← Expected field
+}
+// firmName passed as separate parameter
+```
+
+### Refactor Decisions Made
+
+1. **Company Filtering:** Filter companies in ReportManager before calling legacy service
+2. **Content Section Filtering:** Ignore for now - keep all content (implement later)
+3. **API Changes:** Make breaking changes for cleaner integration
+4. **Error Handling:** Keep existing alert() calls for now
+5. **Progress Indicators:** No progress indicators needed
+6. **Templates:** No modifications needed - use existing templates as-is
+
+### Detailed Refactor Steps
+
+#### Step 1: ReportGenerationService.js Changes
+
+**File Location:** `/public/js/legacy/services/ReportGenerationService.js`
+
+**Current Method Signatures:**
+```javascript
+static async generatePDFReport(rawData, firmName)
+static async generateHTMLPreview(rawData, firmName)
+```
+
+**Refactored Method Signatures:**
+```javascript
+static async generatePDFReport(pipeline)
+static async generateHTMLPreview(pipeline)
+```
+
+**Specific Changes:**
+
+1. **generatePDFReport() method:**
+```javascript
+// BEFORE
+static async generatePDFReport(rawData, firmName) {
+    // Step 1: Validation
+    this.validateBrowserSupport();
+    this.validateInputData(rawData, firmName);
+    
+    // Step 2: Process the raw JSON data
+    const processedData = DataProcessingService.processJSONData(rawData, firmName);
+    // ...
+}
+
+// AFTER
+static async generatePDFReport(pipeline) {
+    // Extract firm name from pipeline
+    const firmName = pipeline.firm_name;
+    
+    // Step 1: Validation
+    this.validateBrowserSupport();
+    this.validateInputData(pipeline, firmName);
+    
+    // Step 2: Process the pipeline data
+    const processedData = DataProcessingService.processJSONData(pipeline);
+    // ...
+}
+```
+
+2. **generateHTMLPreview() method:**
+```javascript
+// BEFORE
+static async generateHTMLPreview(rawData, firmName) {
+    this.validateInputData(rawData, firmName);
+    const processedData = DataProcessingService.processJSONData(rawData, firmName);
+    // ...
+}
+
+// AFTER
+static async generateHTMLPreview(pipeline) {
+    const firmName = pipeline.firm_name;
+    this.validateInputData(pipeline, firmName);
+    const processedData = DataProcessingService.processJSONData(pipeline);
+    // ...
+}
+```
+
+3. **validateInputData() method:**
+```javascript
+// BEFORE
+static validateInputData(rawData, firmName) {
+    if (!rawData) {
+        throw new Error('No data provided for report generation');
+    }
+    
+    if (!rawData.companies || !Array.isArray(rawData.companies)) {
+        throw new Error('Invalid data format: companies array not found');
+    }
+    
+    if (rawData.companies.length === 0) {
+        throw new Error('No companies found in the provided data');
+    }
+    // ...
+}
+
+// AFTER
+static validateInputData(pipeline, firmName) {
+    if (!pipeline) {
+        throw new Error('No pipeline data provided for report generation');
+    }
+    
+    if (!pipeline.companies || !Array.isArray(pipeline.companies)) {
+        throw new Error('Invalid data format: companies array not found');
+    }
+    
+    if (pipeline.companies.length === 0) {
+        throw new Error('No companies found in the pipeline data');
+    }
+    
+    if (!pipeline.firm_name) {
+        throw new Error('Pipeline missing firm_name field');
+    }
+    // ...
+}
+```
+
+#### Step 2: DataProcessingService.js Changes
+
+**File Location:** `/public/js/legacy/services/DataProcessingService.js`
+
+**Main Method Changes:**
+
+1. **processJSONData() method:**
+```javascript
+// BEFORE
+static processJSONData(rawData, firmName) {
+    // Extract or clean firm name
+    const cleanFirmName = this.extractFirmName(firmName);
+    
+    // Process each company
+    const processedCompanies = [];
+    for (const company of rawData.companies || []) {
+        const processedCompany = this.processCompanyData(company);
+        processedCompanies.push(processedCompany);
+    }
+    
+    // Calculate summary statistics
+    const summary = this.calculateSummaryStatistics(processedCompanies);
+    
+    return {
+        firm_name: cleanFirmName,
+        timestamp: rawData.timestamp,  // ← Problem: pipeline doesn't have timestamp
+        summary: summary,
+        companies: processedCompanies
+    };
+}
+
+// AFTER
+static processJSONData(pipeline) {
+    // Extract or clean firm name from pipeline
+    const cleanFirmName = this.extractFirmName(pipeline.firm_name);
+    
+    // Process each company
+    const processedCompanies = [];
+    for (const company of pipeline.companies || []) {
+        const processedCompany = this.processCompanyData(company);
+        processedCompanies.push(processedCompany);
+    }
+    
+    // Calculate summary statistics
+    const summary = this.calculateSummaryStatistics(processedCompanies);
+    
+    return {
+        firm_name: cleanFirmName,
+        timestamp: new Date().toISOString(),  // ← Generate current timestamp
+        summary: summary,
+        companies: processedCompanies
+    };
+}
+```
+
+2. **processCompanyData() method (Critical Changes):**
+```javascript
+// BEFORE
+static processCompanyData(company) {
+    const companyName = company.companyName || "Unknown Company";        // ← Field name change
+    
+    // Get Schedule A data and available years
+    const scheduleA = company.scheduleA || {};                          // ← Path change
+    const scheduleADetails = scheduleA.details || {};
+    const availableYears = Object.keys(scheduleADetails);
+    
+    // Get preferred year
+    let preferredYear = this.getPreferredYear(availableYears);
+    
+    // If no Schedule A data, check Form 5500 years for display purposes
+    if (!preferredYear) {
+        const form5500 = company.form5500 || {};                           // ← Path change
+        const form5500Years = form5500.years || [];
+        if (form5500Years.length > 0) {
+            preferredYear = this.getPreferredYear(form5500Years);
+        }
+    }
+    
+    // ... rest of method stays the same
+}
+
+// AFTER
+static processCompanyData(company) {
+    const companyName = company.name || "Unknown Company";              // ← Updated field name
+    
+    // Get form5500_data wrapper object
+    const form5500_data = company.form5500_data || {};                  // ← New: get wrapper object
+    
+    // Get Schedule A data and available years
+    const scheduleA = form5500_data.scheduleA || {};                    // ← Updated path
+    const scheduleADetails = scheduleA.details || {};
+    const availableYears = Object.keys(scheduleADetails);
+    
+    // Get preferred year
+    let preferredYear = this.getPreferredYear(availableYears);
+    
+    // If no Schedule A data, check Form 5500 years for display purposes
+    if (!preferredYear) {
+        const form5500 = form5500_data.form5500 || {};                     // ← Updated path
+        const form5500Years = form5500.years || [];
+        if (form5500Years.length > 0) {
+            preferredYear = this.getPreferredYear(form5500Years);
+        }
+    }
+    
+    // Aggregate the data (logic stays exactly the same)
+    let aggregatedData;
+    let hasData;
+    if (preferredYear && scheduleADetails[preferredYear]) {
+        aggregatedData = this.aggregateScheduleAData(scheduleADetails, preferredYear);
+        hasData = true;
+    } else {
+        aggregatedData = {
+            total_premiums: 0,
+            total_brokerage_fees: 0,
+            total_people_covered: 0,
+            plans: []
+        };
+        hasData = false;
+    }
+    
+    // Get total participants from Form 5500 if available
+    const form5500Records = form5500.records || {};                        // ← Updated path
+    const totalParticipants = preferredYear ? this.getTotalParticipants(form5500Records, preferredYear) : 0;
+    
+    // Return object stays exactly the same
+    return {
+        company_name: companyName,
+        data_year: preferredYear,
+        has_data: hasData,
+        total_premiums: aggregatedData.total_premiums,
+        total_brokerage_fees: aggregatedData.total_brokerage_fees,
+        total_people_covered: aggregatedData.total_people_covered,
+        total_participants: totalParticipants,
+        plans: aggregatedData.plans
+    };
+}
+```
+
+**Key Changes Summary:**
+- `company.companyName` → `company.name`  
+- `company.scheduleA` → `company.form5500_data.scheduleA`
+- `company.form5500` → `company.form5500_data.form5500`
+- Generate timestamp instead of using `rawData.timestamp`
+
+#### Step 3: ReportManager Integration
+
+**File Location:** `/public/js/report-manager.js`
+
+**Company Filtering Implementation:**
+```javascript
+class ReportManager {
+    async generatePDFReport(config, pipeline) {
+        try {
+            // Filter companies based on selectedCompanies array
+            const filteredPipeline = this.filterPipelineCompanies(pipeline, config.selectedCompanies);
+            
+            // Call refactored legacy service
+            await ReportGenerationService.generatePDFReport(filteredPipeline);
+            
+        } catch (error) {
+            console.error('PDF generation failed:', error);
+            // Let legacy alerts handle user notification for now
+            throw error;
+        }
+    }
+    
+    async generateHTMLPreview(config, pipeline) {
+        const filteredPipeline = this.filterPipelineCompanies(pipeline, config.selectedCompanies);
+        return await ReportGenerationService.generateHTMLPreview(filteredPipeline);
+    }
+    
+    /**
+     * Filter pipeline companies based on selectedCompanies array
+     */
+    filterPipelineCompanies(pipeline, selectedCompanies) {
+        const filteredCompanies = pipeline.companies.filter((company, index) => 
+            selectedCompanies.includes(index)
+        );
+        
+        return {
+            ...pipeline,
+            companies: filteredCompanies
+        };
+    }
+    
+    checkReportCapabilities() {
+        return ReportGenerationService.getCapabilities();
+    }
+}
+```
+
+#### Step 4: Service File Movement
+
+**Move services from legacy to main services directory:**
+
+1. Move `/public/js/legacy/services/ReportGenerationService.js` → `/public/js/services/`
+2. Move `/public/js/legacy/services/DataProcessingService.js` → `/public/js/services/`  
+3. Move `/public/js/legacy/services/HTMLReportService.js` → `/public/js/services/`
+4. Move `/public/js/legacy/services/TemplateLoader.js` → `/public/js/services/`
+5. Move `/public/js/legacy/services/PDFConversionService.js` → `/public/js/services/`
+
+**Update imports in index.html:**
+```html
+<!-- Replace legacy script includes with: -->
+<script src="js/services/DataProcessingService.js"></script>
+<script src="js/services/HTMLReportService.js"></script>
+<script src="js/services/TemplateLoader.js"></script>
+<script src="js/services/PDFConversionService.js"></script>
+<script src="js/services/ReportGenerationService.js"></script>
+```
+
+### Files Not Requiring Changes
+
+**No changes needed for:**
+- `HTMLReportService.js` - Uses processed data format (unchanged)
+- `TemplateLoader.js` - Template loading logic (unchanged)  
+- `PDFConversionService.js` - PDF conversion logic (unchanged)
+- `/public/js/templates/default/` - Template files (unchanged)
+
+### Expected processedData Output
+
+After refactoring, `DataProcessingService.processJSONData(pipeline)` will produce:
+
+```javascript
+processedData = {
+    firm_name: "Clean Firm Name",
+    timestamp: "2024-01-01T00:00:00.000Z",
+    summary: {
+        total_companies: 3,
+        companies_with_data: 2,  
+        most_recent_year: "2024"
+    },
+    companies: [
+        {
+            company_name: "Company A",
+            data_year: "2024", 
+            has_data: true,
+            total_premiums: 1500000,
+            total_brokerage_fees: 75000,
+            total_people_covered: 250,
+            total_participants: 300,
+            plans: [
+                {
+                    benefit_type: "Medical",
+                    carrier_name: "Aetna", 
+                    premiums: 800000,
+                    brokerage_fees: 40000,
+                    people_covered: 150
+                }
+                // ... more plans
+            ]
+        }
+        // ... more companies
+    ]
+}
+```
+
+This format matches exactly what the HTML generation and templates expect.
+
+### Testing Strategy
+
+1. **Test with single company pipeline** - Verify basic data processing
+2. **Test with multiple companies** - Verify aggregation and filtering
+3. **Test company filtering** - Verify selectedCompanies array works
+4. **Test error scenarios** - Missing data, invalid pipeline structure
+5. **Compare output** - Ensure generated reports match legacy output
+
+### Rollback Plan
+
+Keep legacy services in `/public/js/legacy/services/` until refactor is confirmed working. Can easily revert by:
+1. Changing import paths back to legacy
+2. Reverting ReportManager to use old API signatures
+3. Using data adapter approach if refactor fails
+
 ## Implementation Steps
 
 ### Step 1: Create ReportConfigModal Component
