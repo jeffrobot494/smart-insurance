@@ -571,8 +571,7 @@ class SmartInsuranceApp {
         // Update local pipeline data
         this.activePipelines.set(pipelineId, pipeline);
         
-        // Update the pipeline card with new data (companies, status, etc.)
-        this.cards.updatePipelineCard(pipelineId, pipeline);
+        // Note: Card update is already handled by PipelinePoller before this callback
         
         // Auto-complete logic
         if (this.autoCompletePipelines.has(pipelineId)) {

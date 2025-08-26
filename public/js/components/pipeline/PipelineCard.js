@@ -54,12 +54,9 @@ class PipelineCard extends BaseComponent {
         const statsElement = this.stats.render();
         contentElement.appendChild(statsElement);
         
-        // Add company list if pipeline has progressed beyond pending
-        const companies = this.pipeline.companies || [];
-        if (this.pipeline.status !== 'pending' && companies.length > 0) {
-            const companyListElement = this.companyList.render();
-            contentElement.appendChild(companyListElement);
-        }
+        // Always add company list so it can be updated when companies are added
+        const companyListElement = this.companyList.render();
+        contentElement.appendChild(companyListElement);
         
         // Add progress info for running pipelines
         const progressElement = this.progressInfo.render();
