@@ -157,11 +157,11 @@ const Utils = {
         },
         
         isCompanyEditable(pipelineStatus) {
-            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed'].includes(pipelineStatus);
+            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed', 'data_extraction_complete'].includes(pipelineStatus);
         },
 
         shouldShowExitedCheckbox(pipelineStatus) {
-            return ['research_complete', 'legal_resolution_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed'].includes(pipelineStatus);
+            return ['legal_resolution_complete', 'legal_resolution_failed', 'data_extraction_failed', 'data_extraction_running', 'data_extraction_complete'].includes(pipelineStatus);
         },
 
         shouldShowRemoveButton(pipelineStatus) {

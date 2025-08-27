@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Insurance - Saved Pipelines</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid #ddd;
+        }
+
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            margin-bottom: 20px;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .pipeline-card {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .pipeline-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .pipeline-header:hover {
+            background: #f8f9fa;
+        }
+
+        .pipeline-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .pipeline-date {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-complete {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .pipeline-content {
+            padding: 20px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        .error-stat {
+            color: #dc3545;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .load-more {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .load-more a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .load-more a:hover {
+            text-decoration: underline;
+        }
+
+        .company-list {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .company-list.expanded {
+            display: block;
+        }
+
+        .company-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .company-item {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .company-header {
+            padding: 12px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .company-header:hover {
+            background: #e9ecef;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confidence-badge {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .confidence-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .confidence-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confidence-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .company-details {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .company-details.expanded {
+            display: block;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            width: 150px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s;
+        }
+
+        .expand-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .form5500-indicator {
+            color: #28a745;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .report-config {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .config-section {
+            margin-bottom: 20px;
+        }
+
+        .config-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="tab" onclick="goToWork()">Work</div>
+        <div class="tab active">Saved</div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Previously Run Pipelines</h2>
+            <p>View and manage your saved pipeline results</p>
+        </div>
+
+        <!-- Saved Pipeline Results -->
+        <div class="pipeline-results">
+            <!-- Recent completed pipeline -->
+            <div class="pipeline-card">
+                <div class="pipeline-header" onclick="togglePipelineDetails(this)">
+                    <div>
+                        <div class="pipeline-title">Blackstone Capital Partners</div>
+                        <div class="pipeline-date">Completed: Dec 15, 2024 - 3:42 PM</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="status-badge status-complete">Complete</div>
+                        <span class="expand-icon">▼</span>
+                    </div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies: <span class="stat-value">12</span></div>
+                        <div class="stat">With 5500 data: <span class="stat-value">9</span></div>
+                        <div class="stat">Active participants: <span class="stat-value">8,450</span></div>
+                        <div class="stat">Total charges: <span class="stat-value">$12.4M</span></div>
+                    </div>
+
+                    <!-- Company Details List -->
+                    <div class="company-list">
+                        <div class="company-section-header">
+                            <h4>Portfolio Companies</h4>
+                        </div>
+
+                        <!-- Company with Form 5500 Data -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>Portfolio Company A</span>
+                                    <span class="form5500-indicator">✓ Form 5500 Data</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: #666; font-size: 12px;">Active</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">Portfolio Company A</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">PORTFOLIO COMPANY A LLC</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">New York, Ny</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">EIN:</div>
+                                    <div class="detail-value">12-3456789</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Active Participants:</div>
+                                    <div class="detail-value">1,250</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Insurance Carriers:</div>
+                                    <div class="detail-value">
+                                        <div>• Aetna Health Inc. (Health)</div>
+                                        <div>• MetLife (Life Insurance)</div>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Total Charges:</div>
+                                    <div class="detail-value">$1,850,000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Company without Form 5500 Data -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-medium">MED</span>
+                                    <span>Portfolio Company B</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: #666; font-size: 12px;">Active</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">Portfolio Company B</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">PORTFOLIO COMPANY B INC</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Boston, Ma</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Form 5500 Status:</div>
+                                    <div class="detail-value" style="color: #856404;">No matching records found</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exited Company -->
+                        <div class="company-item">
+                            <div class="company-header" onclick="toggleCompanyDetails(this)">
+                                <div class="company-info">
+                                    <span class="confidence-badge confidence-high">HIGH</span>
+                                    <span>Portfolio Company C</span>
+                                    <span class="form5500-indicator">✓ Form 5500 Data</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: #dc3545; font-size: 12px;">Exited</span>
+                                    <span class="expand-icon">▼</span>
+                                </div>
+                            </div>
+                            <div class="company-details">
+                                <div class="detail-row">
+                                    <div class="detail-label">Company Name:</div>
+                                    <div class="detail-value">Portfolio Company C</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Legal Entity:</div>
+                                    <div class="detail-value">PORTFOLIO COMPANY C CORP</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Location:</div>
+                                    <div class="detail-value">Austin, Tx</div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Exit Status:</div>
+                                    <div class="detail-value" style="color: #dc3545;">Exited in 2023</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-row">
+                        <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                        <button class="btn btn-secondary" onclick="editSavedPipeline('blackstone')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Another completed pipeline -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div>
+                        <div class="pipeline-title">Apollo Global Management</div>
+                        <div class="pipeline-date">Completed: Dec 14, 2024 - 1:15 PM</div>
+                    </div>
+                    <div class="status-badge status-complete">Complete</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies: <span class="stat-value">8</span></div>
+                        <div class="stat">With 5500 data: <span class="stat-value">6</span></div>
+                        <div class="stat">Active participants: <span class="stat-value">5,230</span></div>
+                        <div class="stat">Total charges: <span class="stat-value">$7.8M</span></div>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                        <button class="btn btn-secondary" onclick="editSavedPipeline('apollo')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Older pipeline -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div>
+                        <div class="pipeline-title">KKR & Co</div>
+                        <div class="pipeline-date">Completed: Dec 12, 2024 - 11:30 AM</div>
+                    </div>
+                    <div class="status-badge status-complete">Complete</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies: <span class="stat-value">15</span></div>
+                        <div class="stat">With 5500 data: <span class="stat-value">12</span></div>
+                        <div class="stat">Active participants: <span class="stat-value">11,890</span></div>
+                        <div class="stat">Total charges: <span class="stat-value">$18.2M</span></div>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-success" onclick="showReportConfig()">Generate Report</button>
+                        <button class="btn btn-secondary" onclick="editSavedPipeline('kkr')">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Failed pipeline example -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div>
+                        <div class="pipeline-title">Carlyle Group</div>
+                        <div class="pipeline-date">Failed: Dec 11, 2024 - 4:20 PM</div>
+                    </div>
+                    <div class="status-badge status-failed">Failed</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Status: <span class="error-stat">Research step failed</span></div>
+                        <div class="stat">Error: <span class="error-stat">Website access blocked</span></div>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="retryPipeline('carlyle')">Retry</button>
+                        <button class="btn btn-secondary" onclick="deletePipeline('carlyle')">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partial completion example -->
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div>
+                        <div class="pipeline-title">Advent International</div>
+                        <div class="pipeline-date">Partial: Dec 10, 2024 - 2:15 PM</div>
+                    </div>
+                    <div class="status-badge" style="background: #fff3cd; color: #856404;">Partial</div>
+                </div>
+                <div class="pipeline-content">
+                    <div class="stats-row">
+                        <div class="stat">Portfolio companies: <span class="stat-value">7</span></div>
+                        <div class="stat">With 5500 data: <span class="stat-value">3</span></div>
+                        <div class="stat">Status: <span style="color: #856404;">Legal resolution incomplete</span></div>
+                    </div>
+                    <div class="button-row">
+                        <button class="btn btn-primary" onclick="continuePipeline('advent')">Continue Processing</button>
+                        <button class="btn btn-secondary" onclick="editSavedPipeline('advent')">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load more section -->
+        <div class="load-more">
+            <p>Showing recent 6 pipelines. <a href="#" onclick="loadMorePipelines()">Load more...</a></p>
+        </div>
+
+        <!-- Report Configuration (Hidden initially) -->
+        <div id="reportConfig" class="report-config hidden">
+            <h3>Generate Report</h3>
+            
+            <div class="config-section">
+                <div class="config-title">Output Format</div>
+                <div class="checkbox-group">
+                    <label><input type="radio" name="format" value="excel" checked> Excel</label>
+                    <label><input type="radio" name="format" value="pdf"> PDF</label>
+                    <label><input type="radio" name="format" value="csv"> CSV</label>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <div class="config-title">Include in Report</div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> Company Information</label>
+                    <label><input type="checkbox" checked> Insurance Carriers</label>
+                    <label><input type="checkbox" checked> Financial Data</label>
+                    <label><input type="checkbox"> Legal Entity Details</label>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <div class="config-title">Filters</div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox"> Exclude Exited Companies</label>
+                    <label><input type="checkbox"> Minimum 100 Employees</label>
+                </div>
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn-success">Generate Report</button>
+                <button class="btn btn-secondary" onclick="hideReportConfig()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToWork() {
+            // In a real app, this would navigate to the work tab
+            alert('Navigate to Work tab');
+        }
+
+        function showReportConfig() {
+            document.getElementById('reportConfig').classList.remove('hidden');
+        }
+
+        function hideReportConfig() {
+            document.getElementById('reportConfig').classList.add('hidden');
+        }
+
+        function editSavedPipeline(pipelineId) {
+            alert(`Edit saved pipeline: ${pipelineId}\nThis would allow you to modify the saved results and regenerate reports.`);
+        }
+
+        function togglePipelineDetails(header) {
+            const content = header.nextElementSibling;
+            const companyList = content.querySelector('.company-list');
+            const icon = header.querySelector('.expand-icon');
+            
+            companyList.classList.toggle('expanded');
+            icon.classList.toggle('rotated');
+        }
+
+        function toggleCompanyDetails(header) {
+            const details = header.nextElementSibling;
+            const icon = header.querySelector('.expand-icon');
+            
+            details.classList.toggle('expanded');
+            icon.classList.toggle('rotated');
+        }
+
+        function retryPipeline(pipelineId) {
+            alert(`Retry failed pipeline: ${pipelineId}\nThis would restart the pipeline from the failed step.`);
+        }
+
+        function continuePipeline(pipelineId) {
+            alert(`Continue processing: ${pipelineId}\nThis would resume the pipeline from where it left off.`);
+        }
+
+        function deletePipeline(pipelineId) {
+            if (confirm(`Delete pipeline: ${pipelineId}?\nThis action cannot be undone.`)) {
+                alert('Pipeline deleted.');
+                // Would remove the pipeline from the saved list
+            }
+        }
+
+        function loadMorePipelines() {
+            alert('Load more pipelines...\nThis would fetch and display older pipeline results.');
+        }
+    </script>
+</body>
+</html>

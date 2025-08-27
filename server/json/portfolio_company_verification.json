@@ -9,7 +9,7 @@
         "outputKey": "companies_with_locations",
         "inputKeys": ["input"],
         "allowed_tools": ["search_web"],
-        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find the city and state. Full address is NOT needed. Return JSON: {company_name, firm_name, headquarters_location: {city, state, research_confidence}}. If there are two possibilities and it's unclear which is true, INCLUDE BOTH. Include no comments in your response."
+        "instructions": "Find headquarters location for the portfolio company. Use perplexity_search to find the city and state. Full address is NOT needed. Start by performing this EXACT search with the perplexity web search tool: 'In what city and state is the headquarters for the legal entity DBA <company name>, a portfolio company of <firm name>?' Replace the variables in brackets with the firm name and company name with which you were supplied. This query is necessarry to prevent you accidentally finding the headquarters of the wrong company. Return JSON: {company_name, firm_name, headquarters_location: {city, state, research_confidence}}. If there are two possibilities and it's unclear which is true, INCLUDE BOTH. Include no comments in your response."
       },
       {
         "id": 2,

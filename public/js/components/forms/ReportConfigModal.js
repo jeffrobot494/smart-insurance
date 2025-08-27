@@ -64,16 +64,6 @@ class ReportConfigModal extends BaseComponent {
                 <div class="modal-content">
                     <h3>Generate Report</h3>
                     
-                    <!-- Format Selection -->
-                    <div class="config-section">
-                        <div class="config-title">Output Format</div>
-                        <div class="radio-group">
-                            <label><input type="radio" name="format" value="pdf" checked> PDF</label>
-                            <label><input type="radio" name="format" value="excel"> Excel</label>  
-                            <label><input type="radio" name="format" value="csv"> CSV</label>
-                        </div>
-                    </div>
-                    
                     <!-- Company Selection -->
                     <div class="config-section">
                         <div class="config-title">Companies to Include</div>
@@ -199,9 +189,8 @@ class ReportConfigModal extends BaseComponent {
     getFormData() {
         if (!this.modalElement) return null;
         
-        // Get selected format
-        const formatRadio = this.modalElement.querySelector('input[name="format"]:checked');
-        const format = formatRadio ? formatRadio.value : 'pdf';
+        // Format is always PDF (only supported format)
+        const format = 'pdf';
         
         // Get selected companies
         const companyCheckboxes = this.modalElement.querySelectorAll('#company-checkboxes input[type="checkbox"]:checked');
