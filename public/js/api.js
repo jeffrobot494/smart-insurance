@@ -115,9 +115,15 @@ class PipelineAPI {
         return this.post(`/api/pipeline/${pipelineId}/data-extraction`);
     }
 
-    async retryStep(pipelineId, step) {
-        console.log(`Retrying ${step} for pipeline:`, pipelineId);
-        return this.post(`/api/pipeline/${pipelineId}/retry/${step}`);
+    // Error Recovery Methods
+    async resetPipeline(pipelineId) {
+        console.log('Resetting pipeline:', pipelineId);
+        return this.post(`/api/pipeline/${pipelineId}/reset`);
+    }
+
+    async getPipelineError(pipelineId) {
+        console.log('Getting error details for pipeline:', pipelineId);
+        return this.get(`/api/pipeline/${pipelineId}/error`);
     }
 
     // Company Management Methods

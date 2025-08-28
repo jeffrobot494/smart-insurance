@@ -51,8 +51,12 @@ class ActionButtons extends BaseComponent {
                 
             case 'research_failed':
             case 'legal_resolution_failed':
+                buttons.push(`<button class="btn btn-primary" data-action="reset">Reset</button>`);
+                buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
+                break;
+                
             case 'data_extraction_failed':
-                buttons.push(`<button class="btn btn-primary" data-action="retry">Retry</button>`);
+                // Programming errors need developer intervention, not user reset
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
@@ -120,8 +124,8 @@ class ActionButtons extends BaseComponent {
                 case 'proceed-data':
                     button.innerHTML = '<span class="spinner"></span> Starting...';
                     break;
-                case 'retry':
-                    button.innerHTML = '<span class="spinner"></span> Retrying...';
+                case 'reset':
+                    button.innerHTML = '<span class="spinner"></span> Resetting...';
                     break;
                 case 'delete':
                     button.innerHTML = '<span class="spinner"></span> Deleting...';
@@ -146,8 +150,8 @@ class ActionButtons extends BaseComponent {
             case 'proceed-data':
                 button.innerHTML = '✓ Data Extraction Started';
                 break;
-            case 'retry':
-                button.innerHTML = '✓ Retry Started';
+            case 'reset':
+                button.innerHTML = '✓ Reset Complete';
                 break;
             case 'delete':
                 button.innerHTML = '✓ Deleted';
@@ -195,9 +199,9 @@ class ActionButtons extends BaseComponent {
                     await window.app.handleEditPipeline(pipelineId);
                 }
                 break;
-            case 'retry':
-                if (window.app && window.app.handleRetryPipeline) {
-                    await window.app.handleRetryPipeline(pipelineId);
+            case 'reset':
+                if (window.app && window.app.handleResetPipeline) {
+                    await window.app.handleResetPipeline(pipelineId);
                 }
                 break;
             case 'delete':

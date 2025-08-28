@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-Side Error Handling Tests</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-output {
+            background: #000;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .test-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-pending { background: #ffc107; }
+        .status-running { background: #17a2b8; }
+        .status-passed { background: #28a745; }
+        .status-failed { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 Client-Side Error Handling Tests</h1>
+        <p>This page tests the enhanced error handling system for the Smart Insurance application.</p>
+        <p><strong>Status:</strong> <span id="test-status">Ready to run tests</span></p>
+    </div>
+
+    <div class="test-controls">
+        <button class="btn" id="run-tests-btn" onclick="runTests()">Run All Tests</button>
+        <button class="btn" id="clear-output-btn" onclick="clearOutput()">Clear Output</button>
+        <button class="btn" id="test-notification-btn" onclick="testNotification()">Test Notification</button>
+        <button class="btn" id="test-error-btn" onclick="testErrorNotification()">Test Error Notification</button>
+    </div>
+
+    <div class="test-output" id="test-output">
+        📋 Test output will appear here...
+        
+        Click "Run All Tests" to start the comprehensive test suite.
+        Use the other buttons to test individual components.
+    </div>
+
+    <!-- Load all required dependencies in correct order -->
+    
+    <!-- Utilities -->
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    
+    <!-- Base Components -->
+    <script src="../js/components/base/BaseComponent.js"></script>
+    
+    <!-- Pipeline Components -->
+    <script src="../js/components/pipeline/ActionButtons.js"></script>
+    
+    <!-- Enhanced Notification Manager -->
+    <script src="../js/components/NotificationManager.js"></script>
+    
+    <!-- Test Suite -->
+    <script src="client-error-handling-tests.js"></script>
+    
+    <script>
+        // Capture console output and display in test area
+        const testOutput = document.getElementById('test-output');
+        const testStatus = document.getElementById('test-status');
+        const runTestsBtn = document.getElementById('run-tests-btn');
+        
+        // Override console methods to capture output
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn
+        };
+        
+        function appendToOutput(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'warn' ? '⚠️' : '';
+            testOutput.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            testOutput.scrollTop = testOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalConsole.log.apply(console, args);
+            appendToOutput(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalConsole.error.apply(console, args);
+            appendToOutput(args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalConsole.warn.apply(console, args);
+            appendToOutput(args.join(' '), 'warn');
+        };
+        
+        // Test runner functions
+        async function runTests() {
+            clearOutput();
+            testStatus.innerHTML = '<span class="status-indicator status-running"></span>Running tests...';
+            runTestsBtn.disabled = true;
+            
+            try {
+                console.log('🚀 Initializing client-side error handling test suite...\n');
+                
+                const success = await runClientErrorTests();
+                
+                if (success) {
+                    testStatus.innerHTML = '<span class="status-indicator status-passed"></span>All tests passed!';
+                } else {
+                    testStatus.innerHTML = '<span class="status-indicator status-failed"></span>Some tests failed';
+                }
+                
+            } catch (error) {
+                console.error('Test suite crashed:', error);
+                testStatus.innerHTML = '<span class="status-indicator status-failed"></span>Test suite crashed';
+            } finally {
+                runTestsBtn.disabled = false;
+            }
+        }
+        
+        function clearOutput() {
+            testOutput.textContent = '📋 Test output cleared. Ready for new tests...\n';
+        }
+        
+        function testNotification() {
+            console.log('🔔 Testing basic notification...');
+            
+            if (window.notificationManager) {
+                window.notificationManager.showSuccess(
+                    'Test Success', 
+                    'This is a test success notification.'
+                );
+                console.log('✅ Success notification displayed');
+            } else {
+                console.error('NotificationManager not available');
+            }
+        }
+        
+        function testErrorNotification() {
+            console.log('🔔 Testing error notification...');
+            
+            if (window.notificationManager) {
+                const mockPipeline = { 
+                    pipeline_id: 999, 
+                    firm_name: 'Test Firm' 
+                };
+                const mockError = {
+                    api: 'Test API',
+                    type: 'credits_exhausted',
+                    message: 'This is a test error message',
+                    time: new Date().toISOString(),
+                    state: 'research_running'
+                };
+                
+                window.notificationManager.showPipelineError(
+                    999, 
+                    'research_failed', 
+                    mockPipeline, 
+                    mockError
+                );
+                console.log('✅ Error notification displayed');
+            } else {
+                console.error('NotificationManager not available');
+            }
+        }
+        
+        // Initialize notification manager on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('🌐 Initializing notification manager...');
+            window.notificationManager = new NotificationManager();
+            
+            // Check if all required components are loaded
+            const requiredClasses = ['NotificationManager', 'ActionButtons', 'PipelineAPI'];
+            const availableClasses = requiredClasses.filter(className => window[className]);
+            const missingClasses = requiredClasses.filter(className => !window[className]);
+            
+            console.log('✅ Available classes:', availableClasses.join(', '));
+            if (missingClasses.length > 0) {
+                console.error('❌ Missing classes:', missingClasses.join(', '));
+                testStatus.innerHTML = '<span class="status-indicator status-failed"></span>Missing required components';
+            } else {
+                console.log('🎉 All required components loaded successfully!');
+                testStatus.innerHTML = '<span class="status-indicator status-pending"></span>Ready to run tests';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -11,6 +11,9 @@ class SmartInsuranceApp {
         this.companyManager = new CompanyManager(this.api);
         this.reports = new ReportManager();
         
+        // Initialize notification manager
+        window.notificationManager = new NotificationManager();
+        
         // Application state
         this.activePipelines = new Map(); // pipelineId -> pipeline data
         this.isInitialized = false;
@@ -417,42 +420,27 @@ class SmartInsuranceApp {
         }
     }
 
-    async handleRetryPipeline(pipelineId) {
-        console.log(`SmartInsuranceApp: Retry pipeline ${pipelineId}`);
+    // ✅ Reset pipeline (called by ActionButtons reset button)
+    async handleResetPipeline(pipelineId) {
+        console.log(`SmartInsuranceApp: Reset pipeline ${pipelineId}`);
         
         try {
-            const pipeline = this.activePipelines.get(pipelineId);
-            if (!pipeline) {
-                throw new Error('Pipeline not found in active pipelines');
-            }
+            Utils.showLoading('Resetting pipeline...');
             
-            // Determine retry step from failed status
-            let step;
-            if (pipeline.status === 'research_failed') {
-                step = 'research';
-            } else if (pipeline.status === 'legal_resolution_failed') {
-                step = 'legal_resolution';
-            } else if (pipeline.status === 'data_extraction_failed') {
-                step = 'data_extraction';
-            } else {
-                throw new Error(`Cannot retry pipeline with status: ${pipeline.status}`);
-            }
-            
-            Utils.showLoading(`Retrying ${step.replace('_', ' ')}...`);
-            
-            const result = await this.api.retryStep(pipelineId, step);
+            const result = await this.api.resetPipeline(pipelineId);
             
             if (result.success) {
-                this.showSuccess(`Retrying ${step.replace('_', ' ')} step...`);
-                // Start polling for the retry
-                this.pipelinePoller.startPipelinePolling(pipelineId);
+                this.showSuccess('Pipeline reset successfully. You can now start the workflow again.');
+                // Update the pipeline data and UI
+                this.activePipelines.set(pipelineId, result.pipeline);
+                this.cards.updatePipelineCard(pipelineId, result.pipeline);
             } else {
-                this.showError(`Failed to retry: ${result.error || 'Unknown error'}`);
+                this.showError(`Failed to reset pipeline: ${result.error || 'Unknown error'}`);
             }
             
         } catch (error) {
-            console.error(`SmartInsuranceApp: Error retrying pipeline ${pipelineId}:`, error);
-            this.showError(`Failed to retry pipeline: ${error.message}`);
+            console.error(`SmartInsuranceApp: Error resetting pipeline ${pipelineId}:`, error);
+            this.showError(`Failed to reset pipeline: ${error.message}`);
         } finally {
             Utils.hideLoading();
         }
@@ -662,9 +650,16 @@ class SmartInsuranceApp {
         // Update local pipeline data
         this.activePipelines.set(pipelineId, pipeline);
         
-        // Note: Card update is already handled by PipelinePoller before this callback
+        // ✅ Orchestrator handles UI updates (not PipelinePoller)
+        this.cards.updatePipelineCard(pipelineId, pipeline);
         
-        // Auto-complete logic
+        // ✅ Handle failed statuses with error responsibilities
+        if (status.endsWith('_failed')) {
+            this.handlePipelineError(pipelineId, status, pipeline);
+            return; // Don't continue with auto-complete logic for failed pipelines
+        }
+        
+        // Auto-complete logic for successful statuses
         if (this.autoCompletePipelines.has(pipelineId)) {
             if (status === 'research_complete') {
                 console.log('Auto-complete: Starting legal resolution');
@@ -678,11 +673,54 @@ class SmartInsuranceApp {
                 console.log('Auto-complete: Workflow completed');
                 this.autoCompletePipelines.delete(pipelineId);
             }
-            else if (status.includes('_failed')) {
-                console.log('Auto-complete: Workflow failed, stopping auto-complete');
-                this.autoCompletePipelines.delete(pipelineId);
+        }
+    }
+
+    // ✅ Handle the three error responsibilities
+    async handlePipelineError(pipelineId, failureStatus, pipeline) {
+        console.log(`Handling pipeline error for ${pipelineId}: ${failureStatus}`);
+        
+        try {
+            // 1. ✅ Stop polling - Already handled by PipelinePoller.isPollingComplete()
+            
+            // 2. ✅ Fetch detailed error information from server
+            const errorDetails = await this.fetchPipelineErrorDetails(pipelineId);
+            
+            // 3. ✅ Show persistent notification with detailed error information
+            if (window.notificationManager) {
+                window.notificationManager.showPipelineError(pipelineId, failureStatus, pipeline, errorDetails);
+            }
+            
+            console.log(`Pipeline ${pipelineId} error handling complete`);
+            
+        } catch (error) {
+            console.error('Error handling pipeline failure:', error);
+            // Fallback notification
+            if (window.notificationManager) {
+                window.notificationManager.showError('Pipeline Error', `${this.getWorkflowName(failureStatus)} failed. Please check the pipeline and try again.`);
             }
         }
+    }
+
+    // ✅ Fetch detailed error info
+    async fetchPipelineErrorDetails(pipelineId) {
+        try {
+            const result = await this.api.getPipelineError(pipelineId);
+            return result.success ? result.error : null;
+        } catch (error) {
+            console.error('Failed to fetch pipeline error details:', error);
+            return null; // Graceful degradation
+        }
+    }
+
+    // ✅ Helper method
+    getWorkflowName(failureStatus) {
+        const workflowMap = {
+            'research_failed': 'Research',
+            'legal_resolution_failed': 'Legal Resolution'
+            // data_extraction_failed not included - programming errors don't use client error handling
+        };
+        return workflowMap[failureStatus] || 'Workflow';
     }
 }
 

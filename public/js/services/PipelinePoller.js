@@ -61,12 +61,9 @@ class PipelinePoller {
                 const pipeline = result.pipeline;
                 const currentStatus = pipeline.status;
                 
-                // Update the pipeline card with new data
-                this.cardManager.updatePipelineCard(pipelineId, pipeline);
-                
                 console.log(`PipelinePoller: Pipeline ${pipelineId} status: ${currentStatus}`);
                 
-                // Notify orchestrator of status change
+                // ✅ ONLY notify orchestrator - let orchestrator handle UI
                 if (this.onStatusChange) {
                     this.onStatusChange(pipelineId, currentStatus, pipeline);
                 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Test Fixes</title>
+    <link rel="stylesheet" href="public/css/app.css">
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-output {
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quick Test Fixes</h1>
+    <button onclick="runQuickTest()">Run Quick Test</button>
+    <div id="output" class="test-output">Ready to test...</div>
+
+    <!-- Load required scripts -->
+    <script src="public/js/utils.js"></script>
+    <script src="public/js/api.js"></script>
+    <script src="public/js/components/base/BaseComponent.js"></script>
+    <script src="public/js/components/pipeline/ActionButtons.js"></script>
+    <script src="public/js/components/NotificationManager.js"></script>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message) {
+            output.textContent += new Date().toLocaleTimeString() + ' - ' + message + '\n';
+            console.log(message);
+        }
+
+        async function runQuickTest() {
+            output.textContent = 'Starting quick test...\n';
+            
+            try {
+                // Test 1: NotificationManager creation
+                log('✓ Testing NotificationManager creation...');
+                const nm = new NotificationManager();
+                log('✓ NotificationManager created');
+                
+                // Test 2: Basic notification
+                log('✓ Testing basic notification...');
+                const notificationId = nm.show({
+                    type: 'info',
+                    title: 'Test Notification',
+                    content: 'This is a test message'
+                });
+                log('✓ Notification ID: ' + notificationId);
+                
+                // Wait for animation
+                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                
+                // Test 3: Check DOM elements
+                const notification = document.querySelector('.notification');
+                const title = notification ? notification.querySelector('.notification-title') : null;
+                
+                log('✓ Notification element found: ' + (notification !== null));
+                log('✓ Title element found: ' + (title !== null));
+                log('✓ Title text: ' + (title ? title.textContent : 'N/A'));
+                log('✓ Notification classes: ' + (notification ? notification.className : 'N/A'));
+                
+                // Test 4: CSS background
+                if (notification) {
+                    const style = window.getComputedStyle(notification);
+                    log('✓ Background color: ' + style.backgroundColor);
+                    log('✓ Background: ' + style.background);
+                    log('✓ Border radius: ' + style.borderRadius);
+                }
+                
+                // Test 5: Error notification
+                log('✓ Testing error notification...');
+                const errorId = nm.showPipelineError(123, 'research_failed', 
+                    { firm_name: 'Test Firm' }, 
+                    { api: 'Test API', type: 'credits_exhausted', message: 'Test error', time: new Date().toISOString() }
+                );
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const errorNotification = document.querySelector('.notification-error');
+                log('✓ Error notification found: ' + (errorNotification !== null));
+                
+                log('✅ Quick test completed successfully!');
+                
+            } catch (error) {
+                log('❌ Test failed: ' + error.message);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
