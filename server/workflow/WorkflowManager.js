@@ -81,6 +81,7 @@ class WorkflowManager {
       try {
         const execution = new TaskExecution(task);
         execution.setToolManager(this.toolManager);
+        
         const result = await execution.run(inputs);
         
         if (result.success) {

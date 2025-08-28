@@ -255,11 +255,6 @@ class DatabaseManager {
       const values = [pipelineId, ...Object.values(updates), new Date()];
       const finalQuery = `UPDATE pipelines SET ${setClause}, updated_at = $${Object.keys(updates).length + 2} WHERE pipeline_id = $1`;
       
-      logger.info(`🔍 DEBUG: About to execute update query:`);
-      logger.info(`   Query: ${finalQuery}`);
-      logger.info(`   Values: ${JSON.stringify(values, null, 2)}`);
-      logger.info(`   Updates object: ${JSON.stringify(updates, null, 2)}`);
-      
       await this.query(finalQuery, values);
     } catch (error) {
       logger.error('❌ Failed to update pipeline:', error.message);
@@ -420,9 +415,6 @@ class DatabaseManager {
         }
         updates.data_extraction_completed_at = null;
       }
-      
-      logger.info(`🔍 DEBUG: resetPipeline for step '${fromStep}' generated updates:`);
-      logger.info(`   Updates: ${JSON.stringify(updates, null, 2)}`);
       
       await this.updatePipeline(pipelineId, updates);
     } catch (error) {

@@ -676,22 +676,18 @@ class SmartInsuranceApp {
         }
     }
 
-    // ✅ Handle the three error responsibilities
+    // Handle pipeline error notifications
     async handlePipelineError(pipelineId, failureStatus, pipeline) {
         console.log(`Handling pipeline error for ${pipelineId}: ${failureStatus}`);
         
         try {
-            // 1. ✅ Stop polling - Already handled by PipelinePoller.isPollingComplete()
-            
-            // 2. ✅ Fetch detailed error information from server
+            // Fetch detailed error information from server
             const errorDetails = await this.fetchPipelineErrorDetails(pipelineId);
             
-            // 3. ✅ Show persistent notification with detailed error information
+            // Show persistent notification with detailed error information
             if (window.notificationManager) {
                 window.notificationManager.showPipelineError(pipelineId, failureStatus, pipeline, errorDetails);
             }
-            
-            console.log(`Pipeline ${pipelineId} error handling complete`);
             
         } catch (error) {
             console.error('Error handling pipeline failure:', error);
@@ -702,7 +698,7 @@ class SmartInsuranceApp {
         }
     }
 
-    // ✅ Fetch detailed error info
+    // Fetch detailed error info
     async fetchPipelineErrorDetails(pipelineId) {
         try {
             const result = await this.api.getPipelineError(pipelineId);

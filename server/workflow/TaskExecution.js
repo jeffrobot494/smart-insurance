@@ -107,10 +107,18 @@ class TaskExecution {
           });
 
         } catch (error) {
+          // Check if it's a WorkflowAPIError - these should NOT be retried
+          if (error.isWorkflowError) {
+            logger.info(`WorkflowAPIError detected - no retries, bubbling up: ${error.message}`);
+            throw error; // Bubble up immediately - don't retry API credit/auth issues
+          }
+          
+          // Only retry transient errors (network, temporary server issues, etc.)
           consecutiveFailures++;
           logger.info(`⚠️ API call failed (attempt ${consecutiveFailures}/${maxRetries + 1}): ${error.message}`);
           
           if (consecutiveFailures > maxRetries) {
+            logger.error(`Max retries exceeded for transient error, re-throwing: ${error.message}`);
             throw error; // Max retries exceeded, propagate error
           }
           
@@ -136,7 +144,14 @@ class TaskExecution {
       };
 
     } catch (error) {
-      this.status = 'failed';
+      // Check if it's a WorkflowAPIError that should bubble up to Manager.js
+      if (error.isWorkflowError) {
+        // Don't set status to 'failed' - this isn't a TaskExecution failure
+        throw error; // Let it bubble up to WorkflowManager, then to Manager.js
+      }
+      
+      // Only handle non-API errors (programming errors, etc.)
+      this.status = 'failed'; // Only set failed status for actual TaskExecution failures
       return {
         success: false,
         taskId: this.task.id,

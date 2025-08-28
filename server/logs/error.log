@@ -567,3 +567,65 @@
 {"level":"error","message":"❌ Research failed for pipeline 141:","service":"manager","timestamp":"2025-08-28T20:59:19.809Z"}
 {"level":"error","message":"Research failed for pipeline 141:","service":"manager","timestamp":"2025-08-28T20:59:19.851Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:00:54.962Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:07:41.588Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:07:41.588Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:07:41.663Z"}
+{"level":"error","message":"❌ Task 1 failed: credit balance low","service":"workflow","timestamp":"2025-08-28T21:08:55.565Z"}
+{"level":"error","message":"❌ Research failed for pipeline 1:","service":"manager","timestamp":"2025-08-28T21:08:55.566Z"}
+{"level":"error","message":"Research failed for pipeline 1:","service":"manager","timestamp":"2025-08-28T21:08:55.763Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:14:09.343Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:14:09.344Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:14:09.395Z"}
+{"level":"error","message":"🔍 DEBUG 1 - TaskExecution retry catch: isWorkflowError=true, constructor=WorkflowAPIError","service":"workflow","timestamp":"2025-08-28T21:14:19.813Z"}
+{"level":"error","message":"🔍 DEBUG 1 - TaskExecution retry catch: isWorkflowError=true, constructor=WorkflowAPIError","service":"workflow","timestamp":"2025-08-28T21:14:20.822Z"}
+{"level":"error","message":"🔍 DEBUG 1 - TaskExecution retry catch: isWorkflowError=true, constructor=WorkflowAPIError","service":"workflow","timestamp":"2025-08-28T21:14:22.824Z"}
+{"level":"error","message":"🔍 DEBUG 1 - TaskExecution retry catch: isWorkflowError=true, constructor=WorkflowAPIError","service":"workflow","timestamp":"2025-08-28T21:14:26.829Z"}
+{"level":"error","message":"🔍 DEBUG 2 - TaskExecution max retries exceeded, re-throwing: isWorkflowError=true","service":"workflow","timestamp":"2025-08-28T21:14:26.830Z"}
+{"level":"error","message":"❌ Task 1 failed: credit balance low","service":"workflow","timestamp":"2025-08-28T21:14:26.830Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"No portfolio companies found during research\", isWorkflowError=undefined, constructor=Error","service":"manager","timestamp":"2025-08-28T21:14:26.830Z"}
+{"level":"error","message":"❌ Research failed for pipeline 2:","service":"manager","timestamp":"2025-08-28T21:14:26.831Z"}
+{"level":"error","message":"Research failed for pipeline 2:","service":"manager","timestamp":"2025-08-28T21:14:26.873Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:17:45.257Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:17:45.257Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:17:45.315Z"}
+{"level":"error","message":"🔍 WorkflowAPIError detected - no retries, bubbling up: credit balance low","service":"workflow","timestamp":"2025-08-28T21:18:03.162Z"}
+{"level":"error","message":"❌ Task 1 failed: credit balance low","service":"workflow","timestamp":"2025-08-28T21:18:03.162Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"No portfolio companies found during research\", isWorkflowError=undefined, constructor=Error","service":"manager","timestamp":"2025-08-28T21:18:03.163Z"}
+{"level":"error","message":"❌ Research failed for pipeline 3:","service":"manager","timestamp":"2025-08-28T21:18:03.163Z"}
+{"level":"error","message":"Research failed for pipeline 3:","service":"manager","timestamp":"2025-08-28T21:18:03.204Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:25:57.930Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:25:57.931Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:25:57.982Z"}
+{"level":"error","message":"🔍 DEBUG 5 - WorkflowManager about to run TaskExecution for task 1","service":"workflow","timestamp":"2025-08-28T21:26:11.035Z"}
+{"level":"error","message":"🔍 WorkflowAPIError detected - no retries, bubbling up: credit balance low","service":"workflow","timestamp":"2025-08-28T21:26:11.036Z"}
+{"level":"error","message":"🔍 DEBUG 4 - TaskExecution outer catch: isWorkflowError=true, constructor=WorkflowAPIError, message=\"credit balance low\"","service":"workflow","timestamp":"2025-08-28T21:26:11.036Z"}
+{"level":"error","message":"🔍 DEBUG 6 - WorkflowManager got result: success=false, error=\"credit balance low\", errorType=\"execution_error\"","service":"workflow","timestamp":"2025-08-28T21:26:11.036Z"}
+{"level":"error","message":"❌ Task 1 failed: credit balance low","service":"workflow","timestamp":"2025-08-28T21:26:11.036Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"No portfolio companies found during research\", isWorkflowError=undefined, constructor=Error","service":"manager","timestamp":"2025-08-28T21:26:11.037Z"}
+{"level":"error","message":"❌ Research failed for pipeline 4:","service":"manager","timestamp":"2025-08-28T21:26:11.037Z"}
+{"level":"error","message":"Research failed for pipeline 4:","service":"manager","timestamp":"2025-08-28T21:26:11.228Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:51:41.063Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:51:41.064Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T21:51:41.112Z"}
+{"level":"error","message":"🔍 DEBUG 5 - WorkflowManager about to run TaskExecution for task 1","service":"workflow","timestamp":"2025-08-28T21:52:09.142Z"}
+{"level":"error","message":"🔍 WorkflowAPIError detected - no retries, bubbling up: credit balance low","service":"workflow","timestamp":"2025-08-28T21:52:09.142Z"}
+{"level":"error","message":"🔍 DEBUG 4 - TaskExecution outer catch: isWorkflowError=true, constructor=WorkflowAPIError, message=\"credit balance low\"","service":"workflow","timestamp":"2025-08-28T21:52:09.143Z"}
+{"level":"error","message":"🔍 DEBUG 4b - Re-throwing WorkflowAPIError from outer catch","service":"workflow","timestamp":"2025-08-28T21:52:09.143Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"credit balance low\", isWorkflowError=true, constructor=WorkflowAPIError","service":"manager","timestamp":"2025-08-28T21:52:09.143Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 5","service":"manager","timestamp":"2025-08-28T21:52:09.143Z"}
+{"level":"error","message":"Research failed for pipeline 5:","service":"manager","timestamp":"2025-08-28T21:52:09.187Z"}
+{"level":"error","message":"Failed to fetch pipeline error details: \"[object Object]\" is not valid JSON","service":"manager","stack":"SyntaxError: \"[object Object]\" is not valid JSON\n    at JSON.parse (<anonymous>)\n    at C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\routes\\pipeline.js:449:36\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2025-08-28T21:52:12.144Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:14:05.458Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:14:05.459Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:14:05.509Z"}
+{"level":"error","message":"🔍 DEBUG 5 - WorkflowManager about to run TaskExecution for task 1","service":"workflow","timestamp":"2025-08-28T22:14:27.072Z"}
+{"level":"error","message":"🔍 WorkflowAPIError detected - no retries, bubbling up: credit balance low","service":"workflow","timestamp":"2025-08-28T22:14:27.073Z"}
+{"level":"error","message":"🔍 DEBUG 4 - TaskExecution outer catch: isWorkflowError=true, constructor=WorkflowAPIError, message=\"credit balance low\"","service":"workflow","timestamp":"2025-08-28T22:14:27.073Z"}
+{"level":"error","message":"🔍 DEBUG 4b - Re-throwing WorkflowAPIError from outer catch","service":"workflow","timestamp":"2025-08-28T22:14:27.073Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"credit balance low\", isWorkflowError=true, constructor=WorkflowAPIError","service":"manager","timestamp":"2025-08-28T22:14:27.074Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 6","service":"manager","timestamp":"2025-08-28T22:14:27.074Z"}
+{"level":"error","message":"Research failed for pipeline 6:","service":"manager","timestamp":"2025-08-28T22:14:27.115Z"}
+{"level":"error","message":"Failed to fetch pipeline error details: \"[object Object]\" is not valid JSON","service":"manager","stack":"SyntaxError: \"[object Object]\" is not valid JSON\n    at JSON.parse (<anonymous>)\n    at C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\routes\\pipeline.js:452:47\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","timestamp":"2025-08-28T22:14:31.693Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.099Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.100Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.147Z"}

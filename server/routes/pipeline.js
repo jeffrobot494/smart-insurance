@@ -444,10 +444,22 @@ router.get('/:id/error', async (req, res) => {
       });
     }
     
-    res.json({
+    // Handle error parsing - it might already be parsed by the database driver
+    let parsedError = null;
+    if (pipeline.error) {
+      if (typeof pipeline.error === 'string') {
+        parsedError = JSON.parse(pipeline.error);
+      } else {
+        parsedError = pipeline.error; // Already an object
+      }
+    }
+    
+    const response = {
       success: true,
-      error: pipeline.error ? JSON.parse(pipeline.error) : null
-    });
+      error: parsedError
+    };
+    
+    res.json(response);
     
   } catch (error) {
     logger.error('Failed to fetch pipeline error details:', error);
