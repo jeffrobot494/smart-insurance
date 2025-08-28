@@ -1,5 +1,6 @@
 const { workflow: logger, temporary: tempLogger } = require('../utils/logger');
 const ClaudeManager = require('../mcp/ClaudeManager');
+const WorkflowAPIError = require('../ErrorHandling/WorkflowAPIError');
 
 class TaskExecution {
   constructor(task) {
@@ -50,7 +51,15 @@ class TaskExecution {
           });
 
           if (!response.success) {
-            throw new Error(`Claude API error: ${response.error}`);
+            const claudeError = new Error(response.error);
+            claudeError.type = response.errorType;
+            
+            throw new WorkflowAPIError({
+              apiName: 'Claude API',
+              originalError: claudeError,
+              statusCode: response.status || response.error?.status, // Anthropic returns HTTP status codes
+              errorType: 'llm_api_error'
+            });
           }
 
           // Reset failure counter on success
@@ -169,8 +178,13 @@ class TaskExecution {
         
         logger.info(`  ✓ ${toolCall.name} completed`);
       } catch (error) {
-        logger.error(`  ✗ ${toolCall.name} failed:`, error.message);
+        // Check if it's a WorkflowAPIError that should bubble up to Manager.js
+        if (error.isWorkflowError) {
+          throw error; // Let it bubble up to WorkflowManager, then to Manager.js
+        }
         
+        // Only convert non-API errors to tool results (programming errors, etc.)
+        logger.error(`  ✗ ${toolCall.name} failed:`, error.message);
         toolResults.push({
           type: 'tool_result',
           tool_use_id: toolCall.id,

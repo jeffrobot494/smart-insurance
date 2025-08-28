@@ -1,3 +1,5 @@
+const WorkflowAPIError = require('../ErrorHandling/WorkflowAPIError');
+
 class ToolManager {
   constructor(mcpServerManager) {
     this.mcpServerManager = mcpServerManager;
@@ -36,7 +38,15 @@ class ToolManager {
               if (message.id === id) {
                 process.stdout.removeListener('data', responseHandler);
                 if (message.error) {
-                  reject(new Error(message.error.message));
+                  // Create standardized error based on which tool failed
+                  const apiName = this.getAPINameFromTool(toolName, tool.serverName);
+                  const workflowError = new WorkflowAPIError({
+                    apiName: apiName,
+                    originalError: message.error,
+                    statusCode: message.error.code, // JSON-RPC error code, not HTTP status
+                    errorType: 'tool_api_error'
+                  });
+                  reject(workflowError);
                 } else {
                   resolve(message.result);
                 }
@@ -45,22 +55,54 @@ class ToolManager {
             }
           }
         } catch (error) {
-          reject(error);
+          // JSON parsing error or other communication issue
+          const apiName = this.getAPINameFromTool(toolName, tool.serverName);
+          const workflowError = new WorkflowAPIError({
+            apiName: apiName,
+            originalError: error,
+            statusCode: null,
+            errorType: 'tool_communication_error'
+          });
+          reject(workflowError);
         }
       };
 
       process.stdout.on('data', responseHandler);
       this.mcpServerManager.sendMCPMessage(process, request);
 
+      // Update the existing timeout handler (existing 60-second timeout)
       setTimeout(() => {
         process.stdout.removeListener('data', responseHandler);
-        reject(new Error('MCP tool call timeout'));
+        const apiName = this.getAPINameFromTool(toolName, tool.serverName);
+        const workflowError = new WorkflowAPIError({
+          apiName: apiName,
+          originalError: new Error('MCP tool call timeout'),
+          statusCode: 408, // HTTP timeout status code for timeouts
+          errorType: 'tool_timeout_error'
+        });
+        reject(workflowError);
       }, 60000);
     });
   }
 
   getAvailableTools() {
     return this.mcpServerManager.getAvailableTools();
+  }
+  
+  /**
+   * Helper method to get API name from tool information
+   * @param {string} toolName - Name of the tool
+   * @param {string} serverName - Name of the MCP server
+   * @returns {string} Human-readable API name
+   */
+  getAPINameFromTool(toolName, serverName) {
+    const apiMapping = {
+      'firecrawl': 'Firecrawl API',
+      'perplexity': 'Perplexity API'
+      // Only external APIs that can fail, not database access
+    };
+    
+    return apiMapping[serverName] || `${serverName} API`;
   }
 }
 

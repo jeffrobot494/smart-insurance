@@ -99,6 +99,12 @@ class WorkflowManager {
           break;
         }
       } catch (error) {
+        // Check if it's a WorkflowAPIError that should bubble up to Manager.js
+        if (error.isWorkflowError) {
+          throw error; // Let it bubble up to Manager.js
+        }
+        
+        // Only log and break for non-API errors (programming errors, etc.)
         logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
         break;
       }

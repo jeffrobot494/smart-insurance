@@ -8,6 +8,8 @@ const WorkflowManager = require('./workflow/WorkflowManager');
 const WorkflowResultsParser = require('./utils/WorkflowResultsParser');
 const DataExtractionService = require('./data-extraction/DataExtractionService');
 const DatabaseManager = require('./data-extraction/DatabaseManager');
+const WorkflowErrorHandler = require('./ErrorHandling/WorkflowErrorHandler');
+const WorkflowCancellationManager = require('./ErrorHandling/WorkflowCancellationManager');
 
 // Pipeline Status Constants
 const PIPELINE_STATUSES = {
@@ -28,6 +30,10 @@ class Manager {
     this.taskManager = null;
     this.dataExtractionService = new DataExtractionService();
     this.databaseManager = DatabaseManager.getInstance();
+    
+    // Add WorkflowErrorHandler initialization
+    this.errorHandler = new WorkflowErrorHandler(this.databaseManager, logger);
+    this.cancellationManager = WorkflowCancellationManager.getInstance();
   }
 
   /**
@@ -111,13 +117,22 @@ class Manager {
       return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
-      logger.error(`❌ Research failed for pipeline ${pipelineId}:`, error.message);
+      // Check if it's an API error that should trigger error recording and cancellation
+      if (error.isWorkflowError) {
+        await this.errorHandler.handleWorkflowFailure(
+          pipelineId, 
+          PIPELINE_STATUSES.RESEARCH_RUNNING, 
+          error, 
+          error.apiName
+        );
+        return; // Don't throw - error handler has set status and triggered cancellation
+      }
       
-      // Update pipeline with error status
+      // Handle programming/logic errors the same way as before
+      logger.error(`❌ Research failed for pipeline ${pipelineId}:`, error.message);
       await this.databaseManager.updatePipeline(pipelineId, {
         status: PIPELINE_STATUSES.RESEARCH_FAILED
       });
-      
       throw error;
     }
   }
@@ -193,13 +208,23 @@ class Manager {
       return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
+      // Check if it's an API error that should trigger error recording and cancellation
+      if (error.isWorkflowError) {
+        await this.errorHandler.handleWorkflowFailure(
+          pipelineId, 
+          PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING, 
+          error, 
+          error.apiName
+        );
+        return; // Don't throw - error handler has set status and triggered cancellation
+      }
+      
+      // Handle programming/logic errors the same way as before
       logger.error(`❌ Legal resolution failed for pipeline ${pipelineId}:`, error.message);
       logger.error('Full error details:', error);
-      
       await this.databaseManager.updatePipeline(pipelineId, {
         status: PIPELINE_STATUSES.LEGAL_RESOLUTION_FAILED
       });
-      
       throw error;
     }
   }
@@ -313,6 +338,73 @@ class Manager {
   async getAllPipelinesPaginated(filters = {}, limit = 20, offset = 0) {
     return await this.databaseManager.getAllPipelinesPaginated(filters, limit, offset);
   }
+
+  /**
+   * Reset a failed pipeline to a previous successful state
+   * @param {number} pipelineId 
+   * @returns {Object} { success: boolean, message?: string, pipeline?: Object, error?: string }
+   */
+  async resetPipeline(pipelineId) {
+    try {
+      // Get current pipeline
+      const pipeline = await this.databaseManager.getPipeline(pipelineId);
+      if (!pipeline) {
+        return { success: false, error: 'Pipeline not found' };
+      }
+      
+      // Determine reset target status
+      const resetToStatus = this.errorHandler.defineResetBehavior(pipeline.status);
+      
+      // Handle data extraction failures - return error as specified
+      if (pipeline.status === PIPELINE_STATUSES.DATA_EXTRACTION_FAILED) {
+        return { success: false, error: 'Data extraction failures require developer intervention and cannot be reset' };
+      }
+      
+      // Reset pipeline data based on target status
+      const updatedData = { ...pipeline };
+      
+      switch (resetToStatus) {
+        case 'pending':
+          // Remove all companies and data - start fresh
+          updatedData.companies = [];
+          break;
+          
+        case 'research_complete':
+          // Remove legal resolution data, keep research companies
+          updatedData.companies = updatedData.companies.map(company => ({
+            name: company.name,
+            confidence_level: company.confidence_level,
+            // Remove legal_entity_name, city, state added in legal resolution
+          }));
+          break;
+          
+        default:
+          return { success: false, error: `Cannot reset from status: ${pipeline.status}` };
+      }
+      
+      // Clear error data and update status
+      await this.databaseManager.updatePipeline(pipelineId, {
+        status: resetToStatus,
+        error: null,  // Clear error JSONB column
+        companies: JSON.stringify(updatedData.companies)
+      });
+      
+      // Clear cancellation flag
+      this.cancellationManager.clearCancellation(pipelineId);
+      
+      // Return updated pipeline
+      const updatedPipeline = await this.databaseManager.getPipeline(pipelineId);
+      return {
+        success: true,
+        message: `Pipeline reset to ${resetToStatus}`,
+        pipeline: updatedPipeline
+      };
+      
+    } catch (error) {
+      logger.error('Failed to reset pipeline:', error);
+      return { success: false, error: 'Failed to reset pipeline' };
+    }
+  }
 }
 
 // Create a singleton instance
@@ -325,6 +417,7 @@ const runLegalResolution = (pipelineId) => manager.runLegalResolution(pipelineId
 const runDataExtraction = (pipelineId) => manager.runDataExtraction(pipelineId);
 const runCompletePipeline = (firmName) => manager.runCompletePipeline(firmName);
 const retryStep = (pipelineId, step) => manager.retryStep(pipelineId, step);
+const resetPipeline = (pipelineId) => manager.resetPipeline(pipelineId);
 const getAllPipelines = (filters) => manager.getAllPipelines(filters);
 
 module.exports = { 
@@ -334,6 +427,7 @@ module.exports = {
   runDataExtraction, 
   runCompletePipeline, 
   retryStep, 
+  resetPipeline,
   getAllPipelines, 
   Manager,
   PIPELINE_STATUSES 

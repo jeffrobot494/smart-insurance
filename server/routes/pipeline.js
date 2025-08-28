@@ -388,6 +388,76 @@ router.post('/:id/update', async (req, res) => {
   }
 });
 
+// POST reset a failed pipeline to a previous successful state
+router.post('/:id/reset', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    
+    if (isNaN(pipelineId)) {
+      return res.status(400).json({
+        error: 'Valid pipeline ID is required'
+      });
+    }
+
+    const result = await manager.resetPipeline(pipelineId);
+    
+    if (result.success) {
+      logger.info(`✅ Pipeline ${pipelineId} reset successfully: ${result.message}`);
+      res.json({
+        success: true,
+        message: result.message,
+        pipeline: result.pipeline
+      });
+    } else {
+      res.status(400).json({ 
+        success: false, 
+        error: result.error 
+      });
+    }
+    
+  } catch (error) {
+    logger.error('Failed to reset pipeline:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to reset pipeline' 
+    });
+  }
+});
+
+// GET pipeline error details
+router.get('/:id/error', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    
+    if (isNaN(pipelineId)) {
+      return res.status(400).json({
+        error: 'Valid pipeline ID is required'
+      });
+    }
+
+    const pipeline = await manager.databaseManager.getPipeline(pipelineId);
+    
+    if (!pipeline) {
+      return res.status(404).json({ 
+        success: false, 
+        error: 'Pipeline not found' 
+      });
+    }
+    
+    res.json({
+      success: true,
+      error: pipeline.error ? JSON.parse(pipeline.error) : null
+    });
+    
+  } catch (error) {
+    logger.error('Failed to fetch pipeline error details:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch error details' 
+    });
+  }
+});
+
 // DELETE pipeline
 router.delete('/:id', async (req, res) => {
   try {

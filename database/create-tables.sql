@@ -174,6 +174,9 @@ CREATE TABLE IF NOT EXISTS pipelines (
     -- Unified company data - progressively enriched at each step
     companies JSONB, -- Array of company objects: [{name, legal_entity_name, city, state, exited, form5500_data}]
     
+    -- Error tracking for API failures
+    error JSONB, -- Error object: {api, type, message, time, state}
+    
     -- Step completion timestamps
     research_completed_at TIMESTAMP,
     legal_resolution_completed_at TIMESTAMP,
@@ -193,6 +196,7 @@ CREATE INDEX IF NOT EXISTS idx_pipelines_companies ON pipelines USING GIN (compa
 -- Add comments for documentation
 COMMENT ON TABLE pipelines IS 'Unified pipeline tracking for PE firm research, legal resolution, and data extraction';
 COMMENT ON COLUMN pipelines.companies IS 'Array of company objects progressively enriched: research adds name, legal resolution adds legal_entity_name/city/state/exited, data extraction adds form5500_data';
+COMMENT ON COLUMN pipelines.error IS 'API error details: {api: "Claude API", type: "credits_exhausted", message: "...", time: "ISO8601", state: "research_running"}';
 
 -- ===========================================
 -- UTILITY VIEWS FOR COMMON QUERIES
