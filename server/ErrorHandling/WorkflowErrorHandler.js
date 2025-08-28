@@ -114,6 +114,9 @@ class WorkflowErrorHandler {
     const message = error.message || '';
     const status = error.status || error.statusCode;
     
+    if (message.includes('credit balance low')) {
+      return 'balance_low';
+    }
     if (message.includes('credit') || message.includes('balance')) {
       return 'credits_exhausted';
     }

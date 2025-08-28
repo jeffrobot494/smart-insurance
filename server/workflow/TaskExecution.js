@@ -39,6 +39,16 @@ class TaskExecution {
       // Main conversation loop - continues while Claude makes tool calls
       while (iterations < this.maxIterations) {
         try {
+          // Simple error simulation for testing
+          if (process.env.ERROR_SIMULATION === 'true') {
+            throw new WorkflowAPIError({
+              apiName: 'Claude API',
+              originalError: new Error('credit balance low'),
+              statusCode: 402,
+              errorType: 'balance_low'
+            });
+          }
+          
           // Log the full prompt being sent to Claude
           tempLogger.info(`🚀 PROMPT TO CLAUDE:\n${JSON.stringify(this.conversationHistory, null, 2)}`);
           

@@ -186,6 +186,7 @@ class NotificationManager {
     
     getSuggestedAction(errorType) {
         const suggestions = {
+            'balance_low': 'Please check your API credits and add more if needed.',
             'credits_exhausted': 'Please check your API credits and add more if needed.',
             'rate_limit': 'Please wait a few minutes before retrying.',
             'server_error': 'This appears to be a temporary server issue. Please try again.',

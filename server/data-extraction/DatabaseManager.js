@@ -63,10 +63,36 @@ class DatabaseManager {
       client.release();
       
       logger.info('✅ Database connection established successfully');
+      
+      // Run schema setup to ensure tables exist and are up-to-date
+      await this.runSchemaSetup();
+      
       this.initialized = true;
       return true;
     } catch (error) {
-      logger.error('❌ Failed to connect to database:', error.message);
+      logger.error('❌ Failed to initialize database:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Run database schema setup (tables, indexes, functions)
+   */
+  async runSchemaSetup() {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      
+      // Read schema SQL file
+      const schemaPath = path.join(__dirname, '../../database/create-tables.sql');
+      const schemaSQL = fs.readFileSync(schemaPath, 'utf8');
+      
+      logger.info('🔧 Setting up database schema...');
+      await this.query(schemaSQL);
+      logger.info('✅ Database schema setup complete');
+      
+    } catch (error) {
+      logger.error('❌ Failed to setup database schema:', error.message);
       throw error;
     }
   }
