@@ -100,11 +100,8 @@ async handleWorkflowFailure(pipelineId, currentStatus, error, apiName) {
   await this.recordAPIError(pipelineId, {
     apiName: apiName,
     errorMessage: error.message,
-    currentWorkflow: this.getWorkflowName(currentStatus),
-    errorType: this.classifyError(error),
-    currentState: currentStatus,
-    httpStatusCode: error.status || null,
-    timestamp: new Date()
+    errorType: this.classifyError(error.originalError),
+    currentState: currentStatus
   });
   
   // 2. Set cancellation flag to stop all workflow processes immediately
@@ -132,10 +129,10 @@ defineResetBehavior(currentStatus) {
 ### Error Classification
 ```javascript
 classifyError(error) {
-  if (error.message.includes('credit') || error.message.includes('insufficient')) {
+  if (error.message.includes('credit') || error.message.includes('balance')) {
     return 'credits_exhausted';
   }
-  if (error.message.includes('rate limit') || error.status === 429) {
+  if (error.message.includes('overload') || error.status === 429) {
     return 'rate_limit';
   }
   if (error.status >= 500) {
@@ -267,7 +264,7 @@ async resetPipeline(pipelineId) {
 
 Error detection happens at two critical checkpoints:
 
-1. **Tool Use Layer**: In **ToolManager.js** `callTool()` method - catches errors from MCP tools (Firecrawl, Perplexity only)
+1. **Tool Use Layer**: In **ToolManager.js** `callTool()` method - catches errors from MCP tools (Firecrawl, Perplexity)
 2. **Claude API Layer**: In **TaskExecution.js** where Claude responses are processed - catches Anthropic API errors
 
 ### Layer 1: ToolManager.js Error Detection
@@ -346,9 +343,12 @@ Replace the existing Claude error check (around line 52-54):
 ```javascript
 // In TaskExecution.js - Replace the existing error check
 if (!response.success) {
+  const claudeError = new Error(response.error);
+  claudeError.type = response.errorType;
+  
   throw new WorkflowAPIError({
     apiName: 'Claude API',
-    originalError: { message: response.error, type: response.errorType },
+    originalError: claudeError,
     statusCode: response.status || response.error?.status, // Anthropic returns HTTP status codes
     errorType: 'llm_api_error'
   });
@@ -1463,11 +1463,8 @@ async handleWorkflowFailure(pipelineId, currentStatus, error, apiName) {
   await this.recordAPIError(pipelineId, {
     apiName: apiName,
     errorMessage: error.message,
-    currentWorkflow: this.getWorkflowName(currentStatus),
-    errorType: this.classifyError(error),
-    currentState: currentStatus,
-    httpStatusCode: error.status || null,
-    timestamp: new Date()
+    errorType: this.classifyError(error.originalError),
+    currentState: currentStatus
   });
   
   // 2. Set cancellation flag to stop all workflow processes immediately
@@ -1540,10 +1537,10 @@ This is the complete user experience flow from API error to manual recovery:
   - Stops polling immediately  
   - Shows error notification to user: "Research failed due to Claude API error. Please check your credits."
   - Updates UI to show failed state with error details
-  - Shows "Reset & Try Again" button
+  - Shows "Reset" button
 
 #### 4. User Acknowledges and Resets
-- **User Action**: Reviews error, checks API credits, clicks "Reset & Try Again"
+- **User Action**: Reviews error, checks API credits, clicks "Reset"
 - **Client**: Makes API call `POST /pipeline/:id/reset`
 - **Server**:
   - Clears cancellation flag for pipeline
