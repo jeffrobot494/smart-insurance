@@ -19,12 +19,9 @@ class WorkflowErrorHandler {
   async recordAPIError(pipelineId, errorData)
   
   // Status management
-  defineRollbackBehavior(currentStatus)
+  defineResetBehavior(currentStatus)
   getWorkflowName(currentStatus)
   classifyError(error)
-  
-  // Client response creation
-  createClientResponse(responseData)
   
   // Utility methods
   async getErrorHistory(pipelineId)
@@ -50,34 +47,47 @@ class WorkflowAPIError extends Error {
 
 ## 2. Database Schema
 
-Add these columns to the existing `pipelines` table:
+Add this column to the existing `pipelines` table:
 
 ```sql
-ALTER TABLE pipelines ADD COLUMN error_api VARCHAR(50);
-ALTER TABLE pipelines ADD COLUMN error_type VARCHAR(50); 
-ALTER TABLE pipelines ADD COLUMN error_message TEXT;
-ALTER TABLE pipelines ADD COLUMN error_time TIMESTAMP;
-ALTER TABLE pipelines ADD COLUMN previous_status VARCHAR(50);
+ALTER TABLE pipelines ADD COLUMN error JSONB;
+```
+
+The error object structure:
+```javascript
+error: {
+    api: "Claude API" | "Firecrawl API" | "Perplexity API",
+    type: "credits_exhausted" | "rate_limit" | "server_error" | "authorization_failed" | "timeout_error",
+    message: "Specific error message from the API",
+    time: "2025-01-15T10:30:00Z",
+    state: "research_running" | "legal_resolution_running" | "data_extraction_running"
+}
 ```
 
 ### Error Recording Method
 ```javascript
-async recordAPIError(pipelineId, {
-  apiName,           // "Claude API", "Firecrawl API", "Perplexity API" 
-  errorMessage,      // The actual error message
-  currentWorkflow,   // "research", "legal_resolution", "data_extraction"
-  httpStatusCode,    // 429, 500, 403, etc.
-  errorType,         // "rate_limit", "credits_exhausted", "server_error"
-  rollbackTo         // "pending", "research_complete", etc.
-})
+async recordAPIError(pipelineId, errorData) {
+  const errorObject = {
+    api: errorData.apiName,
+    type: errorData.errorType,
+    message: errorData.errorMessage,
+    time: new Date().toISOString(),
+    state: errorData.currentState
+  };
+  
+  await this.databaseManager.updatePipeline(pipelineId, {
+    status: `${errorData.currentState.split('_')[0]}_failed`,
+    error: JSON.stringify(errorObject)
+  });
+}
 ```
 
 ### Example Database View After Errors
 ```
-pipeline_id | firm_name    | status              | error_api      | error_type          | error_message                | error_time          | previous_status
-1          | "Blackstone" | "pending"           | "Claude API"   | "credits_exhausted" | "Insufficient credits"       | 2025-01-15 10:30:00 | "research_running"
-2          | "KKR"        | "research_complete" | "Form5500 Database" | "server_error"      | "Database connection failed" | 2025-01-15 11:45:00 | "data_extraction_running"
-3          | "Apollo"     | "legal_resolution_complete" | "Claude API" | "rate_limit" | "Rate limit exceeded"        | 2025-01-15 12:15:00 | "data_extraction_running"
+pipeline_id | firm_name    | status              | error
+1          | "Blackstone" | "research_failed"   | {"api":"Claude API","type":"credits_exhausted","message":"Insufficient credits","time":"2025-01-15T10:30:00Z","state":"research_running"}
+2          | "KKR"        | "legal_resolution_failed" | {"api":"Perplexity API","type":"server_error","message":"Service temporarily unavailable","time":"2025-01-15T11:45:00Z","state":"legal_resolution_running"}
+3          | "Apollo"     | "legal_resolution_failed" | {"api":"Perplexity API","type":"rate_limit","message":"Rate limit exceeded","time":"2025-01-15T12:15:00Z","state":"legal_resolution_running"}
 ```
 
 ## 3. Error Handler Methods
@@ -86,46 +96,34 @@ pipeline_id | firm_name    | status              | error_api      | error_type  
 ```javascript
 async handleWorkflowFailure(pipelineId, currentStatus, error, apiName) {
   
-  // 1. Figure out where to roll back to
-  const rollbackStatus = this.defineRollbackBehavior(currentStatus);
-  
-  // 2. Record what happened in clear terms  
+  // 1. Record error in database (set status to *_failed)
   await this.recordAPIError(pipelineId, {
     apiName: apiName,
     errorMessage: error.message,
     currentWorkflow: this.getWorkflowName(currentStatus),
     errorType: this.classifyError(error),
-    rollbackTo: rollbackStatus,
+    currentState: currentStatus,
     httpStatusCode: error.status || null,
     timestamp: new Date()
   });
   
-  // 3. Update pipeline status to rollback state
-  await this.databaseManager.updatePipeline(pipelineId, { status: rollbackStatus });
+  // 2. Set cancellation flag to stop all workflow processes immediately
+  const cancellationManager = WorkflowCancellationManager.getInstance();
+  await cancellationManager.cancelPipeline(pipelineId, 'api_error');
   
-  // 4. Tell the application what to do next
-  return this.createClientResponse({
-    success: false,
-    error: {
-      type: 'api_error',
-      api: apiName,
-      message: `${apiName} failed. Pipeline rolled back to ${rollbackStatus}. Please check your credits and try again.`,
-      rollbackStatus: rollbackStatus,
-      stopPolling: true,
-      refreshCard: true,
-      showNotification: true
-    }
-  });
+  // 3. Done - client will learn of failure via polling
+  //    Reset happens later when user clicks Reset button
 }
 ```
 
-### Rollback Behavior Rules
+### Reset Behavior Rules
 ```javascript
-defineRollbackBehavior(currentStatus) {
+defineResetBehavior(currentStatus) {
   const rules = {
     'research_running': 'pending',                        // Start over
+    'research_failed': 'pending',                         // Reset to start over
     'legal_resolution_running': 'research_complete',      // Back to previous step
-    'data_extraction_running': 'legal_resolution_complete' // Back to previous step
+    'legal_resolution_failed': 'research_complete'        // Reset to previous step
   };
   return rules[currentStatus] || 'pending'; // Default fallback
 }
@@ -162,6 +160,104 @@ getWorkflowName(currentStatus) {
     'data_extraction_running': 'data_extraction'
   };
   return workflowMap[currentStatus] || 'unknown_workflow';
+}
+```
+
+### Reset Pipeline Server Endpoint
+
+The reset endpoint handles user-initiated pipeline resets after API failures:
+
+```javascript
+// Add to routes/pipeline.js
+router.post('/:id/reset', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    
+    const result = await manager.resetPipeline(pipelineId);
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: result.message,
+        pipeline: result.pipeline
+      });
+    } else {
+      res.status(400).json({ 
+        success: false, 
+        error: result.error 
+      });
+    }
+    
+  } catch (error) {
+    logger.error('Failed to reset pipeline:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to reset pipeline' 
+    });
+  }
+});
+```
+
+Add corresponding method to Manager.js:
+
+```javascript
+async resetPipeline(pipelineId) {
+  try {
+    // Get current pipeline
+    const pipeline = await this.databaseManager.getPipeline(pipelineId);
+    if (!pipeline) {
+      return { success: false, error: 'Pipeline not found' };
+    }
+    
+    // Determine reset target status
+    const resetToStatus = this.errorHandler.defineResetBehavior(pipeline.status);
+    
+    // Reset pipeline data based on target status
+    const updatedData = { ...pipeline };
+    
+    switch (resetToStatus) {
+      case 'pending':
+        // Remove all companies and data - start fresh
+        updatedData.companies = [];
+        break;
+        
+      case 'research_complete':
+        // Remove legal resolution data, keep research companies
+        updatedData.companies = updatedData.companies.map(company => ({
+          name: company.name,
+          confidence_level: company.confidence_level,
+          // Remove legal_entity_name, city, state added in legal resolution
+        }));
+        break;
+        
+      // legal_resolution_complete case removed - data extraction errors don't get reset functionality
+        
+      default:
+        return { success: false, error: `Cannot reset from status: ${pipeline.status}` };
+    }
+    
+    // Clear error data and update status
+    await this.databaseManager.updatePipeline(pipelineId, {
+      status: resetToStatus,
+      error: null,  // Clear error JSONB column
+      companies: updatedData.companies
+    });
+    
+    // Clear cancellation flag
+    this.cancellationManager.clearCancellation(pipelineId);
+    
+    // Return updated pipeline
+    const updatedPipeline = await this.databaseManager.getPipeline(pipelineId);
+    return {
+      success: true,
+      message: `Pipeline reset to ${resetToStatus}`,
+      pipeline: updatedPipeline
+    };
+    
+  } catch (error) {
+    logger.error('Failed to reset pipeline:', error);
+    return { success: false, error: 'Failed to reset pipeline' };
+  }
 }
 ```
 
@@ -236,7 +332,7 @@ getAPINameFromTool(toolName, serverName) {
   const apiMapping = {
     'firecrawl': 'Firecrawl API',
     'perplexity': 'Perplexity API'
-    // No form5500 - it's database access, not an MCP server
+    // Only external APIs that can fail, not database access
   };
   
   return apiMapping[serverName] || `${serverName} API`;
@@ -383,7 +479,7 @@ Replace the existing generic error handling with WorkflowAPIError detection:
 
 // NEW CODE - API-aware error handling  
 } catch (error) {
-  // Check if it's an API error that should trigger rollback and client notification
+  // Check if it's an API error that should trigger error recording and cancellation
   if (error.isWorkflowError) {
     return await this.errorHandler.handleWorkflowFailure(
       pipelineId, 
@@ -429,18 +525,9 @@ Replace the existing generic error handling with WorkflowAPIError detection:
 ### Update runDataExtraction() Error Handling (Lines 247-255)
 
 ```javascript
-// NEW CODE - API-aware error handling
+// Data extraction errors are programming/database errors, not API errors
 } catch (error) {
-  if (error.isWorkflowError) {
-    return await this.errorHandler.handleWorkflowFailure(
-      pipelineId, 
-      PIPELINE_STATUSES.DATA_EXTRACTION_RUNNING, 
-      error, 
-      'Form5500 Database'
-    );
-  }
-  
-  // Handle programming/logic errors the same way as before
+  // All data extraction errors are treated as programming/logic errors
   logger.error(`❌ Data extraction failed for pipeline ${pipelineId}:`, error.message);
   await this.databaseManager.updatePipeline(pipelineId, {
     status: PIPELINE_STATUSES.DATA_EXTRACTION_FAILED
@@ -489,7 +576,7 @@ class NotificationManager {
             content += [
                 `API: ${errorDetails.api}`,
                 `Error: ${errorDetails.message}`,
-                `Time: ${new Date(errorDetails.timestamp).toLocaleString()}`,
+                `Time: ${new Date(errorDetails.time).toLocaleString()}`,
                 `\nSuggestion: ${this.getSuggestedAction(errorDetails.type)}`
             ].join('\n');
         } else {
@@ -583,8 +670,8 @@ class NotificationManager {
     getWorkflowName(failureStatus) {
         const workflowMap = {
             'research_failed': 'Research',
-            'legal_resolution_failed': 'Legal Resolution',
-            'data_extraction_failed': 'Data Extraction'
+            'legal_resolution_failed': 'Legal Resolution'
+            // data_extraction_failed not included - programming errors don't use notifications
         };
         return workflowMap[failureStatus] || 'Workflow';
     }
@@ -702,8 +789,12 @@ Update the ActionButtons component to use "Reset" instead of "Retry" for failed 
 // In ActionButtons.js - Change failed status button handling
 case 'research_failed':
 case 'legal_resolution_failed':
-case 'data_extraction_failed':
     buttons.push(`<button class="btn btn-primary" data-action="reset">Reset</button>`);
+    buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
+    break;
+
+case 'data_extraction_failed':
+    // Programming errors need developer intervention, not user reset
     buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
     break;
 
@@ -727,7 +818,7 @@ case 'reset':
 
 ### Reset vs Retry Functionality
 
-- **Reset**: Clears error state and rolls back pipeline status to previous successful step (e.g., `pending`, `research_complete`)
+- **Reset**: Clears error state and resets pipeline status to previous successful step (e.g., `pending`, `research_complete`)
 - **No Auto-Retry**: Users must manually restart workflows after reset using existing action buttons
 - **Reset Handler**: `handleResetPipeline()` method calls `/api/pipeline/:id/reset` endpoint and updates UI
 
@@ -844,12 +935,36 @@ async fetchPipelineErrorDetails(pipelineId) {
             throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
-        return data.error; // { api, type, message, timestamp, previousStatus }
+        return data.error; // { api, type, message, time, state }
     } catch (error) {
         console.error('Failed to fetch pipeline error details:', error);
         return null; // Graceful degradation
     }
 }
+
+// Corresponding server endpoint - add to routes/pipeline.js:
+router.get('/:id/error', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    const pipeline = await databaseManager.getPipeline(pipelineId);
+    
+    if (!pipeline) {
+      return res.status(404).json({ success: false, error: 'Pipeline not found' });
+    }
+    
+    res.json({
+      success: true,
+      error: pipeline.error ? JSON.parse(pipeline.error) : null
+    });
+    
+  } catch (error) {
+    logger.error('Failed to fetch pipeline error details:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to fetch error details' 
+    });
+  }
+});
 
 // ✅ NEW - Reset pipeline (called by ActionButtons reset button)
 async handleResetPipeline(pipelineId) {
@@ -883,8 +998,8 @@ async handleResetPipeline(pipelineId) {
 getWorkflowName(failureStatus) {
     const workflowMap = {
         'research_failed': 'Research',
-        'legal_resolution_failed': 'Legal Resolution', 
-        'data_extraction_failed': 'Data Extraction'
+        'legal_resolution_failed': 'Legal Resolution'
+        // data_extraction_failed not included - programming errors don't use client error handling
     };
     return workflowMap[failureStatus] || 'Workflow';
 }
@@ -897,11 +1012,11 @@ getWorkflowName(failureStatus) {
 // Get error history for debugging
 async getErrorHistory(pipelineId) {
   const query = `
-    SELECT error_api, error_type, error_message, error_time, previous_status
+    SELECT error
     FROM pipelines 
     WHERE pipeline_id = $1 
-    AND error_time IS NOT NULL
-    ORDER BY error_time DESC`;
+    AND error IS NOT NULL
+    ORDER BY updated_at DESC`;
     
   return await this.databaseManager.query(query, [pipelineId]);
 }
@@ -919,11 +1034,7 @@ async canRetryWorkflow(pipelineId) {
 async clearErrorState(pipelineId) {
   const query = `
     UPDATE pipelines 
-    SET error_api = NULL,
-        error_type = NULL,
-        error_message = NULL,
-        error_time = NULL,
-        previous_status = NULL
+    SET error = NULL
     WHERE pipeline_id = $1`;
     
   return await this.databaseManager.query(query, [pipelineId]);
@@ -1345,43 +1456,26 @@ async executeToolCalls(toolCalls) {
 Update the error handler to trigger cancellation when API errors occur:
 
 ```javascript
-// In WorkflowErrorHandler.js
+// In WorkflowErrorHandler.js - UPDATED VERSION (replaces old inconsistent version)
 async handleWorkflowFailure(pipelineId, currentStatus, error, apiName) {
   
-  // Cancel the pipeline immediately when API error occurs
-  const cancellationManager = WorkflowCancellationManager.getInstance();
-  await cancellationManager.cancelPipeline(pipelineId, 'api_error');
-  
-  // Figure out where to roll back to
-  const rollbackStatus = this.defineRollbackBehavior(currentStatus);
-  
-  // Record what happened in clear terms  
+  // 1. Record error in database (set status to *_failed)
   await this.recordAPIError(pipelineId, {
     apiName: apiName,
     errorMessage: error.message,
     currentWorkflow: this.getWorkflowName(currentStatus),
     errorType: this.classifyError(error),
-    rollbackTo: rollbackStatus,
+    currentState: currentStatus,
     httpStatusCode: error.status || null,
     timestamp: new Date()
   });
   
-  // Update pipeline status to rollback state
-  await this.databaseManager.updatePipeline(pipelineId, { status: rollbackStatus });
+  // 2. Set cancellation flag to stop all workflow processes immediately
+  const cancellationManager = WorkflowCancellationManager.getInstance();
+  await cancellationManager.cancelPipeline(pipelineId, 'api_error');
   
-  // Tell the application what to do next
-  return this.createClientResponse({
-    success: false,
-    error: {
-      type: 'api_error',
-      api: apiName,
-      message: `${apiName} failed. Pipeline rolled back to ${rollbackStatus}. Please check your credits and try again.`,
-      rollbackStatus: rollbackStatus,
-      stopPolling: true,
-      refreshCard: true,
-      showNotification: true
-    }
-  });
+  // 3. Done - client will learn of failure via polling
+  //    Reset happens later when user clicks Reset button
 }
 ```
 
@@ -1407,7 +1501,7 @@ The result is immediate workflow termination with proper cleanup, database updat
 1. **Create WorkflowAPIError class** in `/server/utils/`
 2. **Create WorkflowErrorHandler.js** in `/server/utils/`
 3. **Create WorkflowCancellationManager.js** in `/server/utils/`
-4. **Update database schema** with new columns
+4. **Update database schema** with new column
 5. **Update ToolManager.js** with error detection in callTool()
 6. **Update TaskExecution.js** with Claude API error detection
 7. **Update TaskExecution.js** with error bubbling fix in executeToolCalls()
@@ -1416,7 +1510,7 @@ The result is immediate workflow termination with proper cleanup, database updat
 10. **Update Manager.js** to catch WorkflowAPIError and route to ErrorHandler
 11. **Update WorkflowErrorHandler** to trigger cancellation on API errors
 12. **Update PipelinePoller.js** to handle API error responses
-13. **Test error scenarios** with each API (Claude, Firecrawl, Perplexity, Form5500)
+13. **Test error scenarios** with each API (Claude, Firecrawl, Perplexity)
 14. **Test cancellation scenarios** at each of the four check points
 15. **Add logging** for error tracking and debugging
 
