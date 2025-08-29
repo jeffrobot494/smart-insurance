@@ -556,9 +556,10 @@ input[type="text"]:focus {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
+    max-width: 1000px;
     width: 90%;
-    max-height: 80vh;
+    min-height: 70vh;
+    max-height: 90vh;
     overflow-y: auto;
 }
 
@@ -860,6 +861,43 @@ input[type="text"]:focus {
     color: #666;
     font-style: italic;
     padding: 20px;
+}
+
+/* Companies table container */
+#company-checkboxes {
+    min-height: 50vh;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Companies table styling */
+.companies-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.companies-table th,
+.companies-table td {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.companies-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+.has-data,
+.exited-status,
+.include-checkbox {
+    text-align: center;
+}
+
+.company-name {
+    font-weight: 500;
 }
 
 .form-error {

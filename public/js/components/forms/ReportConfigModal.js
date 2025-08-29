@@ -135,7 +135,7 @@ class ReportConfigModal extends BaseComponent {
     }
 
     /**
-     * Populate company checkboxes
+     * Populate company table
      */
     populateCompanies(companies) {
         const container = this.modalElement?.querySelector('#company-checkboxes');
@@ -147,20 +147,44 @@ class ReportConfigModal extends BaseComponent {
             return;
         }
         
-        const checkboxesHTML = companies.map((company, index) => {
-            const companyName = company.name || 'Unknown Company';
-            const hasData = company.form5500_data ? 'has-data' : 'no-data';
-            
-            return `
-                <label class="company-checkbox ${hasData}">
-                    <input type="checkbox" value="${index}" checked>
-                    <span class="company-name">${companyName}</span>
-                    ${company.form5500_data ? '<span class="data-indicator">📊</span>' : '<span class="no-data-indicator">❌</span>'}
-                </label>
-            `;
-        }).join('');
+        // Create table HTML
+        const tableHTML = `
+            <table class="companies-table">
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Has Data</th>
+                        <th>Exited</th>
+                        <th>Include</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${companies.map((company, index) => this.createCompanyRow(company, index)).join('')}
+                </tbody>
+            </table>
+        `;
         
-        container.innerHTML = checkboxesHTML;
+        container.innerHTML = tableHTML;
+    }
+
+    /**
+     * Create a single company row
+     */
+    createCompanyRow(company, index) {
+        const companyName = company.name || 'Unknown Company';
+        const hasData = company.form5500_data && Object.keys(company.form5500_data).length > 0;
+        const isExited = company.exited === true; // Explicit boolean check
+        
+        return `
+            <tr class="company-row" data-company-index="${index}">
+                <td class="company-name">${companyName}</td>
+                <td class="has-data">${hasData ? '✅ Yes' : '❌ No'}</td>
+                <td class="exited-status">${isExited ? '🚪 Exited' : '✅ Active'}</td>
+                <td class="include-checkbox">
+                    <input type="checkbox" value="${index}" checked>
+                </td>
+            </tr>
+        `;
     }
 
     /**
