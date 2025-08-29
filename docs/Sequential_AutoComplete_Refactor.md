@@ -448,9 +448,11 @@ createPipelinesBtn.addEventListener('click', () => this.handleCreatePipelines())
 
 #### Detailed Changes:
 
-#### Change 1: Update Auto-Complete Logic in handlePipelineStatusChange()
+#### Change 1: Fix Auto-Complete Logic in handlePipelineStatusChange() (CRITICAL BUG FIX)
 **File**: `/public/js/app.js`  
-**Find the auto-complete logic** (search for `this.autoCompletePipelines.has`):
+**Find the auto-complete logic** (search for `this.autoCompletePipelines.has` around lines 678-691):
+
+**IMPORTANT**: This change fixes a critical bug where auto-complete calls the deleted `handleProceedToStep()` method from Phase 1.
 
 **Replace this**:
 ```javascript
@@ -522,14 +524,25 @@ createPipelinesBtn.addEventListener('click', () => this.handleCreatePipelines())
 ```
 
 #### Change 3: Remove autoCompletePipelines Set Management
-**File**: `/public/js/app.js**  
+**File**: `/public/js/app.js`  
 **Find and remove all references to `autoCompletePipelines`**:
 
-1. **Remove Set initialization** (search for `this.autoCompletePipelines = new Set()`):
-   - Delete the line that initializes the Set
+1. **Remove Set initialization** (search for `this.autoCompletePipelines = new Set()` around line 22):
+   ```javascript
+   // DELETE this line:
+   this.autoCompletePipelines = new Set();
+   ```
 
-2. **Remove Set usage from constructor or initialization**:
-   - Delete any `.add()`, `.delete()`, `.has()` calls to `autoCompletePipelines`
+2. **Remove Set usage from handleCreatePipelines()** (search for `autoCompletePipelines.add` around line 183):
+   ```javascript
+   // DELETE these lines:
+   if (autoComplete) {
+       this.autoCompletePipelines.add(item.pipeline.pipeline_id);
+       console.log(`Auto-complete: Marked pipeline ${item.pipeline.pipeline_id} for auto-completion`);
+   }
+   ```
+
+3. **The Set usage in handlePipelineStatusChange() is already removed** by Change 1 above.
 
 **Dependencies**: Requires Phase 1's `proceedToNextStep()` method and Phase 2's decoupled creation
 

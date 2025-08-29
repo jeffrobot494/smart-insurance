@@ -2769,3 +2769,7 @@
 {"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-29T20:51:36.566Z"}
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-29T20:51:37.021Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-29T20:51:37.025Z"}
+{"level":"info","message":"📋 Created new pipeline 29 for firm: American Discovery Capital","service":"manager","timestamp":"2025-08-29T21:22:43.943Z"}
+{"level":"info","message":"📋 Created new pipeline 30 for firm: American Discovery Capital","service":"manager","timestamp":"2025-08-29T21:22:54.432Z"}
+{"level":"info","message":"📋 Created new pipeline 31 for firm: NexPhase Capital","service":"manager","timestamp":"2025-08-29T21:22:54.508Z"}
+{"level":"info","message":"📋 Created new pipeline 32 for firm: Revelstoke Capital","service":"manager","timestamp":"2025-08-29T21:22:54.585Z"}
