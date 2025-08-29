@@ -6,6 +6,7 @@ class PipelinePoller {
         this.cardManager = cardManager;
         this.onStatusChange = onStatusChange; // Callback for status changes
         this.pollingService = new PollingService();
+        this.pollingStartTimes = new Map(); // Track when polling started for each pipeline
         
         // Pipeline statuses that require polling
         this.runningStatuses = [
@@ -33,6 +34,9 @@ class PipelinePoller {
     startPipelinePolling(pipelineId) {
         const pollerId = `pipeline-${pipelineId}`;
         console.log(`PipelinePoller: Starting polling for pipeline ${pipelineId}`);
+        
+        // Track when we started polling to prevent immediate stopping
+        this.pollingStartTimes.set(pipelineId, Date.now());
         
         this.pollingService.startPolling(pollerId, async () => {
             await this.pollPipeline(pipelineId);
@@ -69,7 +73,7 @@ class PipelinePoller {
                 }
                 
                 // Stop polling if pipeline has reached a final state
-                if (this.isPollingComplete(currentStatus)) {
+                if (this.isPollingComplete(currentStatus, pipelineId)) {
                     console.log(`PipelinePoller: Pipeline ${pipelineId} reached final state: ${currentStatus}`);
                     this.stopPipelinePolling(pipelineId);
                 }
@@ -94,11 +98,28 @@ class PipelinePoller {
     
     /**
      * Check if polling should stop for a pipeline status
-     * @param {string} status - Pipeline status  
+     * @param {string} status - Pipeline status
+     * @param {number} pipelineId - Pipeline ID to check grace period
      * @returns {boolean} True if polling should stop
      */
-    isPollingComplete(status) {
-        return this.stopPollingStatuses.includes(status);
+    isPollingComplete(status, pipelineId) {
+        if (!this.stopPollingStatuses.includes(status)) {
+            return false;
+        }
+        
+        // Add 10-second grace period after starting polling to prevent race conditions
+        const startTime = this.pollingStartTimes.get(pipelineId);
+        if (startTime && (Date.now() - startTime < 10000)) {
+            console.log(`PipelinePoller: Grace period active for pipeline ${pipelineId} - continuing polling despite ${status}`);
+            return false;
+        }
+        
+        // Clean up start time tracking
+        if (startTime) {
+            this.pollingStartTimes.delete(pipelineId);
+        }
+        
+        return true;
     }
     
     /**

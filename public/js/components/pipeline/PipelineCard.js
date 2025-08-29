@@ -9,11 +9,15 @@ class PipelineCard extends BaseComponent {
         this.autoSaveTimer = null; // Debounced save timer
         this.autoSaveDelay = 2000; // 2 seconds
         
+        // Create action buttons first
+        this.actionButtons = new ActionButtons(pipeline);
+        
         // Create child components
         this.header = new PipelineHeader(pipeline, {
             isExpanded: this.isExpanded,
             onToggle: () => this.toggle(),
-            onRefreshStatus: (pipelineId) => this.handleRefreshStatus(pipelineId)
+            onRefreshStatus: (pipelineId) => this.handleRefreshStatus(pipelineId),
+            actionButtons: this.actionButtons
         });
         
         this.stats = new PipelineStats(pipeline);
@@ -27,8 +31,6 @@ class PipelineCard extends BaseComponent {
         });
         
         this.progressInfo = new ProgressInfo(pipeline);
-        
-        this.actionButtons = new ActionButtons(pipeline);
         
         // Create add company form if needed  
         if (pipeline.status === 'research_complete' || pipeline.status === 'legal_resolution_complete') {
@@ -61,10 +63,6 @@ class PipelineCard extends BaseComponent {
         // Add progress info for running pipelines
         const progressElement = this.progressInfo.render();
         contentElement.appendChild(progressElement);
-        
-        // Add action buttons
-        const actionsElement = this.actionButtons.render();
-        contentElement.appendChild(actionsElement);
         
         // Add company form if it exists
         if (this.addCompanyForm) {
@@ -218,7 +216,7 @@ class PipelineCard extends BaseComponent {
         if (this.stats) this.stats.update(this.pipeline);
         if (this.companyList) this.companyList.update(this.pipeline);
         if (this.progressInfo) this.progressInfo.update(this.pipeline);
-        if (this.actionButtons) this.actionButtons.update(this.pipeline);
+        // Action buttons are now updated via header.update()
         console.log('PipelineCard refreshChildComponents - companyList exists:', !!this.companyList);
     }
     

@@ -5,6 +5,7 @@ class PipelineHeader extends BaseComponent {
         super(pipeline, callbacks);
         this.pipeline = pipeline;
         this.isExpanded = callbacks.isExpanded || false;
+        this.actionButtons = callbacks.actionButtons || null;
     }
     
     render() {
@@ -21,11 +22,19 @@ class PipelineHeader extends BaseComponent {
                 }
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="action-buttons-container"></div>
                 <div class="status-badge ${statusDisplay.class}">${statusDisplay.text}</div>
                 <span class="status-refresh" data-pipeline-id="${this.pipeline.pipeline_id}" title="Refresh status">⟲</span>
                 <span class="expand-icon ${this.isExpanded ? 'rotated' : ''}">▼</span>
             </div>
         `;
+        
+        // Add action buttons if provided
+        if (this.actionButtons) {
+            const actionButtonsContainer = this.element.querySelector('.action-buttons-container');
+            const actionButtonsElement = this.actionButtons.render();
+            actionButtonsContainer.appendChild(actionButtonsElement);
+        }
         
         this.bindEvents();
         this.isRendered = true;
@@ -72,6 +81,10 @@ class PipelineHeader extends BaseComponent {
     
     update(pipeline) {
         this.pipeline = pipeline;
+        // Update action buttons if they exist
+        if (this.actionButtons) {
+            this.actionButtons.update(pipeline);
+        }
         if (this.isRendered) {
             // Re-render with new data
             const parent = this.element.parentNode;

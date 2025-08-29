@@ -18,9 +18,6 @@ class SmartInsuranceApp {
         this.activePipelines = new Map(); // pipelineId -> pipeline data
         this.isInitialized = false;
         
-        // Auto-complete tracking
-        this.autoCompletePipelines = new Set();
-        
         // Initialize polling service with status change callback
         this.pipelinePoller = new PipelinePoller(
             this.api, 
@@ -170,19 +167,11 @@ class SmartInsuranceApp {
                     this.tabs.switchTab('work');
                 }
                 
-                // Show success message
-                this.showSuccess(`Created ${result.totalCreated} pipeline(s) successfully`);
                 
                 // Render pipeline cards ONLY (no automatic workflow starting)
                 result.results.forEach(item => {
                     if (item.success && item.pipeline) {
                         this.cards.createPipelineCard(item.pipeline);
-                        
-                        // Mark for auto-complete but DON'T start workflows automatically
-                        if (autoComplete) {
-                            this.autoCompletePipelines.add(item.pipeline.pipeline_id);
-                            console.log(`Auto-complete: Marked pipeline ${item.pipeline.pipeline_id} for auto-completion`);
-                        }
                     }
                 });
                 
@@ -449,25 +438,22 @@ class SmartInsuranceApp {
             this.pipelinePoller.startPipelinePolling(pipelineId);
             
             // Determine next step based on current status
-            let apiCall, loadingMessage, successMessage;
+            let apiCall, loadingMessage;
             
             switch (pipeline.status) {
                 case 'pending':
                     apiCall = () => this.api.runResearch(pipelineId);
                     loadingMessage = 'Starting research...';
-                    successMessage = 'Research started successfully';
                     break;
                     
                 case 'research_complete':
                     apiCall = () => this.api.runLegalResolution(pipelineId);
                     loadingMessage = 'Starting legal resolution...';
-                    successMessage = 'Legal resolution started successfully';
                     break;
                     
                 case 'legal_resolution_complete':
                     apiCall = () => this.api.runDataExtraction(pipelineId);
                     loadingMessage = 'Starting data extraction...';
-                    successMessage = 'Data extraction started successfully';
                     break;
                     
                 case 'data_extraction_complete':
@@ -490,9 +476,7 @@ class SmartInsuranceApp {
             const result = await apiCall();
             Utils.hideLoading();
             
-            if (result.success) {
-                this.showSuccess(successMessage);
-            } else {
+            if (!result.success) {
                 this.showError(`Failed to proceed: ${result.error}`);
             }
             
@@ -675,20 +659,44 @@ class SmartInsuranceApp {
         }
         
         // Auto-complete logic for successful statuses
-        if (this.autoCompletePipelines.has(pipelineId)) {
+        if (this.isAutoCompleteEnabled()) {
             if (status === 'research_complete') {
                 console.log('Auto-complete: Starting legal resolution');
-                this.handleProceedToStep(pipelineId, 'legal-resolution');
+                this.proceedToNextStep(pipelineId);
             }
             else if (status === 'legal_resolution_complete') {
                 console.log('Auto-complete: Starting data extraction');
-                this.handleProceedToStep(pipelineId, 'data-extraction');
+                this.proceedToNextStep(pipelineId);
             }
             else if (status === 'data_extraction_complete') {
-                console.log('Auto-complete: Workflow completed');
-                this.autoCompletePipelines.delete(pipelineId);
+                console.log('Auto-complete: Pipeline completed, starting next');
+                this.startNextPendingPipeline();
             }
         }
+    }
+
+    /**
+     * Check if auto-complete is currently enabled
+     */
+    isAutoCompleteEnabled() {
+        return Utils.findElement('#auto-complete-checkbox')?.checked || false;
+    }
+
+    /**
+     * Start next incomplete pipeline for auto-complete sequential processing
+     */
+    startNextPendingPipeline() {
+        // Find first pipeline that isn't fully completed
+        for (const [pipelineId, pipeline] of this.activePipelines.entries()) {
+            if (pipeline.status !== 'data_extraction_complete') {
+                console.log(`Starting next incomplete pipeline: ${pipeline.firm_name} (status: ${pipeline.status})`);
+                
+                // Use proceedToNextStep for consistent workflow starting
+                this.proceedToNextStep(pipelineId);
+                return; // Only start one
+            }
+        }
+        console.log('All pipelines completed');
     }
 
     // Handle pipeline error notifications
