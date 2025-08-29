@@ -623,6 +623,12 @@ class SmartInsuranceApp {
         alert('Success: ' + message);
     }
 
+    showWarning(message) {
+        console.warn('App Warning:', message);
+        // TODO: Implement proper user notification system
+        alert('Warning: ' + message);
+    }
+
     showInfo(message) {
         console.log('App Info:', message);
         // TODO: Implement proper user notification system

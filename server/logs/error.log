@@ -629,3 +629,68 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.099Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.100Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:18:29.147Z"}
+{"level":"error","message":"🔍 DEBUG 5 - WorkflowManager about to run TaskExecution for task 1","service":"workflow","timestamp":"2025-08-28T22:19:13.422Z"}
+{"level":"error","message":"🔍 WorkflowAPIError detected - no retries, bubbling up: credit balance low","service":"workflow","timestamp":"2025-08-28T22:19:13.423Z"}
+{"level":"error","message":"🔍 DEBUG 4 - TaskExecution outer catch: isWorkflowError=true, constructor=WorkflowAPIError, message=\"credit balance low\"","service":"workflow","timestamp":"2025-08-28T22:19:13.424Z"}
+{"level":"error","message":"🔍 DEBUG 4b - Re-throwing WorkflowAPIError from outer catch","service":"workflow","timestamp":"2025-08-28T22:19:13.424Z"}
+{"level":"error","message":"🔍 DEBUG 3 - Manager.js runResearch caught error: message=\"credit balance low\", isWorkflowError=true, constructor=WorkflowAPIError","service":"manager","timestamp":"2025-08-28T22:19:13.424Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 7","service":"manager","timestamp":"2025-08-28T22:19:13.425Z"}
+{"level":"error","message":"Research failed for pipeline 7:","service":"manager","timestamp":"2025-08-28T22:19:13.468Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:29:21.409Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:29:21.410Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:29:21.483Z"}
+{"level":"error","message":"  ✗ search_web failed:","service":"workflow","timestamp":"2025-08-28T22:29:34.307Z"}
+{"level":"error","message":"  ✗ firecrawl_search failed:","service":"workflow","timestamp":"2025-08-28T22:29:37.544Z"}
+{"level":"error","message":"  ✗ ask_factual_question failed:","service":"workflow","timestamp":"2025-08-28T22:29:40.787Z"}
+{"level":"error","message":"  ✗ firecrawl_scrape failed:","service":"workflow","timestamp":"2025-08-28T22:29:46.059Z"}
+{"level":"error","message":"  ✗ firecrawl_map failed:","service":"workflow","timestamp":"2025-08-28T22:29:51.231Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:32:17.144Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:32:17.144Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T22:32:17.198Z"}
+{"level":"error","message":"  ✗ search_web failed:","service":"workflow","timestamp":"2025-08-28T22:32:42.464Z"}
+{"level":"error","message":"  ✗ firecrawl_search failed:","service":"workflow","timestamp":"2025-08-28T22:32:44.744Z"}
+{"level":"error","message":"  ✗ ask_factual_question failed:","service":"workflow","timestamp":"2025-08-28T22:32:46.528Z"}
+{"level":"error","message":"  ✗ search_web failed:","service":"workflow","timestamp":"2025-08-28T22:32:48.350Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:04:35.167Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:04:35.168Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:04:35.215Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Perplexity API failure for pipeline 9","service":"manager","timestamp":"2025-08-28T23:05:32.230Z"}
+{"level":"error","message":"Research failed for pipeline 9:","service":"manager","timestamp":"2025-08-28T23:05:32.273Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Perplexity API failure for pipeline 10","service":"manager","timestamp":"2025-08-28T23:06:35.327Z"}
+{"level":"error","message":"Research failed for pipeline 10:","service":"manager","timestamp":"2025-08-28T23:06:35.370Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Perplexity API failure for pipeline 11","service":"manager","timestamp":"2025-08-28T23:13:37.514Z"}
+{"level":"error","message":"Research failed for pipeline 11:","service":"manager","timestamp":"2025-08-28T23:13:37.554Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:13:55.015Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:13:55.016Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:13:55.061Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:16:14.187Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:16:14.188Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:16:14.233Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 12","service":"manager","timestamp":"2025-08-28T23:16:29.476Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 13","service":"manager","timestamp":"2025-08-28T23:20:11.480Z"}
+{"level":"error","message":"Research failed for pipeline 13:","service":"manager","timestamp":"2025-08-28T23:20:11.521Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 13","service":"manager","timestamp":"2025-08-28T23:22:23.080Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:38:55.117Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:38:55.117Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:38:55.165Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 13","service":"manager","timestamp":"2025-08-28T23:39:48.445Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:40:28.388Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:40:28.389Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-28T23:40:28.439Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Perplexity API failure for pipeline 13","service":"manager","timestamp":"2025-08-28T23:40:36.591Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T00:56:57.951Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T00:56:57.951Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T00:56:58.000Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:03:05.347Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:03:05.347Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:03:05.398Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:05:43.413Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:05:43.414Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:05:43.458Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 16","service":"manager","timestamp":"2025-08-29T01:25:27.100Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:45:21.517Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:45:21.517Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T01:45:21.572Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T02:22:09.726Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T02:22:09.727Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-29T02:22:09.801Z"}

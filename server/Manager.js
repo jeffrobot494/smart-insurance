@@ -180,7 +180,7 @@ class Manager {
         if (enrichedCompanyObjects.length > 0) {
           const enrichedCompany = enrichedCompanyObjects[0]; // Should be one company
           enrichedCompanies.push(enrichedCompany);
-          
+
           logger.info(`   ✓ ${enrichedCompany.name} → ${enrichedCompany.legal_entity_name}${enrichedCompany.city ? ` (${enrichedCompany.city}, ${enrichedCompany.state})` : ''}`);
         } else {
           // Fallback: keep original company with legal_entity_name as fallback
@@ -216,6 +216,7 @@ class Manager {
           error, 
           error.apiName
         );
+
         return; // Don't throw - error handler has set status and triggered cancellation
       }
       

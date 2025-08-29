@@ -40,7 +40,7 @@ class TaskExecution {
       while (iterations < this.maxIterations) {
         try {
           // Simple error simulation for testing
-          if (process.env.ERROR_SIMULATION === 'true') {
+          if (process.env.ERROR_SIMULATION_ANTHROPIC === 'true') {
             throw new WorkflowAPIError({
               apiName: 'Claude API',
               originalError: new Error('credit balance low'),

@@ -248,46 +248,6 @@ router.post('/run-complete', async (req, res) => {
   }
 });
 
-// POST retry a failed step
-router.post('/:id/retry/:step', async (req, res) => {
-  try {
-    const pipelineId = parseInt(req.params.id);
-    const step = req.params.step;
-    
-    if (isNaN(pipelineId)) {
-      return res.status(400).json({
-        error: 'Valid pipeline ID is required'
-      });
-    }
-
-    if (!['research', 'legal_resolution', 'data_extraction'].includes(step)) {
-      return res.status(400).json({
-        error: 'Step must be research, legal_resolution, or data_extraction'
-      });
-    }
-
-    res.status(202).json({
-      success: true,
-      message: `Retrying ${step} step`,
-      pipeline_id: pipelineId
-    });
-    
-    try {
-      const updatedPipeline = await manager.retryStep(pipelineId, step);
-      logger.info(`${step} retry completed successfully for pipeline ${pipelineId}`);
-    } catch (error) {
-      logger.error(`${step} retry failed for pipeline ${pipelineId}:`, error.message);
-    }
-
-  } catch (error) {
-    logger.error('Retry step error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
 // PUT update companies in pipeline
 router.put('/:id/companies', async (req, res) => {
   try {
@@ -454,12 +414,10 @@ router.get('/:id/error', async (req, res) => {
       }
     }
     
-    const response = {
+    res.json({
       success: true,
       error: parsedError
-    };
-    
-    res.json(response);
+    });
     
   } catch (error) {
     logger.error('Failed to fetch pipeline error details:', error);

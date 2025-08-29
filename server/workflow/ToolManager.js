@@ -6,6 +6,21 @@ class ToolManager {
   }
 
   async callTool(toolName, parameters) {
+    // Simple error simulation for testing tool API errors
+    if (process.env.ERROR_SIMULATION_MCP === 'true') {
+      // Simulate different API errors based on tool name for variety
+      const apiName = toolName.includes('crawl') || toolName.includes('scrape') ? 'Firecrawl API' : 'Perplexity API';
+      const errorMessage = apiName === 'Firecrawl API' ? 'rate limit exceeded' : 'insufficient credits';
+      const errorType = apiName === 'Firecrawl API' ? 'rate_limit' : 'credits_exhausted';
+      
+      throw new WorkflowAPIError({
+        apiName: apiName,
+        originalError: new Error(errorMessage),
+        statusCode: apiName === 'Firecrawl API' ? 429 : 402,
+        errorType: errorType
+      });
+    }
+
     if (!this.mcpServerManager.isReady()) {
       throw new Error('MCP servers not initialized. Ensure MCPServerManager is initialized first.');
     }
@@ -15,7 +30,7 @@ class ToolManager {
       throw new Error(`Tool ${toolName} not found`);
     }
 
-    const process = this.mcpServerManager.getServerProcess(tool.serverName);
+    const mcpProcess = this.mcpServerManager.getServerProcess(tool.serverName);
     
     return new Promise((resolve, reject) => {
       const id = `tool_${Date.now()}_${Math.random()}`;
@@ -36,7 +51,7 @@ class ToolManager {
             if (line.trim()) {
               const message = JSON.parse(line);
               if (message.id === id) {
-                process.stdout.removeListener('data', responseHandler);
+                mcpProcess.stdout.removeListener('data', responseHandler);
                 if (message.error) {
                   // Create standardized error based on which tool failed
                   const apiName = this.getAPINameFromTool(toolName, tool.serverName);
@@ -67,12 +82,12 @@ class ToolManager {
         }
       };
 
-      process.stdout.on('data', responseHandler);
-      this.mcpServerManager.sendMCPMessage(process, request);
+      mcpProcess.stdout.on('data', responseHandler);
+      this.mcpServerManager.sendMCPMessage(mcpProcess, request);
 
       // Update the existing timeout handler (existing 60-second timeout)
       setTimeout(() => {
-        process.stdout.removeListener('data', responseHandler);
+        mcpProcess.stdout.removeListener('data', responseHandler);
         const apiName = this.getAPINameFromTool(toolName, tool.serverName);
         const workflowError = new WorkflowAPIError({
           apiName: apiName,

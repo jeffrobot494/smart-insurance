@@ -63,7 +63,12 @@ class WorkflowErrorHandler {
     };
     
     // Determine failed status based on current state
-    const failedStatus = `${errorData.currentState.split('_')[0]}_failed`;
+    const statusMapping = {
+      'research_running': 'research_failed',
+      'legal_resolution_running': 'legal_resolution_failed',
+      'data_extraction_running': 'data_extraction_failed'
+    };
+    const failedStatus = statusMapping[errorData.currentState] || `${errorData.currentState.split('_')[0]}_failed`;
     
     await this.databaseManager.updatePipeline(pipelineId, {
       status: failedStatus,
