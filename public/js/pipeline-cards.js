@@ -114,7 +114,7 @@ class PipelineCardManager {
         switch (action) {
             case 'start-research':
                 // Route to existing app method
-                window.app?.handleStartResearch?.(pipelineId);
+                window.app?.proceedToNextStep?.(pipelineId);
                 break;
             case 'delete':
                 // Route to existing app method
@@ -122,7 +122,7 @@ class PipelineCardManager {
                 break;
             case 'proceed':
                 // Route to existing app method
-                window.app?.handleProceedToStep?.(pipelineId, step);
+                window.app?.proceedToNextStep?.(pipelineId);
                 break;
             case 'report':
                 window.app?.handleGenerateReport?.(pipelineId);

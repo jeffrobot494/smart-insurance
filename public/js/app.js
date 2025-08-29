@@ -69,14 +69,14 @@ class SmartInsuranceApp {
         console.log('SmartInsuranceApp: Setting up event listeners...');
         
         // Firm input handling
-        const startBtn = Utils.findElement('#start-btn');
+        const createPipelinesBtn = Utils.findElement('#create-pipelines-btn');
         const clearBtn = Utils.findElement('#clear-btn');
         const firmInput = Utils.findElement('#firm-names-input');
         const fileInput = Utils.findElement('#file-input');
         const uploadArea = Utils.findElement('#upload-area');
         
-        if (startBtn) {
-            startBtn.addEventListener('click', () => this.handleStartPipeline());
+        if (createPipelinesBtn) {
+            createPipelinesBtn.addEventListener('click', () => this.handleCreatePipelines());
         }
         
         if (clearBtn) {
@@ -126,8 +126,8 @@ class SmartInsuranceApp {
         return validation;
     }
 
-    async handleStartPipeline() {
-        console.log('SmartInsuranceApp: Starting pipeline process...');
+    async handleCreatePipelines() {
+        console.log('SmartInsuranceApp: Creating pipelines...');
         
         try {
             // Get and validate firm input
@@ -173,17 +173,15 @@ class SmartInsuranceApp {
                 // Show success message
                 this.showSuccess(`Created ${result.totalCreated} pipeline(s) successfully`);
                 
-                // Render pipeline cards and start polling/auto-complete
+                // Render pipeline cards ONLY (no automatic workflow starting)
                 result.results.forEach(item => {
                     if (item.success && item.pipeline) {
                         this.cards.createPipelineCard(item.pipeline);
-                        this.pipelinePoller.startPipelinePolling(item.pipeline.pipeline_id);
                         
-                        // Auto-complete: mark pipeline and start first workflow
+                        // Mark for auto-complete but DON'T start workflows automatically
                         if (autoComplete) {
                             this.autoCompletePipelines.add(item.pipeline.pipeline_id);
-                            console.log(`Auto-complete: Starting research for pipeline ${item.pipeline.pipeline_id}`);
-                            this.api.runResearch(item.pipeline.pipeline_id);
+                            console.log(`Auto-complete: Marked pipeline ${item.pipeline.pipeline_id} for auto-completion`);
                         }
                     }
                 });
@@ -203,8 +201,8 @@ class SmartInsuranceApp {
             
         } catch (error) {
             Utils.hideLoading();
-            console.error('SmartInsuranceApp: Error starting pipeline:', error);
-            this.showError('Failed to start pipeline: ' + error.message);
+            console.error('SmartInsuranceApp: Error creating pipelines:', error);
+            this.showError('Failed to create pipelines: ' + error.message);
         }
     }
 
@@ -395,30 +393,6 @@ class SmartInsuranceApp {
         }
     }
 
-    async handleStartResearch(pipelineId) {
-        console.log(`SmartInsuranceApp: Starting research for pipeline ${pipelineId}`);
-        
-        try {
-            Utils.showLoading('Starting research...');
-            
-            const result = await this.api.runResearch(pipelineId);
-            
-            Utils.hideLoading();
-            
-            if (result.success) {
-                this.showSuccess('Research started successfully');
-                // Start polling for status updates
-                this.pipelinePoller.startPipelinePolling(pipelineId);
-            } else {
-                this.showError(`Failed to start research: ${result.error}`);
-            }
-            
-        } catch (error) {
-            Utils.hideLoading();
-            console.error(`SmartInsuranceApp: Error starting research for pipeline ${pipelineId}:`, error);
-            this.showError(`Failed to start research: ${error.message}`);
-        }
-    }
 
     // ✅ Reset pipeline (called by ActionButtons reset button)
     async handleResetPipeline(pipelineId) {
@@ -459,38 +433,73 @@ class SmartInsuranceApp {
         }
     }
 
-    async handleProceedToStep(pipelineId, step) {
-        console.log(`SmartInsuranceApp: Proceeding to ${step} for pipeline ${pipelineId}`);
+
+    async proceedToNextStep(pipelineId) {
+        console.log(`SmartInsuranceApp: Proceeding to next step for pipeline ${pipelineId}`);
         
         try {
-            Utils.showLoading(`Starting ${step.replace('-', ' ')}...`);
-            
-            let result;
-            switch (step) {
-                case 'legal-resolution':
-                    result = await this.api.runLegalResolution(pipelineId);
-                    break;
-                case 'data-extraction':
-                    result = await this.api.runDataExtraction(pipelineId);
-                    break;
-                default:
-                    throw new Error(`Unknown step: ${step}`);
+            // Get current pipeline status
+            const pipeline = this.activePipelines.get(pipelineId);
+            if (!pipeline) {
+                this.showError('Pipeline not found');
+                return;
             }
             
+            // Start polling (always start - should be idempotent)
+            this.pipelinePoller.startPipelinePolling(pipelineId);
+            
+            // Determine next step based on current status
+            let apiCall, loadingMessage, successMessage;
+            
+            switch (pipeline.status) {
+                case 'pending':
+                    apiCall = () => this.api.runResearch(pipelineId);
+                    loadingMessage = 'Starting research...';
+                    successMessage = 'Research started successfully';
+                    break;
+                    
+                case 'research_complete':
+                    apiCall = () => this.api.runLegalResolution(pipelineId);
+                    loadingMessage = 'Starting legal resolution...';
+                    successMessage = 'Legal resolution started successfully';
+                    break;
+                    
+                case 'legal_resolution_complete':
+                    apiCall = () => this.api.runDataExtraction(pipelineId);
+                    loadingMessage = 'Starting data extraction...';
+                    successMessage = 'Data extraction started successfully';
+                    break;
+                    
+                case 'data_extraction_complete':
+                    this.showWarning('Pipeline is already complete');
+                    return;
+                    
+                default:
+                    if (pipeline.status.includes('_failed')) {
+                        this.showError('Cannot proceed - pipeline has failed. Please reset or delete.');
+                    } else if (pipeline.status.includes('_running')) {
+                        this.showWarning('Pipeline is already running');
+                    } else {
+                        this.showError(`Unknown pipeline status: ${pipeline.status}`);
+                    }
+                    return;
+            }
+            
+            // Execute the appropriate API call
+            Utils.showLoading(loadingMessage);
+            const result = await apiCall();
             Utils.hideLoading();
             
             if (result.success) {
-                this.showSuccess(`${step.replace('-', ' ')} started successfully`);
-                // Start polling for status updates
-                this.pipelinePoller.startPipelinePolling(pipelineId);
+                this.showSuccess(successMessage);
             } else {
-                this.showError(`Failed to start ${step.replace('-', ' ')}: ${result.error}`);
+                this.showError(`Failed to proceed: ${result.error}`);
             }
             
         } catch (error) {
             Utils.hideLoading();
-            console.error(`SmartInsuranceApp: Error proceeding to ${step}:`, error);
-            this.showError(`Failed to start ${step.replace('-', ' ')}: ${error.message}`);
+            console.error(`SmartInsuranceApp: Error proceeding with pipeline ${pipelineId}:`, error);
+            this.showError('Failed to proceed: ' + error.message);
         }
     }
 

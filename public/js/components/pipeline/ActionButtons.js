@@ -175,18 +175,10 @@ class ActionButtons extends BaseComponent {
         
         switch (action) {
             case 'start-research':
-                if (window.app && window.app.handleStartResearch) {
-                    await window.app.handleStartResearch(pipelineId);
-                }
-                break;
             case 'proceed-legal':
-                if (window.app && window.app.handleProceedToStep) {
-                    await window.app.handleProceedToStep(pipelineId, 'legal-resolution');
-                }
-                break;
             case 'proceed-data':
-                if (window.app && window.app.handleProceedToStep) {
-                    await window.app.handleProceedToStep(pipelineId, 'data-extraction');
+                if (window.app && window.app.proceedToNextStep) {
+                    await window.app.proceedToNextStep(pipelineId);
                 }
                 break;
             case 'report':

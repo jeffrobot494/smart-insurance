@@ -289,131 +289,6 @@ this.pipelinePoller.startPipelinePolling(pipelineId);
 - **Reduced complexity**: Eliminates method duplication and confusion
 - **Parameter safety**: Removes step parameter mismatches and errors
 
----
-
-## Sequential Auto-Complete Implementation
-
-The following code changes implement the sequential processing where auto-complete runs pipelines one at a time instead of simultaneously.
-
-### Change 1: Remove autoCompletePipelines Set Management
-**File**: `/public/js/app.js`  
-**Lines**: 177-189  
-
-**Replace this**:
-```javascript
-                // Render pipeline cards and start polling/auto-complete
-                result.results.forEach(item => {
-                    if (item.success && item.pipeline) {
-                        this.cards.createPipelineCard(item.pipeline);
-                        this.pipelinePoller.startPipelinePolling(item.pipeline.pipeline_id);
-                        
-                        // Auto-complete: mark pipeline and start first workflow
-                        if (autoComplete) {
-                            this.autoCompletePipelines.add(item.pipeline.pipeline_id);
-                            console.log(`Auto-complete: Starting research for pipeline ${item.pipeline.pipeline_id}`);
-                            this.api.runResearch(item.pipeline.pipeline_id);
-                        }
-                    }
-                });
-```
-
-**With this**:
-```javascript
-                // Render pipeline cards and start polling
-                result.results.forEach(item => {
-                    if (item.success && item.pipeline) {
-                        this.cards.createPipelineCard(item.pipeline);
-                        this.pipelinePoller.startPipelinePolling(item.pipeline.pipeline_id);
-                    }
-                });
-                
-                // Start first incomplete pipeline if auto-complete is enabled
-                if (autoComplete) {
-                    console.log('Auto-complete enabled: starting first incomplete pipeline');
-                    this.startNextPendingPipeline();
-                }
-```
-
-### Change 2: Replace Set-Based Auto-Complete Logic
-**File**: `/public/js/app.js`  
-**Lines**: 669-682
-
-**Replace this**:
-```javascript
-        // Auto-complete logic for successful statuses
-        if (this.autoCompletePipelines.has(pipelineId)) {
-            if (status === 'research_complete') {
-                console.log('Auto-complete: Starting legal resolution');
-                this.handleProceedToStep(pipelineId, 'legal-resolution');
-            }
-            else if (status === 'legal_resolution_complete') {
-                console.log('Auto-complete: Starting data extraction');
-                this.handleProceedToStep(pipelineId, 'data-extraction');
-            }
-            else if (status === 'data_extraction_complete') {
-                console.log('Auto-complete: Workflow completed');
-                this.autoCompletePipelines.delete(pipelineId);
-            }
-        }
-```
-
-**With this**:
-```javascript
-        // Auto-complete logic for successful statuses
-        if (this.isAutoCompleteEnabled()) {
-            if (status === 'research_complete') {
-                console.log('Auto-complete: Starting legal resolution');
-                this.api.runLegalResolution(pipelineId);
-            }
-            else if (status === 'legal_resolution_complete') {
-                console.log('Auto-complete: Starting data extraction');
-                this.api.runDataExtraction(pipelineId);
-            }
-            else if (status === 'data_extraction_complete') {
-                console.log('Auto-complete: Pipeline completed, starting next');
-                this.startNextPendingPipeline();
-            }
-        }
-```
-
-### Change 3: Add New Helper Methods
-**File**: `/public/js/app.js`  
-**After line**: 683 (after `handlePipelineStatusChange` method)
-
-**Add these methods**:
-```javascript
-    /**
-     * Check if auto-complete is currently enabled
-     */
-    isAutoCompleteEnabled() {
-        return Utils.findElement('#auto-complete-checkbox')?.checked || false;
-    }
-
-    /**
-     * Start next incomplete pipeline for auto-complete sequential processing
-     */
-    startNextPendingPipeline() {
-        // Find first pipeline that isn't fully completed
-        for (const [pipelineId, pipeline] of this.activePipelines.entries()) {
-            if (pipeline.status !== 'data_extraction_complete') {
-                console.log(`Starting next incomplete pipeline: ${pipeline.firm_name} (status: ${pipeline.status})`);
-                
-                // Start the appropriate next step based on current status
-                if (pipeline.status === 'pending') {
-                    this.api.runResearch(pipelineId);
-                } else if (pipeline.status === 'research_complete') {
-                    this.api.runLegalResolution(pipelineId);
-                } else if (pipeline.status === 'legal_resolution_complete') {
-                    this.api.runDataExtraction(pipelineId);
-                }
-                // Skip failed statuses - let user handle those manually
-                
-                return; // Only start one
-            }
-        }
-        console.log('All pipelines completed');
-    }
-```
 
 ---
 
@@ -450,18 +325,116 @@ This refactor should be implemented in three phases to minimize complexity and e
 
 **Goal**: Separate pipeline creation from automatic workflow starting.
 
-**Changes**:
-1. **Rename** "Start" button to "Create Pipelines" in `/public/index.html`
-2. **Replace** `handleStartPipeline()` with `handleCreatePipelines()` method
-3. **Remove** polling and auto-start logic from pipeline creation
-4. **Update** event listeners to bind to new button and method:
-   ```javascript
-   // OLD:
-   startBtn.addEventListener('click', () => this.handleStartPipeline());
-   
-   // NEW: 
-   createPipelinesBtn.addEventListener('click', () => this.handleCreatePipelines());
-   ```
+#### Detailed Changes:
+
+#### Change 1: Rename Button in HTML
+**File**: `/public/index.html`  
+**Line**: 34
+
+**Replace this**:
+```html
+<button class="btn btn-primary" id="start-btn">Start</button>
+```
+
+**With this**:
+```html
+<button class="btn btn-primary" id="create-pipelines-btn">Create Pipelines</button>
+```
+
+#### Change 2: Replace handleStartPipeline() Method
+**File**: `/public/js/app.js`  
+**Lines**: 129-210
+
+**Replace the entire `handleStartPipeline()` method with**:
+```javascript
+async handleCreatePipelines() {
+    console.log('SmartInsuranceApp: Creating pipelines...');
+    
+    try {
+        // Get and validate firm input
+        const inputResult = this.handleFirmInput();
+        if (!inputResult.valid) {
+            this.showError(inputResult.error);
+            return;
+        }
+        
+        const firmNames = inputResult.firmNames;
+        
+        console.log('SmartInsuranceApp: Creating pipelines for firms:', firmNames);
+        
+        // Show loading state
+        Utils.showLoading('Creating pipelines...');
+        
+        // Create pipelines using API
+        const result = await this.api.createMultiplePipelines(firmNames);
+        
+        // Hide loading state
+        Utils.hideLoading();
+        
+        if (result.success) {
+            console.log(`✅ Successfully created ${result.totalCreated} pipelines`);
+            
+            // Store active pipelines
+            result.results.forEach(item => {
+                if (item.success && item.pipeline) {
+                    this.activePipelines.set(item.pipeline.pipeline_id, item.pipeline);
+                }
+            });
+            
+            // Clear input
+            this.handleClearInput();
+            
+            // Switch to New Work tab if not already there
+            if (this.tabs.getCurrentTab() !== 'work') {
+                this.tabs.switchTab('work');
+            }
+            
+            // Show success message
+            this.showSuccess(`Created ${result.totalCreated} pipeline(s) successfully`);
+            
+            // Render pipeline cards ONLY (no automatic workflow starting)
+            result.results.forEach(item => {
+                if (item.success && item.pipeline) {
+                    this.cards.createPipelineCard(item.pipeline);
+                }
+            });
+            
+            console.log('SmartInsuranceApp: Created and rendered pipeline cards');
+            
+        } else {
+            const errorMsg = `Failed to create some pipelines. Created: ${result.totalCreated}, Failed: ${result.totalFailed}`;
+            console.error(errorMsg);
+            this.showError(errorMsg);
+            
+            // Show details of failures
+            result.errors.forEach(error => {
+                console.error(`Failed to create pipeline for ${error.firmName}: ${error.error}`);
+            });
+        }
+        
+    } catch (error) {
+        Utils.hideLoading();
+        console.error('SmartInsuranceApp: Error creating pipelines:', error);
+        this.showError('Failed to create pipelines: ' + error.message);
+    }
+}
+```
+
+#### Change 3: Update Event Listener
+**File**: `/public/js/app.js`  
+**Find the line that binds the start button event** (search for `start-btn`):
+
+**Replace this**:
+```javascript
+const startBtn = Utils.findElement('#start-btn');
+startBtn.addEventListener('click', () => this.handleStartPipeline());
+```
+
+**With this**:
+```javascript
+const createPipelinesBtn = Utils.findElement('#create-pipelines-btn');
+createPipelinesBtn.addEventListener('click', () => this.handleCreatePipelines());
+```
 
 **Dependencies**: Requires Phase 1's `proceedToNextStep()` method for individual pipeline starting
 
@@ -473,22 +446,90 @@ This refactor should be implemented in three phases to minimize complexity and e
 
 **Goal**: Make auto-complete process pipelines one-at-a-time instead of simultaneously.
 
-**Changes**:
-1. **Remove** `autoCompletePipelines` Set management from pipeline creation
-2. **Add** `isAutoCompleteEnabled()` helper method
-3. **Add** `startNextPendingPipeline()` method for sequential processing
-4. **Update** `handlePipelineStatusChange()` to use checkbox state instead of Set
-5. **Update** auto-complete logic calls (lines 672, 676):
-   ```javascript
-   // OLD:
-   this.handleProceedToStep(pipelineId, 'legal-resolution');
-   this.handleProceedToStep(pipelineId, 'data-extraction');
-   
-   // NEW:
-   this.proceedToNextStep(pipelineId);
-   this.proceedToNextStep(pipelineId);
-   ```
-6. **Update** `startNextPendingPipeline()` to call `proceedToNextStep()` for next pipeline
+#### Detailed Changes:
+
+#### Change 1: Update Auto-Complete Logic in handlePipelineStatusChange()
+**File**: `/public/js/app.js`  
+**Find the auto-complete logic** (search for `this.autoCompletePipelines.has`):
+
+**Replace this**:
+```javascript
+        // Auto-complete logic for successful statuses
+        if (this.autoCompletePipelines.has(pipelineId)) {
+            if (status === 'research_complete') {
+                console.log('Auto-complete: Starting legal resolution');
+                this.handleProceedToStep(pipelineId, 'legal-resolution');
+            }
+            else if (status === 'legal_resolution_complete') {
+                console.log('Auto-complete: Starting data extraction');
+                this.handleProceedToStep(pipelineId, 'data-extraction');
+            }
+            else if (status === 'data_extraction_complete') {
+                console.log('Auto-complete: Workflow completed');
+                this.autoCompletePipelines.delete(pipelineId);
+            }
+        }
+```
+
+**With this**:
+```javascript
+        // Auto-complete logic for successful statuses
+        if (this.isAutoCompleteEnabled()) {
+            if (status === 'research_complete') {
+                console.log('Auto-complete: Starting legal resolution');
+                this.proceedToNextStep(pipelineId);
+            }
+            else if (status === 'legal_resolution_complete') {
+                console.log('Auto-complete: Starting data extraction');
+                this.proceedToNextStep(pipelineId);
+            }
+            else if (status === 'data_extraction_complete') {
+                console.log('Auto-complete: Pipeline completed, starting next');
+                this.startNextPendingPipeline();
+            }
+        }
+```
+
+#### Change 2: Add New Helper Methods
+**File**: `/public/js/app.js`  
+**After the `handlePipelineStatusChange()` method ends** (search for the end of that method):
+
+**Add these methods**:
+```javascript
+    /**
+     * Check if auto-complete is currently enabled
+     */
+    isAutoCompleteEnabled() {
+        return Utils.findElement('#auto-complete-checkbox')?.checked || false;
+    }
+
+    /**
+     * Start next incomplete pipeline for auto-complete sequential processing
+     */
+    startNextPendingPipeline() {
+        // Find first pipeline that isn't fully completed
+        for (const [pipelineId, pipeline] of this.activePipelines.entries()) {
+            if (pipeline.status !== 'data_extraction_complete') {
+                console.log(`Starting next incomplete pipeline: ${pipeline.firm_name} (status: ${pipeline.status})`);
+                
+                // Use proceedToNextStep for consistent workflow starting
+                this.proceedToNextStep(pipelineId);
+                return; // Only start one
+            }
+        }
+        console.log('All pipelines completed');
+    }
+```
+
+#### Change 3: Remove autoCompletePipelines Set Management
+**File**: `/public/js/app.js**  
+**Find and remove all references to `autoCompletePipelines`**:
+
+1. **Remove Set initialization** (search for `this.autoCompletePipelines = new Set()`):
+   - Delete the line that initializes the Set
+
+2. **Remove Set usage from constructor or initialization**:
+   - Delete any `.add()`, `.delete()`, `.has()` calls to `autoCompletePipelines`
 
 **Dependencies**: Requires Phase 1's `proceedToNextStep()` method and Phase 2's decoupled creation
 
