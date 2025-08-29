@@ -27,6 +27,9 @@ class ReportConfigModal extends BaseComponent {
         this.populateCompanies(pipeline.companies || []);
         this.setDefaultValues();
         
+        // Apply initial filtering
+        this.handleFilterChange();
+        
         // Show modal
         this.modalElement.classList.add('show');
         this.isVisible = true;
@@ -64,16 +67,23 @@ class ReportConfigModal extends BaseComponent {
                 <div class="modal-content">
                     <h3>Generate Report</h3>
                     
-                    <!-- Company Selection -->
+                    <!-- Company Filters -->
                     <div class="config-section">
-                        <div class="config-title">Companies to Include</div>
-                        <div class="company-selection" id="company-checkboxes">
-                            <!-- Dynamically populated -->
+                        <div class="config-title">Filter Options</div>
+                        <div class="filter-options">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="exclude-exited-companies" checked>
+                                Exclude exited companies
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" id="exclude-no-data-companies" checked>
+                                Exclude companies without Form 5500 data
+                            </label>
                         </div>
                     </div>
                     
-                    <!-- Content Sections -->
-                    <div class="config-section">
+                    <!-- Content Sections (Hidden) -->
+                    <div class="config-section" style="display: none;">
                         <div class="config-title">Include in Report</div>
                         <div class="checkbox-group">
                             <label><input type="checkbox" id="include-company-info" checked> Company Information</label>
@@ -90,6 +100,14 @@ class ReportConfigModal extends BaseComponent {
                     <div class="button-row">
                         <button class="btn btn-success" id="download-report-btn">Download Report</button>
                         <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
+                    </div>
+                    
+                    <!-- Company Selection -->
+                    <div class="config-section">
+                        <div class="config-title">Companies to Include</div>
+                        <div class="company-selection" id="company-checkboxes">
+                            <!-- Dynamically populated -->
+                        </div>
                     </div>
                 </div>
             `;
@@ -132,6 +150,17 @@ class ReportConfigModal extends BaseComponent {
         formatRadios.forEach(radio => {
             radio.addEventListener('change', () => this.handleFormatChange());
         });
+        
+        // Filter checkbox handlers
+        const excludeExitedCheckbox = this.modalElement.querySelector('#exclude-exited-companies');
+        if (excludeExitedCheckbox) {
+            excludeExitedCheckbox.addEventListener('change', () => this.handleFilterChange());
+        }
+        
+        const excludeNoDataCheckbox = this.modalElement.querySelector('#exclude-no-data-companies');
+        if (excludeNoDataCheckbox) {
+            excludeNoDataCheckbox.addEventListener('change', () => this.handleFilterChange());
+        }
     }
 
     /**
@@ -321,6 +350,48 @@ class ReportConfigModal extends BaseComponent {
         
         // Could add format-specific UI changes here
         // For example, disable certain content sections for CSV format
+    }
+
+    /**
+     * Handle filter checkbox changes
+     */
+    handleFilterChange() {
+        if (!this.pipeline || !this.modalElement) return;
+        
+        const excludeExited = this.modalElement.querySelector('#exclude-exited-companies')?.checked || false;
+        const excludeNoData = this.modalElement.querySelector('#exclude-no-data-companies')?.checked || false;
+        
+        const companyRows = this.modalElement.querySelectorAll('.company-row');
+        
+        companyRows.forEach((row, index) => {
+            const company = this.pipeline.companies[index];
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            
+            if (!company) return;
+            
+            const isExited = company.exited === true;
+            const hasData = company.form5500_data && Object.keys(company.form5500_data).length > 0;
+            
+            let shouldExclude = false;
+            
+            if (excludeExited && isExited) {
+                shouldExclude = true;
+            }
+            
+            if (excludeNoData && !hasData) {
+                shouldExclude = true;
+            }
+            
+            // All rows stay visible, only checkbox state changes
+            if (shouldExclude) {
+                checkbox.checked = false;
+            } else {
+                // Only check if it wasn't manually unchecked before
+                if (!checkbox.hasAttribute('data-manually-unchecked')) {
+                    checkbox.checked = true;
+                }
+            }
+        });
     }
 
     /**

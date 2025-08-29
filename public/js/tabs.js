@@ -23,7 +23,7 @@ class TabController {
         this.setupEventListeners();
         this.loadTabState();
         
-        // Set work tab as active (but don't load content during init)
+        // Set New Work tab as active (but don't load content during init)
         this.currentTab = 'work';
         this.updateTabButtons();
         this.updateContentVisibility();
@@ -109,7 +109,7 @@ class TabController {
                 this.loadWorkTab();
                 break;
             case 'saved':
-                this.loadSavedTab();
+                this.loadCompletedTab();
                 break;
             default:
                 console.warn(`TabController: No content loader for tab: ${tabName}`);
@@ -117,26 +117,26 @@ class TabController {
     }
 
     loadWorkTab() {
-        console.log('TabController: Loading work tab content');
+        console.log('TabController: Loading New Work tab content');
         
-        // Work tab content is static in HTML, just ensure it's ready
+        // New Work tab content is static in HTML, just ensure it's ready
         const inputSection = Utils.findElement('.input-section');
         const pipelineResults = Utils.findElement('#pipeline-results');
         
         if (!inputSection || !pipelineResults) {
-            console.error('TabController: Work tab elements not found');
+            console.error('TabController: New Work tab elements not found');
             return;
         }
 
         // Only refresh active pipelines if app is fully initialized
         if (this.app && this.app.isInitialized && typeof this.app.refreshActivePipelines === 'function') {
-            console.log('TabController: Refreshing active pipelines in work tab');
+            console.log('TabController: Refreshing active pipelines in New Work tab');
             this.app.refreshActivePipelines();
         }
     }
 
-    async loadSavedTab(page = 1, limit = 10) {
-        console.log(`TabController: Loading saved tab content (page ${page}, limit ${limit})`);
+    async loadCompletedTab(page = 1, limit = 10) {
+        console.log(`TabController: Loading completed tab content (page ${page}, limit ${limit})`);
         
         if (!this.app || !this.app.api) {
             console.error('TabController: App or API not available');
@@ -147,68 +147,68 @@ class TabController {
             // Show loading state
             const savedResults = Utils.findElement('#saved-pipeline-results');
             if (savedResults) {
-                savedResults.innerHTML = '<div class="loading-message">Loading saved pipelines...</div>';
+                savedResults.innerHTML = '<div class="loading-message">Loading completed pipelines...</div>';
             }
 
             // Calculate offset for pagination
             const offset = (page - 1) * limit;
             
-            // Load saved pipelines from API
+            // Load completed pipelines from API
             const response = await this.app.api.getAllPipelines({
                 limit,
                 offset,
-                status: 'data_extraction_complete' // Only show completed pipelines in saved tab
+                status: 'data_extraction_complete' // Only show completed pipelines in completed tab
             });
 
             if (response.success && response.pipelines) {
-                console.log(`TabController: Loaded ${response.pipelines.length} saved pipelines`);
+                console.log(`TabController: Loaded ${response.pipelines.length} completed pipelines`);
                 
-                // Render saved pipelines
-                this.renderSavedPipelines(response.pipelines, response.total, response.has_more);
+                // Render completed pipelines
+                this.renderCompletedPipelines(response.pipelines, response.total, response.has_more);
                 
                 // Update load more button
                 this.updateLoadMoreButton(response.has_more, response.pipelines.length);
             } else {
-                console.error('TabController: Failed to load saved pipelines');
-                this.showSavedTabError('Failed to load saved pipelines');
+                console.error('TabController: Failed to load completed pipelines');
+                this.showCompletedTabError('Failed to load completed pipelines');
             }
         } catch (error) {
-            console.error('TabController: Error loading saved tab:', error);
-            this.showSavedTabError(`Error loading saved pipelines: ${error.message}`);
+            console.error('TabController: Error loading completed tab:', error);
+            this.showCompletedTabError(`Error loading completed pipelines: ${error.message}`);
         }
     }
 
-    renderSavedPipelines(pipelines, total = 0, hasMore = false) {
+    renderCompletedPipelines(pipelines, total = 0, hasMore = false) {
         const savedResults = Utils.findElement('#saved-pipeline-results');
         if (!savedResults) {
-            console.error('TabController: Saved results container not found');
+            console.error('TabController: Completed results container not found');
             return;
         }
 
         if (pipelines.length === 0) {
             savedResults.innerHTML = `
                 <div class="empty-state">
-                    <p>No saved pipelines found.</p>
-                    <p>Complete some pipelines in the Work tab to see them here.</p>
+                    <p>No completed pipelines found.</p>
+                    <p>Complete some pipelines in the New Work tab to see them here.</p>
                 </div>
             `;
             return;
         }
 
-        // Use the app's pipeline cards manager to render saved pipelines
-        if (this.app && this.app.cards && typeof this.app.cards.renderSavedPipelines === 'function') {
-            this.app.cards.renderSavedPipelines(pipelines, savedResults);
+        // Use the app's pipeline cards manager to render completed pipelines
+        if (this.app && this.app.cards && typeof this.app.cards.renderCompletedPipelines === 'function') {
+            this.app.cards.renderCompletedPipelines(pipelines, savedResults);
         } else {
             // Fallback rendering
             savedResults.innerHTML = pipelines.map(pipeline => 
-                this.createSavedPipelineCardHTML(pipeline)
+                this.createCompletedPipelineCardHTML(pipeline)
             ).join('');
         }
 
-        console.log(`TabController: Rendered ${pipelines.length} saved pipeline cards`);
+        console.log(`TabController: Rendered ${pipelines.length} completed pipeline cards`);
     }
 
-    createSavedPipelineCardHTML(pipeline) {
+    createCompletedPipelineCardHTML(pipeline) {
         const statusDisplay = Utils.getStatusDisplay(pipeline.status);
         const formattedDate = Utils.formatDate(pipeline.updated_at || pipeline.created_at);
         
@@ -252,13 +252,13 @@ class TabController {
         }
     }
 
-    showSavedTabError(message) {
+    showCompletedTabError(message) {
         const savedResults = Utils.findElement('#saved-pipeline-results');
         if (savedResults) {
             savedResults.innerHTML = `
                 <div class="error-state">
                     <p style="color: #dc3545;">${message}</p>
-                    <button class="btn btn-primary" onclick="app.tabs.loadSavedTab()">Retry</button>
+                    <button class="btn btn-primary" onclick="app.tabs.loadCompletedTab()">Retry</button>
                 </div>
             `;
         }

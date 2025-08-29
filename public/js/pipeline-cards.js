@@ -54,9 +54,9 @@ class PipelineCardManager {
         }
     }
     
-    // Render saved pipelines (for saved tab)
-    renderSavedPipelines(pipelines, container) {
-        console.log('PipelineCardManager: Rendering saved pipelines:', pipelines.length);
+    // Render completed pipelines (for completed tab)
+    renderCompletedPipelines(pipelines, container) {
+        console.log('PipelineCardManager: Rendering completed pipelines:', pipelines.length);
         
         container.innerHTML = '';
         

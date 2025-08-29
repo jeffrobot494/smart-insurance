@@ -10,6 +10,22 @@ body {
     background-color: #f5f5f5;
 }
 
+/* App Header */
+.app-header {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
 /* Enhanced Notification System */
 .notification-container {
     position: fixed;
@@ -252,7 +268,7 @@ input[type="text"]:focus {
     margin-right: 8px;
 }
 
-/* Page Header (Saved Tab) */
+/* Page Header (Completed Tab) */
 .page-header {
     margin-bottom: 20px;
 }
@@ -865,8 +881,8 @@ input[type="text"]:focus {
 
 /* Companies table container */
 #company-checkboxes {
-    min-height: 50vh;
-    max-height: 60vh;
+    min-height: 200px;
+    max-height: 40vh;
     overflow-y: auto;
 }
 
@@ -898,6 +914,25 @@ input[type="text"]:focus {
 
 .company-name {
     font-weight: 500;
+}
+
+/* Filter options styling */
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-checkbox input[type="checkbox"] {
+    cursor: pointer;
 }
 
 .form-error {

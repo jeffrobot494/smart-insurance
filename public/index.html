@@ -7,13 +7,17 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+    <div class="app-header">
+        <h1>Smart Insurance</h1>
+    </div>
+    
     <div class="header">
-        <div class="tab active" id="work-tab" data-tab="work">Work</div>
-        <div class="tab" id="saved-tab" data-tab="saved">Saved</div>
+        <div class="tab active" id="work-tab" data-tab="work">New Work</div>
+        <div class="tab" id="saved-tab" data-tab="saved">Completed</div>
     </div>
 
     <div class="container">
-        <!-- Work Tab Content -->
+        <!-- New Work Tab Content -->
         <div id="work-tab-content" class="tab-content active">
             <!-- Input Section -->
             <div class="input-section">
@@ -41,16 +45,16 @@
             </div>
         </div>
 
-        <!-- Saved Tab Content -->
+        <!-- Completed Tab Content -->
         <div id="saved-tab-content" class="tab-content">
             <div class="page-header">
-                <h2>Previously Run Pipelines</h2>
-                <p>View and manage your saved pipeline results</p>
+                <h2>Completed Pipelines</h2>
+                <p>View and manage your completed pipeline results</p>
             </div>
 
-            <!-- Saved Pipeline Results Container -->
+            <!-- Completed Pipeline Results Container -->
             <div id="saved-pipeline-results">
-                <!-- Saved pipeline cards will be inserted here dynamically -->
+                <!-- Completed pipeline cards will be inserted here dynamically -->
             </div>
 
             <!-- Load More Section -->

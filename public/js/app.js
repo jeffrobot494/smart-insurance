@@ -54,7 +54,7 @@ class SmartInsuranceApp {
             // Load any saved state
             this.loadApplicationState();
             
-            // Load initial data for the work tab
+            // Load initial data for the New Work tab
             await this.refreshActivePipelines();
             
             console.log('✅ SmartInsuranceApp: Initialization complete');
@@ -97,7 +97,7 @@ class SmartInsuranceApp {
             fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
         }
         
-        // Load more button (saved tab)
+        // Load more button (completed tab)
         const loadMoreBtn = Utils.findElement('#load-more-btn');
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', (e) => {
@@ -165,7 +165,7 @@ class SmartInsuranceApp {
                 // Clear input
                 this.handleClearInput();
                 
-                // Switch to work tab if not already there
+                // Switch to New Work tab if not already there
                 if (this.tabs.getCurrentTab() !== 'work') {
                     this.tabs.switchTab('work');
                 }
@@ -274,20 +274,20 @@ class SmartInsuranceApp {
         
         // Tab-specific handling can be added here
         if (newTab === 'saved') {
-            // Saved tab content is handled by TabController
+            // Completed tab content is handled by TabController
         }
     }
 
-    // Load more functionality (for saved tab)
+    // Load more functionality (for completed tab)
     handleLoadMore() {
-        console.log('SmartInsuranceApp: Loading more saved pipelines...');
+        console.log('SmartInsuranceApp: Loading more completed pipelines...');
         
         // Calculate next page
         const currentCount = Utils.findElements('#saved-pipeline-results .pipeline-card').length;
         const nextPage = Math.floor(currentCount / 10) + 1;
         
         // Load next page
-        this.tabs.loadSavedTab(nextPage);
+        this.tabs.loadCompletedTab(nextPage);
     }
 
     /**
@@ -297,12 +297,12 @@ class SmartInsuranceApp {
         console.log(`SmartInsuranceApp: Tab switched from ${previousTab} to ${newTab}`);
         
         try {
-            // Initialize saved tab when first accessed
+            // Initialize completed tab when first accessed
             if (newTab === 'saved') {
-                await this.initializeSavedTab();
+                await this.initializeCompletedTab();
             }
             
-            // Could add work tab initialization here if needed
+            // Could add New Work tab initialization here if needed
             // if (newTab === 'work') {
             //     await this.initializeWorkTab();
             // }
@@ -576,37 +576,37 @@ class SmartInsuranceApp {
     }
 
     /**
-     * Initialize saved tab by loading completed pipelines and adding to activePipelines
-     * This ensures saved pipelines are available for report generation
+     * Initialize completed tab by loading completed pipelines and adding to activePipelines
+     * This ensures completed pipelines are available for report generation
      */
-    async initializeSavedTab() {
-        console.log('SmartInsuranceApp: Initializing saved tab...');
+    async initializeCompletedTab() {
+        console.log('SmartInsuranceApp: Initializing completed tab...');
         
         try {
-            // Load saved/completed pipelines from API
+            // Load completed pipelines from API
             const result = await this.api.getAllPipelines({
-                status: 'data_extraction_complete', // Only get completed pipelines for saved tab
+                status: 'data_extraction_complete', // Only get completed pipelines for completed tab
                 limit: 50 // Load more since these are for viewing/reports
             });
             
             if (result.success && result.pipelines) {
-                console.log(`SmartInsuranceApp: Found ${result.pipelines.length} saved pipelines`);
+                console.log(`SmartInsuranceApp: Found ${result.pipelines.length} completed pipelines`);
                 
-                // Add saved pipelines to activePipelines for report generation
+                // Add completed pipelines to activePipelines for report generation
                 result.pipelines.forEach(pipeline => {
                     this.activePipelines.set(pipeline.pipeline_id, pipeline);
-                    console.log(`SmartInsuranceApp: Added saved pipeline ${pipeline.pipeline_id} (${pipeline.firm_name}) to activePipelines`);
+                    console.log(`SmartInsuranceApp: Added completed pipeline ${pipeline.pipeline_id} (${pipeline.firm_name}) to activePipelines`);
                 });
                 
-                console.log(`SmartInsuranceApp: Saved tab initialized with ${result.pipelines.length} pipelines available for reports`);
+                console.log(`SmartInsuranceApp: Completed tab initialized with ${result.pipelines.length} pipelines available for reports`);
                 
             } else {
-                console.warn('SmartInsuranceApp: No saved pipelines found or API error');
+                console.warn('SmartInsuranceApp: No completed pipelines found or API error');
             }
             
         } catch (error) {
-            console.error('SmartInsuranceApp: Error initializing saved tab:', error);
-            this.showError(`Failed to load saved pipelines: ${error.message}`);
+            console.error('SmartInsuranceApp: Error initializing completed tab:', error);
+            this.showError(`Failed to load completed pipelines: ${error.message}`);
         }
     }
 
