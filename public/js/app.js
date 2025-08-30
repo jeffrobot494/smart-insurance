@@ -200,11 +200,10 @@ class SmartInsuranceApp {
         
         const firmInput = Utils.findElement('#firm-names-input');
         const fileInput = Utils.findElement('#file-input');
-        const autoComplete = Utils.findElement('#auto-complete-checkbox');
         
         if (firmInput) firmInput.value = '';
         if (fileInput) fileInput.value = '';
-        if (autoComplete) autoComplete.checked = false;
+        // Keep auto-complete checkbox as is (don't reset it)
     }
 
     async handleFileUpload(event) {
