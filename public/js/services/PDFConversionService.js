@@ -35,6 +35,7 @@ class PDFConversionService {
         iframe.style.border = 'none';
         iframe.style.zIndex = '-1000';
         iframe.style.visibility = 'hidden';
+        iframe.style.transform = 'scale(1)'; // Ensure no scaling issues
         
         document.body.appendChild(iframe);
         
@@ -84,18 +85,46 @@ class PDFConversionService {
      * Configure html2canvas options for optimal PDF generation
      */
     static getCanvasOptions() {
+        // Calculate optimal scale based on device pixel ratio
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        const optimalScale = Math.max(2, Math.min(4, devicePixelRatio * 2));
+        
         return {
-            scale: 1, // Reduced scale to prevent memory issues
+            scale: optimalScale, // Dynamic scale based on device capabilities
             useCORS: true,
             allowTaint: false,
-            backgroundColor: '#f8f9fa',
-            logging: true, // Enable logging to debug issues
-            removeContainer: false, // We'll handle cleanup manually
-            foreignObjectRendering: false, // Disable to prevent rendering issues
-            imageTimeout: 5000,
+            backgroundColor: '#ffffff', // Pure white background
+            logging: true,
+            removeContainer: false,
+            foreignObjectRendering: true, // Re-enable for better text rendering
+            imageTimeout: 15000,
             width: 1200,
-            height: null, // Let it calculate automatically
+            height: null,
+            dpi: 300, // High DPI for crisp text
+            letterRendering: true, // Better text rendering
             onclone: (clonedDoc) => {
+                // Add high-resolution CSS for better text rendering
+                const style = clonedDoc.createElement('style');
+                style.textContent = `
+                    * {
+                        -webkit-font-smoothing: antialiased !important;
+                        -moz-osx-font-smoothing: grayscale !important;
+                        text-rendering: optimizeLegibility !important;
+                        font-smooth: always !important;
+                    }
+                    
+                    body {
+                        transform: scale(1) !important;
+                        zoom: 1 !important;
+                    }
+                    
+                    table, th, td {
+                        font-weight: 500 !important;
+                        letter-spacing: 0.01em !important;
+                    }
+                `;
+                clonedDoc.head.appendChild(style);
+                
                 // Ensure all detail rows are expanded in the clone for PDF
                 const detailRows = clonedDoc.querySelectorAll('.detail-rows');
                 detailRows.forEach(row => {
@@ -187,16 +216,23 @@ class PDFConversionService {
      */
     static createPDFFromCanvas(canvas, jsPDF, orientation = 'portrait') {
         const layout = this.calculatePDFLayout(canvas, orientation);
+        // Use PNG for crisp text rendering (better than JPEG for text)
         const imgData = canvas.toDataURL('image/png');
         const orientationCode = orientation === 'landscape' ? 'l' : 'p';
-        const pdf = new jsPDF(orientationCode, 'mm', 'a4');
+        // Create PDF with higher compression settings
+        const pdf = new jsPDF({
+            orientation: orientationCode,
+            unit: 'mm',
+            format: 'a4',
+            compress: true
+        });
         
         let heightLeft = layout.imgHeight;
         let position = 0;
         let pageNumber = 1;
         
-        // Add first page
-        pdf.addImage(imgData, 'PNG', 0, position, layout.imgWidth, layout.imgHeight);
+        // Add first page with better image quality settings
+        pdf.addImage(imgData, 'PNG', 0, position, layout.imgWidth, layout.imgHeight, undefined, 'FAST');
         heightLeft -= layout.pageHeight;
         
         // Add additional pages if needed
@@ -211,7 +247,7 @@ class PDFConversionService {
                 remainingHeight: heightLeft
             });
             
-            pdf.addImage(imgData, 'PNG', 0, position, layout.imgWidth, layout.imgHeight);
+            pdf.addImage(imgData, 'PNG', 0, position, layout.imgWidth, layout.imgHeight, undefined, 'FAST');
             heightLeft -= layout.pageHeight;
         }
         

@@ -571,3 +571,52 @@
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-30T02:43:16.918Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-30T02:43:16.923Z"}
 {"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-30T02:43:36.550Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-30T03:48:28.205Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-30T03:48:28.831Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-08-30T03:48:28.831Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-08-30T03:48:29.009Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-30T03:48:29.009Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-30T03:48:29.010Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-30T03:48:29.010Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-30T03:48:29.017Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-30T03:48:29.025Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-30T03:48:29.446Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-30T03:48:29.448Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-30T03:48:29.637Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-30T03:48:29.638Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-30T03:48:29.638Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-30T03:48:29.641Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-30T03:48:29.642Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T03:48:29.906Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T03:48:29.907Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T03:48:30.090Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-30T03:48:30.093Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-30T03:48:30.095Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-30T03:48:30.246Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-30T03:48:30.251Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-30T03:56:53.196Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-30T04:09:51.021Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-30T04:09:56.923Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-30T04:09:57.513Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-08-30T04:09:57.514Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-08-30T04:09:57.683Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-30T04:09:57.684Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-30T04:09:57.684Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-30T04:09:57.685Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-30T04:09:57.691Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-30T04:09:57.699Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-30T04:09:58.090Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-30T04:09:58.092Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-30T04:09:58.114Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-30T04:09:58.115Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-30T04:09:58.115Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-30T04:09:58.118Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-30T04:09:58.118Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T04:09:58.527Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T04:09:58.528Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-30T04:09:58.705Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-30T04:09:58.708Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-30T04:09:58.710Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-30T04:09:58.811Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-30T04:09:58.817Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-30T04:10:09.905Z"}

@@ -86,9 +86,41 @@ class ReportGenerationService {
             console.log('Generating HTML report...');
             const reportResult = await window.HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
             
-            // Step 4: Convert to PDF and download
-            console.log('Converting to PDF and downloading...');
-            await window.PDFConversionService.convertToPDF(reportResult.html, processedData.firm_name, reportResult.config);
+            // Step 4: Convert to PDF using vector approach for crisp text
+            console.log('Converting to PDF using vector approach...');
+            console.log('Vector service available:', !!window.PDFConversionServiceVector);
+            console.log('Regular service available:', !!window.PDFConversionService);
+            console.log('Window properties:', Object.keys(window).filter(k => k.includes('PDF')));
+            
+            // USE YOUR TEMPLATE WITH VECTOR PDF (BEST OF BOTH WORLDS)
+            console.log('🔧 USING YOUR TEMPLATE + VECTOR PDF');
+            try {
+                // Generate HTML with your beautiful template
+                console.log('Step 4a: Using your template HTML...');
+                
+                // Modify the HTML to remove ALL scrollbar CSS before PDF conversion
+                let modifiedHTML = reportResult.html
+                    .replace(/overflow-x:\s*auto/g, 'overflow-x: visible')
+                    .replace(/overflow:\s*auto/g, 'overflow: visible')
+                    .replace(/overflow-x:\s*scroll/g, 'overflow-x: visible')
+                    .replace(/overflow:\s*scroll/g, 'overflow: visible');
+                
+                // Also add CSS to force table to fit
+                modifiedHTML = modifiedHTML.replace(
+                    '</style>',
+                    'table { table-layout: fixed !important; width: 100% !important; } .table-container { overflow: visible !important; } </style>'
+                );
+                
+                console.log('HTML after CSS modifications:', modifiedHTML.length, 'characters');
+                
+                console.log('Step 4b: Converting template HTML to vector PDF...');
+                await window.PDFConversionService.convertToPDF(modifiedHTML, processedData.firm_name, reportResult.config);
+                console.log('✅ Template + Vector PDF completed successfully');
+            } catch (vectorError) {
+                console.error('❌ Template + Vector PDF failed:', vectorError);
+                console.log('⚠️ FALLING BACK TO AUTOTABLE METHOD');
+                await window.PDFConversionServiceVector.convertToPDF(processedData, processedData.firm_name);
+            }
             
             // Step 5: Log completion stats
             this.logGenerationStats(processedData, startTime);
