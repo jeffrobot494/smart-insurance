@@ -1,0 +1,119 @@
+{"level":"info","message":"📋 Created new pipeline 47 for firm: Target Partners","service":"manager","timestamp":"2025-08-30T01:12:46.002Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-30T01:12:46.237Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-30T01:12:46.238Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-30T01:12:46.239Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-30T01:12:46.239Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-30T01:12:46.240Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-30T01:12:46.240Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-30T01:12:46.240Z"}
+{"code":"42601","file":"rewriteHandler.c","length":121,"level":"error","line":"1109","message":"Update pipeline error: multiple assignments to same column \"updated_at\"","name":"error","routine":"process_matched_tle","service":"manager","severity":"ERROR","stack":"error: multiple assignments to same column \"updated_at\"\n    at C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DatabaseManager.query (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\DatabaseManager.js:112:22)\n    at async DatabaseManager.updatePipeline (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\DatabaseManager.js:258:7)\n    at async C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\routes\\pipeline.js:334:5","timestamp":"2025-08-30T01:12:46.241Z"}
+{"level":"info","message":"📋 Created new pipeline 48 for firm: Foundry Group","service":"manager","timestamp":"2025-08-30T01:12:47.028Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-08-30T01:12:47.271Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-08-30T01:12:47.272Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-08-30T01:12:47.272Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-08-30T01:12:47.273Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-08-30T01:12:47.273Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-08-30T01:12:47.274Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-08-30T01:12:47.275Z"}
+{"code":"42601","file":"rewriteHandler.c","length":121,"level":"error","line":"1109","message":"Update pipeline error: multiple assignments to same column \"updated_at\"","name":"error","routine":"process_matched_tle","service":"manager","severity":"ERROR","stack":"error: multiple assignments to same column \"updated_at\"\n    at C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async DatabaseManager.query (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\DatabaseManager.js:112:22)\n    at async DatabaseManager.updatePipeline (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\DatabaseManager.js:258:7)\n    at async C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\routes\\pipeline.js:334:5","timestamp":"2025-08-30T01:12:47.276Z"}
+{"level":"info","message":"📋 Created new pipeline 49 for firm: Global Equity Partners","service":"manager","timestamp":"2025-08-30T01:12:48.060Z"}
+{"level":"info","message":"📋 Created new pipeline 50 for firm: Point Nine Capital","service":"manager","timestamp":"2025-08-30T01:13:57.830Z"}
+{"level":"info","message":"📋 Created new pipeline 51 for firm: Warburg Pincus","service":"manager","timestamp":"2025-08-30T01:13:58.428Z"}
+{"level":"info","message":"📋 Created new pipeline 52 for firm: Excellence Partners","service":"manager","timestamp":"2025-08-30T01:13:58.966Z"}
+{"level":"info","message":"📋 Created new pipeline 53 for firm: Permira","service":"manager","timestamp":"2025-08-30T01:13:59.499Z"}
+{"level":"info","message":"📋 Created new pipeline 54 for firm: High-Tech Grunderfonds","service":"manager","timestamp":"2025-08-30T01:14:00.049Z"}
+{"level":"info","message":"📋 Created new pipeline 55 for firm: Vista Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:00.689Z"}
+{"level":"info","message":"📋 Created new pipeline 56 for firm: Tropical Ventures","service":"manager","timestamp":"2025-08-30T01:14:01.241Z"}
+{"level":"info","message":"📋 Created new pipeline 57 for firm: Valley Capital","service":"manager","timestamp":"2025-08-30T01:14:01.800Z"}
+{"level":"info","message":"📋 Created new pipeline 58 for firm: Leonard Green Partners","service":"manager","timestamp":"2025-08-30T01:14:02.343Z"}
+{"level":"info","message":"📋 Created new pipeline 59 for firm: Prestige Capital","service":"manager","timestamp":"2025-08-30T01:14:02.898Z"}
+{"level":"info","message":"📋 Created new pipeline 60 for firm: Advent International","service":"manager","timestamp":"2025-08-30T01:14:03.449Z"}
+{"level":"info","message":"📋 Created new pipeline 61 for firm: Alpha Partners","service":"manager","timestamp":"2025-08-30T01:14:04.014Z"}
+{"level":"info","message":"📋 Created new pipeline 62 for firm: Bain Capital","service":"manager","timestamp":"2025-08-30T01:14:04.549Z"}
+{"level":"info","message":"📋 Created new pipeline 63 for firm: Greylock Partners","service":"manager","timestamp":"2025-08-30T01:14:05.122Z"}
+{"level":"info","message":"📋 Created new pipeline 64 for firm: Innovation Ventures","service":"manager","timestamp":"2025-08-30T01:14:05.650Z"}
+{"level":"info","message":"📋 Created new pipeline 65 for firm: Coastal Investment Partners","service":"manager","timestamp":"2025-08-30T01:14:06.198Z"}
+{"level":"info","message":"📋 Created new pipeline 66 for firm: Central Investment Holdings","service":"manager","timestamp":"2025-08-30T01:14:06.743Z"}
+{"level":"info","message":"📋 Created new pipeline 67 for firm: Universal Capital Group","service":"manager","timestamp":"2025-08-30T01:14:07.308Z"}
+{"level":"info","message":"📋 Created new pipeline 68 for firm: Coastal Investment Partners","service":"manager","timestamp":"2025-08-30T01:14:07.841Z"}
+{"level":"info","message":"📋 Created new pipeline 69 for firm: Foundry Group","service":"manager","timestamp":"2025-08-30T01:14:08.356Z"}
+{"level":"info","message":"📋 Created new pipeline 70 for firm: Excellence Partners","service":"manager","timestamp":"2025-08-30T01:14:08.888Z"}
+{"level":"info","message":"📋 Created new pipeline 71 for firm: Beta Capital","service":"manager","timestamp":"2025-08-30T01:14:09.441Z"}
+{"level":"info","message":"📋 Created new pipeline 72 for firm: Data Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:09.972Z"}
+{"level":"info","message":"📋 Created new pipeline 73 for firm: Northern Capital","service":"manager","timestamp":"2025-08-30T01:14:10.497Z"}
+{"level":"info","message":"📋 Created new pipeline 74 for firm: Earlybird Venture Capital","service":"manager","timestamp":"2025-08-30T01:14:11.017Z"}
+{"level":"info","message":"📋 Created new pipeline 75 for firm: Data Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:11.554Z"}
+{"level":"info","message":"📋 Created new pipeline 76 for firm: Atlantic Ventures","service":"manager","timestamp":"2025-08-30T01:14:12.095Z"}
+{"level":"info","message":"📋 Created new pipeline 77 for firm: Partech","service":"manager","timestamp":"2025-08-30T01:14:12.632Z"}
+{"level":"info","message":"📋 Created new pipeline 78 for firm: Creandum","service":"manager","timestamp":"2025-08-30T01:14:13.158Z"}
+{"level":"info","message":"📋 Created new pipeline 79 for firm: Arctic Investment Group","service":"manager","timestamp":"2025-08-30T01:14:13.706Z"}
+{"level":"info","message":"📋 Created new pipeline 80 for firm: DN Capital","service":"manager","timestamp":"2025-08-30T01:14:14.221Z"}
+{"level":"info","message":"📋 Created new pipeline 81 for firm: Apollo Global Management","service":"manager","timestamp":"2025-08-30T01:14:14.754Z"}
+{"level":"info","message":"📋 Created new pipeline 82 for firm: Data Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:15.277Z"}
+{"level":"info","message":"📋 Created new pipeline 83 for firm: Cloud Capital","service":"manager","timestamp":"2025-08-30T01:14:15.823Z"}
+{"level":"info","message":"📋 Created new pipeline 84 for firm: Delta Investments","service":"manager","timestamp":"2025-08-30T01:14:16.380Z"}
+{"level":"info","message":"📋 Created new pipeline 85 for firm: Excellence Partners","service":"manager","timestamp":"2025-08-30T01:14:16.917Z"}
+{"level":"info","message":"📋 Created new pipeline 86 for firm: Accel Partners","service":"manager","timestamp":"2025-08-30T01:14:17.440Z"}
+{"level":"info","message":"📋 Created new pipeline 87 for firm: Balderton Capital","service":"manager","timestamp":"2025-08-30T01:14:18.008Z"}
+{"level":"info","message":"📋 Created new pipeline 88 for firm: Data Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:18.561Z"}
+{"level":"info","message":"📋 Created new pipeline 89 for firm: Northern Capital","service":"manager","timestamp":"2025-08-30T01:14:19.120Z"}
+{"level":"info","message":"📋 Created new pipeline 90 for firm: Wellington Partners","service":"manager","timestamp":"2025-08-30T01:14:19.647Z"}
+{"level":"info","message":"📋 Created new pipeline 91 for firm: Worldwide Holdings","service":"manager","timestamp":"2025-08-30T01:14:20.179Z"}
+{"level":"info","message":"📋 Created new pipeline 92 for firm: Northzone","service":"manager","timestamp":"2025-08-30T01:14:20.715Z"}
+{"level":"info","message":"📋 Created new pipeline 93 for firm: Cloud Capital","service":"manager","timestamp":"2025-08-30T01:14:21.251Z"}
+{"level":"info","message":"📋 Created new pipeline 94 for firm: TPG Capital","service":"manager","timestamp":"2025-08-30T01:14:21.797Z"}
+{"level":"info","message":"📋 Created new pipeline 95 for firm: Arctic Investment Group","service":"manager","timestamp":"2025-08-30T01:14:22.358Z"}
+{"level":"info","message":"📋 Created new pipeline 96 for firm: Union Square Ventures","service":"manager","timestamp":"2025-08-30T01:14:22.888Z"}
+{"level":"info","message":"📋 Created new pipeline 97 for firm: Delta Investments","service":"manager","timestamp":"2025-08-30T01:14:23.416Z"}
+{"level":"info","message":"📋 Created new pipeline 98 for firm: Central Investment Holdings","service":"manager","timestamp":"2025-08-30T01:14:23.966Z"}
+{"level":"info","message":"📋 Created new pipeline 99 for firm: Sustainable Ventures","service":"manager","timestamp":"2025-08-30T01:14:24.520Z"}
+{"level":"info","message":"📋 Created new pipeline 100 for firm: Index Ventures","service":"manager","timestamp":"2025-08-30T01:14:25.062Z"}
+{"level":"info","message":"📋 Created new pipeline 101 for firm: Pinnacle Capital","service":"manager","timestamp":"2025-08-30T01:14:25.607Z"}
+{"level":"info","message":"📋 Created new pipeline 102 for firm: AI Investment Group","service":"manager","timestamp":"2025-08-30T01:14:26.146Z"}
+{"level":"info","message":"📋 Created new pipeline 103 for firm: Balderton Capital","service":"manager","timestamp":"2025-08-30T01:14:26.674Z"}
+{"level":"info","message":"📋 Created new pipeline 104 for firm: KKR & Co Inc","service":"manager","timestamp":"2025-08-30T01:14:27.200Z"}
+{"level":"info","message":"📋 Created new pipeline 105 for firm: Union Square Ventures","service":"manager","timestamp":"2025-08-30T01:14:27.728Z"}
+{"level":"info","message":"📋 Created new pipeline 106 for firm: Partech","service":"manager","timestamp":"2025-08-30T01:14:28.253Z"}
+{"level":"info","message":"📋 Created new pipeline 107 for firm: Pacific Capital Partners","service":"manager","timestamp":"2025-08-30T01:14:28.815Z"}
+{"level":"info","message":"📋 Created new pipeline 108 for firm: TPG Capital","service":"manager","timestamp":"2025-08-30T01:14:29.376Z"}
+{"level":"info","message":"📋 Created new pipeline 109 for firm: Elite Ventures","service":"manager","timestamp":"2025-08-30T01:14:29.926Z"}
+{"level":"info","message":"📋 Created new pipeline 110 for firm: Earlybird Venture Capital","service":"manager","timestamp":"2025-08-30T01:14:30.490Z"}
+{"level":"info","message":"📋 Created new pipeline 111 for firm: Thoma Bravo","service":"manager","timestamp":"2025-08-30T01:14:31.045Z"}
+{"level":"info","message":"📋 Created new pipeline 112 for firm: Pinnacle Capital","service":"manager","timestamp":"2025-08-30T01:14:31.589Z"}
+{"level":"info","message":"📋 Created new pipeline 113 for firm: Northern Capital","service":"manager","timestamp":"2025-08-30T01:14:32.106Z"}
+{"level":"info","message":"📋 Created new pipeline 114 for firm: Andreessen Horowitz","service":"manager","timestamp":"2025-08-30T01:14:32.665Z"}
+{"level":"info","message":"📋 Created new pipeline 115 for firm: Eastern Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:33.203Z"}
+{"level":"info","message":"📋 Created new pipeline 116 for firm: DN Capital","service":"manager","timestamp":"2025-08-30T01:14:33.724Z"}
+{"level":"info","message":"📋 Created new pipeline 117 for firm: Target Partners","service":"manager","timestamp":"2025-08-30T01:14:34.264Z"}
+{"level":"info","message":"📋 Created new pipeline 118 for firm: Goldman Sachs Capital Partners","service":"manager","timestamp":"2025-08-30T01:14:34.786Z"}
+{"level":"info","message":"📋 Created new pipeline 119 for firm: Bessemer Venture Partners","service":"manager","timestamp":"2025-08-30T01:14:35.343Z"}
+{"level":"info","message":"📋 Created new pipeline 120 for firm: First Round Capital","service":"manager","timestamp":"2025-08-30T01:14:35.896Z"}
+{"level":"info","message":"📋 Created new pipeline 121 for firm: Blockchain Partners","service":"manager","timestamp":"2025-08-30T01:14:36.466Z"}
+{"level":"info","message":"📋 Created new pipeline 122 for firm: IVP","service":"manager","timestamp":"2025-08-30T01:14:36.998Z"}
+{"level":"info","message":"📋 Created new pipeline 123 for firm: Point Nine Capital","service":"manager","timestamp":"2025-08-30T01:14:37.562Z"}
+{"level":"info","message":"📋 Created new pipeline 124 for firm: Great Hill Partners","service":"manager","timestamp":"2025-08-30T01:14:38.113Z"}
+{"level":"info","message":"📋 Created new pipeline 125 for firm: Delta Investments","service":"manager","timestamp":"2025-08-30T01:14:38.673Z"}
+{"level":"info","message":"📋 Created new pipeline 126 for firm: Thoma Bravo","service":"manager","timestamp":"2025-08-30T01:14:39.222Z"}
+{"level":"info","message":"📋 Created new pipeline 127 for firm: CVC Capital Partners","service":"manager","timestamp":"2025-08-30T01:14:39.755Z"}
+{"level":"info","message":"📋 Created new pipeline 128 for firm: Eastern Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:40.291Z"}
+{"level":"info","message":"📋 Created new pipeline 129 for firm: Eastern Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:40.883Z"}
+{"level":"info","message":"📋 Created new pipeline 130 for firm: Sigma Investments","service":"manager","timestamp":"2025-08-30T01:14:41.431Z"}
+{"level":"info","message":"📋 Created new pipeline 131 for firm: Goldman Sachs Capital Partners","service":"manager","timestamp":"2025-08-30T01:14:41.945Z"}
+{"level":"info","message":"📋 Created new pipeline 132 for firm: NEA","service":"manager","timestamp":"2025-08-30T01:14:42.492Z"}
+{"level":"info","message":"📋 Created new pipeline 133 for firm: Vista Equity Partners","service":"manager","timestamp":"2025-08-30T01:14:43.062Z"}
+{"level":"info","message":"📋 Created new pipeline 134 for firm: Creandum","service":"manager","timestamp":"2025-08-30T01:14:43.603Z"}
+{"level":"info","message":"📋 Created new pipeline 135 for firm: Technology Capital","service":"manager","timestamp":"2025-08-30T01:14:44.128Z"}
+{"level":"info","message":"📋 Created new pipeline 136 for firm: Battery Ventures","service":"manager","timestamp":"2025-08-30T01:14:44.674Z"}
+{"level":"info","message":"📋 Created new pipeline 137 for firm: Arctic Investment Group","service":"manager","timestamp":"2025-08-30T01:14:45.200Z"}
+{"level":"info","message":"📋 Created new pipeline 138 for firm: NEA","service":"manager","timestamp":"2025-08-30T01:14:45.737Z"}
+{"level":"info","message":"📋 Created new pipeline 139 for firm: Coastal Investment Partners","service":"manager","timestamp":"2025-08-30T01:14:46.296Z"}
+{"level":"info","message":"📋 Created new pipeline 140 for firm: Partech","service":"manager","timestamp":"2025-08-30T01:14:46.836Z"}
+{"level":"info","message":"📋 Created new pipeline 141 for firm: Quantum Ventures","service":"manager","timestamp":"2025-08-30T01:14:47.383Z"}
+{"level":"info","message":"📋 Created new pipeline 142 for firm: Zeta Capital Partners","service":"manager","timestamp":"2025-08-30T01:14:47.950Z"}
+{"level":"info","message":"📋 Created new pipeline 143 for firm: IVP","service":"manager","timestamp":"2025-08-30T01:14:48.514Z"}
+{"level":"info","message":"📋 Created new pipeline 144 for firm: High-Tech Grunderfonds","service":"manager","timestamp":"2025-08-30T01:14:49.068Z"}
+{"level":"info","message":"📋 Created new pipeline 145 for firm: Apax Partners","service":"manager","timestamp":"2025-08-30T01:14:49.598Z"}
+{"level":"info","message":"📋 Created new pipeline 146 for firm: Omega Holdings Group","service":"manager","timestamp":"2025-08-30T01:14:50.131Z"}
+{"level":"info","message":"📋 Created new pipeline 147 for firm: Balderton Capital","service":"manager","timestamp":"2025-08-30T01:14:50.689Z"}
+{"level":"info","message":"📋 Created new pipeline 148 for firm: General Atlantic","service":"manager","timestamp":"2025-08-30T01:14:51.228Z"}
+{"level":"info","message":"📋 Created new pipeline 149 for firm: Acme Private Capital","service":"manager","timestamp":"2025-08-30T01:14:51.756Z"}

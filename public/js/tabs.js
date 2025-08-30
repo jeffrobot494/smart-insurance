@@ -15,6 +15,13 @@ class TabController {
             }
         };
         
+        // Pagination state for completed tab
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.totalItems = 0;
+        this.itemsPerPage = 10;
+        this.paginationComponent = null;
+        
         this.init();
     }
 
@@ -135,8 +142,8 @@ class TabController {
         }
     }
 
-    async loadCompletedTab(page = 1, limit = 10) {
-        console.log(`TabController: Loading completed tab content (page ${page}, limit ${limit})`);
+    async loadCompletedTab(page = 1) {
+        console.log(`TabController: Loading completed tab content (page ${page}, limit ${this.itemsPerPage})`);
         
         if (!this.app || !this.app.api) {
             console.error('TabController: App or API not available');
@@ -151,11 +158,11 @@ class TabController {
             }
 
             // Calculate offset for pagination
-            const offset = (page - 1) * limit;
+            const offset = (page - 1) * this.itemsPerPage;
             
             // Load completed pipelines from API
             const response = await this.app.api.getAllPipelines({
-                limit,
+                limit: this.itemsPerPage,
                 offset,
                 status: 'data_extraction_complete' // Only show completed pipelines in completed tab
             });
@@ -163,11 +170,16 @@ class TabController {
             if (response.success && response.pipelines) {
                 console.log(`TabController: Loaded ${response.pipelines.length} completed pipelines`);
                 
-                // Render completed pipelines
-                this.renderCompletedPipelines(response.pipelines, response.total, response.has_more);
+                // Update pagination state
+                this.currentPage = page;
+                this.totalItems = response.total || response.pipelines.length;
+                this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
                 
-                // Update load more button
-                this.updateLoadMoreButton(response.has_more, response.pipelines.length);
+                // Render completed pipelines
+                this.renderCompletedPipelines(response.pipelines);
+                
+                // Update pagination component
+                this.updatePagination();
             } else {
                 console.error('TabController: Failed to load completed pipelines');
                 this.showCompletedTabError('Failed to load completed pipelines');
@@ -178,14 +190,14 @@ class TabController {
         }
     }
 
-    renderCompletedPipelines(pipelines, total = 0, hasMore = false) {
+    renderCompletedPipelines(pipelines) {
         const savedResults = Utils.findElement('#saved-pipeline-results');
         if (!savedResults) {
             console.error('TabController: Completed results container not found');
             return;
         }
 
-        if (pipelines.length === 0) {
+        if (pipelines.length === 0 && this.currentPage === 1) {
             savedResults.innerHTML = `
                 <div class="empty-state">
                     <p>No completed pipelines found.</p>
@@ -237,19 +249,40 @@ class TabController {
         `;
     }
 
-    updateLoadMoreButton(hasMore, currentCount) {
-        const loadMoreSection = Utils.findElement('#load-more');
-        const shownCountElement = Utils.findElement('#shown-count');
-        
-        if (loadMoreSection && shownCountElement) {
-            shownCountElement.textContent = currentCount;
-            
-            if (hasMore) {
-                loadMoreSection.style.display = 'block';
-            } else {
-                loadMoreSection.style.display = 'none';
-            }
+    updatePagination() {
+        const paginationContainer = Utils.findElement('#pagination-container');
+        if (!paginationContainer) {
+            console.warn('TabController: Pagination container not found');
+            return;
         }
+
+        // Create or update pagination component
+        if (this.paginationComponent) {
+            this.paginationComponent.update({
+                currentPage: this.currentPage,
+                totalPages: this.totalPages,
+                totalItems: this.totalItems,
+                itemsPerPage: this.itemsPerPage
+            });
+        } else {
+            this.paginationComponent = new PaginationComponent({
+                currentPage: this.currentPage,
+                totalPages: this.totalPages,
+                totalItems: this.totalItems,
+                itemsPerPage: this.itemsPerPage,
+                onPageChange: (page) => this.handlePageChange(page)
+            });
+            
+            // Render pagination component
+            const paginationElement = this.paginationComponent.render();
+            paginationContainer.innerHTML = '';
+            paginationContainer.appendChild(paginationElement);
+        }
+    }
+
+    handlePageChange(page) {
+        console.log(`TabController: Page change requested: ${page}`);
+        this.loadCompletedTab(page);
     }
 
     showCompletedTabError(message) {

@@ -71,7 +71,7 @@ router.get('/:id', async (req, res) => {
 // GET all pipelines with pagination
 router.get('/', async (req, res) => {
   try {
-    const { status, firm_name, limit = 20, offset = 0 } = req.query;
+    const { status, firm_name, limit = 10, offset = 0 } = req.query;
     
     // Parse pagination parameters
     const limitNum = parseInt(limit);
