@@ -620,3 +620,6 @@
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-30T04:09:58.811Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-30T04:09:58.817Z"}
 {"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-30T04:10:09.905Z"}
+{"level":"info","message":"perplexity MCP exited with code 3221225786","service":"mcp","timestamp":"2025-08-30T04:39:29.938Z"}
+{"level":"info","message":"form5500 MCP exited with code 3221225786","service":"mcp","timestamp":"2025-08-30T04:39:29.946Z"}
+{"level":"info","message":"firecrawl MCP exited with code 3221225786","service":"mcp","timestamp":"2025-08-30T04:39:29.954Z"}

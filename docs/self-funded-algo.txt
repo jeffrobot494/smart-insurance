@@ -1,0 +1,42 @@
+Here’s the logic boiled down — the script is basically combining Form 5500 header checkboxes with Schedule A attachments and then applying rules:
+
+1. Detect whether the plan is even a medical plan
+
+Looks at the header field TYPE_WELFARE_BNFT_CODE → if it includes “4A”, it’s a health plan.
+
+If 4A is missing, it still allows the plan through if the Schedule A records for that EIN + plan # + year show WLFR_BNFT_HEALTH_IND=1.
+→ This covers filers who forget to mark 4A but do file a medical Schedule A.
+
+2. Use Schedule A content to decide insured vs self-funded
+
+If Schedule A rows show HEALTH/MEDICAL coverage → plan is Insured.
+
+If Schedule A rows show only STOP-LOSS coverage and no HEALTH → plan is Self-funded w/ stop-loss.
+
+3. Fall back on header checkboxes if Schedule A isn’t decisive
+
+From the header’s funding/benefit arrangement flags:
+
+BENEFIT_GEN_ASSET_IND or FUNDING_GEN_ASSET_IND → Self-funded.
+
+BENEFIT_INSURANCE_IND or FUNDING_INSURANCE_IND → Likely insured, but warns if no Schedule A health policy backs it up.
+
+If Schedule A is attached but has no HEALTH/STOP-LOSS flags → Indeterminate.
+
+If nothing at all is attached and general-assets flags are missing → default to Likely self-funded.
+
+4. Handle plan-year vs. calendar-year differences
+
+When you pass --year, it keeps a filing if either the begin year or the end year of the plan equals the requested year. This ensures a plan running 2022–2023 will show up for both 2022 and 2023.
+
+5. Company roll-up
+
+After classifying each plan, the script rolls them up:
+
+If any plan is self-funded (or likely self-funded) → company flagged as Self-funded (at least one plan).
+
+If all plans are insured/likely insured → company = Insured.
+
+Otherwise → Mixed/Indeterminate.
+
+👉 Net effect: it uses Schedule A HEALTH = insured, Schedule A STOP-LOSS = self-funded, and header “general assets” flags = self-funded as the core signals, with fallback categories when the data is ambiguous.
