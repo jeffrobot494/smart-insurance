@@ -35,18 +35,44 @@ class HTMLReportService {
     }
 
     /**
+     * Format self-funded classification for display in template
+     */
+    static formatFundingStatus(classification) {
+        const statusMap = {
+            'self-funded': 'Self-Funded',
+            'insured': 'Insured', 
+            'partially-self-funded': 'Partially Self-Funded',
+            'indeterminate': 'Unknown',
+            'no-medical-plans': 'No Medical Plans',
+            'no-data': 'No Data',
+            'error': 'Error',
+            'unknown': 'Unknown'
+        };
+        
+        return statusMap[classification] || 'Unknown';
+    }
+
+    /**
      * Calculate totals across all companies
      */
     static calculateTotals(companies) {
         let totalPremiums = 0;
         let totalBrokerageFees = 0;
         let totalEmployeesCovered = 0;
+        let selfFundedCount = 0;
+        let totalCompanies = 0;
         const allBrokers = new Set();
         
         for (const company of companies) {
             totalPremiums += company.total_premiums || 0;
             totalBrokerageFees += company.total_brokerage_fees || 0;
             totalEmployeesCovered += company.total_people_covered || 0;
+            
+            totalCompanies++;
+            const classification = company.self_funded_classification || 'unknown';
+            if (classification !== 'insured' && classification !== 'indeterminate' && classification !== 'unknown' && classification !== 'no-data' && classification !== 'error') {
+                selfFundedCount++;
+            }
             
             // Collect unique brokers across all companies
             if (company.plans) {
@@ -62,6 +88,8 @@ class HTMLReportService {
             totalPremiums,
             totalBrokerageFees,
             totalEmployeesCovered,
+            selfFundedCount,
+            totalCompanies,
             uniqueBrokerCount: allBrokers.size,
             uniqueBrokers: Array.from(allBrokers)
         };
@@ -86,7 +114,7 @@ class HTMLReportService {
                 <td class="company-name">${companyName}</td>
                 <td class="revenue">-</td>
                 <td class="employees">${totalPeopleCovered.toLocaleString()}</td>
-                <td class="funding">-</td>
+                <td class="funding">${this.formatFundingStatus(company.self_funded_classification || 'unknown')}</td>
                 <td class="brokers">${brokers}</td>
                 <td class="premiums">${this.formatCurrency(totalPremiums)}</td>
                 <td class="commissions">${this.formatCurrency(totalBrokerageFees)}</td>
@@ -101,12 +129,14 @@ class HTMLReportService {
             ? `1 Unique Broker` 
             : `${totals.uniqueBrokerCount} Unique Brokers`;
             
+        const fundingText = `${totals.selfFundedCount}/${totals.totalCompanies} self-funded`;
+            
         return `
             <tr class="total-row">
                 <td class="total-label">TOTAL</td>
                 <td class="total-revenue">-</td>
                 <td class="total-employees">${totals.totalEmployeesCovered.toLocaleString()}</td>
-                <td class="total-funding">-</td>
+                <td class="total-funding">${fundingText}</td>
                 <td class="total-brokers">${brokerText}</td>
                 <td class="total-premiums">${this.formatCurrency(totals.totalPremiums)}</td>
                 <td class="total-commissions">${this.formatCurrency(totals.totalBrokerageFees)}</td>

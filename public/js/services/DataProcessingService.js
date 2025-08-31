@@ -96,6 +96,9 @@ class DataProcessingService {
         // Get form5500_data wrapper object
         const form5500_data = company.form5500_data || {};
         
+        // Extract self-funded classification
+        const selfFundedClassification = form5500_data.self_funded || 'unknown';
+        
         // Get Schedule A data and available years
         const scheduleA = form5500_data.scheduleA || {};
         const scheduleADetails = scheduleA.details || {};
@@ -137,6 +140,7 @@ class DataProcessingService {
             company_name: companyName,
             data_year: preferredYear,
             has_data: hasData,
+            self_funded_classification: selfFundedClassification,
             total_premiums: aggregatedData.total_premiums,
             total_brokerage_fees: aggregatedData.total_brokerage_fees,
             total_people_covered: aggregatedData.total_people_covered,
