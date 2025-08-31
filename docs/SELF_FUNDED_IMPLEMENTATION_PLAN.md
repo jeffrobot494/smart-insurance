@@ -886,6 +886,135 @@ const trends = company.form5500_data.self_funded_analysis.summary.trend;
 
 This plan provides a complete, production-ready implementation that integrates seamlessly with your existing architecture while adding the powerful self-funded classification capability you need.
 
+## Production Integration Architecture
+
+### Integration Approach Decision
+
+After analysis of the existing codebase, we determined the cleanest integration approach is to **modify the ReportGenerator** to output data in the format expected by the SelfFundedClassifierService, rather than transforming data back and forth.
+
+**Analysis Result**:
+- `reportData.companies` is only consumed by `DataExtractionService.mapResultsToCompanies()`
+- No other external APIs or services depend on the current report format
+- Changing the report format eliminates the need for data transformations
+
+### Modified ReportGenerator Output
+
+**Current Format**:
+```javascript
+// ReportGenerator.generateJSONReport() - BEFORE
+companies: searchResults.map(result => ({
+  companyName: result.company,
+  ein: result.ein || null,
+  form5500: { /* flat structure */ },
+  scheduleA: { /* flat structure */ }
+}))
+```
+
+**New Format** (matches SelfFundedClassifierService expectations):
+```javascript
+// ReportGenerator.generateJSONReport() - AFTER  
+companies: searchResults.map(result => ({
+  legal_entity_name: result.company,    // Changed from companyName
+  form5500_data: {                      // Nested under form5500_data
+    ein: result.ein || null,
+    form5500: {
+      years: result.years || [],
+      recordCount: result.recordCount || 0,
+      records: result.records || {}
+    },
+    scheduleA: {
+      recordCounts: result.schARecords || {},
+      details: this.formatScheduleADetails(result.schADetails || {}),
+      error: result.schAError || null
+    }
+  }
+}))
+```
+
+### DataExtractionService Integration
+
+**Pipeline Flow** (after modifications):
+1. **Phase 1-3**: Form 5500 search, EIN extraction, Schedule A search (unchanged)
+2. **Phase 4**: Generate comprehensive reports → Now outputs classifier-compatible format
+3. **Phase 5**: Classify companies as self-funded/insured (NEW)
+4. **Phase 6**: Map results back to companies structure (updated for new format)
+
+**Integration Code**:
+```javascript
+// Phase 4: Generate comprehensive reports (now in classifier format)
+const reportData = this.reportGenerator.generateFinalReport(finalResults);
+
+// NEW: Phase 5: Classify companies as self-funded/insured (if enabled)
+if (enableSelfFundedClassification) {
+  logger.info('🔍 Classifying companies as self-funded or insured...');
+  const classifiedCompanies = await this.selfFundedClassifierService.classifyCompanies(reportData.companies);
+  reportData.companies = classifiedCompanies;
+}
+
+// Phase 6: Map results back to companies structure (updated for new format)
+const companiesWithForm5500 = this.mapResultsToCompanies(pipeline.companies, reportData);
+```
+
+**Updated mapResultsToCompanies()**:
+```javascript
+// Before: company.companyName lookup
+reportLookup.set(company.companyName, company);
+
+// After: company.legal_entity_name lookup  
+reportLookup.set(company.legal_entity_name, company);
+
+// Before: Build form5500_data object
+company.form5500_data = {
+  ein: reportCompany.ein,
+  form5500: reportCompany.form5500,
+  scheduleA: reportCompany.scheduleA
+};
+
+// After: Direct assignment (data already in correct structure)
+company.form5500_data = reportCompany.form5500_data;
+```
+
+### Feature Flag Implementation
+
+**Method Signature Update**:
+```javascript
+// Before
+async extractData(pipelineId)
+
+// After  
+async extractData(pipelineId, options = { enableSelfFundedClassification: true })
+```
+
+**Usage**:
+```javascript
+// Default: Classification enabled
+const results = await dataExtractionService.extractData(123);
+
+// Explicitly disabled
+const results = await dataExtractionService.extractData(123, { 
+  enableSelfFundedClassification: false 
+});
+```
+
+### Files Modified
+
+1. **`/server/data-extraction/ReportGenerator.js`**
+   - Update `generateJSONReport()` method to output classifier-compatible format
+
+2. **`/server/data-extraction/DataExtractionService.js`** 
+   - Add SelfFundedClassifierService to constructor
+   - Add classification step in `extractData()` pipeline
+   - Update `mapResultsToCompanies()` for new data structure
+   - Add feature flag parameter
+
+### Benefits of This Approach
+
+✅ **No data transformations needed** - Direct compatibility  
+✅ **Minimal code changes** - Only 2 files modified  
+✅ **No breaking changes** - Only internal data format affected  
+✅ **Clean separation** - Each service has a consistent interface  
+✅ **Feature flag ready** - Easy to enable/disable classification  
+
 ## Testing
 
 Before implementing the full production system, we need to validate the algorithm with a test endpoint that provides detailed year-by-year classification breakdown.
