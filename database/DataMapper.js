@@ -33,8 +33,10 @@ class DataMapper {
       'TYPE_WELFARE_BNFT_CODE': 'type_welfare_bnft_code',
       'FUNDING_INSURANCE_IND': 'funding_insurance_ind',
       'FUNDING_TRUST_IND': 'funding_trust_ind',
+      'FUNDING_GEN_ASSET_IND': 'funding_gen_asset_ind',
       'BENEFIT_INSURANCE_IND': 'benefit_insurance_ind',
       'BENEFIT_TRUST_IND': 'benefit_trust_ind',
+      'BENEFIT_GEN_ASSET_IND': 'benefit_gen_asset_ind',
       'SCH_A_ATTACHED_IND': 'sch_a_attached_ind',
       'NUM_SCH_A_ATTACHED_CNT': 'num_sch_a_attached_cnt',
       'FILING_STATUS': 'filing_status',
@@ -68,6 +70,7 @@ class DataMapper {
       'WLFR_BNFT_TEMP_DISAB_IND': 'wlfr_bnft_temp_disab_ind',
       'WLFR_BNFT_LONG_TERM_DISAB_IND': 'wlfr_bnft_long_term_disab_ind',
       'WLFR_BNFT_DRUG_IND': 'wlfr_bnft_drug_ind',
+      'WLFR_BNFT_STOP_LOSS_IND': 'wlfr_bnft_stop_loss_ind',
       'WLFR_BNFT_HMO_IND': 'wlfr_bnft_hmo_ind',
       'WLFR_BNFT_PPO_IND': 'wlfr_bnft_ppo_ind',
       'WLFR_BNFT_INDEMNITY_IND': 'wlfr_bnft_indemnity_ind',
@@ -83,12 +86,12 @@ class DataMapper {
     this.numericFields = new Set([
       'spons_dfe_pn', 'spons_dfe_mail_us_zip', 'business_code', 'tot_partcp_boy_cnt', 
       'tot_active_partcp_cnt', 'rtd_sep_partcp_rcvg_cnt', 'rtd_sep_partcp_fut_cnt', 
-      'subtl_act_rtd_sep_cnt', 'funding_insurance_ind', 'funding_trust_ind', 
-      'benefit_insurance_ind', 'benefit_trust_ind', 'sch_a_attached_ind', 
+      'subtl_act_rtd_sep_cnt', 'funding_insurance_ind', 'funding_trust_ind', 'funding_gen_asset_ind',
+      'benefit_insurance_ind', 'benefit_trust_ind', 'benefit_gen_asset_ind', 'sch_a_attached_ind', 
       'num_sch_a_attached_cnt', 'form_id', 'sch_a_plan_num', 'ins_carrier_naic_code', 
       'ins_prsn_covered_eoy_cnt', 'wlfr_bnft_health_ind', 'wlfr_bnft_dental_ind', 
       'wlfr_bnft_vision_ind', 'wlfr_bnft_life_insur_ind', 'wlfr_bnft_temp_disab_ind', 
-      'wlfr_bnft_long_term_disab_ind', 'wlfr_bnft_drug_ind', 'wlfr_bnft_hmo_ind', 
+      'wlfr_bnft_long_term_disab_ind', 'wlfr_bnft_drug_ind', 'wlfr_bnft_stop_loss_ind', 'wlfr_bnft_hmo_ind', 
       'wlfr_bnft_ppo_ind', 'wlfr_bnft_indemnity_ind', 'wlfr_bnft_other_ind'
     ]);
 

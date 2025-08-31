@@ -54,8 +54,10 @@ CREATE TABLE IF NOT EXISTS form_5500_records (
   -- Funding and benefit indicators
   funding_insurance_ind INTEGER,
   funding_trust_ind INTEGER,
+  funding_gen_asset_ind INTEGER DEFAULT 0,
   benefit_insurance_ind INTEGER,
   benefit_trust_ind INTEGER,
+  benefit_gen_asset_ind INTEGER DEFAULT 0,
   
   -- Schedule attachments (important for our analysis)
   sch_a_attached_ind INTEGER,
@@ -118,6 +120,7 @@ CREATE TABLE IF NOT EXISTS schedule_a_records (
   wlfr_bnft_temp_disab_ind INTEGER,
   wlfr_bnft_long_term_disab_ind INTEGER,
   wlfr_bnft_drug_ind INTEGER,
+  wlfr_bnft_stop_loss_ind INTEGER DEFAULT 0,
   wlfr_bnft_hmo_ind INTEGER,
   wlfr_bnft_ppo_ind INTEGER,
   wlfr_bnft_indemnity_ind INTEGER,
@@ -301,5 +304,79 @@ BEGIN
     FROM schedule_a_records s
     WHERE s.sch_a_ein = ein_param
     ORDER BY s.year DESC, s.ins_carrier_name;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ===========================================
+-- FUNCTIONS FOR SELF-FUNDED CLASSIFICATION
+-- ===========================================
+
+-- Function to get raw Form 5500 data for classification
+CREATE OR REPLACE FUNCTION get_form5500_for_classification(search_term TEXT)
+RETURNS TABLE (
+    year INTEGER,
+    ack_id VARCHAR(255),
+    spons_dfe_pn INTEGER,
+    sponsor_name TEXT,
+    plan_name TEXT,
+    form_plan_year_begin_date DATE,
+    form_tax_prd DATE,
+    type_welfare_bnft_code VARCHAR(255),
+    funding_insurance_ind INTEGER,
+    funding_gen_asset_ind INTEGER,
+    benefit_insurance_ind INTEGER,
+    benefit_gen_asset_ind INTEGER,
+    sch_a_attached_ind INTEGER,
+    num_sch_a_attached_cnt INTEGER,
+    ein VARCHAR(9)
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        f.year,
+        f.ack_id,
+        f.spons_dfe_pn,
+        f.sponsor_dfe_name::TEXT,
+        f.plan_name::TEXT,
+        f.form_plan_year_begin_date,
+        f.form_tax_prd,
+        f.type_welfare_bnft_code,
+        f.funding_insurance_ind,
+        f.funding_gen_asset_ind,
+        f.benefit_insurance_ind,
+        f.benefit_gen_asset_ind,
+        f.sch_a_attached_ind,
+        f.num_sch_a_attached_cnt,
+        f.spons_dfe_ein
+    FROM form_5500_records f
+    WHERE LOWER(f.sponsor_dfe_name) LIKE LOWER('%' || search_term || '%')
+    ORDER BY f.year DESC, f.sponsor_dfe_name;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function to get raw Schedule A data for classification
+CREATE OR REPLACE FUNCTION get_schedule_a_for_classification(ein_param VARCHAR(9))
+RETURNS TABLE (
+    year INTEGER,
+    ack_id VARCHAR(255),
+    sch_a_plan_num INTEGER,
+    sch_a_plan_year_begin_date DATE,
+    sch_a_plan_year_end_date DATE,
+    wlfr_bnft_health_ind INTEGER,
+    wlfr_bnft_stop_loss_ind INTEGER
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        s.year,
+        s.ack_id,
+        s.sch_a_plan_num,
+        s.sch_a_plan_year_begin_date,
+        s.sch_a_plan_year_end_date,
+        s.wlfr_bnft_health_ind,
+        s.wlfr_bnft_stop_loss_ind
+    FROM schedule_a_records s
+    WHERE s.sch_a_ein = ein_param
+    ORDER BY s.year DESC, s.ack_id, s.sch_a_plan_num;
 END;
 $$ LANGUAGE plpgsql;
