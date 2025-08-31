@@ -741,3 +741,34 @@
 {"level":"info","message":"🔍 Testing self-funded classification for: Medix Staffing Solutions","service":"database","timestamp":"2025-08-31T02:54:52.773Z"}
 {"level":"info","message":"🧪 Testing self-funded classification for company: American Pain Consortium","service":"server","timestamp":"2025-08-31T02:55:17.048Z"}
 {"level":"info","message":"🔍 Testing self-funded classification for: American Pain Consortium","service":"database","timestamp":"2025-08-31T02:55:17.048Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: Green Slate LLC","service":"server","timestamp":"2025-08-31T19:33:35.164Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: Green Slate LLC","service":"database","timestamp":"2025-08-31T19:33:35.166Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: Intersect Group","service":"server","timestamp":"2025-08-31T19:34:27.138Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: Intersect Group","service":"database","timestamp":"2025-08-31T19:34:27.138Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-31T19:54:53.935Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-31T19:54:57.890Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-31T19:54:58.563Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-08-31T19:54:58.564Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-08-31T19:54:58.830Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-31T19:54:58.830Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-31T19:54:58.830Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-31T19:54:58.831Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-31T19:54:58.836Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-31T19:54:58.844Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-31T19:54:59.324Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-31T19:54:59.326Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-31T19:54:59.459Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-31T19:54:59.460Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-31T19:54:59.460Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-31T19:54:59.464Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-31T19:54:59.464Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.726Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.727Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.978Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-31T19:54:59.981Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-31T19:54:59.983Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-31T19:55:00.638Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-31T19:55:00.644Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T19:55:22.930Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: Intersect Group","service":"server","timestamp":"2025-08-31T19:55:26.706Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: Intersect Group","service":"database","timestamp":"2025-08-31T19:55:26.707Z"}

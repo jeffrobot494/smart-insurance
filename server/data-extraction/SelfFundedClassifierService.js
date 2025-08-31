@@ -17,7 +17,10 @@ class SelfFundedClassifierService {
     for (const company of companies) {
       if (!company.form5500_data || !company.form5500_data.ein) {
         company.form5500_data = company.form5500_data || {};
-        company.form5500_data.self_funded = {
+        // Quick access field
+        company.form5500_data.self_funded = 'no-data';
+        // Detailed analysis
+        company.form5500_data.self_funded_analysis = {
           current_classification: 'no-data',
           classifications_by_year: {},
           summary: { years_available: [], message: 'No Form 5500 data available' }
@@ -27,11 +30,17 @@ class SelfFundedClassifierService {
       
       try {
         const classification = await this.classifyCompany(company);
-        company.form5500_data.self_funded = classification;
+        // Quick access field (same as current_classification)
+        company.form5500_data.self_funded = classification.current_classification;
+        // Detailed analysis
+        company.form5500_data.self_funded_analysis = classification;
         logger.debug(`✓ Classified ${company.legal_entity_name}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
       } catch (error) {
         logger.error(`❌ Error classifying ${company.legal_entity_name}:`, error.message);
-        company.form5500_data.self_funded = {
+        // Quick access field
+        company.form5500_data.self_funded = 'error';
+        // Detailed analysis
+        company.form5500_data.self_funded_analysis = {
           current_classification: 'error',
           classifications_by_year: {},
           summary: { years_available: [], error: error.message }
@@ -157,11 +166,16 @@ class SelfFundedClassifierService {
         return {
           success: true,
           company_name: companyName,
-          current_classification: 'no-data',
-          classifications_by_year: {},
-          summary: {
-            years_available: [],
-            message: 'No Form 5500 records found for this company'
+          // Quick access field
+          self_funded: 'no-data',
+          // Detailed analysis
+          self_funded_analysis: {
+            current_classification: 'no-data',
+            classifications_by_year: {},
+            summary: {
+              years_available: [],
+              message: 'No Form 5500 records found for this company'
+            }
           },
           raw_data: { form5500_records: [], schedule_a_records: [] }
         };
@@ -241,13 +255,18 @@ class SelfFundedClassifierService {
       const years = Object.keys(classificationsByYear).sort((a, b) => parseInt(b) - parseInt(a));
       const currentClassification = years.length > 0 ? classificationsByYear[years[0]].classification : 'no-data';
       
-      // Return test-specific format with raw data included
+      // Return test-specific format with raw data included (matching new structure)
       return {
         success: true,
         company_name: companyName,
-        current_classification: currentClassification,
-        classifications_by_year: classificationsByYear,
-        summary: summary,
+        // Quick access field (same as current_classification)
+        self_funded: currentClassification,
+        // Detailed analysis
+        self_funded_analysis: {
+          current_classification: currentClassification,
+          classifications_by_year: classificationsByYear,
+          summary: summary
+        },
         raw_data: {
           form5500_records: form5500Records,
           schedule_a_records: scheduleARecords
@@ -285,7 +304,6 @@ class SelfFundedClassifierService {
         const entry = index.byBeginYear.get(key);
         if (record.wlfr_bnft_health_ind === 1) entry.health = true;
         if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
-        console.log(`[DEBUG] Added to beginYear index: ${key} -> health:${entry.health}, stopLoss:${entry.stopLoss} (raw: health=${record.wlfr_bnft_health_ind}, stopLoss=${record.wlfr_bnft_stop_loss_ind})`);
       }
       
       if (endYear && planNum && ein && endYear !== beginYear) {
@@ -296,7 +314,6 @@ class SelfFundedClassifierService {
         const entry = index.byEndYear.get(key);
         if (record.wlfr_bnft_health_ind === 1) entry.health = true;
         if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
-        console.log(`[DEBUG] Added to endYear index: ${key} -> health:${entry.health}, stopLoss:${entry.stopLoss} (raw: health=${record.wlfr_bnft_health_ind}, stopLoss=${record.wlfr_bnft_stop_loss_ind})`);
       }
     }
     
@@ -352,10 +369,6 @@ class SelfFundedClassifierService {
     const fundingInsurance = form5500Record.funding_insurance_ind === 1;
     const fundingGenAssets = form5500Record.funding_gen_asset_ind === 1;
     
-    // Debug logging to see what's happening
-    console.log(`[DEBUG] Plan ${planNum}, EIN ${ein}, beginYear ${beginYear}, endYear ${endYear}`);
-    console.log(`[DEBUG] hasScheduleAHealth: ${hasScheduleAHealth}, hasScheduleAStopLoss: ${hasScheduleAStopLoss}`);
-    console.log(`[DEBUG] benefitGenAssets: ${benefitGenAssets}, fundingGenAssets: ${fundingGenAssets}`);
     const hasScheduleA = form5500Record.sch_a_attached_ind === 1 || 
                         (form5500Record.num_sch_a_attached_cnt || 0) > 0;
     

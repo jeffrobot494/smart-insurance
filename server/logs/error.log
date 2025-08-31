@@ -829,3 +829,6 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T02:53:53.235Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T02:53:53.235Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T02:53:53.464Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.726Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.727Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T19:54:59.978Z"}

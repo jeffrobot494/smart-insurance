@@ -775,15 +775,22 @@ wlfr_bnft_stop_loss_ind INTEGER DEFAULT 0,
 
 ## Expected Output Format
 
-After implementation, each company will have a detailed `self_funded` field in their `form5500_data` with year-by-year breakdown:
+After implementation, each company will have both a **quick-access self-funded status** and **detailed analysis** in their `form5500_data`:
 
 ```javascript
 company.form5500_data = {
   ein: "123456789",
+  
+  // ===== KEY SELF-FUNDED STATUS (QUICK ACCESS) =====
+  self_funded: "self-funded", // Most recent year classification for easy access
+  
+  // ===== EXISTING STRUCTURE =====
   form5500: { /* existing structure */ },
   scheduleA: { /* existing structure */ },
-  self_funded: {
-    current_classification: "self-funded", // Most recent year
+  
+  // ===== DETAILED SELF-FUNDED ANALYSIS =====
+  self_funded_analysis: {
+    current_classification: "self-funded", // Most recent year (same as self_funded above)
     classifications_by_year: {
       "2024": {
         classification: "self-funded",
@@ -821,7 +828,22 @@ company.form5500_data = {
 }
 ```
 
-**Possible `current_classification` values:**
+### **Easy Access Pattern**
+```javascript
+// Quick access to key classification (same level as EIN)
+const classification = company.form5500_data.self_funded; // "self-funded"
+const ein = company.form5500_data.ein; // "123456789"
+
+// Filter companies by self-funded status
+const selfFundedCompanies = pipeline.companies.filter(c => 
+  c.form5500_data?.self_funded === "self-funded"
+);
+
+// Detailed analysis when needed
+const trends = company.form5500_data.self_funded_analysis.summary.trend;
+```
+
+**Possible `self_funded` and `current_classification` values:**
 - `"insured"` - Company currently uses insured health plans
 - `"self-funded"` - Company currently uses self-funded health plans  
 - `"partially-self-funded"` - Company has mix of insured and self-funded plans
