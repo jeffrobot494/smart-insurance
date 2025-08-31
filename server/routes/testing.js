@@ -10,6 +10,7 @@ const F5500TestClaudeResponseParser = require('../utils/F5500TestClaudeResponseP
 const { generateWorkflowSummary } = require('../utils/WorkflowSummaryGenerator');
 const VerificationResultsConverter = require('../utils/VerificationResultsConverter');
 const { legalEntityWorkflow, extractBatchPortfolioCompanyData } = require('../Manager');
+const SelfFundedClassifierService = require('../data-extraction/SelfFundedClassifierService');
 
 // POST /api/testing/legal-entity-resolution
 /* NOT USED
@@ -244,6 +245,54 @@ router.post('/batch-data-extraction', async (req, res) => {
     
   } catch (error) {
     logger.error('❌ Batch data extraction test failed:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      execution_time_ms: Date.now() - startTime
+    });
+  }
+});
+
+// POST /api/testing/self-funded-classification
+router.post('/self-funded-classification', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const { companyName } = req.body;
+    
+    // Validate input
+    if (!companyName || typeof companyName !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'companyName string is required'
+      });
+    }
+    
+    logger.info(`🧪 Testing self-funded classification for company: ${companyName}`);
+    
+    // Initialize the classifier service
+    const classifier = new SelfFundedClassifierService();
+    
+    // Execute the classification test
+    const results = await classifier.testClassifyCompany(companyName);
+    
+    const executionTime = Date.now() - startTime;
+    
+    // Return results with metadata
+    const response = {
+      ...results,
+      metadata: {
+        ...results.metadata,
+        execution_time_ms: executionTime,
+        timestamp: new Date().toISOString()
+      }
+    };
+    
+    res.set('Content-Type', 'application/json');
+    res.send(JSON.stringify(response, null, 2));
+    
+  } catch (error) {
+    logger.error('❌ Self-funded classification test failed:', error);
     res.status(500).json({
       success: false,
       error: error.message,
