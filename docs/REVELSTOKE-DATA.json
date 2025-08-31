@@ -1,0 +1,2807 @@
+[
+    {
+      "city": "Brooklyn",
+      "name": "AOM Infusion",
+      "state": "Ny",
+      "exited": false,
+      "form5500_data": {
+        "ein": "752882024",
+        "form5500": {
+          "years": [
+            "2023"
+          ],
+          "records": {
+            "2023": [
+              {
+                "ein": "752882024",
+                "year": 2023,
+                "plan_name": "AMERICAN OUTCOMES MANAGEMENT DBA AOM INFUSION HEALTH AND WELFARE PLAN",
+                "sponsor_name": "AMERICAN OUTCOMES MANAGEMENT",
+                "has_schedule_a": true,
+                "active_participants": 124
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2023": [
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "130825.00",
+                "personsCovered": "124",
+                "brokerCommission": "20395.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1456365.00",
+                "personsCovered": "151",
+                "brokerCommission": "54614.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2023": 2
+          }
+        }
+      },
+      "legal_entity_name": "AMERICAN OUTCOMES MANAGEMENT"
+    },
+    {
+      "city": "Lehi",
+      "name": "Carrus",
+      "state": "Ut",
+      "exited": true,
+      "form5500_data": {
+        "ein": "870631382",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "870631382",
+                "year": 2022,
+                "plan_name": "CAREERSTEP, LLC HEALTH AND WELFARE BENEFIT PLAN",
+                "sponsor_name": "CAREER STEP, LLC",
+                "has_schedule_a": true,
+                "active_participants": 0
+              },
+              {
+                "ein": "870631382",
+                "year": 2022,
+                "plan_name": "CARRUS 401(K) AND PROFIT SHARING PLAN",
+                "sponsor_name": "CAREER STEP, LLC",
+                "has_schedule_a": false,
+                "active_participants": 157
+              }
+            ],
+            "2023": [
+              {
+                "ein": "870631382",
+                "year": 2023,
+                "plan_name": "CARRUS 401(K) AND PROFIT SHARING PLAN",
+                "sponsor_name": "CAREER STEP, LLC",
+                "has_schedule_a": false,
+                "active_participants": 0
+              }
+            ]
+          },
+          "recordCount": 3
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "1287527.00",
+                "personsCovered": "181",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL INSURANCE COMPANY",
+                "totalCharges": "137187.00",
+                "personsCovered": "288",
+                "brokerCommission": "8231.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "99790.00",
+                "personsCovered": "84",
+                "brokerCommission": "16964.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "14365.00",
+                "personsCovered": "229",
+                "brokerCommission": "1437.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 4
+          }
+        }
+      },
+      "legal_entity_name": "CAREER STEP, LLC"
+    },
+    {
+      "city": "Cincinnati",
+      "name": "CEI Vision Partners",
+      "state": "Oh",
+      "exited": true,
+      "form5500_data": {
+        "ein": "320566908",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "320566908",
+                "year": 2022,
+                "plan_name": "CINCINNATI EYE INSTITUTE WELFARE BENEFIT PLAN",
+                "sponsor_name": "CEI VISION PARTNERS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 0
+              },
+              {
+                "ein": "320566908",
+                "year": 2022,
+                "plan_name": "CINCINNATI EYE INSTITUTE MEDICAL PLAN",
+                "sponsor_name": "CEI VISION PARTNERS, LLC",
+                "has_schedule_a": null,
+                "active_participants": 0
+              },
+              {
+                "ein": "320566908",
+                "year": 2022,
+                "plan_name": "CVP 401(K) PLAN",
+                "sponsor_name": "CEI VISION PARTNERS, LLC",
+                "has_schedule_a": false,
+                "active_participants": 1655
+              }
+            ],
+            "2023": [
+              {
+                "ein": "320566908",
+                "year": 2023,
+                "plan_name": "CVP 401(K) PLAN",
+                "sponsor_name": "CEI VISION PARTNERS, LLC",
+                "has_schedule_a": false,
+                "active_participants": 0
+              }
+            ]
+          },
+          "recordCount": 4
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "EYEMED",
+                "totalCharges": "69719.00",
+                "personsCovered": "1324",
+                "brokerCommission": "6338.00"
+              },
+              {
+                "benefitType": "AD&D",
+                "carrierName": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "141191.00",
+                "personsCovered": "821",
+                "brokerCommission": "21179.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "210798.00",
+                "personsCovered": "1406",
+                "brokerCommission": "5554.00"
+              },
+              {
+                "benefitType": "AD&D",
+                "carrierName": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "80228.00",
+                "personsCovered": "1527",
+                "brokerCommission": "3363.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "SUPERIOR DENTAL CARE",
+                "totalCharges": "",
+                "personsCovered": "1854",
+                "brokerCommission": "73476.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "84545.00",
+                "personsCovered": "416",
+                "brokerCommission": "16909.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "70928.00",
+                "personsCovered": "346",
+                "brokerCommission": "14186.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 7
+          }
+        }
+      },
+      "legal_entity_name": "CEI VISION PARTNERS, LLC"
+    },
+    {
+      "city": "Miami Lakes",
+      "name": "ClareMedica Health Partners",
+      "state": "Fl",
+      "exited": false,
+      "form5500_data": {
+        "ein": "300955527",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "300955527",
+                "year": 2022,
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 120
+              }
+            ],
+            "2023": [
+              {
+                "ein": "300955527",
+                "year": 2023,
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 185
+              }
+            ],
+            "2024": [
+              {
+                "ein": "300955527",
+                "year": 2024,
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 175
+              }
+            ]
+          },
+          "recordCount": 3
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "CONTINENTAL AMERICAN INSURANCE COMPANY",
+                "totalCharges": "20659.00",
+                "personsCovered": "72",
+                "brokerCommission": "5367.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "74047.00",
+                "personsCovered": "119",
+                "brokerCommission": "6629.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "918119.00",
+                "personsCovered": "172",
+                "brokerCommission": "0.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "HUMANA MEDICAL PLAN, INC.",
+                "totalCharges": "1382093.00",
+                "personsCovered": "161",
+                "brokerCommission": "72524.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "152956.00",
+                "personsCovered": "185",
+                "brokerCommission": "17364.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "HEALTH OPTIONS",
+                "totalCharges": "",
+                "personsCovered": "94",
+                "brokerCommission": "44949.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "192577.00",
+                "personsCovered": "175",
+                "brokerCommission": "18111.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 3,
+            "2023": 2,
+            "2024": 2
+          }
+        }
+      },
+      "legal_entity_name": "CLAREMEDICA HEALTH PARTNERS, LLC"
+    },
+    {
+      "city": null,
+      "name": "Company Confidential",
+      "state": null,
+      "exited": false,
+      "form5500_data": null,
+      "legal_entity_name": "Company Confidential"
+    },
+    {
+      "city": "Greenville",
+      "name": "Crossroads Treatment Centers",
+      "state": "South Carolina",
+      "exited": true,
+      "form5500_data": null,
+      "legal_entity_name": "Crossroads Treatment Centers"
+    },
+    {
+      "city": "Tampa",
+      "name": "DataLink",
+      "state": "Fl",
+      "exited": false,
+      "form5500_data": {
+        "ein": "261991903",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "261991903",
+                "year": 2022,
+                "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "DATALINK SERVICE FUND SOLUTIONS LLC",
+                "has_schedule_a": true,
+                "active_participants": 147
+              }
+            ],
+            "2023": [
+              {
+                "ein": "261991903",
+                "year": 2023,
+                "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "DATALINK SERVICE FUND SOLUTIONS LLC",
+                "has_schedule_a": true,
+                "active_participants": 103
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "AD&D, VOLUNTARY LIFE, VOLUNTARY AD&D",
+                "carrierName": "SUNLIFE",
+                "totalCharges": "64176.00",
+                "personsCovered": "143",
+                "brokerCommission": "3209.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "56877.00",
+                "personsCovered": "132",
+                "brokerCommission": "2844.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1520858.00",
+                "personsCovered": "249",
+                "brokerCommission": "76788.00"
+              },
+              {
+                "benefitType": "VOLUNTARY LIFE",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "16356.00",
+                "personsCovered": "99",
+                "brokerCommission": "2453.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "12226.00",
+                "personsCovered": "91",
+                "brokerCommission": "1834.00"
+              },
+              {
+                "benefitType": "AD&D, VOLUNTARY AD&D",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "1552.00",
+                "personsCovered": "163",
+                "brokerCommission": "155.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "10222.00",
+                "personsCovered": "89",
+                "brokerCommission": "1533.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "AD&D, VOLUNTARY LIFE, VOLUNTARY AD&D",
+                "carrierName": "SUN LIFE ASSURANCE COMPANY OF CANADA",
+                "totalCharges": "121664.00",
+                "personsCovered": "154",
+                "brokerCommission": "6074.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "77755.00",
+                "personsCovered": "93",
+                "brokerCommission": "3888.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1255166.00",
+                "personsCovered": "180",
+                "brokerCommission": "36701.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 7,
+            "2023": 3
+          }
+        }
+      },
+      "legal_entity_name": "DATALINK SERVICE FUND SOLUTIONS LLC"
+    },
+    {
+      "city": "New York",
+      "name": "Empire Portfolio Group",
+      "state": "Ny",
+      "exited": false,
+      "form5500_data": {
+        "ein": "862011795",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "862011795",
+                "year": 2022,
+                "plan_name": "HEALTH & WELFARE BENEFITS PLAN",
+                "sponsor_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC",
+                "has_schedule_a": true,
+                "active_participants": 104
+              },
+              {
+                "ein": "862011795",
+                "year": 2022,
+                "plan_name": "EMPIRE PORTFOLIO GROUP 401(K) PLAN",
+                "sponsor_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC",
+                "has_schedule_a": false,
+                "active_participants": 683
+              }
+            ],
+            "2023": [
+              {
+                "ein": "862011795",
+                "year": 2023,
+                "plan_name": "HEALTH & WELFARE BENEFITS PLAN",
+                "sponsor_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC",
+                "has_schedule_a": true,
+                "active_participants": 122
+              },
+              {
+                "ein": "862011795",
+                "year": 2023,
+                "plan_name": "EMPIRE PORTFOLIO GROUP 401(K) PLAN",
+                "sponsor_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC",
+                "has_schedule_a": false,
+                "active_participants": 877
+              }
+            ]
+          },
+          "recordCount": 4
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "757567.00",
+                "personsCovered": "104",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFLIATES",
+                "totalCharges": "39077.00",
+                "personsCovered": "94",
+                "brokerCommission": "2854.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "214751.00",
+                "personsCovered": "117",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES",
+                "totalCharges": "41644.00",
+                "personsCovered": "97",
+                "brokerCommission": "3036.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 2,
+            "2023": 2
+          }
+        }
+      },
+      "legal_entity_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC"
+    },
+    {
+      "city": null,
+      "name": "Encore Rehabilitation",
+      "state": null,
+      "exited": false,
+      "form5500_data": {
+        "ein": "208215706",
+        "form5500": {
+          "years": [
+            "2023"
+          ],
+          "records": {
+            "2023": [
+              {
+                "ein": "208215706",
+                "year": 2023,
+                "plan_name": "ENCORE REHABILITATION SERVICES LLC & AFFILIATES WELFARE BENEFIT PLAN",
+                "sponsor_name": "ENCORE REHABILITATION SERVICES, LLC",
+                "has_schedule_a": true,
+                "active_participants": 0
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "HM LIFE INSURANCE COMPANY",
+                "totalCharges": "362268.00",
+                "personsCovered": "735",
+                "brokerCommission": "12680.00"
+              },
+              {
+                "benefitType": "VOLUNTARY LONG TERM DISABILITY",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "191186.00",
+                "personsCovered": "392",
+                "brokerCommission": "28678.00"
+              },
+              {
+                "benefitType": "VOLUNTARY SHORT TERM DISABILITY",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "264270.00",
+                "personsCovered": "485",
+                "brokerCommission": "39641.00"
+              },
+              {
+                "benefitType": "AD&D AND VOLUNTARY AD&D",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "22305.00",
+                "personsCovered": "1189",
+                "brokerCommission": "9753.00"
+              },
+              {
+                "benefitType": "VOLUNTARY HOSPITAL CARE",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "26866.00",
+                "personsCovered": "55",
+                "brokerCommission": "5374.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL INJURY",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "30943.00",
+                "personsCovered": "140",
+                "brokerCommission": "6189.00"
+              },
+              {
+                "benefitType": "VOLUNTARY TERM LIFE",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "183542.00",
+                "personsCovered": "1020",
+                "brokerCommission": "24716.00"
+              },
+              {
+                "benefitType": "VOLUNTARY CRITICAL ILLNESS",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "30593.00",
+                "personsCovered": "78",
+                "brokerCommission": "6119.00"
+              },
+              {
+                "benefitType": "STATUTORY DISABILITY NY",
+                "carrierName": "NEW YORK LIFE GROUP INSURANCE COMPANY OF NEW YORK",
+                "totalCharges": "39287.00",
+                "personsCovered": "0",
+                "brokerCommission": "2059.00"
+              },
+              {
+                "benefitType": "LEGAL SERVICES PLAN MEMBERSHIPS",
+                "carrierName": "PRE-PAID LEGAL SERVICES INC DBA LEGALSHIELD",
+                "totalCharges": "9669.00",
+                "personsCovered": "66",
+                "brokerCommission": "2128.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "23696.00",
+                "personsCovered": "995",
+                "brokerCommission": "4739.00"
+              },
+              {
+                "benefitType": "HOSPITAL",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "19481.00",
+                "personsCovered": "975",
+                "brokerCommission": "3896.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "24882.00",
+                "personsCovered": "975",
+                "brokerCommission": "4976.00"
+              },
+              {
+                "benefitType": "LEGAL",
+                "carrierName": "LEGALSHIELD",
+                "totalCharges": "5205.00",
+                "personsCovered": "53",
+                "brokerCommission": "994.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LIFE INSURANCCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "82928.00",
+                "personsCovered": "975",
+                "brokerCommission": "12439.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "9015.00",
+                "personsCovered": "975",
+                "brokerCommission": "1232.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "62897.00",
+                "personsCovered": "975",
+                "brokerCommission": "6900.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "64146.00",
+                "personsCovered": "975",
+                "brokerCommission": "9622.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+                "totalCharges": "315054.00",
+                "personsCovered": "1071",
+                "brokerCommission": "0.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 10,
+            "2023": 9
+          }
+        }
+      },
+      "legal_entity_name": "ENCORE REHABILITATION SERVICES, LLC"
+    },
+    {
+      "city": "Hoboken",
+      "name": "Evolve Med Spa",
+      "state": "New Jersey",
+      "exited": false,
+      "form5500_data": null,
+      "legal_entity_name": "Evolve Med Spa"
+    },
+    {
+      "city": null,
+      "name": "Family Care Center",
+      "state": null,
+      "exited": false,
+      "form5500_data": {
+        "ein": "810970561",
+        "form5500": {
+          "years": [
+            "2022"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "810970561",
+                "year": 2022,
+                "plan_name": "FAMILY CARE CENTER, LLC RETIREMENT PLAN",
+                "sponsor_name": "FAMILY CARE CENTER, LLC",
+                "has_schedule_a": false,
+                "active_participants": 281
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "AMERITAS LIFE INSURANCE CORP.",
+                "totalCharges": "118912.00",
+                "personsCovered": "583",
+                "brokerCommission": "6906.00"
+              },
+              {
+                "benefitType": "LEGAL SERVICES PLAN MEMBERSHIPS",
+                "carrierName": "PRE-PAID LEGAL SERVICES INC DBA LEGALSHIELD",
+                "totalCharges": "2794.00",
+                "personsCovered": "45",
+                "brokerCommission": "578.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMEBERMENT",
+                "carrierName": "STANDARD INSURANCE COMPANY",
+                "totalCharges": "0.00",
+                "personsCovered": "317",
+                "brokerCommission": "4617.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "STANDARD INSURANCE COMPANY",
+                "totalCharges": "0.00",
+                "personsCovered": "317",
+                "brokerCommission": "4117.00"
+              },
+              {
+                "benefitType": "ACCIDENT, CRITICAL ILLNESS, AND HOSPITAL INDEMNITY",
+                "carrierName": "STANDARD INSURANCE COMPANY",
+                "totalCharges": "16169.00",
+                "personsCovered": "57",
+                "brokerCommission": "9012.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "STANDARD INSURANCE COMPANY",
+                "totalCharges": "0.00",
+                "personsCovered": "317",
+                "brokerCommission": "4787.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1209154.00",
+                "personsCovered": "424",
+                "brokerCommission": "48366.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "1828118.00",
+                "personsCovered": "361",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "EMPOWER ANNUITY INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "",
+                "personsCovered": "44",
+                "brokerCommission": ""
+              },
+              {
+                "benefitType": "LEGAL SERVICES PLAN MEMBERSHIPS",
+                "carrierName": "PRE-PAID LEGAL SERVICES INC DBA LEGALSHIELD",
+                "totalCharges": "9195.00",
+                "personsCovered": "50",
+                "brokerCommission": "1946.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "STARMOUNT LIFE INSURANCE COMPANY",
+                "totalCharges": "142255.00",
+                "personsCovered": "274",
+                "brokerCommission": "14226.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "UNUM INSURANCE COMPANY",
+                "totalCharges": "12938.00",
+                "personsCovered": "222",
+                "brokerCommission": "1052.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "UNUM INSURANCE COMPANY",
+                "totalCharges": "6820.00",
+                "personsCovered": "82",
+                "brokerCommission": "562.00"
+              },
+              {
+                "benefitType": "HOSPITAL INDEMNITY",
+                "carrierName": "UNUM INSURANCE COMPANY",
+                "totalCharges": "13122.00",
+                "personsCovered": "78",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "86505.00",
+                "personsCovered": "324",
+                "brokerCommission": "6839.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, VOLUNTARY",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "23131.00",
+                "personsCovered": "244",
+                "brokerCommission": "2313.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 7,
+            "2023": 9
+          }
+        }
+      },
+      "legal_entity_name": "FAMILY CARE CENTER, LLC"
+    },
+    {
+      "city": "Franklin",
+      "name": "Fast Pace",
+      "state": "Tn",
+      "exited": false,
+      "form5500_data": {
+        "ein": "270851352",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "270851352",
+                "year": 2022,
+                "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+                "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+                "has_schedule_a": false,
+                "active_participants": 2608
+              }
+            ],
+            "2023": [
+              {
+                "ein": "270851352",
+                "year": 2023,
+                "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+                "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+                "has_schedule_a": false,
+                "active_participants": 2558
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {},
+          "recordCounts": {}
+        }
+      },
+      "legal_entity_name": "FAST PACE MEDICAL CLINICAL, PLLC"
+    },
+    {
+      "city": "Tampa",
+      "name": "HealthAxis",
+      "state": "Fl",
+      "exited": false,
+      "form5500_data": {
+        "ein": "455531595",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "271763970",
+                "year": 2022,
+                "plan_name": "HEALTHAXIS GROUP, LLC",
+                "sponsor_name": "HEALTHAXIS GROUP, LLC",
+                "has_schedule_a": true,
+                "active_participants": 154
+              },
+              {
+                "ein": "455531595",
+                "year": 2022,
+                "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+                "sponsor_name": "HEALTHAXIS GROUP, LLC",
+                "has_schedule_a": false,
+                "active_participants": 325
+              }
+            ],
+            "2023": [
+              {
+                "ein": "455531595",
+                "year": 2023,
+                "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+                "sponsor_name": "HEALTHAXIS GROUP, LLC",
+                "has_schedule_a": false,
+                "active_participants": 230
+              }
+            ],
+            "2024": [
+              {
+                "ein": "455531595",
+                "year": 2024,
+                "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+                "sponsor_name": "HEALTHAXIS GROUP, LLC",
+                "has_schedule_a": false,
+                "active_participants": 207
+              }
+            ]
+          },
+          "recordCount": 4
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2023": [
+              {
+                "benefitType": "AD&D, ACCIDENT, CI, HI",
+                "carrierName": "SUN LIFE ASSURANCE COMPANY OF CANADA",
+                "totalCharges": "283391.00",
+                "personsCovered": "340",
+                "brokerCommission": "29078.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "2823363.00",
+                "personsCovered": "463",
+                "brokerCommission": "18200.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "AD&D, ACCIDENT, CI, HI",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "195458.00",
+                "personsCovered": "199",
+                "brokerCommission": "22733.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "2351076.00",
+                "personsCovered": "358",
+                "brokerCommission": "8288.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2023": 2,
+            "2024": 2
+          }
+        }
+      },
+      "legal_entity_name": "HEALTHAXIS GROUP, LLC"
+    },
+    {
+      "city": "Independence",
+      "name": "MediQuant",
+      "state": "Oh",
+      "exited": false,
+      "form5500_data": {
+        "ein": "831244756",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "831244756",
+                "year": 2022,
+                "plan_name": "MEDIQUANT-PRO LLC HEALTH AND WELFARE BENEFITS PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 199
+              },
+              {
+                "ein": "831244756",
+                "year": 2022,
+                "plan_name": "MEDIQUANT-PRO LLC MEDICAL PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 199
+              },
+              {
+                "ein": "831244756",
+                "year": 2022,
+                "plan_name": "MEDIQUANT-PRO LLC 401(K) PROFIT SHARING PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": false,
+                "active_participants": 0
+              }
+            ],
+            "2023": [
+              {
+                "ein": "831244756",
+                "year": 2023,
+                "plan_name": "MEDIQUANT-PRO LLC MEDICAL PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 163
+              },
+              {
+                "ein": "831244756",
+                "year": 2023,
+                "plan_name": "MEDIQUANT-PRO LLC HEALTH AND WELFARE BENEFITS PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 163
+              },
+              {
+                "ein": "831244756",
+                "year": 2023,
+                "plan_name": "MEDIQUANT-PRO LLC HEALTH AND WELFARE BENEFITS PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 168
+              },
+              {
+                "ein": "831244756",
+                "year": 2023,
+                "plan_name": "MEDIQUANT-PRO LLC MEDICAL PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 168
+              }
+            ],
+            "2024": [
+              {
+                "ein": "831244756",
+                "year": 2024,
+                "plan_name": "MEDIQUANT-PRO LLC BENEFIT PLAN",
+                "sponsor_name": "MEDIQUANT-PRO LLC",
+                "has_schedule_a": true,
+                "active_participants": 173
+              }
+            ]
+          },
+          "recordCount": 8
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "CRITICAL ILLNESS, ACCIDENT, CANCER, HOSPITAL INDEMNITY & ADD",
+                "carrierName": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "69455.00",
+                "personsCovered": "69",
+                "brokerCommission": "10711.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "MEDICAL MUTUAL",
+                "totalCharges": "40988.00",
+                "personsCovered": "175",
+                "brokerCommission": "91083.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "24960.00",
+                "personsCovered": "63",
+                "brokerCommission": "2496.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "59474.00",
+                "personsCovered": "193",
+                "brokerCommission": "5947.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "7639.00",
+                "personsCovered": "64",
+                "brokerCommission": "840.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "CRITICAL ILLNESS, ACCIDENT, CANCER, HOSPITAL INDEMNITY & ADD",
+                "carrierName": "COLONIAL LIFE & ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "80876.00",
+                "personsCovered": "62",
+                "brokerCommission": "15434.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF OHIO",
+                "totalCharges": "0.00",
+                "personsCovered": "409",
+                "brokerCommission": "3171.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF OHIO",
+                "totalCharges": "0.00",
+                "personsCovered": "397",
+                "brokerCommission": "2753.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "MEDICAL MUTUAL",
+                "totalCharges": "31576.00",
+                "personsCovered": "145",
+                "brokerCommission": "12946.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "MEDICAL MUTUAL",
+                "totalCharges": "31576.00",
+                "personsCovered": "145",
+                "brokerCommission": "12946.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "PRINCIPAL LIFE INSURANCE COMPANY",
+                "totalCharges": "64831.00",
+                "personsCovered": "169",
+                "brokerCommission": "6543.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITED HEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "3080685.00",
+                "personsCovered": "414",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "67515.00",
+                "personsCovered": "187",
+                "brokerCommission": "6751.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "13228.00",
+                "personsCovered": "69",
+                "brokerCommission": "1455.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "44660.00",
+                "personsCovered": "69",
+                "brokerCommission": "4466.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF OHIO",
+                "totalCharges": "",
+                "personsCovered": "385",
+                "brokerCommission": "6088.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "3177821.00",
+                "personsCovered": "413",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "UNUM INSURANCE COMPANY",
+                "totalCharges": "31996.00",
+                "personsCovered": "31",
+                "brokerCommission": "3869.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "167432.00",
+                "personsCovered": "173",
+                "brokerCommission": "17165.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 5,
+            "2023": 10,
+            "2024": 4
+          }
+        }
+      },
+      "legal_entity_name": "MEDIQUANT-PRO LLC"
+    },
+    {
+      "city": "South Miami",
+      "name": "Monte Nido",
+      "state": "Fl",
+      "exited": false,
+      "form5500_data": {
+        "ein": "461575098",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "461575098",
+                "year": 2022,
+                "plan_name": "MONTE NIDO HOLDINGS, LLC HEALTH AND WELFARE PLAN",
+                "sponsor_name": "MONTE NIDO HOLDINGS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 1101
+              }
+            ],
+            "2023": [
+              {
+                "ein": "461575098",
+                "year": 2023,
+                "plan_name": "MONTE NIDO HOLDINGS, LLC HEALTH AND WELFARE PLAN",
+                "sponsor_name": "MONTE NIDO HOLDINGS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 1119
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "7246273.00",
+                "personsCovered": "879",
+                "brokerCommission": "39097.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "EQUITABLE FINANCIAL LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "59640.00",
+                "personsCovered": "164",
+                "brokerCommission": "6902.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "HARTFORD LIFE AND ACCIDENT",
+                "totalCharges": "317170.00",
+                "personsCovered": "788",
+                "brokerCommission": "41618.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+                "totalCharges": "9396497.00",
+                "personsCovered": "698",
+                "brokerCommission": "44113.00"
+              },
+              {
+                "benefitType": "HOSPITAL INDEMNITY",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "22330.00",
+                "personsCovered": "96",
+                "brokerCommission": "4466.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "40498.00",
+                "personsCovered": "114",
+                "brokerCommission": "4050.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "23284.00",
+                "personsCovered": "160",
+                "brokerCommission": "3493.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "31442.00",
+                "personsCovered": "154",
+                "brokerCommission": "6289.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "246674.00",
+                "personsCovered": "1118",
+                "brokerCommission": "24667.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "103814.00",
+                "personsCovered": "1119",
+                "brokerCommission": "10382.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 3,
+            "2023": 7
+          }
+        }
+      },
+      "legal_entity_name": "MONTE NIDO HOLDINGS, LLC"
+    },
+    {
+      "city": null,
+      "name": "NAKED MD",
+      "state": null,
+      "exited": false,
+      "form5500_data": null,
+      "legal_entity_name": "NAKED MD"
+    },
+    {
+      "city": "Reading",
+      "name": "Omega Systems",
+      "state": "Pa",
+      "exited": false,
+      "form5500_data": {
+        "ein": "205791145",
+        "form5500": {
+          "years": [
+            "2023"
+          ],
+          "records": {
+            "2023": [
+              {
+                "ein": "205791145",
+                "year": 2023,
+                "plan_name": "OMEGA SYSTEMS CONSULTANTS HEALTH AND WELFARE PLAN",
+                "sponsor_name": "OMEGA SYSTEMS CONSULTANTS, LLC",
+                "has_schedule_a": true,
+                "active_participants": 149
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CAPITAL ADVANTAGE ASSURANCE COMPANY",
+                "totalCharges": "2600.00",
+                "personsCovered": "0",
+                "brokerCommission": "104.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF PENNSYLVANIA",
+                "totalCharges": "47872.00",
+                "personsCovered": "144",
+                "brokerCommission": "4787.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+                "totalCharges": "30775.00",
+                "personsCovered": "123",
+                "brokerCommission": "2787.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2023": 3
+          }
+        }
+      },
+      "legal_entity_name": "OMEGA SYSTEMS CONSULTANTS, LLC"
+    },
+    {
+      "city": "Westfield",
+      "name": "ONsite Mammography",
+      "state": "Ma",
+      "exited": true,
+      "form5500_data": {
+        "ein": "263693194",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "263693194",
+                "year": 2022,
+                "plan_name": "ONSITE MAMMOGRAPHY LLC 401(K) PLAN",
+                "sponsor_name": "ONSITE MAMMOGRAPHY, LLC",
+                "has_schedule_a": false,
+                "active_participants": 366
+              },
+              {
+                "ein": "263693194",
+                "year": 2022,
+                "plan_name": "ONSITE MAMMOGRAPHY HEALTH AND WELFARE BENEFIT PLAN",
+                "sponsor_name": "ONSITE MAMMOGRAPHY, LLC",
+                "has_schedule_a": true,
+                "active_participants": 246
+              }
+            ],
+            "2023": [
+              {
+                "ein": "263693194",
+                "year": 2023,
+                "plan_name": "ONSITE MAMMOGRAPHY HEALTH AND WELFARE BENEFIT PLAN",
+                "sponsor_name": "ONSITE MAMMOGRAPHY, LLC",
+                "has_schedule_a": true,
+                "active_participants": 279
+              },
+              {
+                "ein": "263693194",
+                "year": 2023,
+                "plan_name": "ONSITE MAMMOGRAPHY LLC 401(K) PLAN",
+                "sponsor_name": "ONSITE MAMMOGRAPHY, LLC",
+                "has_schedule_a": false,
+                "active_participants": 437
+              }
+            ]
+          },
+          "recordCount": 4
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "BLUE CROSS BLUE SHIELD OF MASSACHUSETTS",
+                "totalCharges": "0.00",
+                "personsCovered": "294",
+                "brokerCommission": "46819.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DENTAL SERVICES OF MASSACHUSETTS, INC. D/B/A DELTA DENTAL OF MA.",
+                "totalCharges": "140415.00",
+                "personsCovered": "307",
+                "brokerCommission": "5837.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "144379.00",
+                "personsCovered": "246",
+                "brokerCommission": "10778.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "BLUE CROSS BLUE SHIELD OF MASSACHUSETTS",
+                "totalCharges": "0.00",
+                "personsCovered": "365",
+                "brokerCommission": "40489.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "179194.00",
+                "personsCovered": "279",
+                "brokerCommission": "15830.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 3,
+            "2023": 2
+          }
+        }
+      },
+      "legal_entity_name": "ONSITE MAMMOGRAPHY, LLC"
+    },
+    {
+      "city": "Cincinnati",
+      "name": "OrthoAlliance",
+      "state": "Oh",
+      "exited": true,
+      "form5500_data": {
+        "ein": "311483173",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "311483173",
+                "year": 2022,
+                "plan_name": "ORTHOALLIANCE 401(K) PLAN",
+                "sponsor_name": "ORTHOALLIANCE MSO, LLC",
+                "has_schedule_a": true,
+                "active_participants": 1351
+              }
+            ],
+            "2023": [
+              {
+                "ein": "311483173",
+                "year": 2023,
+                "plan_name": "ORTHOALLIANCE 401(K) PLAN",
+                "sponsor_name": "ORTHOALLIANCE MSO, LLC",
+                "has_schedule_a": true,
+                "active_participants": 2327
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "EAP",
+                "carrierName": "BETHESDA HEALTHCARE INC. DBA TRIHEALTH EAP",
+                "totalCharges": "14488.00",
+                "personsCovered": "1519",
+                "brokerCommission": ""
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "FIDELITY SECURITY LIFE INSURANCE COMPANY",
+                "totalCharges": "21388.00",
+                "personsCovered": "547",
+                "brokerCommission": "3539.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "SUPERIOR DENTAL CARE, INC.",
+                "totalCharges": "0.00",
+                "personsCovered": "684",
+                "brokerCommission": "10830.00"
+              },
+              {
+                "benefitType": "VOLUNTARY LIFE",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "69013.00",
+                "personsCovered": "60",
+                "brokerCommission": "8281.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "6156.00",
+                "personsCovered": "21",
+                "brokerCommission": "1231.00"
+              },
+              {
+                "benefitType": "AD&D",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "17085.00",
+                "personsCovered": "258",
+                "brokerCommission": "2050.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "172427.00",
+                "personsCovered": "228",
+                "brokerCommission": "20691.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "168593.00",
+                "personsCovered": "257",
+                "brokerCommission": "20231.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "48660.00",
+                "personsCovered": "44",
+                "brokerCommission": "9732.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+                "totalCharges": "",
+                "personsCovered": "1660",
+                "brokerCommission": ""
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "EAP",
+                "carrierName": "BETHESDA HEALTHCARE INC. DBA TRIHEALTH EAP",
+                "totalCharges": "1102.00",
+                "personsCovered": "330",
+                "brokerCommission": ""
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "FIDELITY SECURITY LIFE INSURANCE COMPANY",
+                "totalCharges": "32171.00",
+                "personsCovered": "621",
+                "brokerCommission": "4788.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "SUPERIOR DENTAL CARE, INC.",
+                "totalCharges": "0.00",
+                "personsCovered": "252",
+                "brokerCommission": "8135.00"
+              },
+              {
+                "benefitType": "AD&D",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "43371.00",
+                "personsCovered": "321",
+                "brokerCommission": "5304.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "-18144.00",
+                "personsCovered": "153",
+                "brokerCommission": "-3899.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "275300.00",
+                "personsCovered": "308",
+                "brokerCommission": "33036.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "218156.00",
+                "personsCovered": "218",
+                "brokerCommission": "26179.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "12629.00",
+                "personsCovered": "22",
+                "brokerCommission": "2362.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, VOLUNTARY",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "22636.00",
+                "personsCovered": "99",
+                "brokerCommission": "2716.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY COMPANY",
+                "totalCharges": "",
+                "personsCovered": "2774",
+                "brokerCommission": ""
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "EAP",
+                "carrierName": "BETHESDA HEALTHCARE INC. DBA TRIHEALTH EAP",
+                "totalCharges": "7862.00",
+                "personsCovered": "340",
+                "brokerCommission": ""
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "FIDELITY SECURITY LIFE INSURANCE COMPANY",
+                "totalCharges": "40115.00",
+                "personsCovered": "605",
+                "brokerCommission": "5566.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "318948.00",
+                "personsCovered": "340",
+                "brokerCommission": "38274.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "60772.00",
+                "personsCovered": "340",
+                "brokerCommission": "7293.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "10758.00",
+                "personsCovered": "340",
+                "brokerCommission": "1291.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "150592.00",
+                "personsCovered": "340",
+                "brokerCommission": "18071.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "RELIASTAR LIFE INSURANCE COMPANY",
+                "totalCharges": "14993.00",
+                "personsCovered": "145",
+                "brokerCommission": "1499.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "RELIASTAR LIFE INSURANCE COMPANY",
+                "totalCharges": "11076.00",
+                "personsCovered": "61",
+                "brokerCommission": "1108.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "SUPERIOR DENTAL CARE, INC.",
+                "totalCharges": "0.00",
+                "personsCovered": "721",
+                "brokerCommission": "11405.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "0.00",
+                "personsCovered": "153",
+                "brokerCommission": "271.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY35-0472300",
+                "totalCharges": "0.00",
+                "personsCovered": "22",
+                "brokerCommission": "165.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 10,
+            "2023": 10,
+            "2024": 11
+          }
+        }
+      },
+      "legal_entity_name": "ORTHOALLIANCE MSO, LLC"
+    },
+    {
+      "city": "Portland",
+      "name": "Rarebreed Veterinary Partners",
+      "state": "Me",
+      "exited": false,
+      "form5500_data": {
+        "ein": "832102599",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "832102599",
+                "year": 2022,
+                "plan_name": "RAREBREED VETERINARY PARTNERS EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "RAREBREED VETERINARY PARTNERS",
+                "has_schedule_a": true,
+                "active_participants": 1470
+              }
+            ],
+            "2023": [
+              {
+                "ein": "832102599",
+                "year": 2023,
+                "plan_name": "RAREBREED VETERINARY PARTNERS EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "RAREBREED VETERINARY PARTNERS",
+                "has_schedule_a": true,
+                "active_participants": 2087
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "ANTHEM HEALTH PLANS OF MAINE, INC.",
+                "totalCharges": "7840021.00",
+                "personsCovered": "995",
+                "brokerCommission": "154113.00"
+              },
+              {
+                "benefitType": "AD&D, SUPPLEMENTAL LIFE, DEPENDENT LIFE, SUPPLEMENTAL AD&D, DEPENDENT AD&D, ACCIDENT, CRITICAL ILLNESS",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "1638084.00",
+                "personsCovered": "1419",
+                "brokerCommission": "120964.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY CO.",
+                "totalCharges": "",
+                "personsCovered": "25673",
+                "brokerCommission": "74439.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES",
+                "totalCharges": "2703352.00",
+                "personsCovered": "2087",
+                "brokerCommission": "132658.00"
+              },
+              {
+                "benefitType": "BASIC AD&D, VOLUNTARY AD&D, LTD, ACCIDENT, CRITICAL ILLNESS",
+                "carrierName": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "667276.00",
+                "personsCovered": "1882",
+                "brokerCommission": "83002.00"
+              },
+              {
+                "benefitType": "AD&D, ACCIDENT, VOLUNTARY CRITICAL ILLNESS",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "555796.00",
+                "personsCovered": "1875",
+                "brokerCommission": "-18210.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VOYA RETIREMENT INSURANCE AND ANNUITY",
+                "totalCharges": "",
+                "personsCovered": "2677",
+                "brokerCommission": "117578.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 3,
+            "2023": 4
+          }
+        }
+      },
+      "legal_entity_name": "RAREBREED VETERINARY PARTNERS"
+    },
+    {
+      "city": "Tacoma",
+      "name": "Sound Physicians",
+      "state": "Wa",
+      "exited": false,
+      "form5500_data": {
+        "ein": "203050924",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "203050924",
+                "year": 2022,
+                "plan_name": "SOUND INPATIENT PHYSICIANS FLEXIBLE BENEFITS PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": true,
+                "active_participants": 4556
+              },
+              {
+                "ein": "203050924",
+                "year": 2022,
+                "plan_name": "SOUND INPATIENT PHYSICIANS, INC. DENTAL PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": null,
+                "active_participants": 0
+              },
+              {
+                "ein": "203050924",
+                "year": 2022,
+                "plan_name": "SOUND INPATIENT PHYSICIANS, INC. MEDICAL PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": null,
+                "active_participants": 0
+              },
+              {
+                "ein": "203050924",
+                "year": 2022,
+                "plan_name": "SOUND PHYSICIANS 401(K) PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC.",
+                "has_schedule_a": null,
+                "active_participants": 4956
+              }
+            ],
+            "2023": [
+              {
+                "ein": "203050924",
+                "year": 2023,
+                "plan_name": "SOUND INPATIENT PHYSICIANS FLEXIBLE BENEFITS PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": true,
+                "active_participants": 4298
+              },
+              {
+                "ein": "203050924",
+                "year": 2023,
+                "plan_name": "SOUND INPATIENT PHYSICIANS, INC. HEALTH AND WELFARE BENEFITS PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": null,
+                "active_participants": 1604
+              },
+              {
+                "ein": "203050924",
+                "year": 2023,
+                "plan_name": "SOUND PHYSICIANS 401(K) PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC.",
+                "has_schedule_a": null,
+                "active_participants": 4698
+              }
+            ],
+            "2024": [
+              {
+                "ein": "203050924",
+                "year": 2024,
+                "plan_name": "SOUND INPATIENT PHYSICIANS FLEXIBLE BENEFITS PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": true,
+                "active_participants": 3656
+              },
+              {
+                "ein": "203050924",
+                "year": 2024,
+                "plan_name": "SOUND INPATIENT PHYSICIANS, INC. HEALTH AND WELFARE BENEFITS PLAN",
+                "sponsor_name": "SOUND INPATIENT PHYSICIANS, INC",
+                "has_schedule_a": null,
+                "active_participants": 1339
+              }
+            ]
+          },
+          "recordCount": 9
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM,ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "6043346.00",
+                "personsCovered": "4556",
+                "brokerCommission": "368814.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "MAGELLAN HEALTHCARE",
+                "totalCharges": "5265.00",
+                "personsCovered": "224",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "LONG TERM CARE",
+                "carrierName": "TRUSTMARK INSURANCE COMPANY",
+                "totalCharges": "148731.00",
+                "personsCovered": "119",
+                "brokerCommission": "14963.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "462845.00",
+                "personsCovered": "3219",
+                "brokerCommission": "6310.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM,ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "5998347.00",
+                "personsCovered": "4298",
+                "brokerCommission": "261957.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "MAGELLAN HEALTHCARE",
+                "totalCharges": "4284.00",
+                "personsCovered": "204",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "LONG TERM CARE",
+                "carrierName": "TRUSTMARK INSURANCE COMPANY",
+                "totalCharges": "147820.00",
+                "personsCovered": "116",
+                "brokerCommission": "30730.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "449974.00",
+                "personsCovered": "3153",
+                "brokerCommission": "5947.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM, ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "5335956.00",
+                "personsCovered": "3656",
+                "brokerCommission": "224304.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "MAGELLAN HEALTHCARE",
+                "totalCharges": "357.00",
+                "personsCovered": "3656",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "LONG TERM CARE",
+                "carrierName": "TRUSTMARK INSURANCE COMPANY",
+                "totalCharges": "167037.00",
+                "personsCovered": "115",
+                "brokerCommission": "36896.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "397470.00",
+                "personsCovered": "2686",
+                "brokerCommission": "8279.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 4,
+            "2023": 4,
+            "2024": 4
+          }
+        }
+      },
+      "legal_entity_name": "SOUND INPATIENT PHYSICIANS, INC"
+    },
+    {
+      "city": "Farmington Hills",
+      "name": "The Care Team",
+      "state": "Mi",
+      "exited": false,
+      "form5500_data": {
+        "ein": "843195314",
+        "form5500": {
+          "years": [
+            "2022"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "843195314",
+                "year": 2022,
+                "plan_name": "RCP TCT HOLDINGS, LLC DBA THE CARE TEAM WELFARE BENEFIT PLAN",
+                "sponsor_name": "RCP TCT HOLDINGS, LLC DBA THE CARE TEAM",
+                "has_schedule_a": true,
+                "active_participants": 306
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF MICHIGAN",
+                "totalCharges": "",
+                "personsCovered": "496",
+                "brokerCommission": "11607.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS",
+                "carrierName": "GUARDIAN",
+                "totalCharges": "144545.00",
+                "personsCovered": "306",
+                "brokerCommission": "14455.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "PRIORITY HEALTH",
+                "totalCharges": "576665.00",
+                "personsCovered": "152",
+                "brokerCommission": "17300.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "PRIORITY HEALTH INSURANCE COMPANY",
+                "totalCharges": "1166154.00",
+                "personsCovered": "249",
+                "brokerCommission": "34846.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "46255.00",
+                "personsCovered": "163",
+                "brokerCommission": "4626.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "2297.00",
+                "personsCovered": "279",
+                "brokerCommission": "230.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "14424.00",
+                "personsCovered": "183",
+                "brokerCommission": "1442.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "49454.00",
+                "personsCovered": "280",
+                "brokerCommission": "5934.00"
+              },
+              {
+                "benefitType": "ACCIDENT",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "8911.00",
+                "personsCovered": "143",
+                "brokerCommission": "1337.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS",
+                "carrierName": "THE LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "10629.00",
+                "personsCovered": "110",
+                "brokerCommission": "1594.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VSP",
+                "totalCharges": "25287.00",
+                "personsCovered": "214",
+                "brokerCommission": "2213.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 11
+          }
+        }
+      },
+      "legal_entity_name": "RCP TCT HOLDINGS, LLC DBA THE CARE TEAM"
+    },
+    {
+      "city": "Pittsburgh",
+      "name": "Transport Investments",
+      "state": "Pennsylvania",
+      "exited": true,
+      "form5500_data": null,
+      "legal_entity_name": "Transport Investments"
+    },
+    {
+      "city": null,
+      "name": "TridentUSA Health Services",
+      "state": null,
+      "exited": false,
+      "form5500_data": {
+        "ein": "953268980",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "953268980",
+                "year": 2022,
+                "plan_name": "TRIDENT USA HEALTH SERVICES PLAN",
+                "sponsor_name": "TRIDENT USA HEALTH SERVICES",
+                "has_schedule_a": true,
+                "active_participants": 2800
+              }
+            ],
+            "2023": [
+              {
+                "ein": "953268980",
+                "year": 2023,
+                "plan_name": "TRIDENT USA HEALTH SERVICES PLAN",
+                "sponsor_name": "TRIDENT USA HEALTH SERVICES",
+                "has_schedule_a": true,
+                "active_participants": 2573
+              }
+            ],
+            "2024": [
+              {
+                "ein": "953268980",
+                "year": 2024,
+                "plan_name": "TRIDENT USA HEALTH SERVICES PLAN",
+                "sponsor_name": "TRIDENT USA HEALTH SERVICES",
+                "has_schedule_a": true,
+                "active_participants": 2601
+              }
+            ]
+          },
+          "recordCount": 3
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "550.00",
+                "personsCovered": "1",
+                "brokerCommission": "36.00"
+              },
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "4466.00",
+                "personsCovered": "7",
+                "brokerCommission": "304.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF PENNSYLVANIA",
+                "totalCharges": "806368.00",
+                "personsCovered": "2640",
+                "brokerCommission": "32255.00"
+              },
+              {
+                "benefitType": "LEGAL",
+                "carrierName": "LEGAL ACCESS CONSULTING, LLC",
+                "totalCharges": "29281.00",
+                "personsCovered": "176",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "1521832.00",
+                "personsCovered": "2800",
+                "brokerCommission": "63187.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "TRANSAMERICA LIFE INSURANCE COMPANY",
+                "totalCharges": "13609.00",
+                "personsCovered": "31",
+                "brokerCommission": "545.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "161744.00",
+                "personsCovered": "1470",
+                "brokerCommission": "6470.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "4069.00",
+                "personsCovered": "7",
+                "brokerCommission": "271.00"
+              },
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "550.00",
+                "personsCovered": "1",
+                "brokerCommission": "35.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF PENNSYLVANIA",
+                "totalCharges": "782044.00",
+                "personsCovered": "2546",
+                "brokerCommission": "31282.00"
+              },
+              {
+                "benefitType": "LEGAL",
+                "carrierName": "LEGALPLANS USA",
+                "totalCharges": "28802.00",
+                "personsCovered": "155",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "1495786.00",
+                "personsCovered": "2505",
+                "brokerCommission": "299198.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "TRANSAMERICA LIFE INSURANCE COMPANY",
+                "totalCharges": "135726.00",
+                "personsCovered": "259",
+                "brokerCommission": "50531.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "0.00",
+                "personsCovered": "1347",
+                "brokerCommission": "5433.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "3996.00",
+                "personsCovered": "7",
+                "brokerCommission": "221.00"
+              },
+              {
+                "benefitType": "ACCIDENT, HOSPITAL, CANCER",
+                "carrierName": "COLONIAL LIFE AND ACCIDENT INSURANCE COMPANY",
+                "totalCharges": "571.00",
+                "personsCovered": "1",
+                "brokerCommission": "29.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "DELTA DENTAL OF PENNSYLVANIA",
+                "totalCharges": "794951.00",
+                "personsCovered": "2643",
+                "brokerCommission": "31798.00"
+              },
+              {
+                "benefitType": "LEGAL",
+                "carrierName": "LEGALPLANS USA",
+                "totalCharges": "28488.00",
+                "personsCovered": "181",
+                "brokerCommission": "2848.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+                "carrierName": "PRUDENTIAL INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "1500207.00",
+                "personsCovered": "2601",
+                "brokerCommission": "156482.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "TRANSAMERICA LIFE INSURANCE COMPANY",
+                "totalCharges": "138235.00",
+                "personsCovered": "282",
+                "brokerCommission": "45467.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "0.00",
+                "personsCovered": "1441",
+                "brokerCommission": "6506.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 7,
+            "2023": 7,
+            "2024": 7
+          }
+        }
+      },
+      "legal_entity_name": "TRIDENT USA HEALTH SERVICES"
+    },
+    {
+      "city": "Plano",
+      "name": "U.S. Renal Care",
+      "state": "Tx",
+      "exited": false,
+      "form5500_data": {
+        "ein": "621826478",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "621826478",
+                "year": 2022,
+                "plan_name": "U.S. RENAL CARE, INC. PROFIT SHARING PLAN",
+                "sponsor_name": "U.S. RENAL CARE, INC.",
+                "has_schedule_a": false,
+                "active_participants": 7799
+              },
+              {
+                "ein": "621826478",
+                "year": 2022,
+                "plan_name": "U.S. RENAL CARE, INC. WRAP BENEFITS PLAN",
+                "sponsor_name": "U.S. RENAL CARE, INC.",
+                "has_schedule_a": true,
+                "active_participants": 6402
+              }
+            ],
+            "2023": [
+              {
+                "ein": "621826478",
+                "year": 2023,
+                "plan_name": "U.S. RENAL CARE, INC. PROFIT SHARING PLAN",
+                "sponsor_name": "U.S. RENAL CARE, INC.",
+                "has_schedule_a": false,
+                "active_participants": 7409
+              },
+              {
+                "ein": "621826478",
+                "year": 2023,
+                "plan_name": "U.S. RENAL CARE, INC. WRAP BENEFITS PLAN",
+                "sponsor_name": "U.S. RENAL CARE, INC.",
+                "has_schedule_a": true,
+                "active_participants": 6277
+              }
+            ]
+          },
+          "recordCount": 4
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES",
+                "totalCharges": "3780326.00",
+                "personsCovered": "4777",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "COMPSYCH CORPORATION",
+                "totalCharges": "81403.00",
+                "personsCovered": "6216",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "EMPIRE HEALTHCHOICE ASSURANCE, INC.",
+                "totalCharges": "1092315.00",
+                "personsCovered": "71",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "HAWAII MEDICAL SERVICE ASSOCIATION",
+                "totalCharges": "4340282.00",
+                "personsCovered": "740",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "KAISER FOUNDATION HEALTH PLAN INC",
+                "totalCharges": "2832298.00",
+                "personsCovered": "441",
+                "brokerCommission": "125112.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "KAISER FOUNDATION HEALTH PLAN OF HAWAII",
+                "totalCharges": "344721.00",
+                "personsCovered": "75",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS,ACCIDENT,HOSPITAL",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "889000.00",
+                "personsCovered": "6402",
+                "brokerCommission": "222250.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "5404392.00",
+                "personsCovered": "6402",
+                "brokerCommission": "232146.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "499613.00",
+                "personsCovered": "3995",
+                "brokerCommission": "0.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY AND AFFILIATES",
+                "totalCharges": "3521975.00",
+                "personsCovered": "4779",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "EMPLOYEE ASSISTANCE PROGRAM",
+                "carrierName": "COMPSYCH CORPORATION",
+                "totalCharges": "84659.00",
+                "personsCovered": "6277",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "EMPIRE HEALTHCHOICE ASSURANCE, INC.",
+                "totalCharges": "1125489.00",
+                "personsCovered": "58",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "HAWAII MEDICAL SERVICE ASSOCIATION",
+                "totalCharges": "4240478.00",
+                "personsCovered": "698",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "KAISER FOUNDATION HEALTH PLAN, INC.",
+                "totalCharges": "3136396.00",
+                "personsCovered": "430",
+                "brokerCommission": "168989.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "KAISER FOUNDATION HEALTH PLAN, INC.",
+                "totalCharges": "392179.00",
+                "personsCovered": "73",
+                "brokerCommission": "0.00"
+              },
+              {
+                "benefitType": "CRITICAL ILLNESS,ACCIDENT,HOSPITAL",
+                "carrierName": "LIFE INSURANCE COMPANY OF NORTH AMERICA",
+                "totalCharges": "1122231.00",
+                "personsCovered": "6277",
+                "brokerCommission": "280558.00"
+              },
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+                "carrierName": "LINCOLN NATIONAL LIFE INSURANCE COMPANY",
+                "totalCharges": "3694198.00",
+                "personsCovered": "6377",
+                "brokerCommission": "186462.00"
+              },
+              {
+                "benefitType": "Standard Benefits",
+                "carrierName": "VISION SERVICE PLAN",
+                "totalCharges": "885433.00",
+                "personsCovered": "4033",
+                "brokerCommission": "0.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 9,
+            "2023": 9
+          }
+        }
+      },
+      "legal_entity_name": "U.S. RENAL CARE, INC."
+    },
+    {
+      "city": "Birmingham",
+      "name": "Upstream Rehabilitation",
+      "state": "Al",
+      "exited": false,
+      "form5500_data": {
+        "ein": "823655886",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "823655886",
+                "year": 2022,
+                "plan_name": "UPSTREAM NEWCO, INC. EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "UPSTREAM NEWCO, INC.",
+                "has_schedule_a": true,
+                "active_participants": 6131
+              }
+            ],
+            "2023": [
+              {
+                "ein": "823655886",
+                "year": 2023,
+                "plan_name": "UPSTREAM NEWCO, INC. EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "UPSTREAM NEWCO, INC.",
+                "has_schedule_a": true,
+                "active_participants": 6249
+              }
+            ],
+            "2024": [
+              {
+                "ein": "823655886",
+                "year": 2024,
+                "plan_name": "UPSTREAM NEWCO, INC. EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "UPSTREAM NEWCO, INC.",
+                "has_schedule_a": true,
+                "active_participants": 6064
+              }
+            ]
+          },
+          "recordCount": 3
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT,ACCIDENT,CRITICAL ILLNESS",
+                "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+                "totalCharges": "5596557.00",
+                "personsCovered": "7252",
+                "brokerCommission": "765576.00"
+              }
+            ],
+            "2023": [
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT,ACCIDENT,CRITICAL ILLNESS",
+                "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+                "totalCharges": "5874443.00",
+                "personsCovered": "7283",
+                "brokerCommission": "804224.00"
+              }
+            ],
+            "2024": [
+              {
+                "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS",
+                "carrierName": "METROPOLITAN LIFE INSURANCE COMPANY",
+                "totalCharges": "6468017.00",
+                "personsCovered": "7239",
+                "brokerCommission": "725104.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 1,
+            "2023": 1,
+            "2024": 1
+          }
+        }
+      },
+      "legal_entity_name": "UPSTREAM NEWCO, INC."
+    },
+    {
+      "city": "Waltham",
+      "name": "Vet's Best Friend",
+      "state": "Massachusetts",
+      "exited": true,
+      "form5500_data": null,
+      "legal_entity_name": "No direct match found"
+    }
+  ]

@@ -30,9 +30,42 @@ fi
 
 echo "✅ Server is running"
 
-# Get all pipelines first to see what we're deleting
+# Login to get authentication session
+echo "🔐 Logging in..."
+
+# Get password from server/.env file
+SCRIPT_DIR=$(dirname "$0")
+ENV_FILE="$SCRIPT_DIR/server/.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+    echo "❌ Cannot find server/.env file at $ENV_FILE"
+    exit 1
+fi
+
+AUTH_PASSWORD=$(grep "^AUTH_PASSWORD=" "$ENV_FILE" | cut -d'=' -f2)
+
+if [ -z "$AUTH_PASSWORD" ]; then
+    echo "❌ AUTH_PASSWORD not found in $ENV_FILE"
+    exit 1
+fi
+
+# Login and save session to cookies.txt
+login_response=$(curl -s -X POST "http://localhost:3000/auth/login" \
+    -H "Content-Type: application/json" \
+    -c cookies.txt \
+    -d "{\"password\": \"$AUTH_PASSWORD\"}")
+
+if echo "$login_response" | grep -q '"success":true'; then
+    echo "✅ Successfully logged in"
+else
+    echo "❌ Login failed"
+    echo "Response: $login_response"
+    exit 1
+fi
+
+# Get all pipelines first to see what we're deleting (using session cookies)
 echo "📋 Fetching current pipelines..."
-response=$(curl -s "http://localhost:3000/api/pipeline?limit=100")
+response=$(curl -s -b cookies.txt "http://localhost:3000/api/pipeline?limit=100")
 
 # Check if we got a valid response
 if echo "$response" | grep -q '"success":true'; then
@@ -54,7 +87,7 @@ if echo "$response" | grep -q '"success":true'; then
     for pipeline_id in $pipeline_ids; do
         echo "🗑️  Deleting pipeline $pipeline_id..."
         
-        delete_response=$(curl -s -X DELETE "http://localhost:3000/api/pipeline/$pipeline_id")
+        delete_response=$(curl -s -X DELETE -b cookies.txt "http://localhost:3000/api/pipeline/$pipeline_id")
         
         if echo "$delete_response" | grep -q '"success":true'; then
             echo "   ✅ Pipeline $pipeline_id deleted successfully"
@@ -83,6 +116,12 @@ else
     echo "❌ Failed to fetch pipelines from server"
     echo "Server response: $response"
     exit 1
+fi
+
+# Cleanup cookies file
+if [ -f "cookies.txt" ]; then
+    rm cookies.txt
+    echo "🧹 Cleaned up session cookies"
 fi
 
 echo ""

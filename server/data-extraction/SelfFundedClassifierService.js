@@ -58,11 +58,13 @@ class SelfFundedClassifierService {
    */
   async classifyCompany(company) {
     const ein = company.form5500_data.ein;
+    const legalEntityName = company.legal_entity_name;
     
     // Get raw Form 5500 and Schedule A data for classification
+    // Note: get_form5500_for_classification expects company name, not EIN
     const form5500Records = await this.databaseManager.query(
       'SELECT * FROM get_form5500_for_classification($1)',
-      [ein]
+      [legalEntityName]
     );
     
     const scheduleARecords = await this.databaseManager.query(

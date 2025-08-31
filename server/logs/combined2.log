@@ -772,3 +772,68 @@
 {"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T19:55:22.930Z"}
 {"level":"info","message":"🧪 Testing self-funded classification for company: Intersect Group","service":"server","timestamp":"2025-08-31T19:55:26.706Z"}
 {"level":"info","message":"🔍 Testing self-funded classification for: Intersect Group","service":"database","timestamp":"2025-08-31T19:55:26.707Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T20:31:43.181Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-31T20:31:46.702Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-31T20:31:50.195Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-31T20:31:50.803Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-08-31T20:31:50.806Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-08-31T20:31:51.060Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-31T20:31:51.060Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-31T20:31:51.061Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-31T20:31:51.062Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-31T20:31:51.069Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-31T20:31:51.076Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-31T20:31:51.431Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-31T20:31:51.433Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-31T20:31:51.490Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-31T20:31:51.491Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-31T20:31:51.491Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-31T20:31:51.493Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-31T20:31:51.494Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:31:51.913Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:31:51.914Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:31:52.162Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-31T20:31:52.165Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-31T20:31:52.167Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-31T20:31:52.384Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-31T20:31:52.388Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T20:32:00.312Z"}
+{"level":"info","message":"📋 Created new pipeline 160 for firm: American Discovery Capital","service":"manager","timestamp":"2025-08-31T20:35:09.955Z"}
+{"level":"info","message":"📋 Created new pipeline 161 for firm: BITCH-MASTER","service":"manager","timestamp":"2025-08-31T20:35:59.510Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-31T20:38:13.709Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-08-31T20:40:39.117Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-08-31T20:40:39.721Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-08-31T20:40:39.722Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-08-31T20:40:39.971Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-08-31T20:40:39.971Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-08-31T20:40:39.972Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-08-31T20:40:39.972Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-08-31T20:40:39.978Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-08-31T20:40:39.984Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-08-31T20:40:40.271Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-08-31T20:40:40.273Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-08-31T20:40:40.403Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-08-31T20:40:40.404Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-08-31T20:40:40.404Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-08-31T20:40:40.406Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-08-31T20:40:40.406Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:40:40.780Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:40:40.781Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-08-31T20:40:40.993Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-08-31T20:40:40.998Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-08-31T20:40:41.013Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-08-31T20:40:41.016Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-08-31T20:40:41.019Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T20:46:17.465Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-08-31T20:47:21.668Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 1 companies","service":"manager","timestamp":"2025-08-31T20:53:07.066Z"}
+{"level":"info","message":"🔍 Processing 1 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-08-31T20:53:07.294Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 1 companies","service":"database","timestamp":"2025-08-31T20:53:07.537Z"}
+{"level":"info","message":"📋 Found Schedule A records for 0 EINs","service":"database","timestamp":"2025-08-31T20:53:07.669Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-08-31T20:53:07.669Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-08-31T20:53:07.670Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 1 companies","service":"database","timestamp":"2025-08-31T20:53:07.999Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-31T20:53:07.999Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-08-31T20:53:08.116Z"}
+{"level":"info","message":"Data extraction completed for pipeline 37","service":"manager","timestamp":"2025-08-31T20:53:08.231Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-08-31T20:57:18.113Z"}

@@ -1015,6 +1015,291 @@ const results = await dataExtractionService.extractData(123, {
 ✅ **Clean separation** - Each service has a consistent interface  
 ✅ **Feature flag ready** - Easy to enable/disable classification  
 
+### Unit Testing Plan
+
+After implementing the production integration, we need comprehensive unit tests to validate the system works correctly.
+
+#### Test Structure
+
+**Test File**: `/server/test/self-funded-integration-test.js`
+
+**Test Categories**:
+1. **ReportGenerator Output Format Tests**
+2. **SelfFundedClassifierService Integration Tests** 
+3. **DataExtractionService Pipeline Tests**
+4. **Feature Flag Tests**
+5. **Error Handling Tests**
+
+#### Detailed Test Plan
+
+**1. ReportGenerator Output Format Tests**
+```javascript
+describe('ReportGenerator - Modified Output Format', () => {
+  it('should output legal_entity_name instead of companyName', () => {
+    const mockSearchResults = [
+      { company: 'MICROSOFT CORPORATION', ein: '911445442', /* ... */ }
+    ];
+    const reportData = reportGenerator.generateFinalReport(mockSearchResults);
+    
+    expect(reportData.companies[0]).to.have.property('legal_entity_name');
+    expect(reportData.companies[0]).to.not.have.property('companyName');
+    expect(reportData.companies[0].legal_entity_name).to.equal('MICROSOFT CORPORATION');
+  });
+  
+  it('should nest data under form5500_data structure', () => {
+    const reportData = reportGenerator.generateFinalReport(mockSearchResults);
+    const company = reportData.companies[0];
+    
+    expect(company).to.have.property('form5500_data');
+    expect(company.form5500_data).to.have.property('ein');
+    expect(company.form5500_data).to.have.property('form5500');
+    expect(company.form5500_data).to.have.property('scheduleA');
+  });
+});
+```
+
+**2. SelfFundedClassifierService Integration Tests**
+```javascript
+describe('SelfFundedClassifierService - Production Integration', () => {
+  beforeEach(() => {
+    // Setup test database with known Form 5500 and Schedule A records
+    setupTestData();
+  });
+  
+  it('should classify companies with real database data', async () => {
+    const mockCompanies = [
+      {
+        legal_entity_name: 'SMARTBUG OPERATING LLC',
+        form5500_data: {
+          ein: '263244605',
+          form5500: { years: ['2022'], recordCount: 1 },
+          scheduleA: { recordCounts: { '2022': 2 } }
+        }
+      }
+    ];
+    
+    const classified = await classifierService.classifyCompanies(mockCompanies);
+    const company = classified[0];
+    
+    // Validate quick access field
+    expect(company.form5500_data.self_funded).to.equal('insured');
+    
+    // Validate detailed analysis
+    expect(company.form5500_data.self_funded_analysis).to.have.property('current_classification');
+    expect(company.form5500_data.self_funded_analysis.current_classification).to.equal('insured');
+    expect(company.form5500_data.self_funded_analysis.classifications_by_year).to.have.property('2022');
+  });
+  
+  it('should handle companies with no Form 5500 data gracefully', async () => {
+    const mockCompanies = [
+      {
+        legal_entity_name: 'NONEXISTENT COMPANY LLC',
+        form5500_data: { ein: null, form5500: null, scheduleA: null }
+      }
+    ];
+    
+    const classified = await classifierService.classifyCompanies(mockCompanies);
+    const company = classified[0];
+    
+    expect(company.form5500_data.self_funded).to.equal('no-data');
+    expect(company.form5500_data.self_funded_analysis.current_classification).to.equal('no-data');
+  });
+});
+```
+
+**3. DataExtractionService Pipeline Tests**
+```javascript
+describe('DataExtractionService - Integration with Classification', () => {
+  it('should integrate classification into pipeline with feature flag enabled', async () => {
+    // Create test pipeline with known companies
+    const testPipeline = await createTestPipeline();
+    
+    const results = await dataExtractionService.extractData(testPipeline.pipeline_id, {
+      enableSelfFundedClassification: true
+    });
+    
+    expect(results.success).to.be.true;
+    expect(results.companies).to.be.an('array');
+    
+    // Check that companies have both form5500_data and self_funded classification
+    const companyWithData = results.companies.find(c => c.form5500_data);
+    if (companyWithData) {
+      expect(companyWithData.form5500_data).to.have.property('self_funded');
+      expect(companyWithData.form5500_data).to.have.property('self_funded_analysis');
+    }
+  });
+  
+  it('should skip classification when feature flag is disabled', async () => {
+    const testPipeline = await createTestPipeline();
+    
+    const results = await dataExtractionService.extractData(testPipeline.pipeline_id, {
+      enableSelfFundedClassification: false
+    });
+    
+    expect(results.success).to.be.true;
+    
+    // Check that companies do NOT have self_funded classification
+    const companyWithData = results.companies.find(c => c.form5500_data);
+    if (companyWithData) {
+      expect(companyWithData.form5500_data).to.not.have.property('self_funded');
+      expect(companyWithData.form5500_data).to.not.have.property('self_funded_analysis');
+    }
+  });
+  
+  it('should default to classification enabled when no options provided', async () => {
+    const testPipeline = await createTestPipeline();
+    
+    // Call without options parameter
+    const results = await dataExtractionService.extractData(testPipeline.pipeline_id);
+    
+    const companyWithData = results.companies.find(c => c.form5500_data);
+    if (companyWithData) {
+      expect(companyWithData.form5500_data).to.have.property('self_funded');
+    }
+  });
+});
+```
+
+**4. Feature Flag Tests**
+```javascript
+describe('Feature Flag - Self-Funded Classification', () => {
+  it('should accept boolean feature flag', async () => {
+    const results1 = await dataExtractionService.extractData(123, { 
+      enableSelfFundedClassification: true 
+    });
+    const results2 = await dataExtractionService.extractData(123, { 
+      enableSelfFundedClassification: false 
+    });
+    
+    // Both should succeed but have different data
+    expect(results1.success).to.be.true;
+    expect(results2.success).to.be.true;
+  });
+  
+  it('should handle invalid options gracefully', async () => {
+    // Test with invalid options
+    const results = await dataExtractionService.extractData(123, { 
+      enableSelfFundedClassification: "invalid" 
+    });
+    
+    expect(results.success).to.be.true; // Should still work, defaulting to enabled
+  });
+});
+```
+
+**5. Error Handling Tests**
+```javascript
+describe('Error Handling - Classification Failures', () => {
+  it('should continue pipeline when classification fails for some companies', async () => {
+    // Mock classification service to throw error for specific company
+    const originalClassify = classifierService.classifyCompanies;
+    classifierService.classifyCompanies = async (companies) => {
+      // Simulate error for one company, success for others
+      return companies.map(company => {
+        if (company.legal_entity_name === 'ERROR_COMPANY') {
+          company.form5500_data.self_funded = 'error';
+          company.form5500_data.self_funded_analysis = {
+            current_classification: 'error',
+            classifications_by_year: {},
+            summary: { years_available: [], error: 'Classification failed' }
+          };
+        } else {
+          // Normal classification
+          company.form5500_data.self_funded = 'insured';
+          company.form5500_data.self_funded_analysis = { /* normal data */ };
+        }
+        return company;
+      });
+    };
+    
+    const results = await dataExtractionService.extractData(testPipelineId);
+    
+    expect(results.success).to.be.true; // Pipeline should still succeed
+    
+    // Check error handling
+    const errorCompany = results.companies.find(c => c.legal_entity_name === 'ERROR_COMPANY');
+    expect(errorCompany.form5500_data.self_funded).to.equal('error');
+    
+    // Restore original function
+    classifierService.classifyCompanies = originalClassify;
+  });
+});
+```
+
+#### Test Data Setup
+
+**Test Database Records**:
+```javascript
+async function setupTestData() {
+  // Insert known Form 5500 records
+  await db.query(`
+    INSERT INTO form_5500_records (
+      year, sponsor_dfe_name, spons_dfe_ein, plan_name,
+      type_welfare_bnft_code, funding_insurance_ind, benefit_insurance_ind,
+      funding_gen_asset_ind, benefit_gen_asset_ind, sch_a_attached_ind
+    ) VALUES (
+      2022, 'SMARTBUG OPERATING LLC', '263244605', 'Health Plan',
+      '4A4B4D', 1, 1, 1, 1, 1
+    )
+  `);
+  
+  // Insert corresponding Schedule A records  
+  await db.query(`
+    INSERT INTO schedule_a_records (
+      year, sch_a_ein, sch_a_plan_num, wlfr_bnft_health_ind, wlfr_bnft_stop_loss_ind
+    ) VALUES 
+    (2022, '263244605', 502, 1, 0),  -- Health coverage
+    (2022, '263244605', 502, 0, 1)   -- Stop-loss coverage
+  `);
+}
+
+async function createTestPipeline() {
+  return await db.query(`
+    INSERT INTO pipelines (firm_name, status, companies) 
+    VALUES ('Test PE Firm', 'legal_resolution_complete', $1) 
+    RETURNING pipeline_id
+  `, [JSON.stringify([
+    {
+      name: 'Smartbug Media',
+      legal_entity_name: 'SMARTBUG OPERATING LLC',
+      city: 'Newport Beach',
+      state: 'CA',
+      exited: false
+    }
+  ])]);
+}
+```
+
+#### Test Execution Strategy
+
+**Run Order**:
+1. **Unit Tests**: Individual service tests (fast, isolated)
+2. **Integration Tests**: Full pipeline tests (slower, database required)
+3. **End-to-End Tests**: Complete workflow tests (user will run these)
+
+**Test Commands**:
+```bash
+# Run only self-funded classification tests
+npm test -- --grep "self-funded"
+
+# Run integration tests only
+npm test server/test/self-funded-integration-test.js
+
+# Run all tests
+npm test
+```
+
+#### Success Criteria
+
+✅ **All unit tests pass** - Services work in isolation  
+✅ **Integration tests pass** - Services work together correctly  
+✅ **Feature flag works** - Classification can be enabled/disabled  
+✅ **Error handling works** - Failed classifications don't break pipeline  
+✅ **Data format correct** - Output matches expected structure  
+✅ **Performance acceptable** - Tests complete within reasonable time  
+
+This comprehensive test suite will validate that the self-funded classification system integrates correctly with the existing data extraction pipeline and handles all edge cases gracefully.
+
 ## Testing
 
 Before implementing the full production system, we need to validate the algorithm with a test endpoint that provides detailed year-by-year classification breakdown.

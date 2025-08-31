@@ -84,17 +84,19 @@ class ReportGenerator {
       timestamp: new Date().toISOString(),
       summary,
       companies: searchResults.map(result => ({
-        companyName: result.company,
-        ein: result.ein || null,
-        form5500: {
-          years: result.years || [],
-          recordCount: result.recordCount || 0,
-          records: result.records || {}
-        },
-        scheduleA: {
-          recordCounts: result.schARecords || {},
-          details: this.formatScheduleADetails(result.schADetails || {}),
-          error: result.schAError || null
+        legal_entity_name: result.company,  // Changed from companyName to legal_entity_name
+        form5500_data: {  // Nested all data under form5500_data
+          ein: result.ein || null,
+          form5500: {
+            years: result.years || [],
+            recordCount: result.recordCount || 0,
+            records: result.records || {}
+          },
+          scheduleA: {
+            recordCounts: result.schARecords || {},
+            details: this.formatScheduleADetails(result.schADetails || {}),
+            error: result.schAError || null
+          }
         }
       }))
     };

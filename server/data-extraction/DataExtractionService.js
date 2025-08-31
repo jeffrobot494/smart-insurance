@@ -3,6 +3,7 @@ const Form5500SearchService = require('./Form5500SearchService');
 const ScheduleASearchService = require('./ScheduleASearchService');
 const ReportGenerator = require('./ReportGenerator');
 const DatabaseManager = require('./DatabaseManager');
+const SelfFundedClassifierService = require('./SelfFundedClassifierService');
 
 /**
  * Main service for orchestrating data extraction from database
@@ -13,6 +14,7 @@ class DataExtractionService {
     this.scheduleASearchService = new ScheduleASearchService();
     this.reportGenerator = new ReportGenerator();
     this.databaseManager = DatabaseManager.getInstance();
+    this.selfFundedClassifierService = new SelfFundedClassifierService();
     
     // Set up report generator with Schedule A service for key field extraction
     this.reportGenerator.setScheduleASearchService(this.scheduleASearchService);
@@ -21,9 +23,11 @@ class DataExtractionService {
   /**
    * Main entry point for data extraction process using pipeline ID
    * @param {number} pipelineId - Pipeline ID to extract data for
+   * @param {Object} options - Extraction options
+   * @param {boolean} options.enableSelfFundedClassification - Enable self-funded classification (default: true)
    * @returns {Object} Complete extraction results with companies array
    */
-  async extractData(pipelineId) {
+  async extractData(pipelineId, options = { enableSelfFundedClassification: true }) {
     try {
       // Load pipeline from database
       const pipeline = await this.databaseManager.getPipeline(pipelineId);
@@ -62,10 +66,26 @@ class DataExtractionService {
       
       logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.scheduleAResults && r.scheduleAResults.length > 0).length} EINs`);
       
-      // Phase 4: Generate comprehensive reports
+      // Phase 4: Generate comprehensive reports (now in classifier-compatible format)
       const reportData = this.reportGenerator.generateFinalReport(finalResults);
       
-      // Phase 5: Map results back to companies structure
+      // Phase 5: Classify companies as self-funded/insured (if enabled)
+      const enableSelfFundedClassification = options.enableSelfFundedClassification !== false;
+      if (enableSelfFundedClassification) {
+        logger.info('🔍 Classifying companies as self-funded or insured...');
+        try {
+          const classifiedCompanies = await this.selfFundedClassifierService.classifyCompanies(reportData.companies);
+          reportData.companies = classifiedCompanies;
+          logger.info(`✅ Self-funded classification completed for ${classifiedCompanies.length} companies`);
+        } catch (error) {
+          logger.error('❌ Self-funded classification failed, continuing without classification:', error.message);
+          // Continue without classification rather than failing entire pipeline
+        }
+      } else {
+        logger.info('⏭️  Self-funded classification disabled, skipping');
+      }
+      
+      // Phase 6: Map results back to companies structure
       const companiesWithForm5500 = this.mapResultsToCompanies(pipeline.companies, reportData);
 
       logger.info('✅ Data extraction completed');
@@ -102,7 +122,7 @@ class DataExtractionService {
     const reportLookup = new Map();
     if (reportData.companies) {
       reportData.companies.forEach(company => {
-        reportLookup.set(company.companyName, company);
+        reportLookup.set(company.legal_entity_name, company); // Changed from companyName to legal_entity_name
       });
     }
     
@@ -110,11 +130,8 @@ class DataExtractionService {
     companiesWithData.forEach(company => {
       const reportCompany = reportLookup.get(company.legal_entity_name);
       if (reportCompany) {
-        company.form5500_data = {
-          ein: reportCompany.ein,
-          form5500: reportCompany.form5500,
-          scheduleA: reportCompany.scheduleA
-        };
+        // Data is already in the correct structure from ReportGenerator
+        company.form5500_data = reportCompany.form5500_data;
       } else {
         company.form5500_data = null; // No data found
       }
