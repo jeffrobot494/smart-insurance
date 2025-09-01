@@ -853,3 +853,42 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T17:43:28.534Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T17:43:28.535Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T17:43:28.763Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:13:54.988Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:13:54.988Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:13:55.217Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-01T19:38:07.232Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:39:18.028Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:39:18.028Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:39:18.269Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:47:44.313Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:47:44.314Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:47:44.565Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:49:00.381Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:49:00.381Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T19:49:00.642Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:08:53.757Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:08:53.757Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:08:54.001Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:11:27.297Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:11:27.298Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:11:27.525Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:12:04.245Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:12:04.246Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:12:04.477Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:59:13.098Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:59:13.099Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T20:59:13.341Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:04:18.516Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:04:18.516Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:04:18.765Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:12:59.257Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:12:59.257Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:12:59.828Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:23:59.954Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:23:59.954Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:24:00.183Z"}
+{"level":"error","message":"❌ Classification test failed for Medix Staffing Solutions:","service":"database","timestamp":"2025-09-01T21:24:21.508Z"}
+{"level":"error","message":"❌ Self-funded classification test failed: Cannot read properties of undefined (reading 'startsWith')","service":"server","stack":"TypeError: Cannot read properties of undefined (reading 'startsWith')\n    at C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\SelfFundedClassifierService.js:878:24\n    at Array.some (<anonymous>)\n    at SelfFundedClassifierService.rollUpCompanyClassification (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\SelfFundedClassifierService.js:875:33)\n    at SelfFundedClassifierService.testClassifyCompany (C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\data-extraction\\SelfFundedClassifierService.js:427:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async C:\\Users\\jeffr\\OneDrive\\Documents\\smart-insurance\\server\\routes\\testing.js:277:21","timestamp":"2025-09-01T21:24:21.510Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:28:09.934Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:28:09.935Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T21:28:10.170Z"}

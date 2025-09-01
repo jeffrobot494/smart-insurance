@@ -355,6 +355,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Function to get raw Schedule A data for classification
+DROP FUNCTION IF EXISTS get_schedule_a_for_classification(VARCHAR(9));
 CREATE OR REPLACE FUNCTION get_schedule_a_for_classification(ein_param VARCHAR(9))
 RETURNS TABLE (
     year INTEGER,
@@ -363,7 +364,8 @@ RETURNS TABLE (
     sch_a_plan_year_begin_date DATE,
     sch_a_plan_year_end_date DATE,
     wlfr_bnft_health_ind INTEGER,
-    wlfr_bnft_stop_loss_ind INTEGER
+    wlfr_bnft_stop_loss_ind INTEGER,
+    wlfr_type_bnft_oth_text TEXT
 ) AS $$
 BEGIN
     RETURN QUERY
@@ -374,7 +376,8 @@ BEGIN
         s.sch_a_plan_year_begin_date,
         s.sch_a_plan_year_end_date,
         s.wlfr_bnft_health_ind,
-        s.wlfr_bnft_stop_loss_ind
+        s.wlfr_bnft_stop_loss_ind,
+        s.wlfr_type_bnft_oth_text
     FROM schedule_a_records s
     WHERE s.sch_a_ein = ein_param
     ORDER BY s.year DESC, s.ack_id, s.sch_a_plan_num;

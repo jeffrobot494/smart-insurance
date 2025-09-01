@@ -1,0 +1,51 @@
+[
+    {
+      "city": "Carmel",
+      "name": "American Pain Consortium",
+      "state": "In",
+      "exited": false,
+      "legal_entity_name": "AMERICAN PAIN CONSORTIUM"
+    },
+    {
+      "city": "Burbank",
+      "name": "Entertainment Partners",
+      "state": "California",
+      "exited": true,
+      "legal_entity_name": "Entertainment Partners"
+    },
+    {
+      "city": "Newport Beach",
+      "name": "SmartBug Media",
+      "state": "Ca",
+      "exited": false,
+      "legal_entity_name": "SMARTBUG OPERATING LLC"
+    },
+    {
+      "city": "Atlanta",
+      "name": "The Intersect Group",
+      "state": "Ga",
+      "exited": false,
+      "legal_entity_name": "THE INTERSECT GROUP, LLC"
+    },
+    {
+      "city": "City Of Industry",
+      "name": "Majestic Realty",
+      "state": "Ca",
+      "exited": false,
+      "legal_entity_name": "MAJESTIC REALTY CO."
+    },
+    {
+      "city": "Lombard",
+      "name": "Medix",
+      "state": "Il",
+      "exited": false,
+      "legal_entity_name": "MEDIX STAFFING SOLUTIONS, LLC"
+    },
+    {
+      "city": "Delhi",
+      "name": "GreenSlate",
+      "state": "Ny",
+      "exited": true,
+      "legal_entity_name": "GREENSLATE LLC"
+    }
+  ]

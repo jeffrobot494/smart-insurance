@@ -273,8 +273,11 @@ buildScheduleAIndex(scheduleARecords, allEINs) {
     }
     
     // Step 3: Apply enhanced indicators to index (preserve existing structure)
-    if (beginYear && planNum && recordEIN) {
-      const key = `${recordEIN}-${planNum}-${beginYear}`;
+    // Use the first available EIN from our company EINs if record EIN is missing
+    const keyEIN = recordEIN || allEINs[0] || 'unknown';
+    
+    if (beginYear && planNum) {
+      const key = `${keyEIN}-${planNum}-${beginYear}`;
       if (!index.byBeginYear.has(key)) {
         index.byBeginYear.set(key, { health: false, stopLoss: false });
       }
@@ -283,8 +286,8 @@ buildScheduleAIndex(scheduleARecords, allEINs) {
       if (hasStopLoss) entry.stopLoss = true;
     }
     
-    if (endYear && planNum && recordEIN && endYear !== beginYear) {
-      const key = `${recordEIN}-${planNum}-${endYear}`;
+    if (endYear && planNum && endYear !== beginYear) {
+      const key = `${keyEIN}-${planNum}-${endYear}`;
       if (!index.byEndYear.has(key)) {
         index.byEndYear.set(key, { health: false, stopLoss: false });
       }
@@ -304,11 +307,74 @@ The revised implementation addresses these potential issues:
 
 1. **Null/Empty Sponsor Names**: Fallback to single EIN approach when sponsor name is missing
 2. **Empty EINs Array**: Return appropriate `no-data` response instead of crashing
-3. **Null Schedule A EINs**: Skip records with missing `sch_a_ein` field
-4. **String/Numeric EIN Comparison**: Handle both data types consistently
+3. **Redundant Schedule A EIN Validation**: Removed double-filtering of Schedule A records (critical fix)
+4. **Missing Schedule A EIN Field**: Use fallback EIN for indexing when `sch_a_ein` is undefined
 5. **Database Query Failures**: Continue with other EINs if one fails instead of failing completely
 6. **Array Validation**: Check that parameters are valid arrays before processing
 7. **Graceful Degradation**: Fallback to single EIN approach when multi-EIN logic fails
+
+### Critical Bug Fix: Schedule A EIN Validation
+
+**Issue**: The original implementation included redundant EIN validation that caused ALL Schedule A records to be skipped:
+```javascript
+// PROBLEMATIC: Double-filtering Schedule A records
+if (!recordEIN || !planNum) {
+  continue; // Skips records when sch_a_ein field is undefined
+}
+```
+
+**Root Cause**: Schedule A records are already filtered by EIN during database query. The additional validation was redundant and caused records to be skipped when the `sch_a_ein` field was undefined/missing from the query results.
+
+**Fix**: Removed redundant EIN validation since Schedule A records are pre-filtered by the database query:
+```javascript
+// FIXED: Only validate plan number (EIN filtering happens during query)
+if (!planNum) {
+  continue; // Only skip if no plan number
+}
+```
+
+This fix ensures that all fetched Schedule A records are processed, allowing the algorithm to find health indicators correctly.
+
+### Additional Database Fix: Missing Text Field
+
+**Issue**: The fallback text analysis mechanism was not working because the database function `get_schedule_a_for_classification()` was not returning the `wlfr_type_bnft_oth_text` field needed for text analysis.
+
+**Root Cause**: The function definition only included binary indicator fields (`wlfr_bnft_health_ind`, `wlfr_bnft_stop_loss_ind`) but not the text field that contains benefit descriptions for fallback analysis.
+
+**Fix**: Updated the database function to include the text field:
+
+```sql
+-- Function to get raw Schedule A data for classification
+CREATE OR REPLACE FUNCTION get_schedule_a_for_classification(ein_param VARCHAR(9))
+RETURNS TABLE (
+    year INTEGER,
+    ack_id VARCHAR(255),
+    sch_a_plan_num INTEGER,
+    sch_a_plan_year_begin_date DATE,
+    sch_a_plan_year_end_date DATE,
+    wlfr_bnft_health_ind INTEGER,
+    wlfr_bnft_stop_loss_ind INTEGER,
+    wlfr_type_bnft_oth_text TEXT        -- ADDED: Text field for fallback analysis
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        s.year,
+        s.ack_id,
+        s.sch_a_plan_num,
+        s.sch_a_plan_year_begin_date,
+        s.sch_a_plan_year_end_date,
+        s.wlfr_bnft_health_ind,
+        s.wlfr_bnft_stop_loss_ind,
+        s.wlfr_type_bnft_oth_text       -- ADDED: Include text field in SELECT
+    FROM schedule_a_records s
+    WHERE s.sch_a_ein = ein_param
+    ORDER BY s.year DESC, s.ack_id, s.sch_a_plan_num;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+**Impact**: This enables the text analysis fallback mechanism to work properly for companies like The Intersect Group that have health coverage but missing/incorrect binary indicators.
 
 ## Testing and Expected Behavior
 
@@ -335,6 +401,17 @@ curl -X POST http://localhost:3000/api/testing/self-funded-classification \
 **Expected Result:**
 - **Before:** `"self_funded": "no-medical-plans"` (text analysis needed)
 - **After:** `"self_funded": "insured"` (text analysis detects health coverage)
+
+**The Intersect Group (Missing Text Field Issue):**
+```bash
+curl -X POST http://localhost:3000/api/testing/self-funded-classification \
+  -H "Content-Type: application/json" -b cookies.txt \
+  -d '{"companyName": "THE INTERSECT GROUP, LLC"}'
+```
+
+**Expected Result:**
+- **Before:** `"self_funded": "no-medical-plans"` (database function missing text field)
+- **After:** `"self_funded": "insured"` (database function provides text field for fallback analysis)
 
 ### Regression Testing
 
@@ -380,6 +457,7 @@ Monitor execution time:
 Implementation is successful when:
 - ✅ HealthAxis classifies as "insured" in all years (was "no-medical-plans" in 2023/2024)
 - ✅ Family Care Center classifies as "insured" (was "no-medical-plans")  
+- ✅ The Intersect Group classifies as "insured" (was "no-medical-plans")
 - ✅ Medix remains "self-funded" (no change)
 - ✅ Fast Pace remains "no-medical-plans" (no change)
 - ✅ No performance degradation (< 100ms additional processing)
@@ -394,3 +472,66 @@ If issues arise, the changes can be reverted by:
 
 ### Files Modified
 - `/server/data-extraction/SelfFundedClassifierService.js` - Multi-EIN support with validation
+- `/database/create-tables.sql` - Updated `get_schedule_a_for_classification()` function to include text field
+
+### NEW BUG - THE INTERSECT GROUP MISCLASSIFIED AS "NO-MEDICAL-PLANS" ###
+> Here's the output: 15:12:16 [MANAGER] info: 📊 Starting Form 5500 data extraction for 1 companies
+  15:12:16 [DATABASE] info: 🔍 Processing 1 companies for Form 5500/Schedule A data
+  15:12:16 [DATABASE] info: 📋 Found Form 5500 records for 1 companies
+  15:12:17 [DATABASE] info: 📋 Found Schedule A records for 1 EINs
+  15:12:17 [DATABASE] info: 🔍 Classifying companies as self-funded or insured...
+  15:12:17 [DATABASE] info: 🔍 Starting self-funded classification for companies
+  15:12:17 [DATABASE] info: [DEBUG] Classifying 1 companies
+  15:12:17 [DATABASE] info: [DEBUG] Classifying company: THE INTERSECT GROUP, LLC
+  15:12:17 [DATABASE] info: [DEBUG] Schedule A index built - Processed: 18, Skipped: 0, Health detected: 3, Text analysis used: 0
+  15:12:17 [DATABASE] info: [DEBUG] Index contains 15 begin-year entries and 0 end-year entries
+  15:12:17 [DATABASE] info: [DEBUG] All Schedule A index keys: [204063021-501-2024, 204063021-502-2024, 204063021-503-2024, 204063021-504-2024, 204063021-505-2024, 204063021-506-2024, 204063021-507-2024, 204063021-501-2023, 
+  204063021-502-2023, 204063021-503-2023, 204063021-504-2023, 204063021-505-2023, 204063021-506-2023, 204063021-507-2023, 204063021-501-2022]
+  15:12:17 [DATABASE] info: [DEBUG] Keys with health=true: [204063021-507-2024, 204063021-507-2023, 204063021-501-2022]
+  15:12:17 [DATABASE] info: [DEBUG] Looking for Schedule A key: "204063021-1-2022"
+  15:12:17 [DATABASE] info: [DEBUG] No begin entry found for key: "204063021-1-2022"
+  15:12:17 [DATABASE] info: [DEBUG] Plan 1 SKIPPED - not a medical plan (no 4A code and no Schedule A health indicators)
+  15:12:17 [DATABASE] info: [DEBUG] Looking for Schedule A key: "204063021-1-2023"
+  15:12:17 [DATABASE] info: [DEBUG] No begin entry found for key: "204063021-1-2023"
+  15:12:17 [DATABASE] info: [DEBUG] Plan 1 SKIPPED - not a medical plan (no 4A code and no Schedule A health indicators)
+  15:12:17 [DATABASE] info: ✓ Classified THE INTERSECT GROUP, LLC: no-medical-plans (2 years)
+  15:12:17 [DATABASE] info: ✅ Self-funded classification completed for 1 companies
+  15:12:17 [DATABASE] info: ✅ Data extraction completed
+  15:12:17 [MANAGER] info: ✅ Data extraction completed
+  15:12:17 [MANAGER] info: Data extraction completed for pipeline 162
+
+● EXACTLY! There's the bug! The debug output reveals the plan number mismatch:
+
+  The Problem:
+
+  Schedule A Records (Health Coverage):
+  - Plans: 501, 502, 503, 504, 505, 506, 507
+  - Keys with health=true: 204063021-507-2024, 204063021-507-2023, 204063021-501-2022
+
+  Form 5500 Records (Being Classified):
+  - Plan: 1 (401k retirement plan)
+  - Looking for keys: 204063021-1-2022, 204063021-1-2023
+
+  Root Cause:
+
+  The algorithm is trying to match retirement plan records (Plan 1) with health benefit Schedule A records (Plans 501-507). These are completely separate benefit plans under the same company!
+
+  The Real Issue:
+
+  Our multi-EIN enhancement is working correctly, but we have a fundamental design flaw:
+
+  1. Form 5500 search finds ALL plans for the company (retirement + health)
+  2. Current algorithm tries to classify EACH Form 5500 plan individually
+  3. Retirement plans (Plan 1) don't have health Schedule A records (correctly)
+  4. Health plans would have Form 5500 records with 4A codes + matching Schedule A records
+
+  The Fix:
+
+  The algorithm should look for health coverage across all plans for the company, not just try to match individual Form 5500 plans to their specific Schedule A records.
+
+  The Intersect Group should be classified as "insured" because:
+  - Company has health Schedule A records (Plans 507 in 2023/2024, Plan 501 in 2022) ✅
+  - These indicate health insurance coverage exists ✅
+  - Company overall classification should be "insured" ✅
+
+  The classification logic needs to be updated to check if ANY Schedule A records for the company indicate health coverage, not just records that match the current Form 5500 plan being classified.
