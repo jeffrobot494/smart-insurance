@@ -1,0 +1,191 @@
+[
+  {
+    "city": "Brooklyn",
+    "name": "AOM Infusion",
+    "state": "Ny",
+    "exited": false,
+    "legal_entity_name": "AMERICAN OUTCOMES MANAGEMENT"
+  },
+  {
+    "city": "Lehi",
+    "name": "Carrus",
+    "state": "Ut",
+    "exited": true,
+    "legal_entity_name": "CAREER STEP, LLC"
+  },
+  {
+    "city": "Cincinnati",
+    "name": "CEI Vision Partners",
+    "state": "Oh",
+    "exited": true,
+    "legal_entity_name": "CEI VISION PARTNERS, LLC"
+  },
+  {
+    "city": "Miami Lakes",
+    "name": "ClareMedica Health Partners",
+    "state": "Fl",
+    "exited": false,
+    "legal_entity_name": "CLAREMEDICA HEALTH PARTNERS, LLC"
+  },
+  {
+    "city": null,
+    "name": "Company Confidential",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "Company Confidential"
+  },
+  {
+    "city": "Greenville",
+    "name": "Crossroads Treatment Centers",
+    "state": "South Carolina",
+    "exited": true,
+    "legal_entity_name": "Crossroads Treatment Centers"
+  },
+  {
+    "city": "Tampa",
+    "name": "DataLink",
+    "state": "Fl",
+    "exited": false,
+    "legal_entity_name": "DATALINK SERVICE FUND SOLUTIONS LLC"
+  },
+  {
+    "city": "New York",
+    "name": "Empire Portfolio Group",
+    "state": "Ny",
+    "exited": false,
+    "legal_entity_name": "EMPIRE PORTFOLIO GROUP PAYROLL LLC"
+  },
+  {
+    "city": null,
+    "name": "Encore Rehabilitation",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "ENCORE REHABILITATION SERVICES, LLC"
+  },
+  {
+    "city": "Hoboken",
+    "name": "Evolve Med Spa",
+    "state": "New Jersey",
+    "exited": false,
+    "legal_entity_name": "Evolve Med Spa"
+  },
+  {
+    "city": null,
+    "name": "Family Care Center",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "FAMILY CARE CENTER, LLC"
+  },
+  {
+    "city": "Franklin",
+    "name": "Fast Pace",
+    "state": "Tn",
+    "exited": false,
+    "legal_entity_name": "FAST PACE MEDICAL CLINICAL, PLLC"
+  },
+  {
+    "city": "Tampa",
+    "name": "HealthAxis",
+    "state": "Fl",
+    "exited": false,
+    "legal_entity_name": "HEALTHAXIS GROUP, LLC"
+  },
+  {
+    "city": "Independence",
+    "name": "MediQuant",
+    "state": "Oh",
+    "exited": false,
+    "legal_entity_name": "MEDIQUANT-PRO LLC"
+  },
+  {
+    "city": "South Miami",
+    "name": "Monte Nido",
+    "state": "Fl",
+    "exited": false,
+    "legal_entity_name": "MONTE NIDO HOLDINGS, LLC"
+  },
+  {
+    "city": null,
+    "name": "NAKED MD",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "NAKED MD"
+  },
+  {
+    "city": "Reading",
+    "name": "Omega Systems",
+    "state": "Pa",
+    "exited": false,
+    "legal_entity_name": "OMEGA SYSTEMS CONSULTANTS, LLC"
+  },
+  {
+    "city": "Westfield",
+    "name": "ONsite Mammography",
+    "state": "Ma",
+    "exited": true,
+    "legal_entity_name": "ONSITE MAMMOGRAPHY, LLC"
+  },
+  {
+    "city": "Cincinnati",
+    "name": "OrthoAlliance",
+    "state": "Oh",
+    "exited": true,
+    "legal_entity_name": "ORTHOALLIANCE MSO, LLC"
+  },
+  {
+    "city": "Portland",
+    "name": "Rarebreed Veterinary Partners",
+    "state": "Me",
+    "exited": false,
+    "legal_entity_name": "RAREBREED VETERINARY PARTNERS"
+  },
+  {
+    "city": "Tacoma",
+    "name": "Sound Physicians",
+    "state": "Wa",
+    "exited": false,
+    "legal_entity_name": "SOUND INPATIENT PHYSICIANS, INC"
+  },
+  {
+    "city": "Farmington Hills",
+    "name": "The Care Team",
+    "state": "Mi",
+    "exited": false,
+    "legal_entity_name": "RCP TCT HOLDINGS, LLC DBA THE CARE TEAM"
+  },
+  {
+    "city": "Pittsburgh",
+    "name": "Transport Investments",
+    "state": "Pennsylvania",
+    "exited": true,
+    "legal_entity_name": "Transport Investments"
+  },
+  {
+    "city": null,
+    "name": "TridentUSA Health Services",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "TRIDENT USA HEALTH SERVICES"
+  },
+  {
+    "city": "Plano",
+    "name": "U.S. Renal Care",
+    "state": "Tx",
+    "exited": false,
+    "legal_entity_name": "U.S. RENAL CARE, INC."
+  },
+  {
+    "city": "Birmingham",
+    "name": "Upstream Rehabilitation",
+    "state": "Al",
+    "exited": false,
+    "legal_entity_name": "UPSTREAM NEWCO, INC."
+  },
+  {
+    "city": "Waltham",
+    "name": "Vet's Best Friend",
+    "state": "Massachusetts",
+    "exited": true,
+    "legal_entity_name": "No direct match found"
+  }
+]

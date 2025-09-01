@@ -1,0 +1,298 @@
+[
+{
+    "city": null,
+    "name": "Family Care Center",
+    "state": null,
+    "exited": false,
+    "form5500_data": {
+      "ein": "810970561",
+      "form5500": {
+        "years": [
+          "2022"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "810970561",
+              "year": 2022,
+              "plan_name": "FAMILY CARE CENTER, LLC RETIREMENT PLAN",
+              "sponsor_name": "FAMILY CARE CENTER, LLC",
+              "has_schedule_a": false,
+              "active_participants": 281
+            }
+          ]
+        },
+        "recordCount": 1
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "AMERITAS LIFE INSURANCE CORP.",
+              "totalCharges": "118912.00",
+              "personsCovered": "583",
+              "brokerCommission": "6906.00"
+            },
+            {
+              "benefitType": "LEGAL SERVICES PLAN MEMBERSHIPS",
+              "carrierName": "PRE-PAID LEGAL SERVICES INC DBA LEGALSHIELD",
+              "totalCharges": "2794.00",
+              "personsCovered": "45",
+              "brokerCommission": "578.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMEBERMENT",
+              "carrierName": "STANDARD INSURANCE COMPANY",
+              "totalCharges": "0.00",
+              "personsCovered": "317",
+              "brokerCommission": "4617.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "STANDARD INSURANCE COMPANY",
+              "totalCharges": "0.00",
+              "personsCovered": "317",
+              "brokerCommission": "4117.00"
+            },
+            {
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS, AND HOSPITAL INDEMNITY",
+              "carrierName": "STANDARD INSURANCE COMPANY",
+              "totalCharges": "16169.00",
+              "personsCovered": "57",
+              "brokerCommission": "9012.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "STANDARD INSURANCE COMPANY",
+              "totalCharges": "0.00",
+              "personsCovered": "317",
+              "brokerCommission": "4787.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+              "totalCharges": "1209154.00",
+              "personsCovered": "424",
+              "brokerCommission": "48366.00"
+            }
+          ],
+          "2023": [
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "CIGNA HEALTH AND LIFE INSURANCE COMPANY",
+              "totalCharges": "1828118.00",
+              "personsCovered": "361",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "EMPOWER ANNUITY INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "",
+              "personsCovered": "44",
+              "brokerCommission": ""
+            },
+            {
+              "benefitType": "LEGAL SERVICES PLAN MEMBERSHIPS",
+              "carrierName": "PRE-PAID LEGAL SERVICES INC DBA LEGALSHIELD",
+              "totalCharges": "9195.00",
+              "personsCovered": "50",
+              "brokerCommission": "1946.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "STARMOUNT LIFE INSURANCE COMPANY",
+              "totalCharges": "142255.00",
+              "personsCovered": "274",
+              "brokerCommission": "14226.00"
+            },
+            {
+              "benefitType": "CRITICAL ILLNESS",
+              "carrierName": "UNUM INSURANCE COMPANY",
+              "totalCharges": "12938.00",
+              "personsCovered": "222",
+              "brokerCommission": "1052.00"
+            },
+            {
+              "benefitType": "ACCIDENT",
+              "carrierName": "UNUM INSURANCE COMPANY",
+              "totalCharges": "6820.00",
+              "personsCovered": "82",
+              "brokerCommission": "562.00"
+            },
+            {
+              "benefitType": "HOSPITAL INDEMNITY",
+              "carrierName": "UNUM INSURANCE COMPANY",
+              "totalCharges": "13122.00",
+              "personsCovered": "78",
+              "brokerCommission": "0.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, EMPLOYEE ASSISTANCE PROGRAM",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "86505.00",
+              "personsCovered": "324",
+              "brokerCommission": "6839.00"
+            },
+            {
+              "benefitType": "ACCIDENTAL DEATH & DISMEMBERMENT, VOLUNTARY",
+              "carrierName": "UNUM LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "23131.00",
+              "personsCovered": "244",
+              "brokerCommission": "2313.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 7,
+          "2023": 9
+        }
+      }
+    },
+    "legal_entity_name": "FAMILY CARE CENTER, LLC"
+  },
+  {
+    "city": "Franklin",
+    "name": "Fast Pace",
+    "state": "Tn",
+    "exited": false,
+    "form5500_data": {
+      "ein": "270851352",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "270851352",
+              "year": 2022,
+              "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+              "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+              "has_schedule_a": false,
+              "active_participants": 2608
+            }
+          ],
+          "2023": [
+            {
+              "ein": "270851352",
+              "year": 2023,
+              "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+              "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+              "has_schedule_a": false,
+              "active_participants": 2558
+            }
+          ]
+        },
+        "recordCount": 2
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {},
+        "recordCounts": {}
+      }
+    },
+    "legal_entity_name": "FAST PACE MEDICAL CLINICAL, PLLC"
+  },
+  {
+    "city": "Tampa",
+    "name": "HealthAxis",
+    "state": "Fl",
+    "exited": false,
+    "form5500_data": {
+      "ein": "455531595",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "271763970",
+              "year": 2022,
+              "plan_name": "HEALTHAXIS GROUP, LLC",
+              "sponsor_name": "HEALTHAXIS GROUP, LLC",
+              "has_schedule_a": true,
+              "active_participants": 154
+            },
+            {
+              "ein": "455531595",
+              "year": 2022,
+              "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+              "sponsor_name": "HEALTHAXIS GROUP, LLC",
+              "has_schedule_a": false,
+              "active_participants": 325
+            }
+          ],
+          "2023": [
+            {
+              "ein": "455531595",
+              "year": 2023,
+              "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+              "sponsor_name": "HEALTHAXIS GROUP, LLC",
+              "has_schedule_a": false,
+              "active_participants": 230
+            }
+          ],
+          "2024": [
+            {
+              "ein": "455531595",
+              "year": 2024,
+              "plan_name": "HEALTHAXIS GROUP, LLC 401(K) PLAN",
+              "sponsor_name": "HEALTHAXIS GROUP, LLC",
+              "has_schedule_a": false,
+              "active_participants": 207
+            }
+          ]
+        },
+        "recordCount": 4
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2023": [
+            {
+              "benefitType": "AD&D, ACCIDENT, CI, HI",
+              "carrierName": "SUN LIFE ASSURANCE COMPANY OF CANADA",
+              "totalCharges": "283391.00",
+              "personsCovered": "340",
+              "brokerCommission": "29078.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+              "totalCharges": "2823363.00",
+              "personsCovered": "463",
+              "brokerCommission": "18200.00"
+            }
+          ],
+          "2024": [
+            {
+              "benefitType": "AD&D, ACCIDENT, CI, HI",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "195458.00",
+              "personsCovered": "199",
+              "brokerCommission": "22733.00"
+            },
+            {
+              "benefitType": "Standard Benefits",
+              "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+              "totalCharges": "2351076.00",
+              "personsCovered": "358",
+              "brokerCommission": "8288.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2023": 2,
+          "2024": 2
+        }
+      }
+    },
+    "legal_entity_name": "HEALTHAXIS GROUP, LLC"
+  }
+]

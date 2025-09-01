@@ -916,3 +916,13 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-31T23:08:14.764Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-08-31T23:08:14.881Z"}
 {"level":"info","message":"Data extraction completed for pipeline 37","service":"manager","timestamp":"2025-08-31T23:08:14.999Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 27 companies","service":"manager","timestamp":"2025-08-31T23:18:37.015Z"}
+{"level":"info","message":"🔍 Processing 27 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-08-31T23:18:37.249Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 21 companies","service":"database","timestamp":"2025-08-31T23:18:43.736Z"}
+{"level":"info","message":"📋 Found Schedule A records for 20 EINs","service":"database","timestamp":"2025-08-31T23:18:46.167Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-08-31T23:18:46.169Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-08-31T23:18:46.169Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-08-31T23:18:53.580Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-31T23:18:53.580Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-08-31T23:18:53.829Z"}
+{"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-08-31T23:18:54.068Z"}

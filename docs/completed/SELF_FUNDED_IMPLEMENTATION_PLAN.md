@@ -2027,3 +2027,337 @@ This complete flow demonstrates how the algorithm efficiently processes real dat
 - **Trend Analysis**: Clear progression toward self-funding, which often correlates with company growth and cost optimization
 
 This level of detail enables PE firms to make informed investment decisions based on portfolio companies' healthcare cost management strategies.
+
+## Post-Implementation Additions
+
+### Schedule A Health Detection Enhancement (Issue #001)
+
+#### Problem Identified
+After initial implementation, testing revealed that some companies with legitimate health insurance coverage were being classified as "no-medical-plans" when they should have been classified as "insured".
+
+**Root Cause Analysis:**
+- Companies like Family Care Center and HealthAxis have Form 5500 records only for retirement plans (401k)
+- However, they have Schedule A data with actual health insurance (UnitedHealthcare, Cigna, etc.)
+- The algorithm relies on database fields `wlfr_bnft_health_ind` for health detection
+- When these database fields are not populated, the text data in `benefitType` fields is ignored
+- Result: Companies with retirement-only Form 5500 but real health insurance get "no-medical-plans"
+
+**Expected vs Actual Results:**
+- **Family Care Center**: Should be "insured" (has UnitedHealthcare, Cigna) → Currently "no-medical-plans"
+- **HealthAxis**: Should be "insured" (has UnitedHealthcare) → Currently "no-medical-plans"  
+- **Fast Pace**: Correctly "no-medical-plans" (legitimately only 401k, no health data)
+
+#### Solution Design
+
+**Fix Strategy:** Add fallback logic to analyze `benefitType` text fields when database health indicators are not available, following existing code patterns.
+
+**Implementation Plan:**
+
+**1. Add Helper Method (Following Existing Helper Pattern):**
+```javascript
+/**
+ * Analyze benefit type text for health indicators (fallback when DB fields not available)
+ * @param {string} benefitType - Benefit type text from Schedule A
+ * @returns {Object} Health indicators found in text
+ */
+analyzeScheduleABenefitType(benefitType) {
+  if (!benefitType || typeof benefitType !== 'string') {
+    return { hasHealth: false, hasStopLoss: false };
+  }
+  
+  const benefitText = benefitType.toUpperCase();
+  
+  // Health indicators (following existing string analysis patterns)
+  const healthKeywords = ['MEDICAL', 'HEALTH', 'STANDARD BENEFITS'];
+  const hasHealth = healthKeywords.some(keyword => benefitText.includes(keyword));
+  
+  // Stop-loss indicators
+  const stopLossKeywords = ['STOP LOSS', 'STOP-LOSS', 'STOPLOSS'];
+  const hasStopLoss = stopLossKeywords.some(keyword => benefitText.includes(keyword));
+  
+  return { hasHealth, hasStopLoss };
+}
+```
+
+**2. Update buildScheduleAIndex Method (Following Existing Conditional Pattern):**
+
+**Current Code (lines 307-308):**
+```javascript
+if (record.wlfr_bnft_health_ind === 1) entry.health = true;
+if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
+```
+
+**Enhanced Code:**
+```javascript
+// Check database health indicator first (existing logic)
+if (record.wlfr_bnft_health_ind === 1) {
+  entry.health = true;
+}
+
+// Fallback: analyze benefit type text when DB indicators not available
+if (!entry.health && (record.benefit_types || record.benefitType)) {
+  const benefitType = record.benefit_types || record.benefitType || '';
+  const analysis = this.analyzeScheduleABenefitType(benefitType);
+  if (analysis.hasHealth) entry.health = true;
+}
+
+// Check database stop-loss indicator (existing logic)
+if (record.wlfr_bnft_stop_loss_ind === 1) {
+  entry.stopLoss = true;
+}
+
+// Fallback: analyze benefit type for stop-loss when DB indicators not available  
+if (!entry.stopLoss && (record.benefit_types || record.benefitType)) {
+  const benefitType = record.benefit_types || record.benefitType || '';
+  const analysis = this.analyzeScheduleABenefitType(benefitType);
+  if (analysis.hasStopLoss) entry.stopLoss = true;
+}
+```
+
+**3. Apply Same Pattern to End Year Section (lines 317-318):**
+Apply identical fallback logic to the `endYear` processing section.
+
+#### Code Patterns Followed
+
+✅ **Helper Method Pattern**: Similar to existing `extractYear()`, `rollUpCompanyClassification()` methods  
+✅ **Fallback Logic Pattern**: Database field check with text analysis backup (non-breaking)  
+✅ **String Analysis Pattern**: Consistent with `typeWelfareCode.includes('4A')` approach  
+✅ **Conditional Enhancement**: Preserves existing functionality while adding fallback capability  
+✅ **Error Handling Pattern**: Null/undefined checks following existing service patterns
+
+#### Expected Results After Fix
+
+- **Family Care Center**: Will be classified as "insured" (detects UnitedHealthcare, Cigna in Schedule A)
+- **Fast Pace**: Still "no-medical-plans" (legitimately only has 401k plans, no health coverage)  
+- **HealthAxis**: Will be classified as "insured" (detects UnitedHealthcare in Schedule A)
+- **No Breaking Changes**: Companies already working correctly continue to work the same way
+
+#### Files to Modify
+
+- `/server/data-extraction/SelfFundedClassifierService.js` - Add helper method and enhance `buildScheduleAIndex()`
+
+#### Testing Plan
+
+1. **Regression Testing**: Verify existing correctly-classified companies remain unchanged
+2. **Fix Validation**: Test the three problem companies show correct classifications
+3. **Edge Case Testing**: Test companies with various benefit type formats and missing data
+4. **Performance Testing**: Ensure text analysis fallback doesn't significantly impact performance
+
+This enhancement maintains backward compatibility while fixing the health detection gap for companies with retirement-focused Form 5500 records but legitimate health insurance coverage.
+
+## Enhanced Fallback Algorithm (Issue #002)
+
+### Problem Analysis
+After implementation and testing with real data, we discovered that human error in filling out Form 5500 database indicator fields (`wlfr_bnft_health_ind`, `wlfr_bnft_stop_loss_ind`) causes the algorithm to misclassify companies. The core algorithm logic is correct, but it receives incorrect input data.
+
+**Examples:**
+- **Family Care Center**: Has UnitedHealthcare and Cigna health insurance but `wlfr_bnft_health_ind = 0` → Algorithm thinks "no health insurance" → Wrong classification
+- **HealthAxis**: Has UnitedHealthcare health insurance but `wlfr_bnft_health_ind = 0` → Algorithm thinks "no health insurance" → Wrong classification  
+- **Medix**: Has disability/vision insurance (not health) but algorithm correctly identifies as self-funded → Correct classification
+
+### Solution Strategy
+**Preserve the exact core algorithm logic** while adding **fallback mechanisms** that use the existing proven data processing system when database indicators are incorrect.
+
+**Key Principle**: The algorithm's classification logic is perfect - we just need to ensure it receives accurate health/stop-loss indicators.
+
+### Implementation Details
+
+#### Change 1: Add ScheduleASearchService Integration
+
+**Add import after line 2:**
+```javascript
+const ScheduleASearchService = require('./ScheduleASearchService');
+```
+
+**Update constructor (lines 7-9):**
+```javascript
+constructor() {
+  this.databaseManager = DatabaseManager.getInstance();
+  this.scheduleASearchService = new ScheduleASearchService();
+}
+```
+
+#### Change 2: Add Precise Health Detection Methods
+
+**Add after line 282:**
+```javascript
+/**
+ * Determine if processed Schedule A record indicates health coverage
+ * Uses same logic as existing successful data processing system
+ * @param {Object} processedRecord - Record with benefitType and carrierName
+ * @returns {boolean} True if this is health insurance coverage
+ */
+isHealthBenefit(processedRecord) {
+  if (!processedRecord) return false;
+  
+  const benefitType = (processedRecord.benefitType || '').toUpperCase();
+  const carrierName = (processedRecord.carrierName || '').toUpperCase();
+  
+  // Exclude benefits that are NOT health insurance (even from health carriers)
+  const nonHealthBenefits = [
+    'DISABILITY', 'AD&D', 'LIFE INSURANCE', 'VISION', 'DENTAL',
+    'ACCIDENTAL DEATH', 'STATUTORY DISABILITY', 'ACCIDENTAL DEATH AND DISMEMBERMENT',
+    'LEGAL SERVICES', 'EMPLOYEE ASSISTANCE'
+  ];
+  
+  if (nonHealthBenefits.some(exclude => benefitType.includes(exclude))) {
+    return false;
+  }
+  
+  // Identify health insurance indicators
+  const healthBenefitKeywords = [
+    'MEDICAL', 'HEALTH', 'HEALTHCARE', 'STANDARD BENEFITS'
+  ];
+  
+  const majorHealthCarriers = [
+    'UNITEDHEALTHCARE', 'CIGNA HEALTH', 'AETNA', 'ANTHEM', 
+    'BLUE CROSS', 'BLUE SHIELD', 'HUMANA', 'KAISER'
+  ];
+  
+  // Must have health benefit keyword OR be from major health carrier
+  return healthBenefitKeywords.some(keyword => benefitType.includes(keyword)) ||
+         majorHealthCarriers.some(carrier => carrierName.includes(carrier));
+}
+
+/**
+ * Determine if processed Schedule A record indicates stop-loss coverage
+ * @param {Object} processedRecord - Record with benefitType
+ * @returns {boolean} True if this is stop-loss insurance
+ */
+isStopLossBenefit(processedRecord) {
+  if (!processedRecord) return false;
+  
+  const benefitType = (processedRecord.benefitType || '').toUpperCase();
+  const stopLossKeywords = ['STOP LOSS', 'STOP-LOSS', 'STOPLOSS'];
+  
+  return stopLossKeywords.some(keyword => benefitType.includes(keyword));
+}
+```
+
+#### Change 3: Enhanced buildScheduleAIndex with Fallback Logic
+
+**Replace entire buildScheduleAIndex method (lines 290-323):**
+```javascript
+async buildScheduleAIndex(scheduleARecords, ein) {
+  const index = {
+    byBeginYear: new Map(),
+    byEndYear: new Map()
+  };
+  
+  // Get processed Schedule A data as fallback for health detection
+  let processedScheduleA = null;
+  try {
+    processedScheduleA = await this.scheduleASearchService.searchSingleEIN(ein);
+  } catch (error) {
+    logger.debug(`Could not get processed Schedule A data for EIN ${ein}: ${error.message}`);
+  }
+  
+  for (const record of scheduleARecords) {
+    const planNum = record.sch_a_plan_num;
+    const beginYear = this.extractYear(record.sch_a_plan_year_begin_date);
+    const endYear = this.extractYear(record.sch_a_plan_year_end_date);
+    
+    // Step 1: Try database indicators first (existing logic)
+    let hasHealth = record.wlfr_bnft_health_ind === 1;
+    let hasStopLoss = record.wlfr_bnft_stop_loss_ind === 1;
+    
+    // Step 2: FALLBACK - Use processed data if database indicators are false/missing
+    if ((!hasHealth || !hasStopLoss) && processedScheduleA) {
+      const yearToCheck = beginYear || endYear;
+      if (yearToCheck) {
+        const processedRecords = processedScheduleA.schADetails?.[yearToCheck] || [];
+        
+        for (const processedRecord of processedRecords) {
+          if (!hasHealth && this.isHealthBenefit(processedRecord)) {
+            hasHealth = true;
+            logger.debug(`Enhanced health detection for EIN ${ein}, plan ${planNum}, year ${yearToCheck}`);
+          }
+          if (!hasStopLoss && this.isStopLossBenefit(processedRecord)) {
+            hasStopLoss = true;
+            logger.debug(`Enhanced stop-loss detection for EIN ${ein}, plan ${planNum}, year ${yearToCheck}`);
+          }
+        }
+      }
+    }
+    
+    // Step 3: Apply enhanced indicators to index (preserve existing structure)
+    if (beginYear && planNum && ein) {
+      const key = `${ein}-${planNum}-${beginYear}`;
+      if (!index.byBeginYear.has(key)) {
+        index.byBeginYear.set(key, { health: false, stopLoss: false });
+      }
+      const entry = index.byBeginYear.get(key);
+      if (hasHealth) entry.health = true;
+      if (hasStopLoss) entry.stopLoss = true;
+    }
+    
+    if (endYear && planNum && ein && endYear !== beginYear) {
+      const key = `${ein}-${planNum}-${endYear}`;
+      if (!index.byEndYear.has(key)) {
+        index.byEndYear.set(key, { health: false, stopLoss: false });
+      }
+      const entry = index.byEndYear.get(key);
+      if (hasHealth) entry.health = true;
+      if (hasStopLoss) entry.stopLoss = true;
+    }
+  }
+  
+  return index;
+}
+```
+
+#### Change 4: Update Async Method Call
+
+**Find line ~204:**
+```javascript
+const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins[0]);
+```
+
+**Replace with:**
+```javascript
+const scheduleAIndex = await this.buildScheduleAIndex(scheduleARecords, eins[0]);
+```
+
+### Algorithm Flow Comparison
+
+#### Before Enhancement:
+```
+1. Check database field: wlfr_bnft_health_ind
+2. If 0/null → "No health insurance found"
+3. Algorithm applies Priority rules with incorrect data
+4. WRONG classification (Family Care → "no-medical-plans")
+```
+
+#### After Enhancement:
+```
+1. Check database field: wlfr_bnft_health_ind
+2. If 0/null → Fallback: Check processed Schedule A data
+3. If UnitedHealthcare found → "Health insurance confirmed"  
+4. Algorithm applies SAME Priority rules with correct data
+5. CORRECT classification (Family Care → "insured")
+```
+
+### Core Algorithm Preservation
+
+**What Remains Unchanged:**
+- ✅ All classification priority logic (Priority 1: Schedule A health = Insured, etc.)
+- ✅ Plan-level matching by EIN-plan-year
+- ✅ Form 5500 analysis (4A codes, general assets flags)
+- ✅ Company-level rollup logic
+- ✅ All classification categories and reasons
+
+**What Changes:**
+- ✅ Health/stop-loss detection reliability (adds fallback when database fields incorrect)
+- ✅ Data accuracy (uses proven existing system as backup)
+
+### Expected Results After Enhancement
+
+- **Family Care Center**: Database indicators fail → Fallback detects UnitedHealthcare/Cigna → "Schedule A shows health coverage" → **"Insured"** ✅
+- **HealthAxis**: Database indicators fail → Fallback detects UnitedHealthcare → "Schedule A shows health coverage" → **"Insured"** ✅  
+- **Medix**: Database indicators work OR fallback correctly excludes disability/vision → "Header indicates general assets" → **"Self-funded"** ✅
+- **Fast Pace**: No Schedule A data → Correctly remains **"No medical plans"** ✅
+
+### Files Modified
+- `/server/data-extraction/SelfFundedClassifierService.js` - Enhanced health detection with fallback logic
+
+This enhancement ensures the algorithm receives accurate input data while preserving the exact classification logic that correctly handles complex cases like self-funded companies with ancillary insurance coverage.
