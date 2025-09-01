@@ -2156,101 +2156,68 @@ After implementation and testing with real data, we discovered that human error 
 - **Medix**: Has disability/vision insurance (not health) but algorithm correctly identifies as self-funded → Correct classification
 
 ### Solution Strategy
-**Preserve the exact core algorithm logic** while adding **fallback mechanisms** that use the existing proven data processing system when database indicators are incorrect.
+**Preserve the exact core algorithm logic** while adding **fallback mechanisms** that analyze raw database text fields when binary indicators are incorrect.
 
-**Key Principle**: The algorithm's classification logic is perfect - we just need to ensure it receives accurate health/stop-loss indicators.
+**Key Principle**: The algorithm's classification logic is perfect - we just need to ensure it receives accurate health/stop-loss indicators by analyzing the raw benefit text when binary indicators fail.
 
 ### Implementation Details
 
-#### Change 1: Add ScheduleASearchService Integration
-
-**Add import after line 2:**
-```javascript
-const ScheduleASearchService = require('./ScheduleASearchService');
-```
-
-**Update constructor (lines 7-9):**
-```javascript
-constructor() {
-  this.databaseManager = DatabaseManager.getInstance();
-  this.scheduleASearchService = new ScheduleASearchService();
-}
-```
-
-#### Change 2: Add Precise Health Detection Methods
+#### Change 1: Add Raw Database Text Analysis Methods
 
 **Add after line 282:**
 ```javascript
 /**
- * Determine if processed Schedule A record indicates health coverage
- * Uses same logic as existing successful data processing system
- * @param {Object} processedRecord - Record with benefitType and carrierName
- * @returns {boolean} True if this is health insurance coverage
+ * Analyze raw Schedule A benefit text for health indicators
+ * @param {string} benefitText - Raw benefit text from database
+ * @returns {boolean} True if this indicates health coverage
  */
-isHealthBenefit(processedRecord) {
-  if (!processedRecord) return false;
+isHealthBenefitText(benefitText) {
+  if (!benefitText || typeof benefitText !== 'string') return false;
   
-  const benefitType = (processedRecord.benefitType || '').toUpperCase();
-  const carrierName = (processedRecord.carrierName || '').toUpperCase();
+  const text = benefitText.toUpperCase().trim();
   
-  // Exclude benefits that are NOT health insurance (even from health carriers)
-  const nonHealthBenefits = [
+  // Exclude non-health benefits
+  const nonHealthKeywords = [
     'DISABILITY', 'AD&D', 'LIFE INSURANCE', 'VISION', 'DENTAL',
-    'ACCIDENTAL DEATH', 'STATUTORY DISABILITY', 'ACCIDENTAL DEATH AND DISMEMBERMENT',
-    'LEGAL SERVICES', 'EMPLOYEE ASSISTANCE'
+    'ACCIDENTAL DEATH', 'STATUTORY', 'LEGAL SERVICES', 'EMPLOYEE ASSISTANCE'
   ];
   
-  if (nonHealthBenefits.some(exclude => benefitType.includes(exclude))) {
+  if (nonHealthKeywords.some(exclude => text.includes(exclude))) {
     return false;
   }
   
-  // Identify health insurance indicators
-  const healthBenefitKeywords = [
-    'MEDICAL', 'HEALTH', 'HEALTHCARE', 'STANDARD BENEFITS'
+  // Health benefit indicators
+  const healthKeywords = [
+    'MEDICAL', 'HEALTH', 'HEALTHCARE', 'MAJOR MEDICAL', 'COMPREHENSIVE MEDICAL'
   ];
   
-  const majorHealthCarriers = [
-    'UNITEDHEALTHCARE', 'CIGNA HEALTH', 'AETNA', 'ANTHEM', 
-    'BLUE CROSS', 'BLUE SHIELD', 'HUMANA', 'KAISER'
-  ];
-  
-  // Must have health benefit keyword OR be from major health carrier
-  return healthBenefitKeywords.some(keyword => benefitType.includes(keyword)) ||
-         majorHealthCarriers.some(carrier => carrierName.includes(carrier));
+  return healthKeywords.some(keyword => text.includes(keyword));
 }
 
 /**
- * Determine if processed Schedule A record indicates stop-loss coverage
- * @param {Object} processedRecord - Record with benefitType
- * @returns {boolean} True if this is stop-loss insurance
+ * Analyze raw Schedule A benefit text for stop-loss indicators
+ * @param {string} benefitText - Raw benefit text from database
+ * @returns {boolean} True if this indicates stop-loss coverage
  */
-isStopLossBenefit(processedRecord) {
-  if (!processedRecord) return false;
+isStopLossBenefitText(benefitText) {
+  if (!benefitText || typeof benefitText !== 'string') return false;
   
-  const benefitType = (processedRecord.benefitType || '').toUpperCase();
+  const text = benefitText.toUpperCase();
   const stopLossKeywords = ['STOP LOSS', 'STOP-LOSS', 'STOPLOSS'];
   
-  return stopLossKeywords.some(keyword => benefitType.includes(keyword));
+  return stopLossKeywords.some(keyword => text.includes(keyword));
 }
 ```
 
-#### Change 3: Enhanced buildScheduleAIndex with Fallback Logic
+#### Change 2: Enhanced buildScheduleAIndex with Raw Text Fallback
 
 **Replace entire buildScheduleAIndex method (lines 290-323):**
 ```javascript
-async buildScheduleAIndex(scheduleARecords, ein) {
+buildScheduleAIndex(scheduleARecords, ein) {
   const index = {
     byBeginYear: new Map(),
     byEndYear: new Map()
   };
-  
-  // Get processed Schedule A data as fallback for health detection
-  let processedScheduleA = null;
-  try {
-    processedScheduleA = await this.scheduleASearchService.searchSingleEIN(ein);
-  } catch (error) {
-    logger.debug(`Could not get processed Schedule A data for EIN ${ein}: ${error.message}`);
-  }
   
   for (const record of scheduleARecords) {
     const planNum = record.sch_a_plan_num;
@@ -2261,22 +2228,18 @@ async buildScheduleAIndex(scheduleARecords, ein) {
     let hasHealth = record.wlfr_bnft_health_ind === 1;
     let hasStopLoss = record.wlfr_bnft_stop_loss_ind === 1;
     
-    // Step 2: FALLBACK - Use processed data if database indicators are false/missing
-    if ((!hasHealth || !hasStopLoss) && processedScheduleA) {
-      const yearToCheck = beginYear || endYear;
-      if (yearToCheck) {
-        const processedRecords = processedScheduleA.schADetails?.[yearToCheck] || [];
-        
-        for (const processedRecord of processedRecords) {
-          if (!hasHealth && this.isHealthBenefit(processedRecord)) {
-            hasHealth = true;
-            logger.debug(`Enhanced health detection for EIN ${ein}, plan ${planNum}, year ${yearToCheck}`);
-          }
-          if (!hasStopLoss && this.isStopLossBenefit(processedRecord)) {
-            hasStopLoss = true;
-            logger.debug(`Enhanced stop-loss detection for EIN ${ein}, plan ${planNum}, year ${yearToCheck}`);
-          }
-        }
+    // Step 2: FALLBACK - Analyze raw text fields when database indicators are false/missing
+    if (!hasHealth && record.wlfr_type_bnft_oth_text) {
+      hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
+      if (hasHealth) {
+        logger.debug(`Text-based health detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+      }
+    }
+    
+    if (!hasStopLoss && record.wlfr_type_bnft_oth_text) {
+      hasStopLoss = this.isStopLossBenefitText(record.wlfr_type_bnft_oth_text);
+      if (hasStopLoss) {
+        logger.debug(`Text-based stop-loss detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
       }
     }
     
@@ -2306,17 +2269,7 @@ async buildScheduleAIndex(scheduleARecords, ein) {
 }
 ```
 
-#### Change 4: Update Async Method Call
-
-**Find line ~204:**
-```javascript
-const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins[0]);
-```
-
-**Replace with:**
-```javascript
-const scheduleAIndex = await this.buildScheduleAIndex(scheduleARecords, eins[0]);
-```
+**No external dependencies or async changes required.**
 
 ### Algorithm Flow Comparison
 
@@ -2331,8 +2284,8 @@ const scheduleAIndex = await this.buildScheduleAIndex(scheduleARecords, eins[0])
 #### After Enhancement:
 ```
 1. Check database field: wlfr_bnft_health_ind
-2. If 0/null → Fallback: Check processed Schedule A data
-3. If UnitedHealthcare found → "Health insurance confirmed"  
+2. If 0/null → Fallback: Check raw text field wlfr_type_bnft_oth_text
+3. If text contains "MEDICAL" or "HEALTH" → "Health insurance confirmed"  
 4. Algorithm applies SAME Priority rules with correct data
 5. CORRECT classification (Family Care → "insured")
 ```
@@ -2347,17 +2300,176 @@ const scheduleAIndex = await this.buildScheduleAIndex(scheduleARecords, eins[0])
 - ✅ All classification categories and reasons
 
 **What Changes:**
-- ✅ Health/stop-loss detection reliability (adds fallback when database fields incorrect)
-- ✅ Data accuracy (uses proven existing system as backup)
+- ✅ Health/stop-loss detection reliability (adds text analysis fallback when database indicators incorrect)
+- ✅ Data accuracy (analyzes raw database text fields as backup)
 
 ### Expected Results After Enhancement
 
-- **Family Care Center**: Database indicators fail → Fallback detects UnitedHealthcare/Cigna → "Schedule A shows health coverage" → **"Insured"** ✅
-- **HealthAxis**: Database indicators fail → Fallback detects UnitedHealthcare → "Schedule A shows health coverage" → **"Insured"** ✅  
-- **Medix**: Database indicators work OR fallback correctly excludes disability/vision → "Header indicates general assets" → **"Self-funded"** ✅
+- **Family Care Center**: Database indicators fail → Fallback analyzes raw text fields → Finds health-related text → "Schedule A shows health coverage" → **"Insured"** ✅
+- **HealthAxis**: Database indicators fail → Fallback analyzes raw text fields → Finds health-related text → "Schedule A shows health coverage" → **"Insured"** ✅  
+- **Medix**: Database indicators work OR fallback correctly excludes disability/vision text → "Header indicates general assets" → **"Self-funded"** ✅
 - **Fast Pace**: No Schedule A data → Correctly remains **"No medical plans"** ✅
 
-### Files Modified
-- `/server/data-extraction/SelfFundedClassifierService.js` - Enhanced health detection with fallback logic
+### Advantages of Raw Text Analysis Approach
 
-This enhancement ensures the algorithm receives accurate input data while preserving the exact classification logic that correctly handles complex cases like self-funded companies with ancillary insurance coverage.
+- ✅ **Maintains Plan-Level Precision** - No cross-contamination between different plans
+- ✅ **No Performance Impact** - No additional database calls or external dependencies  
+- ✅ **Uses Existing Database Fields** - Analyzes `wlfr_type_bnft_oth_text` field that already exists
+- ✅ **Conservative Enhancement** - Only enhances detection when database indicators are false
+- ✅ **Same Data Source** - No dependency on different data processing systems
+
+### Files Modified
+- `/server/data-extraction/SelfFundedClassifierService.js` - Enhanced health detection with raw text analysis fallback
+
+This enhancement ensures the algorithm receives accurate input data while preserving the exact classification logic and maintaining plan-level precision required for complex cases like self-funded companies with ancillary insurance coverage.
+
+## Implementation Guide for Developers
+
+### Prerequisites Check
+
+Before implementing, verify the database field exists:
+```sql
+-- Verify wlfr_type_bnft_oth_text field exists and has data
+SELECT COUNT(*) as total_records,
+       COUNT(wlfr_type_bnft_oth_text) as records_with_text,
+       COUNT(CASE WHEN wlfr_type_bnft_oth_text IS NOT NULL AND wlfr_type_bnft_oth_text != '' THEN 1 END) as non_empty_text
+FROM schedule_a_records 
+WHERE sch_a_ein IN ('810970561', '270851352', '455531595');
+```
+
+### Implementation Steps
+
+1. **Add helper methods** after line 282 in `SelfFundedClassifierService.js`
+2. **Replace buildScheduleAIndex method** with enhanced version
+3. **Test with problem companies** to verify fixes
+4. **Deploy and monitor** classification results
+
+### Testing Strategy
+
+#### Unit Testing
+Test the new helper methods with various text inputs:
+```javascript
+// Test cases for isHealthBenefitText()
+console.assert(this.isHealthBenefitText('MEDICAL BENEFITS') === true);
+console.assert(this.isHealthBenefitText('HEALTH INSURANCE') === true);  
+console.assert(this.isHealthBenefitText('DISABILITY INSURANCE') === false);
+console.assert(this.isHealthBenefitText('VISION BENEFITS') === false);
+console.assert(this.isHealthBenefitText('') === false);
+console.assert(this.isHealthBenefitText(null) === false);
+```
+
+#### Integration Testing
+Test with the three problem companies:
+```javascript
+// Should now classify as "insured" instead of "no-medical-plans"
+const familyCareCenterResult = await classifier.testClassifyCompany('FAMILY CARE CENTER, LLC');
+const healthAxisResult = await classifier.testClassifyCompany('HEALTHAXIS GROUP, LLC');
+
+// Should remain correctly classified as "self-funded" 
+const medixResult = await classifier.testClassifyCompany('Medix Staffing Solutions');
+
+// Should remain correctly classified as "no-medical-plans"
+const fastPaceResult = await classifier.testClassifyCompany('FAST PACE MEDICAL CLINICAL, PLLC');
+```
+
+### Error Handling Considerations
+
+```javascript
+// Add defensive programming
+isHealthBenefitText(benefitText) {
+  try {
+    if (!benefitText || typeof benefitText !== 'string') return false;
+    // ... rest of method
+  } catch (error) {
+    logger.warn(`Error analyzing benefit text: ${error.message}`);
+    return false; // Conservative fallback
+  }
+}
+```
+
+### Data Validation
+
+Check that the `wlfr_type_bnft_oth_text` field contains meaningful data:
+```javascript
+// In buildScheduleAIndex, log when fallback is used
+if (!hasHealth && record.wlfr_type_bnft_oth_text) {
+  hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
+  if (hasHealth) {
+    logger.debug(`Text-based health detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+  } else {
+    logger.debug(`Text analysis failed for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+  }
+}
+```
+
+### Monitoring and Debugging
+
+#### Key Metrics to Track
+- **Fallback Usage Rate**: How often text analysis is used vs database indicators
+- **Classification Changes**: Companies that change classification after enhancement
+- **Text Field Population**: Percentage of Schedule A records with meaningful text
+
+#### Debug Logging
+Enable detailed logging to troubleshoot issues:
+```javascript
+// Add to environment variables for debugging
+LOG_SERVICES=mcp,server,workflow,manager,database,files,parsing,debug,classifier
+```
+
+#### Expected Log Patterns
+```
+✅ Success: "Text-based health detection for EIN 810970561, plan 501: 'COMPREHENSIVE MEDICAL BENEFITS'"
+⚠️  Expected: "Text analysis failed for EIN 270851352, plan 401: 'RETIREMENT BENEFITS'"
+❌ Problem: "Text-based health detection for EIN 123456789, plan 501: 'DISABILITY INSURANCE'"
+```
+
+### Performance Considerations
+
+- **No additional database calls** - enhancement uses existing record data
+- **Minimal computational overhead** - simple string operations
+- **Memory usage** - negligible increase
+- **Expected impact**: < 1ms additional processing per Schedule A record
+
+### Rollback Plan
+
+If issues arise, commenting out the fallback sections will restore original behavior:
+```javascript
+// Temporary rollback - comment out fallback sections
+// if (!hasHealth && record.wlfr_type_bnft_oth_text) {
+//   hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
+// }
+```
+
+### Common Issues and Solutions
+
+#### Issue 1: Text field is always empty
+**Symptom**: No improvement in classifications  
+**Solution**: Verify database import process populates `wlfr_type_bnft_oth_text`
+
+#### Issue 2: False positives (non-medical plans classified as medical)
+**Symptom**: Retirement plans incorrectly classified as health plans  
+**Solution**: Enhance `nonHealthKeywords` array with additional exclusions
+
+#### Issue 3: False negatives (medical plans not detected)
+**Symptom**: Known health plans still classified as "no-medical-plans"  
+**Solution**: Enhance `healthKeywords` array with additional health indicators
+
+### Field Reference
+
+The enhancement analyzes this existing database field:
+```sql
+-- From schedule_a_records table
+wlfr_type_bnft_oth_text TEXT  -- Other benefit type description
+```
+
+This field is populated from Form 5500 Schedule A submissions and contains free-text descriptions of benefit types when standard categories don't apply.
+
+### Success Criteria
+
+Implementation is successful when:
+- ✅ Family Care Center classifies as "insured" (was "no-medical-plans")
+- ✅ HealthAxis classifies as "insured" (was "no-medical-plans")  
+- ✅ Medix remains "self-funded" (no change)
+- ✅ Fast Pace remains "no-medical-plans" (no change)
+- ✅ No performance degradation
+- ✅ All existing correctly-classified companies remain unchanged
