@@ -926,3 +926,41 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-08-31T23:18:53.580Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-08-31T23:18:53.829Z"}
 {"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-08-31T23:18:54.068Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-01T06:35:51.697Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: Smartbug Operating LLC","service":"server","timestamp":"2025-09-01T06:36:06.636Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: Smartbug Operating LLC","service":"database","timestamp":"2025-09-01T06:36:06.637Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: Medix Staffing Solutions","service":"server","timestamp":"2025-09-01T06:36:33.194Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: Medix Staffing Solutions","service":"database","timestamp":"2025-09-01T06:36:33.194Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: FAMILY CARE CENTER, LLC","service":"server","timestamp":"2025-09-01T06:37:05.888Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: FAMILY CARE CENTER, LLC","service":"database","timestamp":"2025-09-01T06:37:05.888Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-01T06:37:22.820Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-01T06:37:27.840Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-01T06:37:28.463Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-01T06:37:28.466Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-01T06:37:28.709Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-01T06:37:28.709Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-01T06:37:28.709Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-01T06:37:28.710Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-01T06:37:28.716Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-01T06:37:28.725Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-01T06:37:29.247Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-01T06:37:29.249Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-01T06:37:29.351Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-01T06:37:29.351Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-01T06:37:29.351Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-01T06:37:29.354Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-01T06:37:29.354Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T06:37:29.634Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T06:37:29.634Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-01T06:37:29.889Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-01T06:37:29.891Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-01T06:37:29.893Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-01T06:37:30.441Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-01T06:37:30.447Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-01T06:37:33.091Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: FAMILY CARE CENTER, LLC","service":"server","timestamp":"2025-09-01T06:37:38.415Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: FAMILY CARE CENTER, LLC","service":"database","timestamp":"2025-09-01T06:37:38.416Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: HEALTHAXIS GROUP, LLC","service":"server","timestamp":"2025-09-01T06:39:22.435Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: HEALTHAXIS GROUP, LLC","service":"database","timestamp":"2025-09-01T06:39:22.436Z"}
+{"level":"info","message":"🧪 Testing self-funded classification for company: FAST PACE MEDICAL CLINICAL, PLLC","service":"server","timestamp":"2025-09-01T06:40:07.724Z"}
+{"level":"info","message":"🔍 Testing self-funded classification for: FAST PACE MEDICAL CLINICAL, PLLC","service":"database","timestamp":"2025-09-01T06:40:07.724Z"}

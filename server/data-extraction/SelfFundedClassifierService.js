@@ -148,6 +148,58 @@ class SelfFundedClassifierService {
   }
 
   /**
+   * Analyze raw Schedule A benefit text for health indicators
+   * @param {string} benefitText - Raw benefit text from database
+   * @returns {boolean} True if this indicates health coverage
+   */
+  isHealthBenefitText(benefitText) {
+    try {
+      if (!benefitText || typeof benefitText !== 'string') return false;
+      
+      const text = benefitText.toUpperCase().trim();
+      
+      // Exclude non-health benefits
+      const nonHealthKeywords = [
+        'DISABILITY', 'AD&D', 'LIFE INSURANCE', 'VISION', 'DENTAL',
+        'ACCIDENTAL DEATH', 'STATUTORY', 'LEGAL SERVICES', 'EMPLOYEE ASSISTANCE'
+      ];
+      
+      if (nonHealthKeywords.some(exclude => text.includes(exclude))) {
+        return false;
+      }
+      
+      // Health benefit indicators
+      const healthKeywords = [
+        'MEDICAL', 'HEALTH', 'HEALTHCARE', 'MAJOR MEDICAL', 'COMPREHENSIVE MEDICAL'
+      ];
+      
+      return healthKeywords.some(keyword => text.includes(keyword));
+    } catch (error) {
+      logger.warn(`Error analyzing benefit text: ${error.message}`);
+      return false; // Conservative fallback
+    }
+  }
+
+  /**
+   * Analyze raw Schedule A benefit text for stop-loss indicators
+   * @param {string} benefitText - Raw benefit text from database
+   * @returns {boolean} True if this indicates stop-loss coverage
+   */
+  isStopLossBenefitText(benefitText) {
+    try {
+      if (!benefitText || typeof benefitText !== 'string') return false;
+      
+      const text = benefitText.toUpperCase();
+      const stopLossKeywords = ['STOP LOSS', 'STOP-LOSS', 'STOPLOSS'];
+      
+      return stopLossKeywords.some(keyword => text.includes(keyword));
+    } catch (error) {
+      logger.warn(`Error analyzing stop-loss text: ${error.message}`);
+      return false; // Conservative fallback
+    }
+  }
+
+  /**
    * Test classification for a single company name (for test endpoint)
    * @param {string} companyName - Company name to search and classify
    * @returns {Object} Classification results with year-by-year breakdown and raw data
@@ -282,7 +334,7 @@ class SelfFundedClassifierService {
   }
 
   /**
-   * Build Schedule A index for efficient lookups
+   * Build Schedule A index for efficient lookups with enhanced fallback text analysis
    * @param {Array} scheduleARecords - Raw Schedule A records
    * @param {string} ein - The EIN these records belong to
    * @returns {Object} Indexed Schedule A data
@@ -298,14 +350,34 @@ class SelfFundedClassifierService {
       const beginYear = this.extractYear(record.sch_a_plan_year_begin_date);
       const endYear = this.extractYear(record.sch_a_plan_year_end_date);
       
+      // Step 1: Try database indicators first (existing logic)
+      let hasHealth = record.wlfr_bnft_health_ind === 1;
+      let hasStopLoss = record.wlfr_bnft_stop_loss_ind === 1;
+      
+      // Step 2: FALLBACK - Analyze raw text fields when database indicators are false/missing
+      if (!hasHealth && record.wlfr_type_bnft_oth_text) {
+        hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
+        if (hasHealth) {
+          logger.debug(`Text-based health detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+        }
+      }
+      
+      if (!hasStopLoss && record.wlfr_type_bnft_oth_text) {
+        hasStopLoss = this.isStopLossBenefitText(record.wlfr_type_bnft_oth_text);
+        if (hasStopLoss) {
+          logger.debug(`Text-based stop-loss detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+        }
+      }
+      
+      // Step 3: Apply enhanced indicators to index (preserve existing structure)
       if (beginYear && planNum && ein) {
         const key = `${ein}-${planNum}-${beginYear}`;
         if (!index.byBeginYear.has(key)) {
           index.byBeginYear.set(key, { health: false, stopLoss: false });
         }
         const entry = index.byBeginYear.get(key);
-        if (record.wlfr_bnft_health_ind === 1) entry.health = true;
-        if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
+        if (hasHealth) entry.health = true;
+        if (hasStopLoss) entry.stopLoss = true;
       }
       
       if (endYear && planNum && ein && endYear !== beginYear) {
@@ -314,8 +386,8 @@ class SelfFundedClassifierService {
           index.byEndYear.set(key, { health: false, stopLoss: false });
         }
         const entry = index.byEndYear.get(key);
-        if (record.wlfr_bnft_health_ind === 1) entry.health = true;
-        if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
+        if (hasHealth) entry.health = true;
+        if (hasStopLoss) entry.stopLoss = true;
       }
     }
     
