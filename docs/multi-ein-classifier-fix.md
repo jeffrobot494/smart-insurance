@@ -248,16 +248,8 @@ buildScheduleAIndex(scheduleARecords, allEINs) {
     const beginYear = this.extractYear(record.sch_a_plan_year_begin_date);
     const endYear = this.extractYear(record.sch_a_plan_year_end_date);
     
-    // Skip if record has no EIN or plan number
-    if (!recordEIN || !planNum) {
-      continue;
-    }
-    
-    // NEW: Skip if this record's EIN is not in our company's EIN list
-    // Handle both string and numeric EIN comparisons
-    const recordEINStr = recordEIN.toString();
-    const isValidEIN = allEINs.some(ein => ein && ein.toString() === recordEINStr);
-    if (!isValidEIN) {
+    // Skip if record has no plan number
+    if (!planNum) {
       continue;
     }
     

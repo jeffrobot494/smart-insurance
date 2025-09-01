@@ -57,19 +57,12 @@ class SelfFundedClassifierService {
    * @returns {Object} Detailed classification result with year-by-year breakdown
    */
   async classifyCompany(company) {
-    const ein = company.form5500_data.ein;
     const legalEntityName = company.legal_entity_name;
     
-    // Get raw Form 5500 and Schedule A data for classification
-    // Note: get_form5500_for_classification expects company name, not EIN
+    // Get raw Form 5500 data for classification
     const form5500Records = await this.databaseManager.query(
       'SELECT * FROM get_form5500_for_classification($1)',
       [legalEntityName]
-    );
-    
-    const scheduleARecords = await this.databaseManager.query(
-      'SELECT * FROM get_schedule_a_for_classification($1)', 
-      [ein]
     );
     
     if (form5500Records.rows.length === 0) {
@@ -78,13 +71,74 @@ class SelfFundedClassifierService {
         classifications_by_year: {},
         summary: {
           years_available: [],
-          message: 'No Form 5500 records found for this EIN'
+          message: 'No Form 5500 records found for this company'
         }
       };
     }
     
-    // Build Schedule A index by plan and year
-    const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords.rows, ein);
+    // NEW: Get all unique EINs from Form 5500 records with validation
+    const baseCompanyName = form5500Records.rows[0].sponsor_name;
+    
+    // Defensive check for missing base company name
+    if (!baseCompanyName || baseCompanyName.trim() === '') {
+      logger.warn(`No sponsor name found for company: ${legalEntityName}`);
+      // Fallback to single EIN approach
+      const ein = company.form5500_data?.ein;
+      if (!ein) {
+        return {
+          current_classification: 'no-data',
+          classifications_by_year: {},
+          summary: {
+            years_available: [],
+            message: 'No EIN available for classification'
+          }
+        };
+      }
+      const scheduleARecords = await this.databaseManager.query(
+        'SELECT * FROM get_schedule_a_for_classification($1)', 
+        [ein]
+      );
+      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords.rows, [ein]);
+    } else {
+      // Multi-EIN approach with validation
+      const allEINs = [...new Set(
+        form5500Records.rows
+          .filter(record => record.sponsor_name && record.sponsor_name === baseCompanyName)
+          .map(record => record.ein)
+          .filter(ein => ein && ein.trim() !== '')
+      )];
+      
+      // Defensive check for empty EINs array
+      if (allEINs.length === 0) {
+        logger.warn(`No valid EINs found for company: ${legalEntityName}`);
+        return {
+          current_classification: 'no-data',
+          classifications_by_year: {},
+          summary: {
+            years_available: [],
+            message: 'No valid EINs found for this company'
+          }
+        };
+      }
+      
+      // Get Schedule A records for ALL company EINs
+      const allScheduleARecords = [];
+      for (const ein of allEINs) {
+        try {
+          const scheduleAResult = await this.databaseManager.query(
+            'SELECT * FROM get_schedule_a_for_classification($1)',
+            [ein]
+          );
+          allScheduleARecords.push(...scheduleAResult.rows);
+        } catch (error) {
+          logger.warn(`Failed to get Schedule A for EIN ${ein}:`, error.message);
+          // Continue with other EINs instead of failing completely
+        }
+      }
+      
+      // Build Schedule A index with ALL EINs
+      var scheduleAIndex = this.buildScheduleAIndex(allScheduleARecords, allEINs);
+    }
     
     // Group Form 5500 records by year
     const recordsByYear = {};
@@ -235,25 +289,70 @@ class SelfFundedClassifierService {
         };
       }
       
-      // Get EINs and Schedule A data
-      const eins = [...new Set(form5500Records.map(r => r.ein).filter(ein => ein))];
-      const scheduleARecords = [];
-      for (const ein of eins) {
-        const scheduleAResult = await this.databaseManager.query(
-          'SELECT * FROM get_schedule_a_for_classification($1)',
-          [ein]
-        );
-        scheduleARecords.push(...scheduleAResult.rows);
+      // Get EINs and Schedule A data with validation
+      const baseCompanyName = form5500Records[0].sponsor_name;
+      
+      // Defensive programming for missing base company name
+      if (!baseCompanyName || baseCompanyName.trim() === '') {
+        logger.warn(`No sponsor name found for company: ${companyName}`);
+        return {
+          success: true,
+          company_name: companyName,
+          self_funded: 'no-data',
+          self_funded_analysis: {
+            current_classification: 'no-data',
+            classifications_by_year: {},
+            summary: {
+              years_available: [],
+              message: 'No sponsor name available for classification'
+            }
+          },
+          raw_data: { form5500_records: form5500Records, schedule_a_records: [] }
+        };
       }
       
-      // Create a mock company object to reuse existing classification logic
-      const mockCompany = {
-        legal_entity_name: companyName,
-        form5500_data: { ein: eins[0] } // Use first EIN found
-      };
+      const eins = [...new Set(
+        form5500Records
+          .filter(record => record.sponsor_name && record.sponsor_name === baseCompanyName)
+          .map(r => r.ein)
+          .filter(ein => ein && ein.trim() !== '')
+      )];
       
-      // Build Schedule A index and classify manually (since we have raw data)
-      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins[0]);
+      // Defensive check for empty EINs array
+      if (eins.length === 0) {
+        logger.warn(`No valid EINs found for company: ${companyName}`);
+        return {
+          success: true,
+          company_name: companyName,
+          self_funded: 'no-data',
+          self_funded_analysis: {
+            current_classification: 'no-data',
+            classifications_by_year: {},
+            summary: {
+              years_available: [],
+              message: 'No valid EINs found for this company'
+            }
+          },
+          raw_data: { form5500_records: form5500Records, schedule_a_records: [] }
+        };
+      }
+      
+      const scheduleARecords = [];
+      for (const ein of eins) {
+        try {
+          const scheduleAResult = await this.databaseManager.query(
+            'SELECT * FROM get_schedule_a_for_classification($1)',
+            [ein]
+          );
+          scheduleARecords.push(...scheduleAResult.rows);
+        } catch (error) {
+          logger.warn(`Failed to get Schedule A for EIN ${ein} in test:`, error.message);
+          // Continue with other EINs instead of failing completely
+        }
+      }
+      
+      // Build Schedule A index with ALL EINs (not just first one)
+      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins);
       
       // Group Form 5500 records by year
       const recordsByYear = {};
@@ -336,19 +435,40 @@ class SelfFundedClassifierService {
   /**
    * Build Schedule A index for efficient lookups with enhanced fallback text analysis
    * @param {Array} scheduleARecords - Raw Schedule A records
-   * @param {string} ein - The EIN these records belong to
+   * @param {Array} allEINs - All EINs associated with this company
    * @returns {Object} Indexed Schedule A data
    */
-  buildScheduleAIndex(scheduleARecords, ein) {
+  buildScheduleAIndex(scheduleARecords, allEINs) {
     const index = {
       byBeginYear: new Map(),
       byEndYear: new Map()
     };
     
+    // Defensive checks
+    if (!Array.isArray(scheduleARecords)) {
+      logger.warn('buildScheduleAIndex: scheduleARecords is not an array');
+      return index;
+    }
+    
+    if (!Array.isArray(allEINs) || allEINs.length === 0) {
+      logger.warn('buildScheduleAIndex: allEINs is not a valid array or is empty');
+      return index;
+    }
+    
     for (const record of scheduleARecords) {
+      if (!record) {
+        continue; // Skip null/undefined records
+      }
+      
+      const recordEIN = record.sch_a_ein;
       const planNum = record.sch_a_plan_num;
       const beginYear = this.extractYear(record.sch_a_plan_year_begin_date);
       const endYear = this.extractYear(record.sch_a_plan_year_end_date);
+      
+      // Skip if record has no plan number
+      if (!planNum) {
+        continue;
+      }
       
       // Step 1: Try database indicators first (existing logic)
       let hasHealth = record.wlfr_bnft_health_ind === 1;
@@ -358,20 +478,23 @@ class SelfFundedClassifierService {
       if (!hasHealth && record.wlfr_type_bnft_oth_text) {
         hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
         if (hasHealth) {
-          logger.debug(`Text-based health detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+          logger.debug(`Text-based health detection for EIN ${recordEIN}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
         }
       }
       
       if (!hasStopLoss && record.wlfr_type_bnft_oth_text) {
         hasStopLoss = this.isStopLossBenefitText(record.wlfr_type_bnft_oth_text);
         if (hasStopLoss) {
-          logger.debug(`Text-based stop-loss detection for EIN ${ein}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
+          logger.debug(`Text-based stop-loss detection for EIN ${recordEIN}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
         }
       }
       
       // Step 3: Apply enhanced indicators to index (preserve existing structure)
-      if (beginYear && planNum && ein) {
-        const key = `${ein}-${planNum}-${beginYear}`;
+      // Use the first available EIN from our company EINs if record EIN is missing
+      const keyEIN = recordEIN || allEINs[0] || 'unknown';
+      
+      if (beginYear && planNum) {
+        const key = `${keyEIN}-${planNum}-${beginYear}`;
         if (!index.byBeginYear.has(key)) {
           index.byBeginYear.set(key, { health: false, stopLoss: false });
         }
@@ -380,8 +503,8 @@ class SelfFundedClassifierService {
         if (hasStopLoss) entry.stopLoss = true;
       }
       
-      if (endYear && planNum && ein && endYear !== beginYear) {
-        const key = `${ein}-${planNum}-${endYear}`;
+      if (endYear && planNum && endYear !== beginYear) {
+        const key = `${keyEIN}-${planNum}-${endYear}`;
         if (!index.byEndYear.has(key)) {
           index.byEndYear.set(key, { health: false, stopLoss: false });
         }
