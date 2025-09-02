@@ -11,13 +11,16 @@ This document outlines a careful, step-by-step approach to implementing Paged.js
 
 ---
 
-# PHASE 1: Add Print CSS Only (No Code Changes)
+# PHASE 1: Add Print CSS and Test with Browser Print Preview
 
 ## Goal
-Add proper page margins and page break CSS without changing any JavaScript code.
+Add proper page margins and page break CSS, then test with browser's native print preview to verify the CSS works correctly.
 
 ## Risk Level
-**Very Low** - CSS only, no functional changes
+**Very Low** - CSS only, no functional changes to PDF generation
+
+## Important Note
+**html2canvas ignores `@media print` styles**, so the generated PDF will look the same as before. This phase validates that our print CSS works with the browser's native print engine before integrating with Paged.js.
 
 ## Changes
 - **File:** `public/js/templates/default/styles.css`
@@ -65,16 +68,49 @@ Add proper page margins and page break CSS without changing any JavaScript code.
 ```
 
 ## Testing Phase 1
-1. **Generate PDF using existing system** (still uses html2canvas)
-2. **Expected:** Same content, but with proper margins
-3. **Verify:** Content no longer runs to page edges
-4. **If issues:** Just revert the CSS changes
+
+### Step 1: Test Browser Print Preview
+1. **Navigate to a report page** (with company data displayed)
+2. **Open browser print preview**: Press `Ctrl+P` (Windows) or `Cmd+P` (Mac)
+3. **Verify in print preview:**
+   - Content has proper margins (not edge-to-edge)
+   - Page is in landscape orientation
+   - Company rows don't split across pages (if content fits)
+   - Headers and shadows are removed
+
+### Step 2: Verify PDF Generation Still Works
+1. **Generate PDF using existing "Generate PDF" button**
+2. **Expected:** PDF looks exactly the same as before (html2canvas ignores print CSS)
+3. **Important:** This confirms we didn't break existing functionality
+
+### Step 3: Compare Print Preview vs Generated PDF
+- **Print Preview**: Should show proper margins and print styling
+- **Generated PDF**: Should look the same as before (no margins)
+- **This confirms**: CSS works for print, but html2canvas doesn't use it
 
 ## Success Criteria for Phase 1
-- ✅ PDF generation still works (uses html2canvas)
-- ✅ Content has visible margins 
-- ✅ No functional changes to user experience
-- ✅ Layout remains exactly the same
+- ✅ **Browser print preview shows proper margins** - CSS is working
+- ✅ **Generated PDF unchanged** - Existing functionality intact  
+- ✅ **No JavaScript errors** - CSS changes don't break anything
+- ✅ **Print preview shows landscape layout** - Page setup correct
+
+## Troubleshooting Phase 1
+
+**If print preview doesn't show margins:**
+- Check CSS syntax for typos
+- Verify browser supports `@page` rules (Chrome/Edge recommended)
+- Try refreshing page after CSS changes
+
+**If generated PDF looks different:**
+- This is unexpected! html2canvas shouldn't use print CSS
+- Revert CSS changes and investigate
+
+**If JavaScript errors occur:**
+- CSS syntax error likely
+- Check browser console and fix CSS
+
+## Why This Phase Matters
+This phase validates that our print CSS works correctly with the browser's native print engine. In Phase 3, Paged.js will use these same print CSS rules, so we need to confirm they work properly before integrating Paged.js.
 
 ---
 
