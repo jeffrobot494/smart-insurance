@@ -167,6 +167,35 @@ th {
 }
 
 @media print {
-    body { background-color: white; }
-    .header, .table-section { box-shadow: none; }
+    /* Page setup for landscape with proper margins */
+    @page {
+        size: A4 landscape;
+        margin: 0.75in 0.5in; /* top/bottom left/right */
+    }
+    
+    /* Clean up screen styling */
+    body { 
+        background-color: white !important; 
+    }
+    
+    .header, .table-section {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    
+    /* Basic page break prevention */
+    .company-row {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    
+    .total-row {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    
+    /* Ensure table headers repeat */
+    thead {
+        display: table-header-group;
+    }
 }

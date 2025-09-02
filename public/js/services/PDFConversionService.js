@@ -22,6 +22,60 @@ class PDFConversionService {
     }
 
     /**
+     * Load Paged.js library for client-side pagination (Phase 2 - Testing Only)
+     */
+    static async loadPagedJS() {
+        console.log('Phase 2: Testing Paged.js library loading...');
+        
+        // Check if already loaded
+        if (window.PagedPolyfill) {
+            console.log('Paged.js already available');
+            return window.PagedPolyfill;
+        }
+        
+        try {
+            // Load Paged.js from CDN
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/pagedjs@0.4.2/dist/paged.polyfill.js';
+            script.async = true;
+            
+            console.log('Loading Paged.js from CDN...');
+            
+            // Wait for script to load
+            await new Promise((resolve, reject) => {
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+            
+            // Wait for initialization
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            console.log('✅ Paged.js loaded successfully:', !!window.PagedPolyfill);
+            return window.PagedPolyfill;
+            
+        } catch (error) {
+            console.error('❌ Failed to load Paged.js:', error);
+            throw new Error('Unable to load Paged.js library');
+        }
+    }
+
+    /**
+     * Test Paged.js loading (Phase 2 - For testing only)
+     */
+    static async testPagedJSLoading() {
+        try {
+            console.log('🧪 Starting Paged.js load test...');
+            await this.loadPagedJS();
+            console.log('✅ Paged.js test successful');
+            return true;
+        } catch (error) {
+            console.error('❌ Paged.js test failed:', error);
+            return false;
+        }
+    }
+
+    /**
      * Create temporary DOM container for HTML content
      */
     static async createTempContainer(htmlContent) {
