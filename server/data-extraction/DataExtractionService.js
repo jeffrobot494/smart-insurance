@@ -64,7 +64,7 @@ class DataExtractionService {
       // Phase 3: Search EINs in Schedule A using database
       const finalResults = await this.scheduleASearchService.searchEINs(companiesWithEIN);
       
-      logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.schARecords && Object.values(r.schARecords).some(count => count > 0)).length} EINs`);
+      logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.scheduleAResults && r.scheduleAResults.length > 0).length} EINs`);
       
       // Phase 4: Generate comprehensive reports (now in classifier-compatible format)
       const reportData = this.reportGenerator.generateFinalReport(finalResults);

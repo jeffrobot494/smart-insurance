@@ -48,12 +48,6 @@ Add companies to pipeline
 curl -X PUT http://localhost:3000/api/pipeline/123/companies -H "Content-Type: application/json" -d '{"companies": [{"name": "Microsoft", "legal_entity_name": "Microsoft Corporation", "city": "Redmond", "state": "WA", "exited": 
 false, "confidence_level": "high"}, {"name": "Uber", "legal_entity_name": "Uber Technologies Inc", "city": "San Francisco", "state": "CA", "exited": true, "confidence_level": "high"}]}'
 
-curl -X POST http://localhost:3000/auth/login \
--H "Content-Type: application/json" \
--c cookies.txt \
--d '{"password": "ImSmart123"}'
+  curl -X POST http://localhost:3000/auth/login -H "Content-Type: application/json" -c cookies.txt -d '{"password": "ImSmart123"}'
 
-curl -X POST http://localhost:3000/api/testing/self-funded-classification \
--H "Content-Type: application/json" \
--b cookies.txt
--d '{"companyName": "Medix Staffing Solutions"}'
+curl -X POST http://localhost:3000/api/testing/self-funded-classification -H "Content-Type: application/json" -b cookies.txt -d '{"companyName": "Medix Staffing Solutions"}'

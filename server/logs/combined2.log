@@ -2377,3 +2377,403 @@
 {"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-03T04:17:36.358Z"}
 {"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-03T04:17:36.364Z"}
 {"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-03T04:17:50.790Z"}
+{"level":"info","message":"perplexity MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-03T04:49:31.334Z"}
+{"level":"info","message":"form5500 MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-03T04:49:31.339Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-03T20:08:43.781Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-03T20:08:44.430Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-03T20:08:44.431Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-03T20:08:44.659Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-03T20:08:44.659Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-03T20:08:44.660Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-03T20:08:44.660Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-03T20:08:44.666Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-03T20:08:44.676Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-03T20:08:45.117Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-03T20:08:45.120Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-03T20:08:45.293Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-03T20:08:45.294Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-03T20:08:45.294Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-03T20:08:45.297Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-03T20:08:45.297Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:08:45.516Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:08:45.516Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:08:45.757Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-03T20:08:45.760Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-03T20:08:45.762Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-03T20:08:46.456Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-03T20:08:46.462Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-03T20:10:18.495Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 27 companies","service":"manager","timestamp":"2025-09-03T20:11:44.244Z"}
+{"level":"info","message":"🔍 Processing 27 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-03T20:11:44.462Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 21 companies","service":"database","timestamp":"2025-09-03T20:11:50.668Z"}
+{"level":"info","message":"📋 Found Schedule A records for 20 EINs","service":"database","timestamp":"2025-09-03T20:11:52.935Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-03T20:11:52.938Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-03T20:11:52.939Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:53.057Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:53.058Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:53.058Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:53.059Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:53.059Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:53.061Z"}
+{"level":"error","message":"❌ Error classifying AMERICAN OUTCOMES MANAGEMENT:","service":"database","timestamp":"2025-09-03T20:11:53.062Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:53.168Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:53.168Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:53.169Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:53.169Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:53.169Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:53.169Z"}
+{"level":"error","message":"❌ Error classifying CAREER STEP, LLC:","service":"database","timestamp":"2025-09-03T20:11:53.169Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:53.718Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:53.718Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:53.719Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:53.719Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:53.719Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:53.719Z"}
+{"level":"error","message":"❌ Error classifying CEI VISION PARTNERS, LLC:","service":"database","timestamp":"2025-09-03T20:11:53.720Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:53.834Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:53.834Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:53.835Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:53.835Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:53.835Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:53.835Z"}
+{"level":"error","message":"❌ Error classifying CLAREMEDICA HEALTH PARTNERS, LLC:","service":"database","timestamp":"2025-09-03T20:11:53.836Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:54.381Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:54.383Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:54.384Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:54.385Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:54.385Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:54.386Z"}
+{"level":"error","message":"❌ Error classifying DATALINK SERVICE FUND SOLUTIONS LLC:","service":"database","timestamp":"2025-09-03T20:11:54.387Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:54.941Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:54.941Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:54.941Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:54.941Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:54.942Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:54.942Z"}
+{"level":"error","message":"❌ Error classifying EMPIRE PORTFOLIO GROUP PAYROLL LLC:","service":"database","timestamp":"2025-09-03T20:11:54.942Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:55.497Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:55.498Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:55.499Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:55.499Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:55.500Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:55.501Z"}
+{"level":"error","message":"❌ Error classifying ENCORE REHABILITATION SERVICES, LLC:","service":"database","timestamp":"2025-09-03T20:11:55.502Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:56.079Z"}
+{"level":"error","message":"❌ Error classifying FAMILY CARE CENTER, LLC:","service":"database","timestamp":"2025-09-03T20:11:56.080Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:56.631Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:56.633Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:56.634Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:56.635Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:56.636Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:56.636Z"}
+{"level":"error","message":"❌ Error classifying FAST PACE MEDICAL CLINICAL, PLLC:","service":"database","timestamp":"2025-09-03T20:11:56.637Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:57.211Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:57.211Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:57.211Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:57.212Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:57.212Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:57.212Z"}
+{"level":"error","message":"❌ Error classifying HEALTHAXIS GROUP, LLC:","service":"database","timestamp":"2025-09-03T20:11:57.212Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:57.318Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:57.318Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:57.318Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:57.318Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:57.319Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:57.319Z"}
+{"level":"error","message":"❌ Error classifying MEDIQUANT-PRO LLC:","service":"database","timestamp":"2025-09-03T20:11:57.319Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:57.870Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"❌ Error classifying MONTE NIDO HOLDINGS, LLC:","service":"database","timestamp":"2025-09-03T20:11:57.871Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:58.434Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:58.434Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:58.434Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:58.435Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:58.435Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:58.435Z"}
+{"level":"error","message":"❌ Error classifying OMEGA SYSTEMS CONSULTANTS, LLC:","service":"database","timestamp":"2025-09-03T20:11:58.435Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:58.999Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:59.000Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:59.002Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:59.003Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:59.004Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:59.004Z"}
+{"level":"error","message":"❌ Error classifying ONSITE MAMMOGRAPHY, LLC:","service":"database","timestamp":"2025-09-03T20:11:59.005Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:11:59.573Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:11:59.573Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:11:59.573Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:11:59.574Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:11:59.574Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:11:59.574Z"}
+{"level":"error","message":"❌ Error classifying ORTHOALLIANCE MSO, LLC:","service":"database","timestamp":"2025-09-03T20:11:59.574Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:00.133Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:00.134Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:00.135Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:00.136Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:00.136Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:00.136Z"}
+{"level":"error","message":"❌ Error classifying RAREBREED VETERINARY PARTNERS:","service":"database","timestamp":"2025-09-03T20:12:00.137Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:00.248Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:00.248Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:00.248Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:00.249Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:00.249Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:00.249Z"}
+{"level":"error","message":"❌ Error classifying SOUND INPATIENT PHYSICIANS, INC:","service":"database","timestamp":"2025-09-03T20:12:00.249Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:00.810Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:00.811Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:00.811Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:00.811Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:00.812Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:00.812Z"}
+{"level":"error","message":"❌ Error classifying RCP TCT HOLDINGS, LLC DBA THE CARE TEAM:","service":"database","timestamp":"2025-09-03T20:12:00.812Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:01.362Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:01.363Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:01.363Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:01.363Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:01.364Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:01.364Z"}
+{"level":"error","message":"❌ Error classifying TRIDENT USA HEALTH SERVICES:","service":"database","timestamp":"2025-09-03T20:12:01.365Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:01.946Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:01.947Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:01.947Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:01.947Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:01.947Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:01.948Z"}
+{"level":"error","message":"❌ Error classifying U.S. RENAL CARE, INC.:","service":"database","timestamp":"2025-09-03T20:12:01.948Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:12:02.498Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:12:02.499Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:12:02.499Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:12:02.501Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:12:02.501Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:12:02.502Z"}
+{"level":"error","message":"❌ Error classifying UPSTREAM NEWCO, INC.:","service":"database","timestamp":"2025-09-03T20:12:02.502Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-09-03T20:12:02.503Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-03T20:12:02.503Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-03T20:12:03.177Z"}
+{"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-09-03T20:12:03.405Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-03T20:13:22.699Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-03T20:14:22.895Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-03T20:14:23.580Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-03T20:14:23.581Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-03T20:14:23.824Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-03T20:14:23.825Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-03T20:14:23.826Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-03T20:14:23.826Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-03T20:14:23.834Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-03T20:14:23.840Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-03T20:14:24.113Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-03T20:14:24.117Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-03T20:14:24.255Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-03T20:14:24.255Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-03T20:14:24.255Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-03T20:14:24.257Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-03T20:14:24.257Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:14:24.609Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:14:24.609Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-03T20:14:24.850Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:14:24.853Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-03T20:14:24.854Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-03T20:14:24.856Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-03T20:14:24.857Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-03T20:15:21.199Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 27 companies","service":"manager","timestamp":"2025-09-03T20:15:25.933Z"}
+{"level":"info","message":"🔍 Processing 27 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-03T20:15:26.151Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 21 companies","service":"database","timestamp":"2025-09-03T20:15:32.438Z"}
+{"level":"info","message":"📋 Found Schedule A records for 20 EINs","service":"database","timestamp":"2025-09-03T20:15:34.718Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-03T20:15:34.721Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-03T20:15:34.722Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:34.829Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:34.830Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:34.830Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:34.831Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:34.831Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:34.832Z"}
+{"level":"error","message":"❌ Error classifying AMERICAN OUTCOMES MANAGEMENT:","service":"database","timestamp":"2025-09-03T20:15:34.832Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:35.375Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:35.375Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:35.375Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:35.375Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:35.376Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:35.376Z"}
+{"level":"error","message":"❌ Error classifying CAREER STEP, LLC:","service":"database","timestamp":"2025-09-03T20:15:35.376Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:35.483Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:35.483Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:35.483Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:35.483Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:35.483Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:35.484Z"}
+{"level":"error","message":"❌ Error classifying CEI VISION PARTNERS, LLC:","service":"database","timestamp":"2025-09-03T20:15:35.484Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:36.027Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:36.027Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:36.027Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:36.028Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:36.028Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:36.028Z"}
+{"level":"error","message":"❌ Error classifying CLAREMEDICA HEALTH PARTNERS, LLC:","service":"database","timestamp":"2025-09-03T20:15:36.028Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:36.576Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:36.576Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:36.576Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:36.577Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:36.577Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:36.577Z"}
+{"level":"error","message":"❌ Error classifying DATALINK SERVICE FUND SOLUTIONS LLC:","service":"database","timestamp":"2025-09-03T20:15:36.577Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:37.138Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:37.139Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:37.139Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:37.139Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:37.140Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:37.141Z"}
+{"level":"error","message":"❌ Error classifying EMPIRE PORTFOLIO GROUP PAYROLL LLC:","service":"database","timestamp":"2025-09-03T20:15:37.141Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:37.688Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:37.689Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:37.689Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:37.689Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:37.689Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:37.690Z"}
+{"level":"error","message":"❌ Error classifying ENCORE REHABILITATION SERVICES, LLC:","service":"database","timestamp":"2025-09-03T20:15:37.690Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:38.257Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:38.258Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:38.259Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:38.260Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:38.260Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:38.261Z"}
+{"level":"error","message":"❌ Error classifying FAMILY CARE CENTER, LLC:","service":"database","timestamp":"2025-09-03T20:15:38.262Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:38.807Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:38.807Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:38.807Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:38.807Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:38.808Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:38.808Z"}
+{"level":"error","message":"❌ Error classifying FAST PACE MEDICAL CLINICAL, PLLC:","service":"database","timestamp":"2025-09-03T20:15:38.808Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:38.914Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:38.915Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:38.915Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:38.916Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:38.916Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:38.916Z"}
+{"level":"error","message":"❌ Error classifying HEALTHAXIS GROUP, LLC:","service":"database","timestamp":"2025-09-03T20:15:38.916Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:39.460Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:39.461Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:39.461Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:39.462Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:39.462Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:39.462Z"}
+{"level":"error","message":"❌ Error classifying MEDIQUANT-PRO LLC:","service":"database","timestamp":"2025-09-03T20:15:39.462Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:40.010Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:40.011Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:40.011Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:40.011Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:40.011Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:40.012Z"}
+{"level":"error","message":"❌ Error classifying MONTE NIDO HOLDINGS, LLC:","service":"database","timestamp":"2025-09-03T20:15:40.012Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:40.552Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:40.553Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:40.553Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:40.553Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:40.554Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:40.554Z"}
+{"level":"error","message":"❌ Error classifying OMEGA SYSTEMS CONSULTANTS, LLC:","service":"database","timestamp":"2025-09-03T20:15:40.555Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:41.103Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:41.104Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:41.105Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:41.106Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:41.107Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:41.108Z"}
+{"level":"error","message":"❌ Error classifying ONSITE MAMMOGRAPHY, LLC:","service":"database","timestamp":"2025-09-03T20:15:41.109Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:41.681Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:41.682Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:41.683Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:41.683Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:41.684Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:41.685Z"}
+{"level":"error","message":"❌ Error classifying ORTHOALLIANCE MSO, LLC:","service":"database","timestamp":"2025-09-03T20:15:41.685Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:41.792Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:41.794Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:41.794Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:41.795Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:41.796Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:41.796Z"}
+{"level":"error","message":"❌ Error classifying RAREBREED VETERINARY PARTNERS:","service":"database","timestamp":"2025-09-03T20:15:41.796Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:42.370Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:42.371Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:42.371Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:42.371Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:42.371Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:42.372Z"}
+{"level":"error","message":"❌ Error classifying SOUND INPATIENT PHYSICIANS, INC:","service":"database","timestamp":"2025-09-03T20:15:42.372Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:42.912Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:42.913Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:42.913Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:42.913Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:42.913Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:42.914Z"}
+{"level":"error","message":"❌ Error classifying RCP TCT HOLDINGS, LLC DBA THE CARE TEAM:","service":"database","timestamp":"2025-09-03T20:15:42.914Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:43.492Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:43.492Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:43.493Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:43.493Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:43.493Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:43.493Z"}
+{"level":"error","message":"❌ Error classifying TRIDENT USA HEALTH SERVICES:","service":"database","timestamp":"2025-09-03T20:15:43.494Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:44.036Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:44.037Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:44.037Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:44.037Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:44.037Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:44.037Z"}
+{"level":"error","message":"❌ Error classifying U.S. RENAL CARE, INC.:","service":"database","timestamp":"2025-09-03T20:15:44.038Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-03T20:15:44.579Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"error","message":"❌ Error classifying UPSTREAM NEWCO, INC.:","service":"database","timestamp":"2025-09-03T20:15:44.580Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-09-03T20:15:44.581Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-03T20:15:44.581Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-03T20:15:44.830Z"}
+{"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-09-03T20:15:45.080Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-03T20:19:35.124Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-03T20:19:39.316Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-03T20:19:39.927Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-03T20:19:39.928Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-03T20:19:40.157Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-03T20:19:40.158Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-03T20:19:40.158Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-03T20:19:40.158Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-03T20:19:40.164Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-03T20:19:40.170Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-03T20:19:40.451Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-03T20:19:40.453Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-03T20:19:40.581Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-03T20:19:40.582Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-03T20:19:40.582Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-03T20:19:40.584Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-03T20:19:40.584Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:19:40.948Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:19:40.949Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-03T20:19:41.180Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-03T20:19:41.185Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-03T20:19:41.193Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-03T20:19:41.196Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-03T20:19:41.198Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-03T20:20:15.305Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 27 companies","service":"manager","timestamp":"2025-09-03T20:20:46.611Z"}
+{"level":"info","message":"🔍 Processing 27 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-03T20:20:46.831Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 21 companies","service":"database","timestamp":"2025-09-03T20:20:52.952Z"}
+{"level":"info","message":"📋 Found Schedule A records for 0 EINs","service":"database","timestamp":"2025-09-03T20:20:55.203Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-03T20:20:55.205Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-03T20:20:55.205Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-09-03T20:21:02.283Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-03T20:21:02.284Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-03T20:21:02.524Z"}
+{"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-09-03T20:21:02.754Z"}

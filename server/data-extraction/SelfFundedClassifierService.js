@@ -13,7 +13,6 @@ class SelfFundedClassifierService {
    */
   async classifyCompanies(companies) {
     logger.info('🔍 Starting self-funded classification for companies');
-    logger.info(`[DEBUG] Classifying ${companies.length} companies`);
     
     for (const company of companies) {
       if (!company.form5500_data || !company.form5500_data.ein) {
@@ -30,13 +29,12 @@ class SelfFundedClassifierService {
       }
       
       try {
-        logger.info(`[DEBUG] Classifying company: ${company.legal_entity_name || company.name}`);
         const classification = await this.classifyCompany(company);
         // Quick access field (same as current_classification)
         company.form5500_data.self_funded = classification.current_classification;
         // Detailed analysis
         company.form5500_data.self_funded_analysis = classification;
-        logger.info(`✓ Classified ${company.legal_entity_name}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
+        logger.debug(`✓ Classified ${company.legal_entity_name}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
       } catch (error) {
         logger.error(`❌ Error classifying ${company.legal_entity_name}:`, error.message);
         // Quick access field
@@ -59,12 +57,19 @@ class SelfFundedClassifierService {
    * @returns {Object} Detailed classification result with year-by-year breakdown
    */
   async classifyCompany(company) {
+    const ein = company.form5500_data.ein;
     const legalEntityName = company.legal_entity_name;
     
-    // Get raw Form 5500 data for classification
+    // Get raw Form 5500 and Schedule A data for classification
+    // Note: get_form5500_for_classification expects company name, not EIN
     const form5500Records = await this.databaseManager.query(
       'SELECT * FROM get_form5500_for_classification($1)',
       [legalEntityName]
+    );
+    
+    const scheduleARecords = await this.databaseManager.query(
+      'SELECT * FROM get_schedule_a_for_classification($1)', 
+      [ein]
     );
     
     if (form5500Records.rows.length === 0) {
@@ -73,74 +78,13 @@ class SelfFundedClassifierService {
         classifications_by_year: {},
         summary: {
           years_available: [],
-          message: 'No Form 5500 records found for this company'
+          message: 'No Form 5500 records found for this EIN'
         }
       };
     }
     
-    // NEW: Get all unique EINs from Form 5500 records with validation
-    const baseCompanyName = form5500Records.rows[0].sponsor_name;
-    
-    // Defensive check for missing base company name
-    if (!baseCompanyName || baseCompanyName.trim() === '') {
-      logger.warn(`No sponsor name found for company: ${legalEntityName}`);
-      // Fallback to single EIN approach
-      const ein = company.form5500_data?.ein;
-      if (!ein) {
-        return {
-          current_classification: 'no-data',
-          classifications_by_year: {},
-          summary: {
-            years_available: [],
-            message: 'No EIN available for classification'
-          }
-        };
-      }
-      const scheduleARecords = await this.databaseManager.query(
-        'SELECT * FROM get_schedule_a_for_classification($1)', 
-        [ein]
-      );
-      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords.rows, [ein]);
-    } else {
-      // Multi-EIN approach with validation
-      const allEINs = [...new Set(
-        form5500Records.rows
-          .filter(record => record.sponsor_name && record.sponsor_name === baseCompanyName)
-          .map(record => record.ein)
-          .filter(ein => ein && ein.trim() !== '')
-      )];
-      
-      // Defensive check for empty EINs array
-      if (allEINs.length === 0) {
-        logger.warn(`No valid EINs found for company: ${legalEntityName}`);
-        return {
-          current_classification: 'no-data',
-          classifications_by_year: {},
-          summary: {
-            years_available: [],
-            message: 'No valid EINs found for this company'
-          }
-        };
-      }
-      
-      // Get Schedule A records for ALL company EINs
-      const allScheduleARecords = [];
-      for (const ein of allEINs) {
-        try {
-          const scheduleAResult = await this.databaseManager.query(
-            'SELECT * FROM get_schedule_a_for_classification($1)',
-            [ein]
-          );
-          allScheduleARecords.push(...scheduleAResult.rows);
-        } catch (error) {
-          logger.warn(`Failed to get Schedule A for EIN ${ein}:`, error.message);
-          // Continue with other EINs instead of failing completely
-        }
-      }
-      
-      // Build Schedule A index with ALL EINs
-      var scheduleAIndex = this.buildScheduleAIndex(allScheduleARecords, allEINs);
-    }
+    // Build Schedule A index by plan and year
+    const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords.rows, ein);
     
     // Group Form 5500 records by year
     const recordsByYear = {};
@@ -204,78 +148,6 @@ class SelfFundedClassifierService {
   }
 
   /**
-   * Analyze raw Schedule A benefit text for health indicators
-   * @param {string} benefitText - Raw benefit text from database
-   * @returns {boolean} True if this indicates health coverage
-   */
-  isHealthBenefitText(benefitText) {
-    try {
-      if (!benefitText || typeof benefitText !== 'string') return false;
-      
-      const text = benefitText.toUpperCase().trim();
-      
-      // Exclude non-health benefits
-      const nonHealthKeywords = [
-        'DISABILITY', 'AD&D', 'LIFE INSURANCE', 'VISION', 'DENTAL',
-        'ACCIDENTAL DEATH', 'STATUTORY', 'LEGAL SERVICES', 'EMPLOYEE ASSISTANCE'
-      ];
-      
-      if (nonHealthKeywords.some(exclude => text.includes(exclude))) {
-        return false;
-      }
-      
-      // Health benefit indicators
-      const healthKeywords = [
-        'MEDICAL', 'HEALTH', 'HEALTHCARE', 'MAJOR MEDICAL', 'COMPREHENSIVE MEDICAL'
-      ];
-      
-      return healthKeywords.some(keyword => text.includes(keyword));
-    } catch (error) {
-      logger.warn(`Error analyzing benefit text: ${error.message}`);
-      return false; // Conservative fallback
-    }
-  }
-
-  /**
-   * Analyze raw Schedule A benefit text for stop-loss indicators
-   * @param {string} benefitText - Raw benefit text from database
-   * @returns {boolean} True if this indicates stop-loss coverage
-   */
-  isStopLossBenefitText(benefitText) {
-    try {
-      if (!benefitText || typeof benefitText !== 'string') return false;
-      
-      const text = benefitText.toUpperCase();
-      const stopLossKeywords = ['STOP LOSS', 'STOP-LOSS', 'STOPLOSS'];
-      
-      return stopLossKeywords.some(keyword => text.includes(keyword));
-    } catch (error) {
-      logger.warn(`Error analyzing stop-loss text: ${error.message}`);
-      return false; // Conservative fallback
-    }
-  }
-
-  /**
-   * Ancillary (non-medical) insured lines: dental, vision, life, AD&D, STD/LTD,
-   * accident, critical illness, EAP, etc.
-   */
-  isAncillaryBenefitText(benefitText) {
-    try {
-      if (!benefitText || typeof benefitText !== 'string') return false;
-      const t = benefitText.toUpperCase();
-      const anc = [
-        'DENTAL','VISION','LIFE','AD&D','ACCIDENT','CRITICAL ILLNESS',
-        'EMPLOYEE ASSISTANCE','EAP','DISABILITY','STD','LTD'
-      ];
-      return anc.some(k => t.includes(k));
-    } catch (error) {
-      logger.warn(`Error analyzing ancillary text: ${error.message}`);
-      return false;
-    }
-  }
-
-
-  /**
    * Test classification for a single company name (for test endpoint)
    * @param {string} companyName - Company name to search and classify
    * @returns {Object} Classification results with year-by-year breakdown and raw data
@@ -285,17 +157,12 @@ class SelfFundedClassifierService {
     
     try {
       // Get raw Form 5500 data by company name
-      logger.debug(`[DEBUG] Querying Form 5500 for company: "${companyName}"`);
       const form5500Result = await this.databaseManager.query(
         'SELECT * FROM get_form5500_for_classification($1)',
         [companyName]
       );
       
       const form5500Records = form5500Result.rows;
-      logger.debug(`[DEBUG] Found ${form5500Records.length} Form 5500 records`);
-      form5500Records.forEach((record, index) => {
-        logger.debug(`[DEBUG] Form5500[${index}]: EIN=${record.ein}, Plan=${record.spons_dfe_pn}, Year=${record.year}, WelfareCode="${record.type_welfare_bnft_code}", Sponsor="${record.sponsor_name}"`);
-      });
       
       if (form5500Records.length === 0) {
         return {
@@ -316,81 +183,25 @@ class SelfFundedClassifierService {
         };
       }
       
-      // Get EINs and Schedule A data with validation
-      const baseCompanyName = form5500Records[0].sponsor_name;
-      logger.debug(`[DEBUG] Base company name: "${baseCompanyName}"`);
-      
-      // Defensive programming for missing base company name
-      if (!baseCompanyName || baseCompanyName.trim() === '') {
-        logger.warn(`No sponsor name found for company: ${companyName}`);
-        return {
-          success: true,
-          company_name: companyName,
-          self_funded: 'no-data',
-          self_funded_analysis: {
-            current_classification: 'no-data',
-            classifications_by_year: {},
-            summary: {
-              years_available: [],
-              message: 'No sponsor name available for classification'
-            }
-          },
-          raw_data: { form5500_records: form5500Records, schedule_a_records: [] }
-        };
-      }
-      
-      logger.debug(`[DEBUG] Filtering Form 5500 records by sponsor name match`);
-      const filteredRecords = form5500Records.filter(record => record.sponsor_name && record.sponsor_name === baseCompanyName);
-      logger.debug(`[DEBUG] After sponsor name filter: ${filteredRecords.length} records remain`);
-      
-      const eins = [...new Set(
-        filteredRecords
-          .map(r => r.ein)
-          .filter(ein => ein && ein.trim() !== '')
-      )];
-      
-      logger.info(`[DEBUG] Extracted unique EINs: [${eins.join(', ')}]`);
-      
-      // Defensive check for empty EINs array
-      if (eins.length === 0) {
-        logger.warn(`No valid EINs found for company: ${companyName}`);
-        return {
-          success: true,
-          company_name: companyName,
-          self_funded: 'no-data',
-          self_funded_analysis: {
-            current_classification: 'no-data',
-            classifications_by_year: {},
-            summary: {
-              years_available: [],
-              message: 'No valid EINs found for this company'
-            }
-          },
-          raw_data: { form5500_records: form5500Records, schedule_a_records: [] }
-        };
-      }
-      
+      // Get EINs and Schedule A data
+      const eins = [...new Set(form5500Records.map(r => r.ein).filter(ein => ein))];
       const scheduleARecords = [];
       for (const ein of eins) {
-        try {
-          logger.debug(`[DEBUG] Querying Schedule A for EIN: ${ein}`);
-          const scheduleAResult = await this.databaseManager.query(
-            'SELECT * FROM get_schedule_a_for_classification($1)',
-            [ein]
-          );
-          logger.info(`[DEBUG] Found ${scheduleAResult.rows.length} Schedule A records for EIN ${ein}`);
-          scheduleAResult.rows.forEach((record, index) => {
-            logger.info(`[DEBUG] ScheduleA[${index}] for EIN ${ein}: Plan=${record.sch_a_plan_num}, Year=${record.year}, HealthInd=${record.wlfr_bnft_health_ind}, StopLossInd=${record.wlfr_bnft_stop_loss_ind}, TextField="${record.wlfr_type_bnft_oth_text}"`);
-          });
-          scheduleARecords.push(...scheduleAResult.rows);
-        } catch (error) {
-          logger.warn(`Failed to get Schedule A for EIN ${ein} in test:`, error.message);
-          // Continue with other EINs instead of failing completely
-        }
+        const scheduleAResult = await this.databaseManager.query(
+          'SELECT * FROM get_schedule_a_for_classification($1)',
+          [ein]
+        );
+        scheduleARecords.push(...scheduleAResult.rows);
       }
       
-      // Build Schedule A index with ALL EINs (not just first one)
-      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins);
+      // Create a mock company object to reuse existing classification logic
+      const mockCompany = {
+        legal_entity_name: companyName,
+        form5500_data: { ein: eins[0] } // Use first EIN found
+      };
+      
+      // Build Schedule A index and classify manually (since we have raw data)
+      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins[0]);
       
       // Group Form 5500 records by year
       const recordsByYear = {};
@@ -471,132 +282,42 @@ class SelfFundedClassifierService {
   }
 
   /**
-   * Build Schedule A index for efficient lookups with enhanced fallback text analysis
+   * Build Schedule A index for efficient lookups
    * @param {Array} scheduleARecords - Raw Schedule A records
-   * @param {Array} allEINs - All EINs associated with this company
+   * @param {string} ein - The EIN these records belong to
    * @returns {Object} Indexed Schedule A data
    */
-  buildScheduleAIndex(scheduleARecords, allEINs) {
-    logger.debug(`[DEBUG] Building Schedule A index with ${scheduleARecords.length} records for EINs: [${allEINs.join(', ')}]`);
-    
+  buildScheduleAIndex(scheduleARecords, ein) {
     const index = {
       byBeginYear: new Map(),
       byEndYear: new Map()
     };
     
-    // Defensive checks
-    if (!Array.isArray(scheduleARecords)) {
-      logger.warn('buildScheduleAIndex: scheduleARecords is not an array');
-      return index;
-    }
-    
-    if (!Array.isArray(allEINs) || allEINs.length === 0) {
-      logger.warn('buildScheduleAIndex: allEINs is not a valid array or is empty');
-      return index;
-    }
-    
-    let processedCount = 0;
-    let skippedCount = 0;
-    let healthDetectedCount = 0;
-    let textAnalysisUsedCount = 0;
-    
     for (const record of scheduleARecords) {
-      if (!record) {
-        skippedCount++;
-        continue; // Skip null/undefined records
-      }
-      
-      const recordEIN = record.sch_a_ein;
       const planNum = record.sch_a_plan_num;
       const beginYear = this.extractYear(record.sch_a_plan_year_begin_date);
       const endYear = this.extractYear(record.sch_a_plan_year_end_date);
       
-      logger.debug(`[DEBUG] Processing Schedule A record: EIN=${recordEIN}, Plan=${planNum}, BeginYear=${beginYear}, EndYear=${endYear}`);
-      
-      // Skip if record has no plan number
-      if (!planNum) {
-        logger.debug(`[DEBUG] Skipping record - no plan number`);
-        skippedCount++;
-        continue;
-      }
-      
-      // Step 1: Try database indicators first (existing logic)
-      let hasHealth = record.wlfr_bnft_health_ind === 1;
-      let hasStopLoss = record.wlfr_bnft_stop_loss_ind === 1;
-      // Ancillary signals via flags, with text fallback
-      let hasAncillary = false;
-      try {
-        const ancFlags = [
-          'wlfr_bnft_dental_ind','wlfr_bnft_vision_ind','wlfr_bnft_life_insur_ind',
-          'wlfr_bnft_temp_disab_ind','wlfr_bnft_long_term_disab_ind'
-        ];
-        hasAncillary = ancFlags.some(k => record[k] === 1 || record[k] === '1' || record[k] === true);
-        if (!hasAncillary && record.wlfr_type_bnft_oth_text) {
-          hasAncillary = this.isAncillaryBenefitText(record.wlfr_type_bnft_oth_text);
-        }
-      } catch (e) {
-        // ignore
-      }
-      
-      logger.debug(`[DEBUG] Initial indicators: hasHealth=${hasHealth}, hasStopLoss=${hasStopLoss}`);
-      
-      // Step 2: FALLBACK - Analyze raw text fields when database indicators are false/missing
-      if (!hasHealth && record.wlfr_type_bnft_oth_text) {
-        logger.debug(`[DEBUG] Trying text analysis fallback for text: "${record.wlfr_type_bnft_oth_text}"`);
-        hasHealth = this.isHealthBenefitText(record.wlfr_type_bnft_oth_text);
-        if (hasHealth) {
-          logger.debug(`Text-based health detection for EIN ${recordEIN}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
-          textAnalysisUsedCount++;
-        }
-      }
-      
-      if (!hasStopLoss && record.wlfr_type_bnft_oth_text) {
-        hasStopLoss = this.isStopLossBenefitText(record.wlfr_type_bnft_oth_text);
-        if (hasStopLoss) {
-          logger.debug(`Text-based stop-loss detection for EIN ${recordEIN}, plan ${planNum}: "${record.wlfr_type_bnft_oth_text}"`);
-          textAnalysisUsedCount++;
-        }
-      }
-      
-      if (hasHealth) healthDetectedCount++;
-      
-      // Step 3: Apply enhanced indicators to index (preserve existing structure)
-      // Use the first available EIN from our company EINs if record EIN is missing
-      const keyEIN = recordEIN || allEINs[0] || 'unknown';
-      
-      if (beginYear && planNum) {
-        const key = `${keyEIN}-${planNum}-${beginYear}`;
+      if (beginYear && planNum && ein) {
+        const key = `${ein}-${planNum}-${beginYear}`;
         if (!index.byBeginYear.has(key)) {
-          index.byBeginYear.set(key, { health: false, stopLoss: false, ancillary: false });
+          index.byBeginYear.set(key, { health: false, stopLoss: false });
         }
         const entry = index.byBeginYear.get(key);
-        if (hasHealth) entry.health = true;
-        if (hasStopLoss) entry.stopLoss = true;
-        if (hasAncillary) entry.ancillary = true;
+        if (record.wlfr_bnft_health_ind === 1) entry.health = true;
+        if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
       }
       
-      if (endYear && planNum && endYear !== beginYear) {
-        const key = `${keyEIN}-${planNum}-${endYear}`;
+      if (endYear && planNum && ein && endYear !== beginYear) {
+        const key = `${ein}-${planNum}-${endYear}`;
         if (!index.byEndYear.has(key)) {
-          index.byEndYear.set(key, { health: false, stopLoss: false, ancillary: false });
+          index.byEndYear.set(key, { health: false, stopLoss: false });
         }
         const entry = index.byEndYear.get(key);
-        if (hasHealth) entry.health = true;
-        if (hasStopLoss) entry.stopLoss = true;
-        if (hasAncillary) entry.ancillary = true;
+        if (record.wlfr_bnft_health_ind === 1) entry.health = true;
+        if (record.wlfr_bnft_stop_loss_ind === 1) entry.stopLoss = true;
       }
-      
-      processedCount++;
     }
-    
-    logger.info(`[DEBUG] Schedule A index built - Processed: ${processedCount}, Skipped: ${skippedCount}, Health detected: ${healthDetectedCount}, Text analysis used: ${textAnalysisUsedCount}`);
-    logger.info(`[DEBUG] Index contains ${index.byBeginYear.size} begin-year entries and ${index.byEndYear.size} end-year entries`);
-    
-    // Log all index keys for debugging
-    const beginKeys = Array.from(index.byBeginYear.keys());
-    const healthKeys = beginKeys.filter(key => index.byBeginYear.get(key).health);
-    logger.info(`[DEBUG] All Schedule A index keys: [${beginKeys.join(', ')}]`);
-    logger.info(`[DEBUG] Keys with health=true: [${healthKeys.join(', ')}]`);
     
     return index;
   }
@@ -614,83 +335,45 @@ class SelfFundedClassifierService {
     const beginYear = this.extractYear(form5500Record.form_plan_year_begin_date);
     const endYear = this.extractYear(form5500Record.form_tax_prd);
     const ein = form5500Record.ein || '';
-
-    logger.debug(`[DEBUG] Classifying plan: EIN=${ein}, PlanNum=${planNum}, BeginYear=${beginYear}, EndYear=${endYear}, WelfareCode="${typeWelfareCode}"`);
-
+    
     // Step 1: Check if this is a medical plan
     const has4A = typeWelfareCode.includes('4A');
     let hasScheduleAHealth = false;
     let hasScheduleAStopLoss = false;
-    let hasScheduleAAncillary = false;
-
-    logger.debug(`[DEBUG] Plan ${planNum}: has4A=${has4A} (welfare code="${typeWelfareCode}")`);
-
+    
     // Check Schedule A for health/stop-loss indicators
     if (ein && planNum && beginYear) {
       const beginKey = `${ein}-${planNum}-${beginYear}`;
-      logger.info(`[DEBUG] Looking for Schedule A key: "${beginKey}"`);
       const beginEntry = scheduleAIndex.byBeginYear.get(beginKey);
       if (beginEntry) {
-        logger.info(`[DEBUG] Found begin entry: health=${beginEntry.health}, stopLoss=${beginEntry.stopLoss}, ancillary=${beginEntry.ancillary}`);
         hasScheduleAHealth = hasScheduleAHealth || beginEntry.health;
         hasScheduleAStopLoss = hasScheduleAStopLoss || beginEntry.stopLoss;
-        hasScheduleAAncillary = hasScheduleAAncillary || !!beginEntry.ancillary;
-      } else {
-        logger.info(`[DEBUG] No begin entry found for key: "${beginKey}"`);
       }
     }
-
+    
     if (ein && planNum && endYear && endYear !== beginYear) {
       const endKey = `${ein}-${planNum}-${endYear}`;
-      logger.debug(`[DEBUG] Checking Schedule A end key: "${endKey}"`);
       const endEntry = scheduleAIndex.byEndYear.get(endKey);
       if (endEntry) {
-        logger.debug(`[DEBUG] Found end entry: health=${endEntry.health}, stopLoss=${endEntry.stopLoss}, ancillary=${endEntry.ancillary}`);
         hasScheduleAHealth = hasScheduleAHealth || endEntry.health;
         hasScheduleAStopLoss = hasScheduleAStopLoss || endEntry.stopLoss;
-        hasScheduleAAncillary = hasScheduleAAncillary || !!endEntry.ancillary;
-      } else {
-        logger.debug(`[DEBUG] No end entry found for key: "${endKey}"`);
       }
     }
-
-    logger.debug(`[DEBUG] Plan ${planNum} medical plan check: has4A=${has4A}, hasScheduleAHealth=${hasScheduleAHealth}`);
-
+    
     // Skip non-medical plans
     if (!has4A && !hasScheduleAHealth) {
-      // Ancillary-only insured fallback
-      if (hasScheduleAAncillary && !hasScheduleAStopLoss) {
-        reasons.push('No medical filing (no 4A / no SA health)');
-        reasons.push('Schedule A shows insured ancillary benefits');
-        reasons.push('No stop-loss observed');
-        return {
-          classification: 'Insured',
-          reasons,
-          metadata: {
-            planNum, beginYear, endYear, ein,
-            has4A,
-            headerGA: false,
-            headerINS: false,
-            saHealth: hasScheduleAHealth,
-            saStop: hasScheduleAStopLoss
-          }
-        };
-      }
-      logger.info(`[DEBUG] Plan ${planNum} SKIPPED - not a medical plan (no 4A code and no Schedule A health indicators)`);
       return null; // Not a medical plan
     }
-
-    logger.info(`[DEBUG] Plan ${planNum} is a medical plan - proceeding with classification`);
-
+    
     // Step 2: Apply classification logic (following Python script priority order)
     const benefitInsurance = form5500Record.benefit_insurance_ind === 1;
     const benefitGenAssets = form5500Record.benefit_gen_asset_ind === 1;
     const fundingInsurance = form5500Record.funding_insurance_ind === 1;
     const fundingGenAssets = form5500Record.funding_gen_asset_ind === 1;
-
-    const hasScheduleA = form5500Record.sch_a_attached_ind === 1 ||
-                         (form5500Record.num_sch_a_attached_cnt || 0) > 0;
-
+    
+    const hasScheduleA = form5500Record.sch_a_attached_ind === 1 || 
+                        (form5500Record.num_sch_a_attached_cnt || 0) > 0;
+    
     // Priority 1: Schedule A shows health coverage
     if (hasScheduleAHealth) {
       reasons.push('Schedule A shows health/medical coverage');
@@ -700,17 +383,10 @@ class SelfFundedClassifierService {
       return {
         classification: 'Insured',
         reasons,
-        metadata: {
-          planNum, beginYear, endYear, ein,
-          has4A,
-          headerGA: (benefitGenAssets || fundingGenAssets),
-          headerINS: (benefitInsurance  || fundingInsurance),
-          saHealth: hasScheduleAHealth,
-          saStop:   hasScheduleAStopLoss
-        }
+        metadata: { planNum, beginYear, endYear, ein }
       };
     }
-
+    
     // Priority 2: Schedule A shows stop-loss but no health
     if (hasScheduleAStopLoss && !hasScheduleAHealth) {
       reasons.push('Schedule A shows stop-loss but no medical');
@@ -720,182 +396,86 @@ class SelfFundedClassifierService {
       return {
         classification: 'Self-funded w/ stop-loss',
         reasons,
-        metadata: {
-          planNum, beginYear, endYear, ein,
-          has4A,
-          headerGA: (benefitGenAssets || fundingGenAssets),
-          headerINS: (benefitInsurance  || fundingInsurance),
-          saHealth: hasScheduleAHealth,
-          saStop:   hasScheduleAStopLoss
-        }
+        metadata: { planNum, beginYear, endYear, ein }
       };
     }
-
-    // Priority 3: Header indicates general assets (tightened)
+    
+    // Priority 3: Header indicates general assets
     if (benefitGenAssets || fundingGenAssets) {
       reasons.push('Header indicates general assets funding/benefit');
-
-      // If header ALSO indicates insurance, treat as mixed/admin wrapper — do NOT infer self-funded
-      if (benefitInsurance || fundingInsurance) {
-        reasons.push('Header also indicates insurance (mixed)');
-        if (hasScheduleA && !hasScheduleAHealth && !hasScheduleAStopLoss) {
-          reasons.push('Schedule A attached but not medical/stop-loss');
-          return {
-            classification: 'Indeterminate (mixed header / non-medical Sched A)',
-            reasons,
-            metadata: {
-              planNum, beginYear, endYear, ein,
-              has4A,
-              headerGA: true,
-              headerINS: true,
-              saHealth: hasScheduleAHealth,
-              saStop:   hasScheduleAStopLoss
-            }
-          };
-        }
+      if (hasScheduleA) {
+        reasons.push('Schedule A attached (non-medical or unknown)');
         return {
-          classification: 'Indeterminate (mixed header)',
+          classification: 'Likely self-funded (non-medical Schedule A)',
           reasons,
-          metadata: {
-            planNum, beginYear, endYear, ein,
-            has4A,
-            headerGA: true,
-            headerINS: true,
-            saHealth: hasScheduleAHealth,
-            saStop:   hasScheduleAStopLoss
-          }
+          metadata: { planNum, beginYear, endYear, ein }
         };
       }
-
-      // Non-medical Sched A present? Still not evidence of self-funded medical
-      if (hasScheduleA && !hasScheduleAHealth && !hasScheduleAStopLoss) {
-        reasons.push('Schedule A attached but not medical/stop-loss');
-        return {
-          classification: 'Indeterminate (non-medical Sched A)',
-          reasons,
-          metadata: {
-            planNum, beginYear, endYear, ein,
-            has4A,
-            headerGA: true,
-            headerINS: false,
-            saHealth: hasScheduleAHealth,
-            saStop:   hasScheduleAStopLoss
-          }
-        };
-      }
-
-      // Only infer self-funded if GA present, NO insurance flags, and NO SA health/stop-loss
-      if (!hasScheduleAHealth && !hasScheduleAStopLoss && !benefitInsurance && !fundingInsurance) {
-        return {
-          classification: 'Likely self-funded (GA only, no insurance/SA health)',
-          reasons,
-          metadata: {
-            planNum, beginYear, endYear, ein,
-            has4A,
-            headerGA: true,
-            headerINS: false,
-            saHealth: hasScheduleAHealth,
-            saStop:   hasScheduleAStopLoss
-          }
-        };
-      }
+      return {
+        classification: 'Self-funded',
+        reasons,
+        metadata: { planNum, beginYear, endYear, ein }
+      };
     }
-
+    
     // Priority 4: Header indicates insurance but no Schedule A health
     if (benefitInsurance || fundingInsurance) {
       reasons.push('Header indicates insurance arrangement but no SA health flag found');
       return {
         classification: 'Likely insured (needs Sched A verification)',
         reasons,
-        metadata: {
-          planNum, beginYear, endYear, ein,
-          has4A,
-          headerGA: (benefitGenAssets || fundingGenAssets),
-          headerINS: true,
-          saHealth: hasScheduleAHealth,
-          saStop:   hasScheduleAStopLoss
-        }
+        metadata: { planNum, beginYear, endYear, ein }
       };
     }
-
+    
     // Priority 5: Schedule A attached but unclear
     if (hasScheduleA) {
       reasons.push('Schedule A attached but lacks health/stop-loss flags for this plan-year');
       return {
         classification: 'Indeterminate (needs Sched A detail)',
         reasons,
-        metadata: {
-          planNum, beginYear, endYear, ein,
-          has4A,
-          headerGA: (benefitGenAssets || fundingGenAssets),
-          headerINS: (benefitInsurance  || fundingInsurance),
-          saHealth: hasScheduleAHealth,
-          saStop:   hasScheduleAStopLoss
-        }
+        metadata: { planNum, beginYear, endYear, ein }
       };
     }
-
+    
     // Default: Likely self-funded
     reasons.push('No Sched A and no clear arrangement flags');
     return {
       classification: 'Likely self-funded (absence of health Schedule A)',
       reasons,
-      metadata: {
-        planNum, beginYear, endYear, ein,
-        has4A,
-        headerGA: (benefitGenAssets || fundingGenAssets),
-        headerINS: (benefitInsurance  || fundingInsurance),
-        saHealth: hasScheduleAHealth,
-        saStop:   hasScheduleAStopLoss
-      }
+      metadata: { planNum, beginYear, endYear, ein }
     };
   }
-
 
   /**
    * Roll up individual plan classifications to company level
    * @param {Array} planClassifications - Array of plan classification strings
    * @returns {string} Company-level classification
    */
-  
-  // plans: array of { classification, reasons, metadata } for the EIN+year
-  rollUpCompanyClassification(plans) {
-    const arr = (plans || []).filter(Boolean); // drop null/undefined
-    if (arr.length === 0) return 'no-medical-plans';
-
-    const anySAHealth   = arr.some(p => p?.metadata?.saHealth === true);
-    const anyStopLoss   = arr.some(p => p?.metadata?.saStop === true);
-    const anyMedicalGA  = arr.some(p => p?.metadata?.has4A && p?.metadata?.headerGA === true);
-    const anyInsHeader  = arr.some(p => p?.metadata?.headerINS === true);
-
-    // If there’s insured medical evidence and no stop-loss, force INSURED.
-    // (Protects The Intersect Group.)
-    if (anySAHealth && !anyStopLoss) return 'insured';
-
-    // Strong self-funded signals
-    const hasStrongSelf = arr.some(p => {
-      const c = p?.classification;
-      return c === 'Self-funded' ||
-             c === 'Self-funded w/ stop-loss' ||
-             (typeof c === 'string' && c.startsWith('Likely self-funded (GA only'));
-    });
-    if (hasStrongSelf) return 'self-funded';
-
-    // Medix pattern: medical plan(s) with GA on header, no SA health anywhere, no stop-loss.
-    if (anyMedicalGA && !anySAHealth && !anyStopLoss) return 'self-funded';
-
-    // Otherwise, treat any insured/likely insured as insured
-    const hasInsuredLike = arr.some(p => {
-      const c = p?.classification;
-      return c === 'Insured' || (typeof c === 'string' && c.startsWith('Likely insured'));
-    });
-    if (hasInsuredLike) return 'insured';
-
+  rollUpCompanyClassification(planClassifications) {
+    if (planClassifications.length === 0) {
+      return 'no-medical-plans';
+    }
+    
+    // Following Python script logic: "Self-funded (at least one plan)" if any plan is self-funded
+    const hasSelfFunded = planClassifications.some(c => 
+      c.startsWith('Self-funded') || c.startsWith('Likely self-funded')
+    );
+    
+    if (hasSelfFunded) {
+      return 'self-funded';
+    }
+    
+    const hasInsured = planClassifications.some(c => 
+      c === 'Insured' || c.startsWith('Likely insured')
+    );
+    
+    if (hasInsured) {
+      return 'insured';
+    }
+    
     return 'indeterminate';
   }
-
-
-
 
   /**
    * Generate summary of yearly classifications with trend analysis
