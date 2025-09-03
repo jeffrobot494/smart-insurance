@@ -167,35 +167,62 @@ th {
 }
 
 @media print {
-    /* Page setup for landscape with proper margins */
+    /* Page setup for landscape orientation */
     @page {
-        size: A4 landscape;
-        margin: 0.75in 0.5in; /* top/bottom left/right */
+        size: landscape;
+        margin: 0.5in;
     }
     
     /* Clean up screen styling */
     body { 
-        background-color: white !important; 
+        background-color: white; 
     }
     
     .header, .table-section {
-        box-shadow: none !important;
-        border-radius: 0 !important;
+        box-shadow: none;
+        border-radius: 0;
     }
     
-    /* Basic page break prevention */
+    /* Prevent partial empty cells at page breaks */
     .company-row {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+        break-inside: avoid;
+        height: auto;
+        min-height: 1em;
     }
     
     .total-row {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
+        break-inside: avoid;
     }
     
-    /* Ensure table headers repeat */
-    thead {
-        display: table-header-group;
+    /* Add bottom border to last row on each page */
+    .company-row {
+        break-after: auto;
+    }
+    
+    .company-row:last-of-type td,
+    .company-row + .total-row td {
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    /* Hide side borders on last row cells - use !important to override existing CSS */
+    .company-row:last-of-type td:first-child,
+    .company-row + .total-row td:first-child {
+        border-left: none !important;
+    }
+    
+    .company-row:last-of-type td:last-child,
+    .company-row + .total-row td:last-child {
+        border-right: none !important;
+    }
+    
+    /* Force table to break cleanly between complete rows */
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    /* Ensure each row has proper borders */
+    .company-row td {
+        border-bottom: 1px solid #e9ecef;
     }
 }

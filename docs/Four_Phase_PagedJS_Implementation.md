@@ -455,3 +455,38 @@ window.PDFConversionService.testPagedJSMethod(testHTML, 'Test Company');
 ---
 
 This four-phase approach ensures each step is independently verifiable and problems can be isolated to specific phases.
+
+*** POST-IMPLEMENTATION DEBUGGING ***
+● Problem Summary
+
+  Issue: Paged.js is failing with Error: item doesn't belong to list during CSS processing.
+
+  Root Cause: The error occurs in PrintMedia.onAtMedia, indicating a conflict or syntax issue in the @media print CSS rules added in Phase 1.
+
+  Diagnosis Steps
+
+  1. Test without Phase 1 CSS: Temporarily comment out the @media print block in styles.css to isolate if the CSS is causing the issue.
+  2. Check CSS syntax: The error suggests Paged.js can't parse one of these CSS rules:
+    - @page { size: A4 landscape; margin: 0.75in 0.5in; }
+    - Duplicate break-inside and page-break-inside properties
+    - Complex margin syntax
+  3. Test with minimal CSS: Replace Phase 1 CSS with basic print styles:
+  @media print {
+      body { background-color: white; }
+      .header, .table-section { box-shadow: none; }
+  }
+
+  Solution Options
+
+  Option A (Quick Fix): Use minimal print CSS, let Paged.js handle pagination automatically without explicit page break rules.
+
+  Option B (Debug CSS): Systematically test each CSS rule to identify which specific property causes the error.
+
+  Option C (Different Paged.js version): Try different Paged.js version - current using 0.4.2, could try 0.3.x or 0.4.3.
+
+  Recommended Next Steps
+
+  1. Comment out Phase 1 CSS temporarily
+  2. Test if Paged.js works with minimal CSS
+  3. If successful, gradually add back CSS rules to identify problematic syntax
+  4. Once identified, either fix CSS syntax or use Paged.js defaults

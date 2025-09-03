@@ -21,59 +21,6 @@ class PDFConversionService {
         }
     }
 
-    /**
-     * Load Paged.js library for client-side pagination (Phase 2 - Testing Only)
-     */
-    static async loadPagedJS() {
-        console.log('Phase 2: Testing Paged.js library loading...');
-        
-        // Check if already loaded
-        if (window.PagedPolyfill) {
-            console.log('Paged.js already available');
-            return window.PagedPolyfill;
-        }
-        
-        try {
-            // Load Paged.js from CDN
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/pagedjs@0.4.2/dist/paged.polyfill.js';
-            script.async = true;
-            
-            console.log('Loading Paged.js from CDN...');
-            
-            // Wait for script to load
-            await new Promise((resolve, reject) => {
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-            
-            // Wait for initialization
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
-            console.log('✅ Paged.js loaded successfully:', !!window.PagedPolyfill);
-            return window.PagedPolyfill;
-            
-        } catch (error) {
-            console.error('❌ Failed to load Paged.js:', error);
-            throw new Error('Unable to load Paged.js library');
-        }
-    }
-
-    /**
-     * Test Paged.js loading (Phase 2 - For testing only)
-     */
-    static async testPagedJSLoading() {
-        try {
-            console.log('🧪 Starting Paged.js load test...');
-            await this.loadPagedJS();
-            console.log('✅ Paged.js test successful');
-            return true;
-        } catch (error) {
-            console.error('❌ Paged.js test failed:', error);
-            return false;
-        }
-    }
 
     /**
      * Create temporary DOM container for HTML content
@@ -418,65 +365,15 @@ class PDFConversionService {
     }
 
     /**
-     * Generate PDF using Paged.js + browser print (Phase 3 - Alternative method)
+     * Generate PDF using Paged.js + browser print (Phase 4 - Absolute minimum)
      */
     static async generatePrintablePDF(htmlContent, firmName, templateConfig = null) {
-        console.log('🔧 Phase 3: Testing Paged.js PDF generation for:', firmName);
-        
-        let printContainer = null;
-        
-        try {
-            // Load Paged.js
-            await this.loadPagedJS();
-            
-            // Create hidden container
-            printContainer = document.createElement('div');
-            printContainer.innerHTML = htmlContent;
-            printContainer.style.position = 'absolute';
-            printContainer.style.left = '-9999px';
-            printContainer.style.top = '0';
-            printContainer.style.width = '100%';
-            printContainer.className = 'paged-content-test';
-            
-            document.body.appendChild(printContainer);
-            
-            console.log('Processing content with Paged.js...');
-            
-            // Let Paged.js process the content
-            await window.PagedPolyfill.preview(printContainer);
-            
-            console.log('Opening browser print dialog...');
-            
-            // Open print dialog
-            window.print();
-            
-            console.log('✅ Phase 3: Paged.js method completed');
-            
-        } catch (error) {
-            console.error('❌ Phase 3: Paged.js method failed:', error);
-            alert('Phase 3 test failed. Check console for details.');
-            throw error;
-        } finally {
-            // Cleanup
-            if (printContainer && printContainer.parentNode) {
-                document.body.removeChild(printContainer);
-            }
-        }
+        // Open new tab with HTML content
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(htmlContent);
+        newWindow.document.close();
     }
 
-    /**
-     * Test the new Paged.js method (Phase 3 - For testing)
-     */
-    static async testPagedJSMethod(htmlContent, firmName) {
-        console.log('🧪 Testing Phase 3: Paged.js PDF method...');
-        try {
-            await this.generatePrintablePDF(htmlContent, firmName);
-            return true;
-        } catch (error) {
-            console.error('Phase 3 test failed:', error);
-            return false;
-        }
-    }
 
     /**
      * Check if PDF generation is supported in current browser

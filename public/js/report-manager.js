@@ -92,10 +92,7 @@ class ReportManager {
                     throw new Error(`Unsupported format: ${config.format}`);
             }
             
-            // Success feedback
-            if (window.app && window.app.showSuccess) {
-                window.app.showSuccess(`${config.format.toUpperCase()} report generated successfully!`);
-            }
+            // Success feedback removed - was blocking PDF tab from appearing
             
             // Hide modal
             this.hideReportConfig();

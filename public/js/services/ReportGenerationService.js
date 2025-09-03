@@ -92,35 +92,42 @@ class ReportGenerationService {
             console.log('Regular service available:', !!window.PDFConversionService);
             console.log('Window properties:', Object.keys(window).filter(k => k.includes('PDF')));
             
+            /*
             // USE YOUR TEMPLATE WITH VECTOR PDF (BEST OF BOTH WORLDS)
             console.log('🔧 USING YOUR TEMPLATE + VECTOR PDF');
             try {
-                // Generate HTML with your beautiful template
-                console.log('Step 4a: Using your template HTML...');
-                
-                // Modify the HTML to remove ALL scrollbar CSS before PDF conversion
-                let modifiedHTML = reportResult.html
-                    .replace(/overflow-x:\s*auto/g, 'overflow-x: visible')
-                    .replace(/overflow:\s*auto/g, 'overflow: visible')
-                    .replace(/overflow-x:\s*scroll/g, 'overflow-x: visible')
-                    .replace(/overflow:\s*scroll/g, 'overflow: visible');
-                
-                // Also add CSS to force table to fit
-                modifiedHTML = modifiedHTML.replace(
-                    '</style>',
-                    'table { table-layout: fixed !important; width: 100% !important; } .table-container { overflow: visible !important; } </style>'
-                );
-                
-                console.log('HTML after CSS modifications:', modifiedHTML.length, 'characters');
-                
-                console.log('Step 4b: Converting template HTML to vector PDF...');
-                await window.PDFConversionService.convertToPDF(modifiedHTML, processedData.firm_name, reportResult.config);
-                console.log('✅ Template + Vector PDF completed successfully');
+            // Generate HTML with your beautiful template
+            console.log('Step 4a: Using your template HTML...');
+            
+            // Modify the HTML to remove ALL scrollbar CSS before PDF conversion
+            let modifiedHTML = reportResult.html
+                .replace(/overflow-x:\s*auto/g, 'overflow-x: visible')
+                .replace(/overflow:\s*auto/g, 'overflow: visible')
+                .replace(/overflow-x:\s*scroll/g, 'overflow-x: visible')
+                .replace(/overflow:\s*scroll/g, 'overflow: visible');
+            
+            // Also add CSS to force table to fit
+            modifiedHTML = modifiedHTML.replace(
+                '</style>',
+                'table { table-layout: fixed !important; width: 100% !important; } .table-container { overflow: visible !important; } </style>'
+            );
+            
+            console.log('HTML after CSS modifications:', modifiedHTML.length, 'characters');
+            
+            console.log('Step 4b: Converting template HTML to vector PDF...');
+            await window.PDFConversionService.convertToPDF(modifiedHTML, processedData.firm_name, reportResult.config);
+            console.log('✅ Template + Vector PDF completed successfully');
             } catch (vectorError) {
-                console.error('❌ Template + Vector PDF failed:', vectorError);
-                console.log('⚠️ FALLING BACK TO AUTOTABLE METHOD');
-                await window.PDFConversionServiceVector.convertToPDF(processedData, processedData.firm_name);
+            console.error('❌ Template + Vector PDF failed:', vectorError);
+            console.log('⚠️ FALLING BACK TO AUTOTABLE METHOD');
+            await window.PDFConversionServiceVector.convertToPDF(processedData, processedData.firm_name);
             }
+            */
+            
+            // USE PAGED.JS + BROWSER PRINT API (PHASE 4)
+            console.log('🔧 Phase 4: Using Paged.js for PDF generation');
+            await window.PDFConversionService.generatePrintablePDF(reportResult.html, processedData.firm_name, reportResult.config);
+            console.log('✅ Phase 4: Paged.js PDF generation completed');
             
             // Step 5: Log completion stats
             this.logGenerationStats(processedData, startTime);
@@ -149,44 +156,6 @@ class ReportGenerationService {
         }
     }
 
-    /**
-     * Generate HTML and open in new tab (Phase 3 - For testing only)
-     */
-    static async generateHTMLInNewTab(pipeline) {
-        const startTime = Date.now();
-        const firmName = pipeline.firm_name;
-        
-        try {
-            console.log('🧪 Phase 3: Opening HTML report in new tab for testing');
-            
-            // Step 1: Validation
-            this.validateBrowserSupport();
-            this.validateInputData(pipeline, firmName);
-            
-            // Step 2: Process the pipeline data
-            console.log('Processing pipeline data...');
-            const processedData = window.DataProcessingService.processJSONData(pipeline);
-            
-            // Step 3: Generate HTML report
-            console.log('Generating HTML report...');
-            const reportResult = await window.HTMLReportService.generateHTMLReport(processedData, this.TEMPLATE_NAME);
-            
-            // Step 4: Open HTML in new tab instead of converting to PDF
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(reportResult.html);
-            newWindow.document.close();
-            
-            console.log('✅ Phase 3: HTML report opened in new tab');
-            
-            // Log stats
-            this.logGenerationStats(processedData, startTime);
-            
-        } catch (error) {
-            console.error('❌ Phase 3: Failed to open HTML in new tab:', error);
-            alert('Phase 3 test failed. Check console for details.');
-            throw error;
-        }
-    }
 
     /**
      * Generate HTML preview without PDF conversion
@@ -256,47 +225,6 @@ class ReportGenerationService {
         };
     }
 
-    /**
-     * Test Phase 3 with sample data (for browser console testing)
-     */
-    static async testPhase3WithSampleData() {
-        console.log('🧪 Testing Phase 3 with sample data...');
-        
-        // Create sample pipeline data
-        const samplePipeline = {
-            firm_name: "Phase 3 Test Firm",
-            pipeline_id: "test-123",
-            companies: [
-                {
-                    company_name: "Test Company A",
-                    total_premiums: 100000,
-                    total_brokerage_fees: 5000,
-                    total_people_covered: 150,
-                    self_funded_classification: "insured",
-                    plans: [
-                        { carrier_name: "Test Insurance Co" }
-                    ]
-                },
-                {
-                    company_name: "Test Company B", 
-                    total_premiums: 200000,
-                    total_brokerage_fees: 10000,
-                    total_people_covered: 300,
-                    self_funded_classification: "self-funded",
-                    plans: [
-                        { carrier_name: "Another Insurance Co" }
-                    ]
-                }
-            ]
-        };
-        
-        try {
-            await this.generateHTMLInNewTab(samplePipeline);
-            console.log('✅ Phase 3 test completed - check new tab!');
-        } catch (error) {
-            console.error('❌ Phase 3 test failed:', error);
-        }
-    }
 }
 
 // Make available globally
