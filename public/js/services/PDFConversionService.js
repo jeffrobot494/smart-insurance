@@ -418,6 +418,67 @@ class PDFConversionService {
     }
 
     /**
+     * Generate PDF using Paged.js + browser print (Phase 3 - Alternative method)
+     */
+    static async generatePrintablePDF(htmlContent, firmName, templateConfig = null) {
+        console.log('🔧 Phase 3: Testing Paged.js PDF generation for:', firmName);
+        
+        let printContainer = null;
+        
+        try {
+            // Load Paged.js
+            await this.loadPagedJS();
+            
+            // Create hidden container
+            printContainer = document.createElement('div');
+            printContainer.innerHTML = htmlContent;
+            printContainer.style.position = 'absolute';
+            printContainer.style.left = '-9999px';
+            printContainer.style.top = '0';
+            printContainer.style.width = '100%';
+            printContainer.className = 'paged-content-test';
+            
+            document.body.appendChild(printContainer);
+            
+            console.log('Processing content with Paged.js...');
+            
+            // Let Paged.js process the content
+            await window.PagedPolyfill.preview(printContainer);
+            
+            console.log('Opening browser print dialog...');
+            
+            // Open print dialog
+            window.print();
+            
+            console.log('✅ Phase 3: Paged.js method completed');
+            
+        } catch (error) {
+            console.error('❌ Phase 3: Paged.js method failed:', error);
+            alert('Phase 3 test failed. Check console for details.');
+            throw error;
+        } finally {
+            // Cleanup
+            if (printContainer && printContainer.parentNode) {
+                document.body.removeChild(printContainer);
+            }
+        }
+    }
+
+    /**
+     * Test the new Paged.js method (Phase 3 - For testing)
+     */
+    static async testPagedJSMethod(htmlContent, firmName) {
+        console.log('🧪 Testing Phase 3: Paged.js PDF method...');
+        try {
+            await this.generatePrintablePDF(htmlContent, firmName);
+            return true;
+        } catch (error) {
+            console.error('Phase 3 test failed:', error);
+            return false;
+        }
+    }
+
+    /**
      * Check if PDF generation is supported in current browser
      */
     static isSupportedBrowser() {

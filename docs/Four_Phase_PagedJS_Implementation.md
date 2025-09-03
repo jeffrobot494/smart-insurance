@@ -284,18 +284,78 @@ static async testPagedJSMethod(htmlContent, firmName) {
 }
 ```
 
-## Testing Phase 3
-1. **Normal PDF generation unchanged** (still uses html2canvas)
-2. **Manual test in browser console:**
-   ```javascript
-   // Get current report HTML
-   const htmlReport = document.documentElement.outerHTML;
-   
-   // Test new method
-   window.PDFConversionService.testPagedJSMethod(htmlReport, 'Test Firm');
-   ```
-3. **Expected:** Browser print dialog opens with paginated content
-4. **If issues:** Remove the new methods, existing functionality unaffected
+## Additional Testing Methods Added for Phase 3
+
+**Note:** During implementation, we discovered that reports are generated client-side but never displayed on screen. To enable proper testing, the following additional methods were added:
+
+### Added to ReportGenerationService.js:
+
+**1. `generateHTMLInNewTab()` method:**
+```javascript
+/**
+ * Generate HTML and open in new tab (Phase 3 - For testing only)
+ */
+static async generateHTMLInNewTab(pipeline) {
+    // Generates full report HTML and opens in new browser tab
+    // instead of converting to PDF
+}
+```
+
+**2. `testPhase3WithSampleData()` method:**
+```javascript  
+/**
+ * Test Phase 3 with sample data (for browser console testing)
+ */
+static async testPhase3WithSampleData() {
+    // Creates sample pipeline data and opens HTML report in new tab
+}
+```
+
+## Testing Phase 3 (Updated Method)
+
+**Existing PDF generation should still work normally** (no changes to main flow)
+
+### Step 1: Generate HTML Report in New Tab
+
+1. **Open the web application in browser**
+2. **Open browser developer console** (F12)
+3. **Run this command to generate test report:**
+
+```javascript
+// Generate sample report and open in new tab
+window.ReportGenerationService.testPhase3WithSampleData()
+```
+
+**Expected results:**
+- Console shows report generation messages
+- New browser tab opens with formatted HTML report
+- Report contains sample company data with proper styling
+
+### Step 2: Test Paged.js Method from New Tab
+
+1. **In the NEW TAB that opened** (with the HTML report)
+2. **Open developer console in the new tab** (F12)  
+3. **Run this command:**
+
+```javascript
+// Get the current report HTML from this tab
+const reportHTML = document.documentElement.outerHTML;
+
+// Test the Paged.js method with real report content  
+window.PDFConversionService.testPagedJSMethod(reportHTML, 'Phase 3 Test');
+```
+
+**Expected results:**
+1. Console shows Paged.js processing messages
+2. Browser print dialog opens  
+3. Print preview should show:
+   - ✅ Proper landscape orientation
+   - ✅ Content with margins (not edge-to-edge)  
+   - ✅ Clean formatting with no shadows/rounded corners
+   - ✅ Real report data and styling
+   - ✅ Company rows don't split across pages
+
+**If issues:** Remove the added methods, existing functionality unaffected
 
 ## Success Criteria for Phase 3
 - ✅ Existing PDF generation still works (html2canvas)
@@ -382,7 +442,7 @@ window.PDFConversionService.testPagedJSMethod(testHTML, 'Test Company');
 |-------|----------------|
 | Phase 1 | Revert CSS changes in styles.css |  
 | Phase 2 | Remove `loadPagedJS()` and `testPagedJSLoading()` methods |
-| Phase 3 | Remove `generatePrintablePDF()` and `testPagedJSMethod()` methods |
+| Phase 3 | Remove `generatePrintablePDF()`, `testPagedJSMethod()`, `generateHTMLInNewTab()`, and `testPhase3WithSampleData()` methods |
 | Phase 4 | Change one line back to `convertToPDF()` call |
 
 ## Success Metrics
