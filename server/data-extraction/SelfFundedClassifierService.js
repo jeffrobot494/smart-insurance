@@ -117,6 +117,34 @@ class SelfFundedClassifierService {
         }
       }
       
+      // FALLBACK: If no medical plans found in Form 5500, check Schedule A for health insurance
+      if (yearPlans.length === 0) {
+        const yearScheduleARecords = scheduleARecords.rows.filter(record => 
+          record.year && record.year.toString() === year
+        );
+        
+        const healthScheduleARecords = yearScheduleARecords.filter(record => 
+          !this.isNonHealthScheduleA(record)
+        );
+        
+        if (healthScheduleARecords.length > 0) {
+          // Found health insurance in Schedule A - create synthetic plan
+          yearPlans.push({
+            plan_name: 'Health Insurance Plan (detected from Schedule A)',
+            ein: ein,
+            classification: 'Insured',
+            reasons: ['Schedule A contains health insurance coverage (no corresponding Form 5500 health plan found)'],
+            metadata: { 
+              planNum: 'Schedule-A-Fallback', 
+              beginYear: year, 
+              endYear: year,
+              ein: ein,
+              scheduleARecordCount: healthScheduleARecords.length
+            }
+          });
+        }
+      }
+      
       // Roll up plans within this year only
       const yearClassification = this.rollUpCompanyClassification(
         yearPlans.map(p => p.classification)
@@ -148,6 +176,34 @@ class SelfFundedClassifierService {
   }
 
   /**
+   * Check if a Schedule A record represents non-health benefits (exclusion-based)
+   * @param {Object} scheduleARecord - Schedule A record with benefitType
+   * @returns {boolean} True if this is clearly NOT health insurance
+   */
+  isNonHealthScheduleA(scheduleARecord) {
+    if (!scheduleARecord || !scheduleARecord.benefitType) return false;
+    
+    const benefitType = scheduleARecord.benefitType.toUpperCase();
+    
+    // Clear non-health benefit indicators
+    const nonHealthKeywords = [
+      'LEGAL SERVICES',
+      'AD&D', 
+      'ACCIDENTAL DEATH',
+      'LIFE INSURANCE',
+      'DISABILITY',
+      'VISION',
+      'DENTAL', 
+      'CRITICAL ILLNESS',
+      'HOSPITAL INDEMNITY',
+      'ACCIDENT',
+      'EMPLOYEE ASSISTANCE'
+    ];
+    
+    return nonHealthKeywords.some(keyword => benefitType.includes(keyword));
+  }
+
+  /**
    * Test classification for a single company name (for test endpoint)
    * @param {string} companyName - Company name to search and classify
    * @returns {Object} Classification results with year-by-year breakdown and raw data
@@ -168,22 +224,17 @@ class SelfFundedClassifierService {
         return {
           success: true,
           company_name: companyName,
-          // Quick access field
-          self_funded: 'no-data',
-          // Detailed analysis
-          self_funded_analysis: {
-            current_classification: 'no-data',
-            classifications_by_year: {},
-            summary: {
-              years_available: [],
-              message: 'No Form 5500 records found for this company'
-            }
+          current_classification: 'no-data',
+          classifications_by_year: {},
+          summary: {
+            years_available: [],
+            message: 'No Form 5500 records found for this company'
           },
           raw_data: { form5500_records: [], schedule_a_records: [] }
         };
       }
       
-      // Get EINs and Schedule A data
+      // Get EINs and Schedule A data for raw output
       const eins = [...new Set(form5500Records.map(r => r.ein).filter(ein => ein))];
       const scheduleARecords = [];
       for (const ein of eins) {
@@ -194,81 +245,22 @@ class SelfFundedClassifierService {
         scheduleARecords.push(...scheduleAResult.rows);
       }
       
-      // Create a mock company object to reuse existing classification logic
+      // Create mock company object to use production classification method
       const mockCompany = {
         legal_entity_name: companyName,
         form5500_data: { ein: eins[0] } // Use first EIN found
       };
       
-      // Build Schedule A index and classify manually (since we have raw data)
-      const scheduleAIndex = this.buildScheduleAIndex(scheduleARecords, eins[0]);
+      // Use the production classification method
+      const classificationResult = await this.classifyCompany(mockCompany);
       
-      // Group Form 5500 records by year
-      const recordsByYear = {};
-      form5500Records.forEach(record => {
-        const year = record.year.toString();
-        if (!recordsByYear[year]) {
-          recordsByYear[year] = [];
-        }
-        recordsByYear[year].push(record);
-      });
-      
-      // Classify each year separately
-      const classificationsByYear = {};
-      const yearlyClassifications = [];
-      
-      for (const [year, yearRecords] of Object.entries(recordsByYear)) {
-        const yearPlans = [];
-        
-        // Classify each plan in this year
-        for (const form5500Record of yearRecords) {
-          const planClassification = this.classifyPlan(form5500Record, scheduleAIndex);
-          if (planClassification) {
-            yearPlans.push({
-              plan_name: form5500Record.plan_name || '',
-              ein: form5500Record.ein,
-              classification: planClassification.classification,
-              reasons: planClassification.reasons,
-              metadata: planClassification.metadata
-            });
-          }
-        }
-        
-        // Roll up plans within this year only
-        const yearClassification = this.rollUpCompanyClassification(
-          yearPlans.map(p => p.classification)
-        );
-        
-        classificationsByYear[year] = {
-          classification: yearClassification,
-          plans: yearPlans
-        };
-        
-        yearlyClassifications.push({
-          year: year,
-          classification: yearClassification
-        });
-      }
-      
-      // Generate summary with trend analysis
-      const summary = this.generateYearlySummary(yearlyClassifications);
-      
-      // Current classification = most recent year
-      const years = Object.keys(classificationsByYear).sort((a, b) => parseInt(b) - parseInt(a));
-      const currentClassification = years.length > 0 ? classificationsByYear[years[0]].classification : 'no-data';
-      
-      // Return test-specific format with raw data included (matching new structure)
+      // Return test-specific format with raw data included
       return {
         success: true,
         company_name: companyName,
-        // Quick access field (same as current_classification)
-        self_funded: currentClassification,
-        // Detailed analysis
-        self_funded_analysis: {
-          current_classification: currentClassification,
-          classifications_by_year: classificationsByYear,
-          summary: summary
-        },
+        current_classification: classificationResult.current_classification,
+        classifications_by_year: classificationResult.classifications_by_year,
+        summary: classificationResult.summary,
         raw_data: {
           form5500_records: form5500Records,
           schedule_a_records: scheduleARecords
