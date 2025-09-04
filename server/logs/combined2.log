@@ -2812,3 +2812,38 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-03T21:16:13.465Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-03T21:16:13.702Z"}
 {"level":"info","message":"Data extraction completed for pipeline 18","service":"manager","timestamp":"2025-09-03T21:16:13.932Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 7 companies","service":"manager","timestamp":"2025-09-03T21:18:15.744Z"}
+{"level":"info","message":"🔍 Processing 7 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-03T21:18:15.958Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 7 companies","service":"database","timestamp":"2025-09-03T21:18:17.557Z"}
+{"level":"info","message":"📋 Found Schedule A records for 0 EINs","service":"database","timestamp":"2025-09-03T21:18:18.308Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-03T21:18:18.309Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-03T21:18:18.310Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 7 companies","service":"database","timestamp":"2025-09-03T21:18:20.580Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-03T21:18:20.581Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-03T21:18:20.754Z"}
+{"level":"info","message":"Data extraction completed for pipeline 162","service":"manager","timestamp":"2025-09-03T21:18:20.922Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-04T20:02:32.646Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-04T20:02:36.712Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-04T20:02:37.331Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-04T20:02:37.334Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-04T20:02:37.581Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-04T20:02:37.582Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-04T20:02:37.584Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-04T20:02:37.584Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-04T20:02:37.591Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-04T20:02:37.597Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-04T20:02:38.028Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-04T20:02:38.030Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-04T20:02:38.229Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-04T20:02:38.229Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-04T20:02:38.229Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-04T20:02:38.232Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-04T20:02:38.232Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-04T20:02:38.422Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-04T20:02:38.422Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-04T20:02:38.673Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-04T20:02:38.676Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-04T20:02:38.678Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-04T20:02:38.956Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-04T20:02:38.961Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-04T20:02:52.062Z"}

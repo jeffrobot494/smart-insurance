@@ -181,6 +181,13 @@ class WorkflowResultsParser {
       companyObject.exited = parsed.portfolio_verification.exited;
     }
     
+    // Extract annual revenue data from revenue research step
+    if (parsed.revenue_research) {
+      companyObject.annual_revenue_usd = parsed.revenue_research.annual_revenue_usd;
+      companyObject.revenue_year = parsed.revenue_research.revenue_year;
+      companyObject.revenue_research_confidence = parsed.revenue_research.research_confidence;
+    }
+    
     // Use original company name as fallback if no legal entity name found
     if (!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) {
       companyObject.legal_entity_name = originalCompanyName;

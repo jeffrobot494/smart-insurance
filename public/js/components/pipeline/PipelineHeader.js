@@ -88,10 +88,15 @@ class PipelineHeader extends BaseComponent {
         if (this.isRendered) {
             // Re-render with new data
             const parent = this.element.parentNode;
+            const nextSibling = this.element.nextSibling;
             this.destroy();
             const newElement = this.render();
             if (parent) {
-                parent.appendChild(newElement);
+                if (nextSibling) {
+                    parent.insertBefore(newElement, nextSibling);
+                } else {
+                    parent.appendChild(newElement);
+                }
             }
         }
     }
