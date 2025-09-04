@@ -53,6 +53,19 @@ class CompanyDetails extends BaseComponent {
             html += this.renderEditableField('state', 'State', this.company.state || '', displayConfig.isEditable, false);
         }
         
+        // Annual Revenue - Show if available
+        if (this.company.annual_revenue_usd) {
+            // Revenue may come as a formatted string like "$26.7 million" so display it directly
+            const revenueDisplay = this.company.annual_revenue_usd;
+            const revenueYear = this.company.revenue_year ? ` (${this.company.revenue_year})` : '';
+            html += `
+                <div class="detail-row">
+                    <div class="detail-label">Annual Revenue:</div>
+                    <div class="detail-value">${revenueDisplay}${revenueYear}</div>
+                </div>
+            `;
+        }
+        
         // Add confidence/match information (read-only) - Only show if display rules allow
         if (displayConfig.showConfidenceBadge && this.company.confidence_level) {
             let confidenceText = '';
