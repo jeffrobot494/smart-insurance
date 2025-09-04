@@ -145,6 +145,8 @@ class DataProcessingService {
             total_brokerage_fees: aggregatedData.total_brokerage_fees,
             total_people_covered: aggregatedData.total_people_covered,
             total_participants: totalParticipants,
+            annual_revenue_usd: company.annual_revenue_usd,
+            revenue_year: company.revenue_year,
             plans: aggregatedData.plans
         };
     }

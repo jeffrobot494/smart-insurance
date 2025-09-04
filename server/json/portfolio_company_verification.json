@@ -17,7 +17,7 @@
         "outputKey": "revenue_research",
         "inputKeys": ["companies_with_locations"],
         "allowed_tools": ["search_web"],
-        "instructions": "Find the annual revenue for the company using perplexity_search. Search for: 'What is the annual revenue of [legal_entity_name/company_name]?' Return JSON: {company_name, firm_name, headquarters_location, revenue_research: {annual_revenue_usd, revenue_year, research_confidence, source_info}}. Include no comments in your response."
+        "instructions": "Find the annual revenue for the company using perplexity_search. Search for: 'What is the annual revenue of [legal_entity_name/company_name]?' Do NOT include ranges in your response. If your research indicates a range, use the middle of the range. Return JSON: {company_name, firm_name, headquarters_location, revenue_research: {annual_revenue_usd, revenue_year, research_confidence, source_info}}. Include no comments in your response."
       },
       {
         "id": 3,

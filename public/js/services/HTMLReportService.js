@@ -13,6 +13,35 @@ class HTMLReportService {
     }
 
     /**
+     * Parse revenue string and convert to numeric value
+     * Handles formats like "$26.7 million", "$100M", "$50.5B", etc.
+     */
+    static parseRevenueToNumber(revenueString) {
+        if (!revenueString || revenueString === '-') return 0;
+        
+        // Convert to uppercase and remove spaces for easier parsing
+        const cleanString = revenueString.toString().toUpperCase().replace(/\s+/g, '');
+        
+        // Extract the numeric part
+        const numericMatch = cleanString.match(/[\d.]+/);
+        if (!numericMatch) return 0;
+        
+        const numericValue = parseFloat(numericMatch[0]);
+        if (isNaN(numericValue)) return 0;
+        
+        // Check for multipliers
+        if (cleanString.includes('BILLION') || cleanString.includes('B')) {
+            return numericValue * 1000000000;
+        } else if (cleanString.includes('MILLION') || cleanString.includes('M')) {
+            return numericValue * 1000000;
+        } else if (cleanString.includes('THOUSAND') || cleanString.includes('K')) {
+            return numericValue * 1000;
+        } else {
+            return numericValue;
+        }
+    }
+
+    /**
      * Extract unique broker/carrier names from company plans
      */
     static extractBrokerNames(plans) {
@@ -59,6 +88,7 @@ class HTMLReportService {
         let totalPremiums = 0;
         let totalBrokerageFees = 0;
         let totalEmployeesCovered = 0;
+        let totalRevenue = 0;
         let selfFundedCount = 0;
         let totalCompanies = 0;
         const allBrokers = new Set();
@@ -67,6 +97,9 @@ class HTMLReportService {
             totalPremiums += company.total_premiums || 0;
             totalBrokerageFees += company.total_brokerage_fees || 0;
             totalEmployeesCovered += company.total_people_covered || 0;
+            
+            // Sum up revenue using our parsing method
+            totalRevenue += this.parseRevenueToNumber(company.annual_revenue_usd);
             
             totalCompanies++;
             const classification = company.self_funded_classification || 'unknown';
@@ -88,6 +121,7 @@ class HTMLReportService {
             totalPremiums,
             totalBrokerageFees,
             totalEmployeesCovered,
+            totalRevenue,
             selfFundedCount,
             totalCompanies,
             uniqueBrokerCount: allBrokers.size,
@@ -109,10 +143,13 @@ class HTMLReportService {
         const totalPeopleCovered = company.total_people_covered || 0;
         const brokers = this.extractBrokerNames(company.plans || []);
         
+        // Get revenue from company data - display as-is since it's already formatted
+        const revenue = company.annual_revenue_usd || '-';
+        
         return `
             <tr class="company-row">
                 <td class="company-name">${companyName}</td>
-                <td class="revenue">-</td>
+                <td class="revenue">${revenue}</td>
                 <td class="employees">${totalPeopleCovered.toLocaleString()}</td>
                 <td class="funding">${this.formatFundingStatus(company.self_funded_classification || 'unknown')}</td>
                 <td class="brokers">${brokers}</td>
@@ -130,11 +167,15 @@ class HTMLReportService {
             : `${totals.uniqueBrokerCount} Unique Brokers`;
             
         const fundingText = `${totals.selfFundedCount}/${totals.totalCompanies} self-funded`;
+        
+        // Format total revenue, showing "-" if no revenue data available
+        const totalRevenueDisplay = totals.totalRevenue > 0 ? 
+            this.formatCurrency(totals.totalRevenue) : '-';
             
         return `
             <tr class="total-row">
                 <td class="total-label">TOTAL</td>
-                <td class="total-revenue">-</td>
+                <td class="total-revenue">${totalRevenueDisplay}</td>
                 <td class="total-employees">${totals.totalEmployeesCovered.toLocaleString()}</td>
                 <td class="total-funding">${fundingText}</td>
                 <td class="total-brokers">${brokerText}</td>
