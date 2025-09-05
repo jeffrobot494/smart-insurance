@@ -33,19 +33,19 @@ class ActionButtons extends BaseComponent {
         switch (status) {
             case 'research_complete':
                 buttons.push(`<button class="btn btn-primary" data-action="proceed-legal">Proceed to Legal Resolution</button>`);
-                buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
+                // buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
             case 'legal_resolution_complete':
                 buttons.push(`<button class="btn btn-primary" data-action="proceed-data">Proceed to Data Extraction</button>`);
-                buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
+                // buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
             case 'data_extraction_complete':
                 buttons.push(`<button class="btn btn-success" data-action="report">Generate Report</button>`);
-                buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
+                // buttons.push(`<button class="btn btn-secondary" data-action="edit">Edit</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
