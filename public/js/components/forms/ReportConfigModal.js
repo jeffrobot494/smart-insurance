@@ -99,6 +99,7 @@ class ReportConfigModal extends BaseComponent {
                     <!-- Action Buttons -->
                     <div class="button-row">
                         <button class="btn btn-success" id="download-report-btn">Download Report</button>
+                        <button class="btn btn-primary" id="download-excel-btn">Download Spreadsheet</button>
                         <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
                     </div>
                     
@@ -130,6 +131,12 @@ class ReportConfigModal extends BaseComponent {
         const downloadBtn = this.modalElement.querySelector('#download-report-btn');
         if (downloadBtn) {
             downloadBtn.addEventListener('click', () => this.handleFormSubmit());
+        }
+        
+        // Download Excel button
+        const downloadExcelBtn = this.modalElement.querySelector('#download-excel-btn');
+        if (downloadExcelBtn) {
+            downloadExcelBtn.addEventListener('click', () => this.handleExcelSubmit());
         }
         
         // Cancel button
@@ -330,6 +337,30 @@ class ReportConfigModal extends BaseComponent {
         
         // Trigger callback
         this.triggerCallback('onGenerate', config);
+    }
+
+    /**
+     * Handle Excel export submission
+     */
+    handleExcelSubmit() {
+        console.log('ReportConfigModal: Excel export submitted');
+        
+        // Clear any previous errors
+        this.hideError();
+        
+        // Validate form
+        const validation = this.validateForm();
+        if (!validation.valid) {
+            this.showError(validation.error);
+            return;
+        }
+        
+        // Get form data
+        const config = this.getFormData();
+        console.log('ReportConfigModal: Excel export data collected:', config);
+        
+        // Trigger callback for Excel export
+        this.triggerCallback('onGenerateExcel', config);
     }
 
     /**

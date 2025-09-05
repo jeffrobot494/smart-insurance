@@ -13,6 +13,29 @@ class HTMLReportService {
     }
 
     /**
+     * Format integer revenue to human-readable string (e.g., 25000000 -> "$25M")
+     */
+    static formatRevenueDisplay(amount) {
+        if (!amount || amount === 0) return '-';
+        
+        const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+        if (isNaN(numAmount)) return '-';
+        
+        if (numAmount >= 1000000000) {
+            const billions = (numAmount / 1000000000);
+            return `$${billions % 1 === 0 ? billions.toFixed(0) : billions.toFixed(1)}B`;
+        } else if (numAmount >= 1000000) {
+            const millions = (numAmount / 1000000);
+            return `$${millions % 1 === 0 ? millions.toFixed(0) : millions.toFixed(1)}M`;
+        } else if (numAmount >= 1000) {
+            const thousands = (numAmount / 1000);
+            return `$${thousands % 1 === 0 ? thousands.toFixed(0) : thousands.toFixed(1)}K`;
+        } else {
+            return `$${numAmount.toLocaleString()}`;
+        }
+    }
+
+    /**
      * Parse revenue string and convert to numeric value
      * Handles formats like "$26.7 million", "$100M", "$50.5B", etc.
      */
@@ -69,7 +92,7 @@ class HTMLReportService {
     static formatFundingStatus(classification) {
         const statusMap = {
             'self-funded': 'Self-Funded',
-            'insured': 'Insured', 
+            'insured': 'Fully Insured', 
             'partially-self-funded': 'Partially Self-Funded',
             'indeterminate': 'Unknown',
             'no-medical-plans': 'No Medical Plans',
@@ -143,8 +166,8 @@ class HTMLReportService {
         const totalPeopleCovered = company.total_people_covered || 0;
         const brokers = this.extractBrokerNames(company.plans || []);
         
-        // Get revenue from company data - display as-is since it's already formatted
-        const revenue = company.annual_revenue_usd || '-';
+        // Format revenue from integer to human-readable string (e.g., 25000000 -> "$25M")
+        const revenue = this.formatRevenueDisplay(company.annual_revenue_usd);
         
         return `
             <tr class="company-row">

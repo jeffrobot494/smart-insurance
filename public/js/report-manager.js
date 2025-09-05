@@ -11,6 +11,7 @@ class ReportManager {
         // Initialize modal with callbacks
         this.modal = new window.ReportConfigModal({
             onGenerate: (config) => this.generateReport(config),
+            onGenerateExcel: (config) => this.generateExcelReport(config),
             onCancel: () => this.handleCancel()
         });
         
@@ -127,13 +128,37 @@ class ReportManager {
     }
 
     /**
-     * Generate Excel report (server-side or client-side)
+     * Generate Excel report using ExcelExportService
      */
-    async generateExcelReport(config, pipeline) {
-        console.log('ReportManager: Excel generation not yet implemented');
+    async generateExcelReport(config, pipeline = null) {
+        console.log('ReportManager: Generating Excel report with config:', config);
         
-        // Placeholder - would call server endpoint or client-side Excel library
-        throw new Error('Excel report generation will be implemented in a future phase');
+        try {
+            // If no pipeline provided, filter the current pipeline
+            const targetPipeline = pipeline || this.filterPipelineCompanies(this.currentPipeline, config.selectedCompanies);
+            
+            // Show progress
+            this.handleReportProgress('Generating Excel report...');
+            
+            // Process data using the same service as PDF generation
+            const processedData = window.DataProcessingService.processJSONData(targetPipeline);
+            
+            // Generate and download Excel file
+            const result = await window.ExcelExportService.generateExcelReport(processedData);
+            
+            console.log(`ReportManager: Excel report generated successfully: ${result.filename}`);
+            
+            // Hide modal
+            this.hideReportConfig();
+            
+            // Hide loading
+            Utils.hideLoading();
+            
+        } catch (error) {
+            console.error('ReportManager: Excel generation failed:', error);
+            Utils.hideLoading();
+            throw error;
+        }
     }
 
     /**

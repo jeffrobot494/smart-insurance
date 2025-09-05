@@ -1225,3 +1225,11 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T13:45:19.746Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T13:45:19.746Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T13:45:19.994Z"}
+{"level":"error","message":"Research failed for pipeline 169:","service":"manager","timestamp":"2025-09-05T15:26:09.374Z"}
+{"level":"error","message":"❌ Task 4 failed: Maximum iterations reached","service":"workflow","timestamp":"2025-09-05T16:23:13.481Z"}
+{"level":"error","message":"❌ Research failed for pipeline 170:","service":"manager","timestamp":"2025-09-05T16:23:13.486Z"}
+{"level":"error","message":"Research failed for pipeline 170:","service":"manager","timestamp":"2025-09-05T16:23:13.531Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T16:31:45.892Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T16:31:45.893Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T16:31:45.985Z"}
+{"level":"error","message":"Legal resolution failed for pipeline 170:","service":"manager","timestamp":"2025-09-05T16:33:41.521Z"}
