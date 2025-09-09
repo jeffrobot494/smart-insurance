@@ -4655,3 +4655,6 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-05T16:42:21.698Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-05T16:42:21.786Z"}
 {"level":"info","message":"Data extraction completed for pipeline 170","service":"manager","timestamp":"2025-09-05T16:42:21.830Z"}
+{"level":"info","message":"perplexity MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.678Z"}
+{"level":"info","message":"form5500 MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.684Z"}
+{"level":"info","message":"firecrawl MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.690Z"}
