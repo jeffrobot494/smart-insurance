@@ -424,6 +424,27 @@ class DatabaseManager {
   }
 
   /**
+   * Get broker information by Schedule A identifiers
+   * @param {string} ackId - ACK_ID from Schedule A record
+   * @param {number} formId - FORM_ID from Schedule A record
+   * @returns {Array} Array of broker records
+   */
+  async getBrokersByScheduleA(ackId, formId) {
+    try {
+      const result = await this.query(
+        'SELECT * FROM get_brokers_by_schedule_a($1, $2)',
+        [ackId, formId]
+      );
+      
+      return result.rows;
+    } catch (error) {
+      logger.error(`❌ Error getting brokers for ACK_ID "${ackId}", FORM_ID "${formId}":`, error.message);
+      // Return empty array instead of throwing - graceful degradation
+      return [];
+    }
+  }
+
+  /**
    * Test database connectivity and functions
    */
   async testConnection() {

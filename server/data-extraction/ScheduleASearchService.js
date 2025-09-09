@@ -70,6 +70,23 @@ class ScheduleASearchService {
           
           // Convert database record to expected format
           const formattedRecord = this.formatDatabaseRecord(record, recordsByYear[year].length + 1);
+          
+          // ✅ NEW: Get broker information for this Schedule A record
+          if (record.ack_id && record.form_id) {
+            try {
+              const brokers = await this.databaseManager.getBrokersByScheduleA(
+                record.ack_id, 
+                record.form_id
+              );
+              formattedRecord.brokers = brokers; // Attach broker data
+            } catch (brokerError) {
+              logger.debug(`No broker data found for ACK_ID "${record.ack_id}", FORM_ID "${record.form_id}"`);
+              formattedRecord.brokers = []; // Empty array if no brokers
+            }
+          } else {
+            formattedRecord.brokers = []; // No linking data available
+          }
+          
           recordsByYear[year].push(formattedRecord);
         }
         
@@ -127,8 +144,12 @@ class ScheduleASearchService {
       carrierName: record.fieldsMap['CARRIER_NAME'] || '',
       personsCovered: record.fieldsMap['PERSONS_COVERED'] || '',
       brokerCommission: record.fieldsMap['BROKER_COMMISSION'] || '',
+      brokerFees: record.fieldsMap['BROKER_FEES'] || '', // ✅ ADD: Missing field
       benefitType: record.fieldsMap['BENEFIT_TYPES'] || '',
-      totalCharges: record.fieldsMap['TOTAL_CHARGES'] || ''
+      totalCharges: record.fieldsMap['TOTAL_CHARGES'] || '',
+      
+      // ✅ CRITICAL: Add broker information from Schedule A Part 1
+      brokers: record.brokers || [] // Broker data attached in searchSingleEIN
     };
 
     return keyFields;
