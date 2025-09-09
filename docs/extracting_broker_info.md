@@ -1607,4 +1607,71 @@ console.log('Companies with broker data:',
 
 ---
 
-*Complete implementation plan with testing verification ready for execution across all four phases.*
+## Post-Implementation Fixes
+
+After implementing all four phases, several issues were discovered during actual testing that required additional fixes:
+
+### Issue 1: Client-Side Broker Column Missing
+
+**Problem**: The HTML template already had a "Brokers" column, but the HTMLReportService was extracting **carrier names** instead of actual broker names from the `company.brokers` array.
+
+**Root Cause**: The `extractBrokerNames()` method in HTMLReportService was incorrectly processing `plan.carrier_name` instead of `company.brokers`.
+
+**Solution Applied**:
+- **File**: `public/js/templates/default/template.html`
+  - Changed "Brokers" column header to "Carriers" 
+  - Added new "Brokers" column after Carriers
+
+- **File**: `public/js/services/HTMLReportService.js`
+  - Renamed `extractBrokerNames()` to `extractCarrierNames()` (for carriers)
+  - Added new `extractBrokerNames(company)` method for actual broker data
+  - Updated `generateCompanyRow()` to include both carriers and brokers
+  - Updated `calculateTotals()` to track carriers and brokers separately
+  - Updated `generateTotalRow()` to display both carrier and broker counts
+
+### Issue 2: Excel Export Broker Column Inaccuracy
+
+**Problem**: The Excel export service had the same issue - it was labeling carrier names as "Brokers" in the spreadsheet.
+
+**Root Cause**: ExcelExportService was using the same incorrect logic as the original HTMLReportService.
+
+**Solution Applied**:
+- **File**: `public/js/services/ExcelExportService.js`
+  - Renamed existing `extractBrokerNames()` to `extractCarrierNames()`
+  - Added new `extractBrokerNames(company)` method for actual broker data
+  - Updated headers to include both "Carriers" and "Brokers" columns
+  - Updated data row generation to extract both carriers and brokers
+  - Updated `calculateTotals()` to track both separately
+  - Updated totals row to display both counts
+  - Added column width for new Brokers column
+
+### Issue 3: Schema Function Conflicts (During Implementation)
+
+**Problem**: Enhanced database function caused startup errors due to return type conflicts.
+
+**Solution Applied**: 
+- Commented out conflicting function definition in `create-tables.sql`
+- Disabled schema setup in `DatabaseManager.js` initialization
+- The existing function was already working correctly
+
+### Key Lessons Learned
+
+1. **Template vs Logic Separation**: The template correctly anticipated broker information with a "Brokers" column, but the service logic was extracting the wrong data type.
+
+2. **Carrier vs Broker Distinction**: The system was conflating insurance carriers (companies like "Aetna") with insurance brokers (intermediaries like "Willis Towers Watson").
+
+3. **Consistency Across Export Formats**: Both HTML reports and Excel exports needed identical logic updates to maintain data consistency.
+
+4. **Data Flow Validation**: The broker data was successfully flowing from Phase 3 server extraction through Phase 4 client processing, but wasn't being displayed due to incorrect field extraction in the presentation layer.
+
+### Final Implementation State
+
+After these fixes, the system now correctly displays:
+- **Carriers Column**: Insurance companies (e.g., "Aetna Life Insurance Company")  
+- **Brokers Column**: Insurance brokers (e.g., "WILLIS TOWERS WATSON US LLC")
+
+Both PDF reports and Excel spreadsheets now accurately reflect the broker information extracted from Schedule A Part 1 records, completing the end-to-end broker information pipeline from DOL data to final reports.
+
+---
+
+*Complete implementation plan with post-implementation fixes documented for future reference.*
