@@ -29,7 +29,8 @@ class DataProcessingService {
                 total_premiums: 0,
                 total_brokerage_fees: 0,
                 total_people_covered: 0,
-                plans: []
+                plans: [],
+                all_brokers: [] // ✅ NEW: Empty array when no data
             };
         }
         
@@ -38,6 +39,9 @@ class DataProcessingService {
         let totalBrokerageFees = 0;
         let totalPeopleCovered = 0;
         const plans = [];
+        
+        // ✅ NEW: Collect all unique broker names
+        const allBrokers = new Set();
         
         for (const plan of yearData) {
             // Parse monetary values, handling empty strings
@@ -49,12 +53,26 @@ class DataProcessingService {
             totalBrokerageFees += brokerage;
             totalPeopleCovered += people;
             
+            // ✅ NEW: Extract broker names from this plan
+            const planBrokers = [];
+            if (plan.brokers && Array.isArray(plan.brokers)) {
+                for (const broker of plan.brokers) {
+                    const brokerName = broker.name || broker.broker_name || 'Unknown';
+                    if (brokerName && brokerName !== 'Unknown') {
+                        allBrokers.add(brokerName);
+                        planBrokers.push(brokerName);
+                    }
+                }
+            }
+            
             plans.push({
                 benefit_type: plan.benefitType || "",
                 carrier_name: plan.carrierName || "",
                 premiums: premiums,
                 brokerage_fees: brokerage,
-                people_covered: people
+                people_covered: people,
+                // ✅ NEW: Include brokers for this specific plan
+                brokers: planBrokers
             });
         }
         
@@ -62,7 +80,9 @@ class DataProcessingService {
             total_premiums: totalPremiums,
             total_brokerage_fees: totalBrokerageFees,
             total_people_covered: totalPeopleCovered,
-            plans: plans
+            plans: plans,
+            // ✅ NEW: All unique brokers for this company (sorted)
+            all_brokers: Array.from(allBrokers).sort()
         };
     }
 
@@ -127,7 +147,8 @@ class DataProcessingService {
                 total_premiums: 0,
                 total_brokerage_fees: 0,
                 total_people_covered: 0,
-                plans: []
+                plans: [],
+                all_brokers: [] // ✅ NEW: Empty array when no data
             };
             hasData = false;
         }
@@ -147,7 +168,9 @@ class DataProcessingService {
             total_participants: totalParticipants,
             annual_revenue_usd: company.annual_revenue_usd,
             revenue_year: company.revenue_year,
-            plans: aggregatedData.plans
+            plans: aggregatedData.plans,
+            // ✅ NEW: Include broker information for table display
+            brokers: aggregatedData.all_brokers || []
         };
     }
 

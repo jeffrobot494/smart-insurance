@@ -4681,3 +4681,51 @@
 {"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
 {"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:29:34.526Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T02:09:57.720Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T02:09:57.728Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T02:09:57.961Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T02:09:57.961Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-09T02:14:53.435Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T02:14:54.022Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T02:14:54.025Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:14:54.257Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-09T02:16:12.080Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T02:16:12.670Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T02:16:12.671Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:16:12.928Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-09T02:16:50.119Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T02:16:50.700Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-09T02:16:50.701Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-09T02:16:50.701Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-09T02:16:50.701Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-09T02:16:50.709Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-09T02:16:50.718Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-09T02:16:51.240Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-09T02:16:51.242Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-09T02:16:51.332Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-09T02:16:51.332Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-09T02:16:51.332Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-09T02:16:51.335Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-09T02:16:51.336Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-09T02:16:51.571Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-09T02:16:51.573Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_name_test, form5500_batch_name_test","service":"mcp","timestamp":"2025-09-09T02:16:51.576Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-09T02:16:52.651Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-09T02:16:52.657Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-09T02:17:30.560Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 7 companies","service":"manager","timestamp":"2025-09-09T02:17:48.951Z"}
+{"level":"info","message":"🔍 Processing 7 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-09T02:17:49.191Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 7 companies","service":"database","timestamp":"2025-09-09T02:17:50.784Z"}
+{"level":"info","message":"📋 Found Schedule A records for 0 EINs","service":"database","timestamp":"2025-09-09T02:17:57.148Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-09T02:17:57.150Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-09T02:17:57.151Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 7 companies","service":"database","timestamp":"2025-09-09T02:17:59.577Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-09T02:17:59.578Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-09T02:17:59.823Z"}
+{"level":"info","message":"Data extraction completed for pipeline 163","service":"manager","timestamp":"2025-09-09T02:18:00.052Z"}

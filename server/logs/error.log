@@ -1249,3 +1249,14 @@
 {"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
 {"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:29:34.526Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T02:09:57.960Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T02:09:57.961Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T02:09:57.961Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T02:09:57.964Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:14:54.257Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:16:12.928Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-09T02:16:51.571Z"}

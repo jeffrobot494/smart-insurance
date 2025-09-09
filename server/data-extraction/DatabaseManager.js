@@ -64,8 +64,8 @@ class DatabaseManager {
       
       logger.info('✅ Database connection established successfully');
       
-      // Run schema setup to ensure tables exist and are up-to-date
-      await this.runSchemaSetup();
+      // Skip schema setup - database is already configured with broker functionality
+      // await this.runSchemaSetup();
       
       this.initialized = true;
       return true;

@@ -504,7 +504,8 @@ $$ LANGUAGE plpgsql;
 -- ===========================================
 
 -- Enhanced function to include ACK_ID, FORM_ID, and broker_fees for broker linking
-DROP FUNCTION IF EXISTS get_schedule_a_by_ein(VARCHAR(9));
+-- Note: Function already exists with enhanced signature, skip recreation to avoid conflicts
+/*
 CREATE OR REPLACE FUNCTION get_schedule_a_by_ein(ein_param VARCHAR(9))
 RETURNS TABLE (
     year INTEGER,
@@ -537,3 +538,4 @@ BEGIN
     ORDER BY s.year DESC, s.ins_carrier_name;
 END;
 $$ LANGUAGE plpgsql;
+*/
