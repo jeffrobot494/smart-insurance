@@ -1233,3 +1233,19 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T16:31:45.893Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-05T16:31:45.985Z"}
 {"level":"error","message":"Legal resolution failed for pipeline 170:","service":"manager","timestamp":"2025-09-05T16:33:41.521Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T01:24:36.663Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:29:34.526Z"}

@@ -383,3 +383,157 @@ BEGIN
     ORDER BY s.year DESC, s.ack_id, s.sch_a_plan_num;
 END;
 $$ LANGUAGE plpgsql;
+
+-- ===========================================
+-- SCHEDULE A PART 1 RECORDS TABLE (BROKER INFORMATION)
+-- ===========================================
+
+CREATE TABLE IF NOT EXISTS schedule_a_part1_records (
+  id SERIAL PRIMARY KEY,
+  
+  -- Linking fields to Schedule A records
+  ack_id VARCHAR(255) NOT NULL,
+  form_id INTEGER NOT NULL,
+  row_order INTEGER NOT NULL,
+  
+  -- Core broker information
+  ins_broker_name VARCHAR(35),
+  ins_broker_code VARCHAR(1),
+  
+  -- US Address fields
+  ins_broker_us_address1 VARCHAR(35),
+  ins_broker_us_address2 VARCHAR(35),
+  ins_broker_us_city VARCHAR(22),
+  ins_broker_us_state VARCHAR(2),
+  ins_broker_us_zip VARCHAR(12),
+  
+  -- Foreign address fields
+  ins_broker_foreign_address1 VARCHAR(35),
+  ins_broker_foreign_address2 VARCHAR(35),
+  ins_broker_foreign_city VARCHAR(22),
+  ins_broker_foreign_prov_state VARCHAR(22),
+  ins_broker_foreign_cntry VARCHAR(2),
+  ins_broker_foreign_postal_cd VARCHAR(22),
+  
+  -- Financial information
+  ins_broker_comm_pd_amt DECIMAL(20,2),
+  ins_broker_fees_pd_amt DECIMAL(20,2),
+  ins_broker_fees_pd_text TEXT,
+  
+  -- Timestamps
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  -- Unique constraint for data integrity
+  CONSTRAINT unique_schedule_a_part1_ack_form_row UNIQUE (ack_id, form_id, row_order)
+);
+
+-- ===========================================
+-- INDEXES FOR SCHEDULE A PART 1
+-- ===========================================
+
+-- Primary lookup indexes
+CREATE INDEX IF NOT EXISTS idx_schedule_a_part1_ack_id ON schedule_a_part1_records(ack_id);
+CREATE INDEX IF NOT EXISTS idx_schedule_a_part1_ack_form ON schedule_a_part1_records(ack_id, form_id);
+
+-- Search indexes
+CREATE INDEX IF NOT EXISTS idx_schedule_a_part1_broker_name ON schedule_a_part1_records(ins_broker_name);
+
+-- Supporting unique constraint
+CREATE INDEX IF NOT EXISTS idx_schedule_a_part1_ack_form_row ON schedule_a_part1_records(ack_id, form_id, row_order);
+
+-- ===========================================
+-- FUNCTION TO GET BROKER INFORMATION
+-- ===========================================
+
+-- Function to get broker information by Schedule A identifiers
+CREATE OR REPLACE FUNCTION get_brokers_by_schedule_a(
+  ack_id_param VARCHAR(255), 
+  form_id_param INTEGER
+)
+RETURNS TABLE (
+    broker_name TEXT,
+    broker_code TEXT,
+    broker_commission DECIMAL(20,2),
+    broker_fees DECIMAL(20,2),
+    broker_fees_text TEXT,
+    -- US Address
+    broker_us_address1 TEXT,
+    broker_us_address2 TEXT,
+    broker_us_city TEXT,
+    broker_us_state TEXT,
+    broker_us_zip TEXT,
+    -- Foreign Address  
+    broker_foreign_address1 TEXT,
+    broker_foreign_address2 TEXT,
+    broker_foreign_city TEXT,
+    broker_foreign_state TEXT,
+    broker_foreign_country TEXT,
+    broker_foreign_postal TEXT,
+    -- Meta
+    row_order INTEGER
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        sp.ins_broker_name::TEXT,
+        sp.ins_broker_code::TEXT,
+        sp.ins_broker_comm_pd_amt,
+        sp.ins_broker_fees_pd_amt,
+        sp.ins_broker_fees_pd_text::TEXT,
+        sp.ins_broker_us_address1::TEXT,
+        sp.ins_broker_us_address2::TEXT,  
+        sp.ins_broker_us_city::TEXT,
+        sp.ins_broker_us_state::TEXT,
+        sp.ins_broker_us_zip::TEXT,
+        sp.ins_broker_foreign_address1::TEXT,
+        sp.ins_broker_foreign_address2::TEXT,
+        sp.ins_broker_foreign_city::TEXT,
+        sp.ins_broker_foreign_prov_state::TEXT,
+        sp.ins_broker_foreign_cntry::TEXT,
+        sp.ins_broker_foreign_postal_cd::TEXT,
+        sp.row_order
+    FROM schedule_a_part1_records sp
+    WHERE sp.ack_id = ack_id_param AND sp.form_id = form_id_param
+    ORDER BY sp.row_order;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ===========================================
+-- ENHANCED GET_SCHEDULE_A_BY_EIN FUNCTION
+-- ===========================================
+
+-- Enhanced function to include ACK_ID, FORM_ID, and broker_fees for broker linking
+DROP FUNCTION IF EXISTS get_schedule_a_by_ein(VARCHAR(9));
+CREATE OR REPLACE FUNCTION get_schedule_a_by_ein(ein_param VARCHAR(9))
+RETURNS TABLE (
+    year INTEGER,
+    ack_id VARCHAR(255),
+    form_id INTEGER,
+    carrier_name TEXT,
+    persons_covered INTEGER,
+    broker_commission DECIMAL(20,2),
+    broker_fees DECIMAL(20,2),
+    total_charges DECIMAL(20,2),
+    benefit_types TEXT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        s.year,
+        s.ack_id,
+        s.form_id,
+        s.ins_carrier_name::TEXT,
+        s.ins_prsn_covered_eoy_cnt,
+        s.ins_broker_comm_tot_amt,
+        s.ins_broker_fees_tot_amt,
+        s.wlfr_tot_charges_paid_amt,
+        CASE 
+            WHEN s.wlfr_type_bnft_oth_text IS NOT NULL THEN s.wlfr_type_bnft_oth_text
+            ELSE 'Standard Benefits'
+        END::TEXT
+    FROM schedule_a_records s
+    WHERE s.sch_a_ein = ein_param
+    ORDER BY s.year DESC, s.ins_carrier_name;
+END;
+$$ LANGUAGE plpgsql;

@@ -100,6 +100,24 @@ class CSVImporter {
         year: 2024, 
         type: 'schedule_a',
         tableName: 'schedule_a_records'
+      },
+      { 
+        filename: 'F_SCH_A_PART1_2022_latest.csv', 
+        year: 2022, 
+        type: 'schedule_a_part1',
+        tableName: 'schedule_a_part1_records'
+      },
+      { 
+        filename: 'F_SCH_A_PART1_2023_latest.csv', 
+        year: 2023, 
+        type: 'schedule_a_part1',
+        tableName: 'schedule_a_part1_records'
+      },
+      { 
+        filename: 'F_SCH_A_PART1_2024_latest.csv', 
+        year: 2024, 
+        type: 'schedule_a_part1',
+        tableName: 'schedule_a_part1_records'
       }
     ];
   }
@@ -114,13 +132,15 @@ class CSVImporter {
     try {
       await client.query('BEGIN');
       
-      // Clear tables in correct order (due to potential foreign key constraints)
+      // Clear tables in correct order (due to potential relationships)
+      await client.query('DELETE FROM schedule_a_part1_records');
       await client.query('DELETE FROM schedule_a_records');
       await client.query('DELETE FROM form_5500_records');
       
       // Reset sequences
       await client.query('ALTER SEQUENCE form_5500_records_id_seq RESTART WITH 1');
       await client.query('ALTER SEQUENCE schedule_a_records_id_seq RESTART WITH 1');
+      await client.query('ALTER SEQUENCE schedule_a_part1_records_id_seq RESTART WITH 1');
       
       await client.query('COMMIT');
       console.log('✅ Existing data cleared');
@@ -196,8 +216,10 @@ class CSVImporter {
           let dbRecord;
           if (fileInfo.type === 'form5500') {
             dbRecord = this.dataMapper.mapForm5500Record(csvObject, fileInfo.year);
-          } else {
+          } else if (fileInfo.type === 'schedule_a') {
             dbRecord = this.dataMapper.mapScheduleARecord(csvObject, fileInfo.year);
+          } else if (fileInfo.type === 'schedule_a_part1') {
+            dbRecord = this.dataMapper.mapScheduleAPart1Record(csvObject, fileInfo.year);
           }
 
           // Add to batch processor

@@ -4658,3 +4658,26 @@
 {"level":"info","message":"perplexity MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.678Z"}
 {"level":"info","message":"form5500 MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.684Z"}
 {"level":"info","message":"firecrawl MCP exited with code 3221225786","service":"mcp","timestamp":"2025-09-05T20:31:41.690Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T01:22:29.990Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T01:22:29.996Z"}
+{"level":"info","message":"✅ Database schema setup complete","service":"database","timestamp":"2025-09-09T01:22:30.298Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T01:24:36.425Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T01:24:36.434Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T01:24:36.663Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T01:24:36.664Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:24:36.665Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-09T01:29:34.273Z"}
+{"level":"info","message":"🔧 Setting up database schema...","service":"database","timestamp":"2025-09-09T01:29:34.276Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-09T01:29:34.524Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"❌ Failed to setup database schema:","service":"database","timestamp":"2025-09-09T01:29:34.525Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:29:34.526Z"}

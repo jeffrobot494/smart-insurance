@@ -82,6 +82,29 @@ class DataMapper {
       'WLFR_RET_TOT_AMT': 'wlfr_ret_tot_amt'
     };
 
+    // Schedule A Part 1 mapping (Broker Information)
+    this.scheduleAPart1Mapping = {
+      'ACK_ID': 'ack_id',
+      'FORM_ID': 'form_id', 
+      'ROW_ORDER': 'row_order',
+      'INS_BROKER_NAME': 'ins_broker_name',
+      'INS_BROKER_CODE': 'ins_broker_code',
+      'INS_BROKER_US_ADDRESS1': 'ins_broker_us_address1',
+      'INS_BROKER_US_ADDRESS2': 'ins_broker_us_address2',
+      'INS_BROKER_US_CITY': 'ins_broker_us_city',
+      'INS_BROKER_US_STATE': 'ins_broker_us_state',
+      'INS_BROKER_US_ZIP': 'ins_broker_us_zip',
+      'INS_BROKER_FOREIGN_ADDRESS1': 'ins_broker_foreign_address1',
+      'INS_BROKER_FOREIGN_ADDRESS2': 'ins_broker_foreign_address2',
+      'INS_BROKER_FOREIGN_CITY': 'ins_broker_foreign_city',
+      'INS_BROKER_FOREIGN_PROV_STATE': 'ins_broker_foreign_prov_state',
+      'INS_BROKER_FOREIGN_CNTRY': 'ins_broker_foreign_cntry',
+      'INS_BROKER_FOREIGN_POSTAL_CD': 'ins_broker_foreign_postal_cd',
+      'INS_BROKER_COMM_PD_AMT': 'ins_broker_comm_pd_amt',
+      'INS_BROKER_FEES_PD_AMT': 'ins_broker_fees_pd_amt',
+      'INS_BROKER_FEES_PD_TEXT': 'ins_broker_fees_pd_text'
+    };
+
     // Define fields that should be converted to numbers
     this.numericFields = new Set([
       'spons_dfe_pn', 'spons_dfe_mail_us_zip', 'business_code', 'tot_partcp_boy_cnt', 
@@ -92,7 +115,9 @@ class DataMapper {
       'ins_prsn_covered_eoy_cnt', 'wlfr_bnft_health_ind', 'wlfr_bnft_dental_ind', 
       'wlfr_bnft_vision_ind', 'wlfr_bnft_life_insur_ind', 'wlfr_bnft_temp_disab_ind', 
       'wlfr_bnft_long_term_disab_ind', 'wlfr_bnft_drug_ind', 'wlfr_bnft_stop_loss_ind', 'wlfr_bnft_hmo_ind', 
-      'wlfr_bnft_ppo_ind', 'wlfr_bnft_indemnity_ind', 'wlfr_bnft_other_ind'
+      'wlfr_bnft_ppo_ind', 'wlfr_bnft_indemnity_ind', 'wlfr_bnft_other_ind',
+      // Schedule A Part 1 numeric fields
+      'form_id', 'row_order'
     ]);
 
     // Define EIN fields that need special handling
@@ -110,7 +135,9 @@ class DataMapper {
       'ins_broker_comm_tot_amt', 'ins_broker_fees_tot_amt', 'pension_eoy_gen_acct_amt',
       'pension_eoy_sep_acct_amt', 'pension_prem_paid_tot_amt', 'pension_eoy_bal_amt',
       'wlfr_tot_earned_prem_amt', 'wlfr_incurred_claim_amt', 'wlfr_tot_charges_paid_amt',
-      'wlfr_ret_tot_amt'
+      'wlfr_ret_tot_amt',
+      // Schedule A Part 1 decimal fields
+      'ins_broker_comm_pd_amt', 'ins_broker_fees_pd_amt'
     ]);
 
     // Define fields that should be converted to dates
@@ -161,6 +188,28 @@ class DataMapper {
 
     // Validate required fields
     this.validateScheduleARecord(record);
+
+    return record;
+  }
+
+  /**
+   * Map Schedule A Part 1 CSV row to database record
+   * @param {Object} csvRow - Raw CSV row data  
+   * @param {number} year - Year of the data (not stored but used for consistency)
+   * @returns {Object} Mapped database record
+   */
+  mapScheduleAPart1Record(csvRow, year) {
+    const record = {};
+
+    // Map each field from CSV to database
+    for (const [csvField, dbField] of Object.entries(this.scheduleAPart1Mapping)) {
+      if (csvRow[csvField] !== undefined) {
+        record[dbField] = this.convertValue(csvRow[csvField], dbField);
+      }
+    }
+
+    // Validate required fields
+    this.validateScheduleAPart1Record(record);
 
     return record;
   }
@@ -352,13 +401,39 @@ class DataMapper {
   }
 
   /**
+   * Validate Schedule A Part 1 record
+   * @param {Object} record - Database record to validate
+   * @throws {Error} If validation fails
+   */
+  validateScheduleAPart1Record(record) {
+    const requiredFields = ['ack_id', 'form_id', 'row_order'];
+    
+    for (const field of requiredFields) {
+      if (!record[field]) {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
+
+    // Broker name is optional (can be empty/unknown)
+  }
+
+  /**
    * Get statistics about mapping coverage
    * @param {Object} csvRow - Sample CSV row
-   * @param {string} type - 'form5500' or 'schedule_a'
+   * @param {string} type - 'form5500', 'schedule_a', or 'schedule_a_part1'
    * @returns {Object} Mapping statistics
    */
   getMappingStats(csvRow, type) {
-    const mapping = type === 'form5500' ? this.form5500Mapping : this.scheduleAMapping;
+    let mapping;
+    if (type === 'form5500') {
+      mapping = this.form5500Mapping;
+    } else if (type === 'schedule_a') {
+      mapping = this.scheduleAMapping;
+    } else if (type === 'schedule_a_part1') {
+      mapping = this.scheduleAPart1Mapping;
+    } else {
+      throw new Error(`Unknown mapping type: ${type}`);
+    }
     const csvFields = Object.keys(csvRow);
     const mappedFields = Object.keys(mapping);
     
