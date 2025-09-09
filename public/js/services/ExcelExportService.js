@@ -86,25 +86,36 @@ class ExcelExportService {
     }
 
     /**
-     * Extract unique broker names from company plans
+     * Extract unique carrier names from company plans
      */
-    static extractBrokerNames(plans) {
+    static extractCarrierNames(plans) {
         if (!plans || plans.length === 0) {
             return "-";
         }
         
-        const uniqueBrokers = new Set();
+        const uniqueCarriers = new Set();
         for (const plan of plans) {
             if (plan.carrier_name && plan.carrier_name.trim()) {
-                uniqueBrokers.add(plan.carrier_name.trim());
+                uniqueCarriers.add(plan.carrier_name.trim());
             }
         }
         
-        if (uniqueBrokers.size === 0) {
+        if (uniqueCarriers.size === 0) {
             return "-";
         }
         
-        return Array.from(uniqueBrokers).join(", ");
+        return Array.from(uniqueCarriers).join(", ");
+    }
+
+    /**
+     * Extract broker names from company broker data
+     */
+    static extractBrokerNames(company) {
+        if (company.brokers && Array.isArray(company.brokers) && company.brokers.length > 0) {
+            return company.brokers.join(", ");
+        }
+        
+        return "-";
     }
 
     /**
@@ -117,6 +128,7 @@ class ExcelExportService {
         let totalRevenue = 0;
         let selfFundedCount = 0;
         let totalCompanies = 0;
+        const allCarriers = new Set();
         const allBrokers = new Set();
         
         for (const company of companies) {
@@ -140,11 +152,20 @@ class ExcelExportService {
                 selfFundedCount++;
             }
             
-            // Collect unique brokers across all companies
+            // Collect unique carriers across all companies
             if (company.plans) {
                 for (const plan of company.plans) {
                     if (plan.carrier_name && plan.carrier_name.trim()) {
-                        allBrokers.add(plan.carrier_name.trim());
+                        allCarriers.add(plan.carrier_name.trim());
+                    }
+                }
+            }
+            
+            // Collect unique brokers across all companies
+            if (company.brokers && Array.isArray(company.brokers)) {
+                for (const broker of company.brokers) {
+                    if (broker && broker.trim()) {
+                        allBrokers.add(broker.trim());
                     }
                 }
             }
@@ -157,6 +178,8 @@ class ExcelExportService {
             totalRevenue,
             selfFundedCount,
             totalCompanies,
+            uniqueCarrierCount: allCarriers.size,
+            uniqueCarriers: Array.from(allCarriers),
             uniqueBrokerCount: allBrokers.size,
             uniqueBrokers: Array.from(allBrokers)
         };
@@ -172,6 +195,7 @@ class ExcelExportService {
             'Revenue', 
             'Employees',
             'Funding Status',
+            'Carriers',
             'Brokers',
             'Premiums',
             'Commissions'
@@ -187,7 +211,8 @@ class ExcelExportService {
                 this.formatRevenueDisplay(company.annual_revenue_usd),
                 (company.total_people_covered || 0).toLocaleString(),
                 this.formatFundingStatus(company.self_funded_classification || 'unknown'),
-                this.extractBrokerNames(company.plans || []),
+                this.extractCarrierNames(company.plans || []),
+                this.extractBrokerNames(company),
                 this.formatCurrency(company.total_premiums || 0),
                 this.formatCurrency(company.total_brokerage_fees || 0)
             ];
@@ -198,12 +223,17 @@ class ExcelExportService {
         const totals = this.calculateTotals(processedData.companies);
         
         // Add empty row before totals for readability
-        dataRows.push(['', '', '', '', '', '', '']);
+        dataRows.push(['', '', '', '', '', '', '', '']);
         
         // Add totals row
+        const carrierText = totals.uniqueCarrierCount === 1 
+            ? `1 Unique Carrier` 
+            : `${totals.uniqueCarrierCount} Unique Carriers`;
+            
         const brokerText = totals.uniqueBrokerCount === 1 
             ? `1 Unique Broker` 
             : `${totals.uniqueBrokerCount} Unique Brokers`;
+            
         const fundingText = `${totals.selfFundedCount}/${totals.totalCompanies} self-funded`;
         const totalRevenueDisplay = totals.totalRevenue > 0 ? 
             this.formatCurrency(totals.totalRevenue) : '-';
@@ -213,6 +243,7 @@ class ExcelExportService {
             totalRevenueDisplay,
             totals.totalEmployeesCovered.toLocaleString(),
             fundingText,
+            carrierText,
             brokerText,
             this.formatCurrency(totals.totalPremiums),
             this.formatCurrency(totals.totalBrokerageFees)
@@ -243,6 +274,7 @@ class ExcelExportService {
             { wpx: 100 }, // Revenue  
             { wpx: 80 },  // Employees
             { wpx: 120 }, // Funding Status
+            { wpx: 200 }, // Carriers
             { wpx: 200 }, // Brokers
             { wpx: 100 }, // Premiums
             { wpx: 100 }  // Commissions

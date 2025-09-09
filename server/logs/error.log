@@ -1261,3 +1261,4 @@
 {"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-09T02:16:12.928Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-09T02:16:51.571Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-09T02:39:12.372Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-09T02:44:17.534Z"}
