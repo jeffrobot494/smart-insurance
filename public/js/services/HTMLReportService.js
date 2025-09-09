@@ -65,25 +65,36 @@ class HTMLReportService {
     }
 
     /**
-     * Extract unique broker/carrier names from company plans
+     * Extract unique carrier names from company plans
      */
-    static extractBrokerNames(plans) {
+    static extractCarrierNames(plans) {
         if (!plans || plans.length === 0) {
             return "-";
         }
         
-        const uniqueBrokers = new Set();
+        const uniqueCarriers = new Set();
         for (const plan of plans) {
             if (plan.carrier_name && plan.carrier_name.trim()) {
-                uniqueBrokers.add(plan.carrier_name.trim());
+                uniqueCarriers.add(plan.carrier_name.trim());
             }
         }
         
-        if (uniqueBrokers.size === 0) {
+        if (uniqueCarriers.size === 0) {
             return "-";
         }
         
-        return Array.from(uniqueBrokers).join(", ");
+        return Array.from(uniqueCarriers).join(", ");
+    }
+
+    /**
+     * Extract broker names from company broker data
+     */
+    static extractBrokerNames(company) {
+        if (company.brokers && Array.isArray(company.brokers) && company.brokers.length > 0) {
+            return company.brokers.join(", ");
+        }
+        
+        return "-";
     }
 
     /**
@@ -114,6 +125,7 @@ class HTMLReportService {
         let totalRevenue = 0;
         let selfFundedCount = 0;
         let totalCompanies = 0;
+        const allCarriers = new Set();
         const allBrokers = new Set();
         
         for (const company of companies) {
@@ -130,11 +142,20 @@ class HTMLReportService {
                 selfFundedCount++;
             }
             
-            // Collect unique brokers across all companies
+            // Collect unique carriers across all companies
             if (company.plans) {
                 for (const plan of company.plans) {
                     if (plan.carrier_name && plan.carrier_name.trim()) {
-                        allBrokers.add(plan.carrier_name.trim());
+                        allCarriers.add(plan.carrier_name.trim());
+                    }
+                }
+            }
+            
+            // Collect unique brokers across all companies
+            if (company.brokers && Array.isArray(company.brokers)) {
+                for (const broker of company.brokers) {
+                    if (broker && broker.trim()) {
+                        allBrokers.add(broker.trim());
                     }
                 }
             }
@@ -147,6 +168,8 @@ class HTMLReportService {
             totalRevenue,
             selfFundedCount,
             totalCompanies,
+            uniqueCarrierCount: allCarriers.size,
+            uniqueCarriers: Array.from(allCarriers),
             uniqueBrokerCount: allBrokers.size,
             uniqueBrokers: Array.from(allBrokers)
         };
@@ -164,7 +187,8 @@ class HTMLReportService {
         const totalPremiums = company.total_premiums || 0;
         const totalBrokerageFees = company.total_brokerage_fees || 0;
         const totalPeopleCovered = company.total_people_covered || 0;
-        const brokers = this.extractBrokerNames(company.plans || []);
+        const carriers = this.extractCarrierNames(company.plans || []);
+        const brokers = this.extractBrokerNames(company);
         
         // Format revenue from integer to human-readable string (e.g., 25000000 -> "$25M")
         const revenue = this.formatRevenueDisplay(company.annual_revenue_usd);
@@ -175,6 +199,7 @@ class HTMLReportService {
                 <td class="revenue">${revenue}</td>
                 <td class="employees">${totalPeopleCovered.toLocaleString()}</td>
                 <td class="funding">${this.formatFundingStatus(company.self_funded_classification || 'unknown')}</td>
+                <td class="carriers">${carriers}</td>
                 <td class="brokers">${brokers}</td>
                 <td class="premiums">${this.formatCurrency(totalPremiums)}</td>
                 <td class="commissions">${this.formatCurrency(totalBrokerageFees)}</td>
@@ -185,6 +210,10 @@ class HTMLReportService {
      * Generate total row for summary
      */
     static generateTotalRow(totals) {
+        const carrierText = totals.uniqueCarrierCount === 1 
+            ? `1 Unique Carrier` 
+            : `${totals.uniqueCarrierCount} Unique Carriers`;
+            
         const brokerText = totals.uniqueBrokerCount === 1 
             ? `1 Unique Broker` 
             : `${totals.uniqueBrokerCount} Unique Brokers`;
@@ -201,6 +230,7 @@ class HTMLReportService {
                 <td class="total-revenue">${totalRevenueDisplay}</td>
                 <td class="total-employees">${totals.totalEmployeesCovered.toLocaleString()}</td>
                 <td class="total-funding">${fundingText}</td>
+                <td class="total-carriers">${carrierText}</td>
                 <td class="total-brokers">${brokerText}</td>
                 <td class="total-premiums">${this.formatCurrency(totals.totalPremiums)}</td>
                 <td class="total-commissions">${this.formatCurrency(totals.totalBrokerageFees)}</td>
