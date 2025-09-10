@@ -1,0 +1,735 @@
+   "city": null,
+    "name": "Imax",
+    "state": null,
+    "exited": false,
+    "form5500_data": {
+      "ein": "562286342",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "871019903",
+              "year": 2022,
+              "plan_name": "ALIMAX INDUSTRIAL RETIREMENT PLAN",
+              "sponsor_name": "ALIMAX INDUSTRIAL, INC.",
+              "has_schedule_a": false,
+              "active_participants": 2
+            },
+            {
+              "ein": "621412556",
+              "year": 2022,
+              "plan_name": "ANIMAX DESIGNS, INC. EMPLOYEE BENEFIT PLAN",
+              "sponsor_name": "ANIMAX DESIGNS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 160
+            },
+            {
+              "ein": "621412556",
+              "year": 2022,
+              "plan_name": "ANIMAX DESIGNS, INC.",
+              "sponsor_name": "ANIMAX DESIGNS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 113
+            },
+            {
+              "ein": "831785196",
+              "year": 2022,
+              "plan_name": "ATLANTIC BUSINESS OPTIMAX, INC. 401(K) PLAN",
+              "sponsor_name": "ATLANTIC BUSINESS OPTIMAX, INC.",
+              "has_schedule_a": false,
+              "active_participants": 0
+            },
+            {
+              "ein": "831785196",
+              "year": 2022,
+              "plan_name": "ATLANTIC BUSINESS OPTIMAX, INC. 401(K) PLAN",
+              "sponsor_name": "ATLANTIC BUSINESS OPTIMAX, INC.",
+              "has_schedule_a": false,
+              "active_participants": 1
+            },
+            {
+              "ein": "562286342",
+              "year": 2022,
+              "plan_name": "CLIMAX INC 401(K) PROFIT SHARING PLAN & TRUST",
+              "sponsor_name": "CLIMAX INC",
+              "has_schedule_a": false,
+              "active_participants": 19
+            },
+            {
+              "ein": "930553883",
+              "year": 2022,
+              "plan_name": "CLIMAX PORTABLE MACHINE TOOLS, INC. EMPLOYEE SAVINGS PLAN",
+              "sponsor_name": "CLIMAX PORTABLE MACHINE TOOLS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 130
+            },
+            {
+              "ein": "930553883",
+              "year": 2022,
+              "plan_name": "CLIMAX WELFARE BENEFIT PLAN",
+              "sponsor_name": "CLIMAX PORTABLE MACHINING & WELDING SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 127
+            },
+            {
+              "ein": "980140269",
+              "year": 2022,
+              "plan_name": "IMAX CORPORATION 401(K) RETIREMENT PLAN",
+              "sponsor_name": "IMAX CORPORATION",
+              "has_schedule_a": false,
+              "active_participants": 250
+            },
+            {
+              "ein": "980140269",
+              "year": 2022,
+              "plan_name": "IMAX CORPORATION WELFARE PLAN",
+              "sponsor_name": "IMAX CORPORATION",
+              "has_schedule_a": true,
+              "active_participants": 223
+            },
+            {
+              "ein": "660622939",
+              "year": 2022,
+              "plan_name": "MEDIMAX-RSI CORP EMPLOYEE RETIREMENT PLAN",
+              "sponsor_name": "MEDIMAX-RSI CORPORATION",
+              "has_schedule_a": false,
+              "active_participants": 20
+            },
+            {
+              "ein": "833677656",
+              "year": 2022,
+              "plan_name": "OMNIMAX INTERNATIONAL, LLC RETIREMENT AND SAVINGS PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": false,
+              "active_participants": 1162
+            },
+            {
+              "ein": "833677656",
+              "year": 2022,
+              "plan_name": "EURAMAX INTERNATIONAL RETIREMENT INCOME PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": false,
+              "active_participants": 183
+            },
+            {
+              "ein": "833677656",
+              "year": 2022,
+              "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": true,
+              "active_participants": 1210
+            },
+            {
+              "ein": "161399834",
+              "year": 2022,
+              "plan_name": "OPTIMAX SYSTEMS, INC. 401(K) PROFIT SHARING PLAN",
+              "sponsor_name": "OPTIMAX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 443
+            },
+            {
+              "ein": "161399834",
+              "year": 2022,
+              "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+              "sponsor_name": "OPTIMAX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 437
+            },
+            {
+              "ein": "391843618",
+              "year": 2022,
+              "plan_name": "SANIMAX WELFARE BENEFITS PLAN",
+              "sponsor_name": "SANIMAX",
+              "has_schedule_a": true,
+              "active_participants": 340
+            },
+            {
+              "ein": "391843618",
+              "year": 2022,
+              "plan_name": "SANIMAX 401(K) PLAN",
+              "sponsor_name": "SANIMAX USA LLC",
+              "has_schedule_a": false,
+              "active_participants": 321
+            },
+            {
+              "ein": "132622744",
+              "year": 2022,
+              "plan_name": "RET INC PROG PLAN A OF LEE SPRING CO & WARD LEONARD CT LLC",
+              "sponsor_name": "THE UNIMAX CORPORATION",
+              "has_schedule_a": false,
+              "active_participants": 34
+            },
+            {
+              "ein": "834312283",
+              "year": 2022,
+              "plan_name": "VERIMAXX FWY, INC. 401(K) PLAN",
+              "sponsor_name": "VERIMAXX FWY, INC.",
+              "has_schedule_a": false,
+              "active_participants": 10
+            },
+            {
+              "ein": "272751962",
+              "year": 2022,
+              "plan_name": "VISIMAX TECHNOLOGIES, INC. 401(K) PROFIT SHARING PLAN",
+              "sponsor_name": "VISIMAX TECHNOLOGIES, INC.",
+              "has_schedule_a": false,
+              "active_participants": 18
+            },
+            {
+              "ein": "522174997",
+              "year": 2022,
+              "plan_name": "ZENIMAX MEDIA INC. EMPLOYEE WELFARE BENEFIT PLAN",
+              "sponsor_name": "ZENIMAX MEDIA INC.",
+              "has_schedule_a": true,
+              "active_participants": 1901
+            },
+            {
+              "ein": "522174997",
+              "year": 2022,
+              "plan_name": "ZENIMAX 401(K) SAVINGS PLAN",
+              "sponsor_name": "ZENIMAX MEDIA INC.",
+              "has_schedule_a": false,
+              "active_participants": 1895
+            }
+          ],
+          "2023": [
+            {
+              "ein": "871019903",
+              "year": 2023,
+              "plan_name": "ALIMAX INDUSTRIAL RETIREMENT PLAN",
+              "sponsor_name": "ALIMAX INDUSTRIAL, INC.",
+              "has_schedule_a": false,
+              "active_participants": 2
+            },
+            {
+              "ein": "621412556",
+              "year": 2023,
+              "plan_name": "ANIMAX DESIGNS, INC.",
+              "sponsor_name": "ANIMAX DESIGNS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 145
+            },
+            {
+              "ein": "621412556",
+              "year": 2023,
+              "plan_name": "ANIMAX DESIGNS, INC. EMPLOYEE BENEFIT PLAN",
+              "sponsor_name": "ANIMAX DESIGNS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 154
+            },
+            {
+              "ein": "562286342",
+              "year": 2023,
+              "plan_name": "CLIMAX INC 401(K) PROFIT SHARING PLAN & TRUST",
+              "sponsor_name": "CLIMAX INC",
+              "has_schedule_a": false,
+              "active_participants": 20
+            },
+            {
+              "ein": "930553883",
+              "year": 2023,
+              "plan_name": "CLIMAX PORTABLE MACHINE TOOLS, INC. EMPLOYEE SAVINGS PLAN",
+              "sponsor_name": "CLIMAX PORTABLE MACHINE TOOLS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 139
+            },
+            {
+              "ein": "930553883",
+              "year": 2023,
+              "plan_name": "CLIMAX WELFARE BENEFIT PLAN",
+              "sponsor_name": "CLIMAX PORTABLE MACHINING & WELDING SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 147
+            },
+            {
+              "ein": "980140269",
+              "year": 2023,
+              "plan_name": "IMAX CORPORATION WELFARE PLAN",
+              "sponsor_name": "IMAX CORPORATION",
+              "has_schedule_a": true,
+              "active_participants": 216
+            },
+            {
+              "ein": "980140269",
+              "year": 2023,
+              "plan_name": "IMAX CORPORATION 401(K) RETIREMENT PLAN",
+              "sponsor_name": "IMAX CORPORATION",
+              "has_schedule_a": false,
+              "active_participants": 271
+            },
+            {
+              "ein": "461069044",
+              "year": 2023,
+              "plan_name": "LEROIMAXI INC 401(K) PLAN",
+              "sponsor_name": "LEROIMAXI INC",
+              "has_schedule_a": false,
+              "active_participants": 0
+            },
+            {
+              "ein": "660622939",
+              "year": 2023,
+              "plan_name": "MEDIMAX-RSI CORP EMPLOYEE RETIREMENT PLAN",
+              "sponsor_name": "MEDIMAX-RSI CORPORATION",
+              "has_schedule_a": true,
+              "active_participants": 17
+            },
+            {
+              "ein": "833677656",
+              "year": 2023,
+              "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": true,
+              "active_participants": 904
+            },
+            {
+              "ein": "833677656",
+              "year": 2023,
+              "plan_name": "EURAMAX INTERNATIONAL RETIREMENT INCOME PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": false,
+              "active_participants": 134
+            },
+            {
+              "ein": "833677656",
+              "year": 2023,
+              "plan_name": "OMNIMAX INTERNATIONAL, LLC RETIREMENT AND SAVINGS PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": false,
+              "active_participants": 959
+            },
+            {
+              "ein": "161399834",
+              "year": 2023,
+              "plan_name": "OPTIMAX SYSTEMS, INC. 401(K) PROFIT SHARING PLAN",
+              "sponsor_name": "OPTIMAX SYSTEMS, INC.",
+              "has_schedule_a": false,
+              "active_participants": 455
+            },
+            {
+              "ein": "161399834",
+              "year": 2023,
+              "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+              "sponsor_name": "OPTIMAX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 442
+            },
+            {
+              "ein": "391843618",
+              "year": 2023,
+              "plan_name": "SANIMAX WELFARE BENEFITS PLAN",
+              "sponsor_name": "SANIMAX",
+              "has_schedule_a": true,
+              "active_participants": 347
+            },
+            {
+              "ein": "391843618",
+              "year": 2023,
+              "plan_name": "SANIMAX 401(K) PLAN",
+              "sponsor_name": "SANIMAX USA LLC",
+              "has_schedule_a": false,
+              "active_participants": 332
+            },
+            {
+              "ein": "132622744",
+              "year": 2023,
+              "plan_name": "RET INC PROG PLAN A OF LEE SPRING CO & WARD LEONARD CT LLC",
+              "sponsor_name": "THE UNIMAX CORPORATION",
+              "has_schedule_a": false,
+              "active_participants": 3
+            },
+            {
+              "ein": "834312283",
+              "year": 2023,
+              "plan_name": "VERIMAXX FWY, INC. 401(K) PLAN",
+              "sponsor_name": "VERIMAXX FWY, INC.",
+              "has_schedule_a": false,
+              "active_participants": 10
+            },
+            {
+              "ein": "272751962",
+              "year": 2023,
+              "plan_name": "VISIMAX TECHNOLOGIES, INC. 401(K) PROFIT SHARING PLAN",
+              "sponsor_name": "VISIMAX TECHNOLOGIES, INC.",
+              "has_schedule_a": false,
+              "active_participants": 19
+            },
+            {
+              "ein": "522174997",
+              "year": 2023,
+              "plan_name": "ZENIMAX 401(K) SAVINGS PLAN",
+              "sponsor_name": "ZENIMAX MEDIA INC.",
+              "has_schedule_a": false,
+              "active_participants": 1929
+            },
+            {
+              "ein": "522174997",
+              "year": 2023,
+              "plan_name": "ZENIMAX MEDIA INC. EMPLOYEE WELFARE BENEFIT PLAN",
+              "sponsor_name": "ZENIMAX MEDIA INC.",
+              "has_schedule_a": true,
+              "active_participants": 1886
+            }
+          ],
+          "2024": [
+            {
+              "ein": "562286342",
+              "year": 2024,
+              "plan_name": "CLIMAX INC 401(K) PROFIT SHARING PLAN & TRUST",
+              "sponsor_name": "CLIMAX INC",
+              "has_schedule_a": false,
+              "active_participants": 22
+            },
+            {
+              "ein": "980140269",
+              "year": 2024,
+              "plan_name": "IMAX CORPORATION WELFARE PLAN",
+              "sponsor_name": "IMAX CORPORATION",
+              "has_schedule_a": true,
+              "active_participants": 215
+            },
+            {
+              "ein": "660622939",
+              "year": 2024,
+              "plan_name": "MEDIMAX-RSI CORP EMPLOYEE RETIREMENT PLAN",
+              "sponsor_name": "MEDIMAX-RSI CORPORATION",
+              "has_schedule_a": true,
+              "active_participants": 21
+            },
+            {
+              "ein": "833677656",
+              "year": 2024,
+              "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+              "sponsor_name": "OMNIMAX INTERNATIONAL, LLC",
+              "has_schedule_a": true,
+              "active_participants": 694
+            },
+            {
+              "ein": "161399834",
+              "year": 2024,
+              "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+              "sponsor_name": "OPTIMAX SYSTEMS, INC.",
+              "has_schedule_a": true,
+              "active_participants": 418
+            },
+            {
+              "ein": "272751962",
+              "year": 2024,
+              "plan_name": "VISIMAX TECHNOLOGIES, INC. 401(K) PROFIT SHARING PLAN",
+              "sponsor_name": "VISIMAX TECHNOLOGIES, INC.",
+              "has_schedule_a": false,
+              "active_participants": 16
+            },
+            {
+              "ein": "522174997",
+              "year": 2024,
+              "plan_name": "ZENIMAX 401(K) SAVINGS PLAN",
+              "sponsor_name": "ZENIMAX MEDIA INC.",
+              "has_schedule_a": false,
+              "active_participants": 0
+            }
+          ]
+        },
+        "recordCount": 52
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {},
+        "recordCounts": {}
+      },
+      "self_funded": "self-funded",
+      "self_funded_analysis": {
+        "summary": {
+          "trend": "self-funded → self-funded → self-funded",
+          "insured_years": [],
+          "years_available": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "self_funded_years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "indeterminate_years": []
+        },
+        "current_classification": "self-funded",
+        "classifications_by_year": {
+          "2022": {
+            "plans": [
+              {
+                "ein": "621412556",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "621412556",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "ANIMAX DESIGNS, INC. EMPLOYEE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "930553883",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "930553883",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "CLIMAX WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "980140269",
+                "reasons": [
+                  "Header indicates insurance arrangement but no SA health flag found"
+                ],
+                "metadata": {
+                  "ein": "980140269",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "IMAX CORPORATION WELFARE PLAN",
+                "classification": "Likely insured (needs Sched A verification)"
+              },
+              {
+                "ein": "833677656",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "833677656",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "161399834",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "161399834",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "391843618",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "391843618",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "SANIMAX WELFARE BENEFITS PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "522174997",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "522174997",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "ZENIMAX MEDIA INC. EMPLOYEE WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              }
+            ],
+            "classification": "self-funded"
+          },
+          "2023": {
+            "plans": [
+              {
+                "ein": "621412556",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "621412556",
+                  "endYear": "2024",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "ANIMAX DESIGNS, INC. EMPLOYEE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "930553883",
+                "reasons": [
+                  "Header indicates insurance arrangement but no SA health flag found"
+                ],
+                "metadata": {
+                  "ein": "930553883",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "CLIMAX WELFARE BENEFIT PLAN",
+                "classification": "Likely insured (needs Sched A verification)"
+              },
+              {
+                "ein": "980140269",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "980140269",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "IMAX CORPORATION WELFARE PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "833677656",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "833677656",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "161399834",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "161399834",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "391843618",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "391843618",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "SANIMAX WELFARE BENEFITS PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "522174997",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "522174997",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "ZENIMAX MEDIA INC. EMPLOYEE WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              }
+            ],
+            "classification": "self-funded"
+          },
+          "2024": {
+            "plans": [
+              {
+                "ein": "980140269",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "980140269",
+                  "endYear": "2024",
+                  "planNum": 501,
+                  "beginYear": "2024"
+                },
+                "plan_name": "IMAX CORPORATION WELFARE PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "833677656",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "833677656",
+                  "endYear": "2024",
+                  "planNum": 501,
+                  "beginYear": "2024"
+                },
+                "plan_name": "OMNIMAX INTERNATIONAL EMPLOYEES WELFARE BENEFITS PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              },
+              {
+                "ein": "161399834",
+                "reasons": [
+                  "Header indicates general assets funding/benefit",
+                  "Schedule A attached (non-medical or unknown)"
+                ],
+                "metadata": {
+                  "ein": "161399834",
+                  "endYear": "2024",
+                  "planNum": 501,
+                  "beginYear": "2024"
+                },
+                "plan_name": "OPTIMAX SYSTEMS, INC. WELFARE BENEFIT PLAN",
+                "classification": "Likely self-funded (non-medical Schedule A)"
+              }
+            ],
+            "classification": "self-funded"
+          }
+        }
+      }
+    },
+    "legal_entity_name": "Imax"
+  }

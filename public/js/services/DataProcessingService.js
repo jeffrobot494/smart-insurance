@@ -57,17 +57,18 @@ class DataProcessingService {
             const planBrokers = [];
             if (plan.brokers && Array.isArray(plan.brokers)) {
                 for (const broker of plan.brokers) {
-                    const brokerName = broker.name || broker.broker_name || 'Unknown';
-                    if (brokerName && brokerName !== 'Unknown') {
-                        allBrokers.add(brokerName);
-                        planBrokers.push(brokerName);
+                    const rawBrokerName = broker.name || broker.broker_name || 'Unknown';
+                    if (rawBrokerName && rawBrokerName !== 'Unknown') {
+                        const properBrokerName = DataProcessingService.toProperCapitalization(rawBrokerName);
+                        allBrokers.add(properBrokerName);
+                        planBrokers.push(properBrokerName);
                     }
                 }
             }
             
             plans.push({
                 benefit_type: plan.benefitType || "",
-                carrier_name: plan.carrierName || "",
+                carrier_name: DataProcessingService.toProperCapitalization(plan.carrierName || ""),
                 premiums: premiums,
                 brokerage_fees: brokerage,
                 people_covered: people,
@@ -172,6 +173,66 @@ class DataProcessingService {
             // ✅ NEW: Include broker information for table display
             brokers: aggregatedData.all_brokers || []
         };
+    }
+
+    /**
+     * Convert text to proper noun capitalization
+     * Handles special cases for insurance company names and common acronyms
+     */
+    static toProperCapitalization(text) {
+        if (!text || typeof text !== 'string') {
+            return text;
+        }
+        
+        // Common insurance company abbreviations and special cases
+        const specialCases = {
+            'aetna': 'Aetna',
+            'bcbs': 'BCBS',
+            'cigna': 'Cigna',
+            'uhc': 'UHC',
+            'anthem': 'Anthem',
+            'humana': 'Humana',
+            'kaiser': 'Kaiser',
+            'wellpoint': 'WellPoint',
+            'hmo': 'HMO',
+            'ppo': 'PPO',
+            'epo': 'EPO',
+            'pos': 'POS',
+            'llc': 'LLC',
+            'inc': 'Inc.',
+            'corp': 'Corp.',
+            'ltd': 'Ltd.',
+            'co': 'Co.',
+            'usa': 'USA',
+            'us': 'US',
+            'ny': 'NY',
+            'ca': 'CA',
+            'tx': 'TX',
+            'fl': 'FL'
+        };
+        
+        return text
+            .trim()
+            .toLowerCase()
+            .split(/\s+/)
+            .map(word => {
+                // Handle special cases first
+                const lowerWord = word.toLowerCase();
+                if (specialCases[lowerWord]) {
+                    return specialCases[lowerWord];
+                }
+                
+                // Handle words with punctuation (like "Inc.")
+                const wordWithoutPunc = word.replace(/[.,;:!?]/g, '');
+                if (specialCases[wordWithoutPunc.toLowerCase()]) {
+                    return specialCases[wordWithoutPunc.toLowerCase()] + word.substring(wordWithoutPunc.length);
+                }
+                
+                // Standard capitalization for regular words
+                if (word.length === 0) return word;
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            })
+            .join(' ');
     }
 
     /**

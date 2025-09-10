@@ -1,0 +1,310 @@
+[
+  {
+    "city": null,
+    "name": "Ad.net",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "Ad.net"
+  },
+  {
+    "city": null,
+    "name": "All-Clad",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2025,
+    "legal_entity_name": "ALL-CLAD METALCRAFTERS INC",
+    "annual_revenue_usd": 37500000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Wilmington",
+    "name": "Ametros",
+    "state": "Ma",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "AMETROS FINANCIAL CORPORATION",
+    "annual_revenue_usd": 64900000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Cleveland",
+    "name": "AML RightSource",
+    "state": "Oh",
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "AML RIGHTSOURCE, LLC",
+    "annual_revenue_usd": 931300000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Coral Gables",
+    "name": "Arthur Murray",
+    "state": "Florida",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Arthur Murray",
+    "annual_revenue_usd": 190000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Bothell",
+    "name": "Cascade",
+    "state": "Washington",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Cascade",
+    "annual_revenue_usd": 111800000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Credit Associates",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Credit Associates",
+    "annual_revenue_usd": 15000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Cross",
+    "state": null,
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "A.T. CROSS COMPANY LLC",
+    "annual_revenue_usd": 65400000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Green Farms",
+    "name": "Cross Mediaworks",
+    "state": "Ct",
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "MEDIAWORKS 360 VENTURES, INC.",
+    "annual_revenue_usd": 16200000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "North Reading",
+    "name": "Crowe Paradis",
+    "state": "Massachusetts",
+    "exited": true,
+    "revenue_year": 2010,
+    "legal_entity_name": "Crowe Paradis",
+    "annual_revenue_usd": 23000000,
+    "revenue_research_confidence": "high"
+  },
+  {
+    "city": "Jacksonville",
+    "name": "Eco Style",
+    "state": "Florida",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Eco Style",
+    "annual_revenue_usd": 17300000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Encore Capital Group",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "Encore Capital Group"
+  },
+  {
+    "city": null,
+    "name": "Great Northwest Insurance Company",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Great Northwest Insurance Company",
+    "annual_revenue_usd": 6500000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Chicago",
+    "name": "Harris & Harris",
+    "state": "Il",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "HARRIS & HARRIS, LTD.",
+    "annual_revenue_usd": 100600000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Hartmann",
+    "state": null,
+    "exited": true,
+    "revenue_year": 2025,
+    "legal_entity_name": "No direct match found",
+    "annual_revenue_usd": 510000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Rochester",
+    "name": "HROi",
+    "state": "Ny",
+    "exited": true,
+    "revenue_year": 2025,
+    "legal_entity_name": "PAYCHEX, INC.",
+    "annual_revenue_usd": 14450000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Imax",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "Imax"
+  },
+  {
+    "city": "New York",
+    "name": "International Cybernetics",
+    "state": "Ny",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "CLARION PARTNERS, LLC",
+    "annual_revenue_usd": 5250000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Bristol",
+    "name": "Lenox",
+    "state": "Pa",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "LENOX CORPORATION",
+    "annual_revenue_usd": 253000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "New York",
+    "name": "Madison Logic",
+    "state": "Ny",
+    "exited": true,
+    "revenue_year": 2025,
+    "legal_entity_name": "MADISON LOGIC, INC.",
+    "annual_revenue_usd": 69050000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Marketplace Events",
+    "state": null,
+    "exited": false,
+    "legal_entity_name": "Marketplace Events"
+  },
+  {
+    "city": null,
+    "name": "Moravia",
+    "state": null,
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "MORAVIA IT, LLC",
+    "annual_revenue_usd": 300000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Washington",
+    "name": "Narrative Strategies",
+    "state": "Dc",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Narrative Strategies",
+    "annual_revenue_usd": 2500000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Fort Worth",
+    "name": "OpenRoad Lending",
+    "state": "Tx",
+    "exited": false,
+    "revenue_year": 2025,
+    "legal_entity_name": "OPENROAD LENDING, LLC",
+    "annual_revenue_usd": 21800000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Coral Gables",
+    "name": "Perigon Learning",
+    "state": "Florida",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Perigon Learning",
+    "annual_revenue_usd": 8400000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Premiere Digital",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Premiere Digital",
+    "annual_revenue_usd": 87500000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Ready Credit",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "Ready Credit",
+    "annual_revenue_usd": 16800000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": null,
+    "name": "Reliant",
+    "state": null,
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "Reliant",
+    "annual_revenue_usd": 2180000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Charlotte",
+    "name": "SOI",
+    "state": "North Carolina",
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "SOI",
+    "annual_revenue_usd": 175000000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Tarrytown",
+    "name": "SQAD",
+    "state": "New York",
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "SQAD",
+    "annual_revenue_usd": 13600000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Natick",
+    "name": "The Oceanaire",
+    "state": "Ma",
+    "exited": true,
+    "revenue_year": 2023,
+    "legal_entity_name": "LANDRY'S, INC.",
+    "annual_revenue_usd": 40650000,
+    "revenue_research_confidence": "medium"
+  },
+  {
+    "city": "Los Angeles",
+    "name": "V10 Entertainment",
+    "state": "California",
+    "exited": false,
+    "revenue_year": 2023,
+    "legal_entity_name": "V10 Entertainment",
+    "annual_revenue_usd": 5000000,
+    "revenue_research_confidence": "medium"
+  }
+]

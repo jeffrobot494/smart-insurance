@@ -1275,3 +1275,7 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-10T16:48:39.679Z"}
 {"level":"error","message":"WorkflowErrorHandler: Handling Firecrawl API failure for pipeline 172","service":"manager","timestamp":"2025-09-10T16:52:34.682Z"}
 {"level":"error","message":"Research failed for pipeline 172:","service":"manager","timestamp":"2025-09-10T16:52:35.281Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-10T17:19:28.134Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-10T17:29:46.673Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-10T18:47:06.879Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-10T19:18:33.545Z"}

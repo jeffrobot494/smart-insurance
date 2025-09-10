@@ -44,33 +44,10 @@ class Form5500MCPServer {
   setupToolHandlers() {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools: [
-        {
-          name: "form5500_name_test",
-          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them.",
-          inputSchema: {
-            type: "object",
-            properties: {
-              companyName: { 
-                type: "string",
-                description: "Company name to search in Form 5500 data"
-              },
-              limit: {
-                type: "number",
-                description: "Maximum number of results to return (default: 10)",
-                default: 50
-              },
-              exactOnly: {
-                type: "boolean", 
-                description: "If true, only return exact matches (default: false)",
-                default: false
-              }
-            },
-            required: ["companyName"]
-          }
-        },
+        // NOTE: form5500_name_test is not used or supported - use form5500_batch_name_test instead
         {
           name: "form5500_batch_name_test",
-          description: "Performs batch search in the database for multiple companies with search terms in their names. Returns full legal entity name, city, and state for each company. More efficient than individual calls for multiple companies.",
+          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them. Can search for single companies or multiple companies in one call. More efficient than individual calls for multiple companies.",
           inputSchema: {
             type: "object",
             properties: {

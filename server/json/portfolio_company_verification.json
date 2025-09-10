@@ -40,6 +40,7 @@
         "name": "TestForm5500Matches",
         "outputKey": "form5500_test_results", 
         "inputKeys": ["legal_entity_research"],
+        "allowed_tools": ["search_web", "form5500_batch_name_test"],
         "instructions": "Test Form 5500 matches using form5500_name_test. Search order: 1) Legal entity name from previous task 2) Original company name 3) Shortened versions (remove suffixes) 4) Common variations. Inclusive search returns broader results, so start broad. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification, legal_entity_research, form5500_match: {legal_name, ein, location, match_type, record_count, variation_used}}. Include only the JSON. Include no comments in your response under any conditions."
       }
     ]
