@@ -25,7 +25,7 @@
         "outputKey": "verified_portfolio_companies",
         "inputKeys": ["revenue_research"],
         "allowed_tools": ["search_web"],
-        "instructions": "Your task is to check if there is conclusive proof that the company was sold/exited by the firm. Start with the assumption that it was not. Perform a single web search. If you find conclusive evidence that it was sold/exited by the firm, indicate as such. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification: {exited: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response."
+        "instructions": "Your task is to check if there is conclusive proof that the company was sold/exited by the firm. Start with the assumption that it was not. Perform a single web search. If you find conclusive evidence that it was sold/exited by the firm, perform a second web search to verify. Only if BOTH searches indicate the company is exited should you indicate as such. Otherwise, assume it is still active. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification: {exited: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response."
       },
       {
         "id": 4,

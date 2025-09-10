@@ -54,10 +54,16 @@ class WorkflowErrorHandler {
    * @param {string} errorData.currentState - State when error occurred
    */
   async recordAPIError(pipelineId, errorData) {
+    // Enhance error message for server errors (status >= 500)
+    let enhancedMessage = errorData.errorMessage;
+    if (errorData.errorType === 'server_error') {
+      enhancedMessage = `${errorData.errorMessage}\n\nThis appears to be a server issue with Anthropic's services. Please try again later.`;
+    }
+    
     const errorObject = {
       api: errorData.apiName,
       type: errorData.errorType,
-      message: errorData.errorMessage,
+      message: enhancedMessage,
       time: new Date().toISOString(),
       state: errorData.currentState
     };

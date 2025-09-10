@@ -85,7 +85,7 @@ class ToolManager {
       mcpProcess.stdout.on('data', responseHandler);
       this.mcpServerManager.sendMCPMessage(mcpProcess, request);
 
-      // Update the existing timeout handler (existing 60-second timeout)
+      // Update the existing timeout handler (increased to 3 minutes for firecrawl scraping)
       setTimeout(() => {
         mcpProcess.stdout.removeListener('data', responseHandler);
         const apiName = this.getAPINameFromTool(toolName, tool.serverName);
@@ -96,7 +96,7 @@ class ToolManager {
           errorType: 'tool_timeout_error'
         });
         reject(workflowError);
-      }, 60000);
+      }, 180000);
     });
   }
 

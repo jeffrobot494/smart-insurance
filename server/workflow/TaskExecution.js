@@ -9,7 +9,7 @@ class TaskExecution {
     this.claudeManager = new ClaudeManager();
     this.conversationHistory = [];
     this.status = 'pending';
-    this.maxIterations = 10;
+    this.maxIterations = 21;
   }
 
   async run(inputs = {}) {
@@ -39,6 +39,18 @@ class TaskExecution {
       // Main conversation loop - continues while Claude makes tool calls
       while (iterations < this.maxIterations) {
         try {
+          // Add iteration context before each Claude call (except the first)
+          if (iterations > 0) {
+            const remainingIterations = this.maxIterations - iterations;
+            const iterationContext = `\n[SYSTEM: This is tool call iteration ${iterations + 1} of ${this.maxIterations}. You have ${remainingIterations} more iterations remaining. If you're close to the limit, ensure your next response provides a complete final answer rather than making more tool calls.]`;
+            
+            // Add as a user message to maintain conversation flow
+            this.conversationHistory.push({
+              role: 'user',
+              content: iterationContext
+            });
+          }
+          
           // Simple error simulation for testing
           if (process.env.ERROR_SIMULATION_ANTHROPIC === 'true') {
             throw new WorkflowAPIError({
