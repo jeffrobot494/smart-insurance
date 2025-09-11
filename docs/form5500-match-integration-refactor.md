@@ -127,6 +127,24 @@ companyObject.legal_entity_name = companyObject.legal_entity_name ? companyObjec
 
 **Impact**: Without this fix, no-match companies cause the WorkflowResultsParser to crash and return `undefined`, breaking the entire parsing process.
 
+#### Bug Fix 1D: SelfFundedClassifierService Display Name Fallback
+
+**File**: `/server/data-extraction/SelfFundedClassifierService.js` (lines 37, 40)
+
+**Fix**: Add fallback to prevent "undefined" in logs:
+```javascript
+const displayName = company.form5500_match?.legal_name || company.name || 'Unknown';
+```
+
+#### Bug Fix 1E: DataExtractionService Schedule A Field Name Fix
+
+**File**: `/server/data-extraction/DataExtractionService.js` (line 67)
+
+**Fix**: Change `scheduleAResults` to `schARecords` to match actual field name:
+```javascript
+logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.schARecords && Object.keys(r.schARecords).length > 0).length} EINs`);
+```
+
 ### Bug Fix 2: All Uses of company.legal_entity_name Must Be Updated with Null Handling
 
 **Problem**: Several files incorrectly use `company.legal_entity_name` instead of the validated `company.form5500_match.legal_name`, and must handle null values for no-match companies.
@@ -544,9 +562,11 @@ If issues arise, the changes can be rolled back by:
 1. **Fix WorkflowResultsParser.js** - Add `form5500_match` field preservation (Bug Fix 1)
 2. **Fix WorkflowResultsParser.js** - Update fallback logic to respect no-match results (Bug Fix 1B)
 3. **Fix WorkflowResultsParser.js** - Add null-safe cleanup code (Bug Fix 1C)
-4. **Fix SelfFundedClassifierService.js** - Add null handling and skip no-match companies (Bug Fix 2A)  
-5. **Fix DatabaseManager.js** - Update classification queries to use validated names (Bug Fix 2B)
-6. **Fix WorkflowSummaryGenerator.js** - Use validated names for workflow summaries (Bug Fix 2C)
+4. **Fix SelfFundedClassifierService.js** - Add display name fallback (Bug Fix 1D)
+5. **Fix DataExtractionService.js** - Fix Schedule A field name mismatch (Bug Fix 1E)
+6. **Fix SelfFundedClassifierService.js** - Add null handling and skip no-match companies (Bug Fix 2A)  
+7. **Fix DatabaseManager.js** - Update classification queries to use validated names (Bug Fix 2B)
+8. **Fix WorkflowSummaryGenerator.js** - Use validated names for workflow summaries (Bug Fix 2C)
 
 **Test Strategy:**
 - Run existing workflow on test company (e.g., Cascade with known no-match result)

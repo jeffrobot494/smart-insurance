@@ -34,10 +34,10 @@ class SelfFundedClassifierService {
         company.form5500_data.self_funded = classification.current_classification;
         // Detailed analysis
         company.form5500_data.self_funded_analysis = classification;
-        const displayName = company.form5500_match?.legal_name || company.name;
+        const displayName = company.form5500_match?.legal_name || company.name || 'Unknown';
         logger.debug(`✓ Classified ${displayName}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
       } catch (error) {
-        const displayName = company.form5500_match?.legal_name || company.name;
+        const displayName = company.form5500_match?.legal_name || company.name || 'Unknown';
         logger.error(`❌ Error classifying ${displayName}:`, error.message);
         // Quick access field
         company.form5500_data.self_funded = 'error';
@@ -59,21 +59,18 @@ class SelfFundedClassifierService {
    * @returns {Object} Detailed classification result with year-by-year breakdown
    */
   async classifyCompany(company) {
-    // Skip companies with no Form 5500 matches - can't classify without data
-    if (!company.form5500_match || company.form5500_match.match_type === "no_match") {
-      logger.debug(`⏭️ Skipping classification for ${company.name}: No Form 5500 match found`);
+    // Skip companies with no Form 5500 data - can't classify without EIN
+    if (!company.form5500_data || !company.form5500_data.ein) {
+      logger.info(`⏭️ Skipping classification for ${company.name || company.legal_entity_name || 'Unknown'}: No EIN available`);
       return {
-        ...company,
-        self_funded_classification: {
-          current_classification: "unknown",
-          confidence: "low",
-          reason: "No Form 5500 data available for classification"
-        }
+        current_classification: "unknown",
+        confidence: "low",
+        reason: "No EIN available for classification"
       };
     }
 
     const ein = company.form5500_data.ein;
-    const legalEntityName = company.form5500_match.legal_name;
+    const legalEntityName = company.legal_entity_name;
     
     // Get raw Form 5500 and Schedule A data for classification
     // Note: get_form5500_for_classification expects company name, not EIN
