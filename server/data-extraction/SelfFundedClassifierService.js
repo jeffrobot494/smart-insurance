@@ -176,9 +176,24 @@ class SelfFundedClassifierService {
     // Generate summary with trend analysis
     const summary = this.generateYearlySummary(yearlyClassifications);
     
-    // Current classification = most recent year
+    // Current classification = most recent year WITH medical plan data
+    // Skip years with only non-medical plans (401k, retirement, etc.) when determining current status
     const years = Object.keys(classificationsByYear).sort((a, b) => parseInt(b) - parseInt(a));
-    const currentClassification = years.length > 0 ? classificationsByYear[years[0]].classification : 'no-data';
+    let currentClassification = 'no-data';
+    
+    for (const year of years) {
+      const yearClassification = classificationsByYear[year].classification;
+      // Use the most recent year that has actual medical plan data (not just "no-medical-plans")
+      if (yearClassification !== 'no-medical-plans') {
+        currentClassification = yearClassification;
+        break;
+      }
+    }
+    
+    // If all available years show "no-medical-plans", then use that as current classification
+    if (currentClassification === 'no-data' && years.length > 0) {
+      currentClassification = 'no-medical-plans';
+    }
     
     return {
       current_classification: currentClassification,

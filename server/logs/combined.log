@@ -843,3 +843,29 @@
 {"level":"info","message":"📋 Found Schedule A records for 20 EINs","service":"database","timestamp":"2025-09-11T04:34:43.892Z"}
 {"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-11T04:34:43.894Z"}
 {"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-11T04:34:43.895Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-09-11T04:34:50.990Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-11T04:34:50.990Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-11T04:34:51.387Z"}
+{"level":"info","message":"Data extraction completed for pipeline 168","service":"manager","timestamp":"2025-09-11T04:34:51.763Z"}
+{"level":"info","message":"📋 Created new pipeline 174 for firm: Revelstoke Capital Partners","service":"manager","timestamp":"2025-09-11T04:46:14.723Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 2 companies","service":"manager","timestamp":"2025-09-11T04:47:54.792Z"}
+{"level":"info","message":"🔍 Processing 2 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-11T04:47:55.026Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 2 companies","service":"database","timestamp":"2025-09-11T04:47:55.477Z"}
+{"level":"info","message":"📋 Found Schedule A records for 2 EINs","service":"database","timestamp":"2025-09-11T04:47:56.947Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-11T04:47:56.948Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-11T04:47:56.948Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 2 companies","service":"database","timestamp":"2025-09-11T04:47:57.650Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-11T04:47:57.650Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-11T04:47:57.830Z"}
+{"level":"info","message":"Data extraction completed for pipeline 174","service":"manager","timestamp":"2025-09-11T04:47:58.012Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 1 companies","service":"manager","timestamp":"2025-09-11T04:50:16.989Z"}
+{"level":"info","message":"🔍 Processing 1 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-11T04:50:17.204Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 1 companies","service":"database","timestamp":"2025-09-11T04:50:17.434Z"}
+{"level":"info","message":"📋 Found Schedule A records for 1 EINs","service":"database","timestamp":"2025-09-11T04:50:17.975Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-11T04:50:17.976Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-11T04:50:17.977Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 1 companies","service":"database","timestamp":"2025-09-11T04:50:18.304Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-11T04:50:18.304Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-11T04:50:18.416Z"}
+{"level":"info","message":"Data extraction completed for pipeline 174","service":"manager","timestamp":"2025-09-11T04:50:18.524Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-11T04:56:25.257Z"}
