@@ -156,31 +156,26 @@ logger.info(`📋 Found Schedule A records for ${finalResults.filter(r => r.schA
 
 **Files That Need Updates**:
 
-#### Fix 2A: SelfFundedClassifierService.js - Skip no-match companies entirely
+#### Fix 2A: SelfFundedClassifierService.js - Check form5500_data instead of form5500_match
 
 **File**: `/server/data-extraction/SelfFundedClassifierService.js`
 
-**Current Code (line 61)**:
-```javascript
-const legalEntityName = company.legal_entity_name;
-```
+**Problem**: Phase 1 incorrectly changed classifier to check workflow match results (`form5500_match`) instead of extracted data (`form5500_data`). Classifier runs after data extraction and should only care about whether extracted data exists.
 
-**Fixed Code**:
+**Fixed Code (lines 62-73)**:
 ```javascript
-// Skip companies with no Form 5500 matches - can't classify without data
-if (!company.form5500_match || company.form5500_match.match_type === "no_match") {
-  logger.debug(`⏭️ Skipping classification for ${company.name}: No Form 5500 match found`);
+// Skip companies with no Form 5500 data - can't classify without EIN
+if (!company.form5500_data || !company.form5500_data.ein) {
+  logger.info(`⏭️ Skipping classification for ${company.name || company.legal_entity_name || 'Unknown'}: No EIN available`);
   return {
-    ...company,
-    self_funded_classification: {
-      current_classification: "unknown",
-      confidence: "low",
-      reason: "No Form 5500 data available for classification"
-    }
+    current_classification: "unknown",
+    confidence: "low", 
+    reason: "No EIN available for classification"
   };
 }
 
-const legalEntityName = company.form5500_match.legal_name;
+const ein = company.form5500_data.ein;
+const legalEntityName = company.legal_entity_name;
 ```
 
 **Also update logging (lines 37, 39)**:
@@ -564,7 +559,7 @@ If issues arise, the changes can be rolled back by:
 3. **Fix WorkflowResultsParser.js** - Add null-safe cleanup code (Bug Fix 1C)
 4. **Fix SelfFundedClassifierService.js** - Add display name fallback (Bug Fix 1D)
 5. **Fix DataExtractionService.js** - Fix Schedule A field name mismatch (Bug Fix 1E)
-6. **Fix SelfFundedClassifierService.js** - Add null handling and skip no-match companies (Bug Fix 2A)  
+6. **Fix SelfFundedClassifierService.js** - Check form5500_data instead of form5500_match (Bug Fix 2A)  
 7. **Fix DatabaseManager.js** - Update classification queries to use validated names (Bug Fix 2B)
 8. **Fix WorkflowSummaryGenerator.js** - Use validated names for workflow summaries (Bug Fix 2C)
 
