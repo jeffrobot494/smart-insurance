@@ -1151,3 +1151,6 @@
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-11T02:51:53.767Z"}
 {"level":"error","message":"❌ Failed to get all pipelines:","service":"database","timestamp":"2025-09-11T02:51:53.769Z"}
 {"level":"error","message":"Failed to parse legal resolution result:","service":"manager","timestamp":"2025-09-11T03:04:37.879Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-11T04:23:15.826Z"}
+{"level":"info","message":"🔍 Searching Form 5500 by EIN: 815000414 (AMERICAN PAIN CONSORTIUM)","service":"database","timestamp":"2025-09-11T04:23:16.184Z"}
+{"level":"info","message":"🔍 Searching Form 5500 by EIN: 204063021 (THE INTERSECT GROUP, LLC)","service":"database","timestamp":"2025-09-11T04:23:16.299Z"}

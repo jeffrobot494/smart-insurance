@@ -581,53 +581,53 @@ If issues arise, the changes can be rolled back by:
 
 ### **Phase 2: New EIN-Based Search Infrastructure**
 
-**Goal**: Add new EIN-based search methods without changing main data flow
+**Goal**: Add new EIN-based search methods to improve data accuracy
 
 **Changes Required:**
-4. **Add DatabaseManager.searchCompaniesByEIN()** method
-5. **Add Form5500SearchService.searchCompaniesByEIN()** and helper methods
-6. **Add logging for new search methods**
+1. **Add DatabaseManager.searchCompaniesByEIN()** method
+2. **Add Form5500SearchService.searchCompaniesByEIN()** and helper methods  
+3. **Add minimal logging for new search methods**
 
 **Test Strategy:**
 - Create standalone test script that calls new EIN-based methods directly
-- Test with known EINs from `form5500_match` data (from Phase 1 output)
-- Verify EIN search returns same companies as name-based search for matched companies
-- Verify new methods don't interfere with existing functionality
+- Test with known EINs from working companies (extracted from current pipeline logs)
+- Verify EIN search returns correct Form 5500 records
+- Verify new methods work independently of existing functionality
 
 **Success Criteria:**
 - ✅ New `searchCompaniesByEIN()` methods work correctly in isolation
-- ✅ Can retrieve Form 5500 records using validated EINs
-- ✅ Results structure matches existing `searchCompanies()` output format
+- ✅ Can retrieve Form 5500 records using validated EINs from workflow
+- ✅ Results structure matches existing output format
 - ✅ No impact on existing name-based search functionality
-- ✅ Performance is acceptable (EIN searches should be faster)
+- ✅ Performance is acceptable (EIN searches should be faster than name searches)
 
 **Rollback Plan:** Remove new methods, existing functionality unaffected
 
 ---
 
-### **Phase 3: Switch DataExtractionService to Use New Infrastructure**
+### **Phase 3: Switch DataExtractionService to Use EIN-Based Search**
 
-**Goal**: Replace old name-based search with EIN-based search in production pipeline
+**Goal**: Replace name-based search with EIN-based search for companies with validated matches
 
 **Changes Required:**
-7. **Update DataExtractionService.extractData()** main logic (Changes 1A, 1B, 1C)
-8. **Update DataExtractionService.mapResultsToCompanies()** method (Change 1D)
-9. **Update logging messages** (Change 4A)
+1. **Update DataExtractionService.extractData()** - Use EIN-based search for matched companies
+2. **Update filtering logic** - Skip companies with `form5500_match.match_type = "no_match"`
+3. **Update logging messages** - Show EIN-based vs name-based search counts
 
 **Test Strategy:**
-- Run complete pipeline on mixed test set (matched + no-match companies)
-- Compare before/after results for known problem cases
-- Verify Cascade gets `form5500_data: null` instead of dozens of wrong companies  
-- Verify matched companies still get correct Form 5500 data
+- Run complete pipeline on mixed test set (matched + no-match companies)  
+- Compare before/after results for known problem cases (e.g., Cascade)
+- Verify no-match companies get no Form 5500 data
+- Verify matched companies get same/better Form 5500 data via EIN search
 
 **Success Criteria:**
-- ✅ No-match companies get `form5500_data: null` (no false data)
-- ✅ Matched companies get correct Form 5500 data via EIN lookup
-- ✅ No false positives eliminated (e.g., Cascade matching unrelated companies)
-- ✅ Pipeline performance improved (fewer unnecessary database queries)
-- ✅ Logging clearly shows matched vs. no-match company counts
+- ✅ No-match companies (like Cascade) get no Form 5500 data (eliminate false positives)
+- ✅ Matched companies get correct Form 5500 data via validated EIN lookup
+- ✅ Pipeline performance improved (precise EIN searches vs fuzzy name searches)  
+- ✅ Classifier continues working properly with new data structure
+- ✅ Clear logging shows matched vs. no-match company processing
 
-**Rollback Plan:** Revert DataExtractionService changes, Phase 2 infrastructure remains for future use
+**Rollback Plan:** Revert DataExtractionService changes, Phase 2 infrastructure remains available
 
 ---
 

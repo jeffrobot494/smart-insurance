@@ -472,6 +472,28 @@ class DatabaseManager {
     }
   }
 
+  /**
+   * Search for companies by EIN in Form 5500 database
+   * @param {string} ein - EIN to search for
+   * @returns {Array} Array of matching database records
+   */
+  async searchCompaniesByEIN(ein) {
+    const cleanEIN = ein.replace(/\D/g, '');
+    
+    if (cleanEIN.length !== 9) {
+      throw new Error(`Invalid EIN: ${ein} (must be 9 digits)`);
+    }
+
+    const query = `
+      SELECT * FROM form_5500_records 
+      WHERE spons_dfe_ein = $1
+      ORDER BY year DESC, sponsor_dfe_name ASC
+    `;
+    
+    const result = await this.query(query, [cleanEIN]);
+    return result.rows || [];
+  }
+
 }
 
 module.exports = DatabaseManager;
