@@ -78,9 +78,10 @@ function generateWorkflowSummary(results) {
         }
       }
       
-      // Extract legal entity
-      if (data.legal_entity_research && data.legal_entity_research.legal_entity_name) {
-        detail.legalEntity = data.legal_entity_research.legal_entity_name;
+      // Extract legal entity - prioritize form5500_match over legal_entity_research
+      const legalEntity = data.form5500_match?.legal_name || data.legal_entity_research?.legal_entity_name;
+      if (legalEntity) {
+        detail.legalEntity = legalEntity;
       }
       
       // Extract Form 5500 status

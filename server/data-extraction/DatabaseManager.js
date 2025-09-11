@@ -407,7 +407,7 @@ class DatabaseManager {
         if (pipeline.companies) {
           updates.companies = JSON.stringify(pipeline.companies.map(company => ({
             name: company.name,
-            legal_entity_name: company.legal_entity_name,
+            legal_entity_name: company.form5500_match?.legal_name || company.name,
             city: company.city,
             state: company.state,
             exited: company.exited

@@ -158,11 +158,15 @@ class WorkflowResultsParser {
       legal_entity_name: null,
       city: null,
       state: null,
-      exited: false
+      exited: false,
+      form5500_match: null // ✅ Add this field to preserve form5500_match data
     };
     
     // Extract legal entity data from standardized format
     if (parsed.form5500_match) {
+      // ✅ Preserve the entire form5500_match object
+      companyObject.form5500_match = parsed.form5500_match;
+      
       companyObject.legal_entity_name = parsed.form5500_match.legal_name;
       
       // Handle nested location structure
@@ -188,13 +192,15 @@ class WorkflowResultsParser {
       companyObject.revenue_research_confidence = parsed.revenue_research.research_confidence;
     }
     
-    // Use original company name as fallback if no legal entity name found
-    if (!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) {
+    // Use original company name as fallback ONLY if no form5500_match data exists
+    // Do NOT override null legal_entity_name for companies with explicit no-match results
+    if ((!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) && 
+        !companyObject.form5500_match) {
       companyObject.legal_entity_name = originalCompanyName;
     }
     
     // Clean up the data
-    companyObject.legal_entity_name = companyObject.legal_entity_name.trim();
+    companyObject.legal_entity_name = companyObject.legal_entity_name ? companyObject.legal_entity_name.trim() : null;
     companyObject.city = companyObject.city ? companyObject.city.trim() : null;
     companyObject.state = companyObject.state ? companyObject.state.trim() : null;
     

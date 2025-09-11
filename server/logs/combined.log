@@ -425,3 +425,4 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-11T01:29:51.356Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-11T01:29:51.662Z"}
 {"level":"info","message":"Data extraction completed for pipeline 173","service":"manager","timestamp":"2025-09-11T01:29:51.840Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-11T02:52:06.101Z"}

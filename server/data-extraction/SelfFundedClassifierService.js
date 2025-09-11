@@ -34,9 +34,11 @@ class SelfFundedClassifierService {
         company.form5500_data.self_funded = classification.current_classification;
         // Detailed analysis
         company.form5500_data.self_funded_analysis = classification;
-        logger.debug(`✓ Classified ${company.legal_entity_name}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
+        const displayName = company.form5500_match?.legal_name || company.name;
+        logger.debug(`✓ Classified ${displayName}: ${classification.current_classification} (${classification.summary.years_available.length} years)`);
       } catch (error) {
-        logger.error(`❌ Error classifying ${company.legal_entity_name}:`, error.message);
+        const displayName = company.form5500_match?.legal_name || company.name;
+        logger.error(`❌ Error classifying ${displayName}:`, error.message);
         // Quick access field
         company.form5500_data.self_funded = 'error';
         // Detailed analysis
@@ -57,8 +59,21 @@ class SelfFundedClassifierService {
    * @returns {Object} Detailed classification result with year-by-year breakdown
    */
   async classifyCompany(company) {
+    // Skip companies with no Form 5500 matches - can't classify without data
+    if (!company.form5500_match || company.form5500_match.match_type === "no_match") {
+      logger.debug(`⏭️ Skipping classification for ${company.name}: No Form 5500 match found`);
+      return {
+        ...company,
+        self_funded_classification: {
+          current_classification: "unknown",
+          confidence: "low",
+          reason: "No Form 5500 data available for classification"
+        }
+      };
+    }
+
     const ein = company.form5500_data.ein;
-    const legalEntityName = company.legal_entity_name;
+    const legalEntityName = company.form5500_match.legal_name;
     
     // Get raw Form 5500 and Schedule A data for classification
     // Note: get_form5500_for_classification expects company name, not EIN

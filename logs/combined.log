@@ -1148,3 +1148,6 @@
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:22:01.236Z"}
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-10T21:56:23.592Z"}
 {"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-10T22:00:18.446Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-11T02:51:53.767Z"}
+{"level":"error","message":"❌ Failed to get all pipelines:","service":"database","timestamp":"2025-09-11T02:51:53.769Z"}
+{"level":"error","message":"Failed to parse legal resolution result:","service":"manager","timestamp":"2025-09-11T03:04:37.879Z"}

@@ -81,6 +81,52 @@ if (parsed.form5500_match) {
 }
 ```
 
+#### Bug Fix 1B: WorkflowResultsParser Fallback Logic Must Respect form5500_match Results
+
+**File**: `/server/utils/WorkflowResultsParser.js`
+
+**Problem**: Legacy fallback logic (around line 195-198) overrides intentional `null` values for no-match companies by falling back to the original company name.
+
+**Current Code (lines 195-198)**:
+```javascript
+// Use original company name as fallback if no legal entity name found
+if (!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) {
+  companyObject.legal_entity_name = originalCompanyName; // ❌ Overwrites intentional nulls!
+}
+```
+
+**Fixed Code**:
+```javascript
+// Use original company name as fallback ONLY if no form5500_match data exists
+// Do NOT override null legal_entity_name for companies with explicit no-match results
+if ((!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) && 
+    !companyObject.form5500_match) {
+  companyObject.legal_entity_name = originalCompanyName;
+}
+```
+
+**Why This Matters**: Without this fix, companies like Cascade with `form5500_match.match_type = "no_match"` will have their `legal_entity_name` changed from `null` to `"Cascade"`, causing the DataExtractionService to perform searches and return incorrect results.
+
+#### Bug Fix 1C: WorkflowResultsParser Cleanup Code Must Handle Null Values
+
+**File**: `/server/utils/WorkflowResultsParser.js`
+
+**Problem**: The cleanup code (around line 203) assumes `legal_entity_name` is always a string and calls `.trim()` on it. For no-match companies, `legal_entity_name` is `null`, causing a crash.
+
+**Current Code (line 203)**:
+```javascript
+// Clean up the data
+companyObject.legal_entity_name = companyObject.legal_entity_name.trim(); // ❌ Crashes on null
+```
+
+**Fixed Code**:
+```javascript
+// Clean up the data
+companyObject.legal_entity_name = companyObject.legal_entity_name ? companyObject.legal_entity_name.trim() : null;
+```
+
+**Impact**: Without this fix, no-match companies cause the WorkflowResultsParser to crash and return `undefined`, breaking the entire parsing process.
+
 ### Bug Fix 2: All Uses of company.legal_entity_name Must Be Updated with Null Handling
 
 **Problem**: Several files incorrectly use `company.legal_entity_name` instead of the validated `company.form5500_match.legal_name`, and must handle null values for no-match companies.
@@ -496,9 +542,11 @@ If issues arise, the changes can be rolled back by:
 
 **Changes Required:**
 1. **Fix WorkflowResultsParser.js** - Add `form5500_match` field preservation (Bug Fix 1)
-2. **Fix SelfFundedClassifierService.js** - Add null handling and skip no-match companies (Bug Fix 2A)  
-3. **Fix DatabaseManager.js** - Update classification queries to use validated names (Bug Fix 2B)
-4. **Fix WorkflowSummaryGenerator.js** - Use validated names for workflow summaries (Bug Fix 2C)
+2. **Fix WorkflowResultsParser.js** - Update fallback logic to respect no-match results (Bug Fix 1B)
+3. **Fix WorkflowResultsParser.js** - Add null-safe cleanup code (Bug Fix 1C)
+4. **Fix SelfFundedClassifierService.js** - Add null handling and skip no-match companies (Bug Fix 2A)  
+5. **Fix DatabaseManager.js** - Update classification queries to use validated names (Bug Fix 2B)
+6. **Fix WorkflowSummaryGenerator.js** - Use validated names for workflow summaries (Bug Fix 2C)
 
 **Test Strategy:**
 - Run existing workflow on test company (e.g., Cascade with known no-match result)
