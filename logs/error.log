@@ -7,3 +7,4 @@
 {"level":"error","message":"❌ Failed to connect to database:","service":"database","timestamp":"2025-08-14T23:56:37.154Z"}
 {"level":"error","message":"💥 Workflow execution failed:","service":"manager","timestamp":"2025-08-14T23:57:43.970Z"}
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:22:01.236Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-10T21:56:23.592Z"}

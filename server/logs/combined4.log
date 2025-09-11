@@ -946,3 +946,4 @@
 {"level":"info","message":"   ✓ Imax → IMAX CORPORATION (New York, Ny)","service":"manager","timestamp":"2025-09-10T19:24:55.987Z"}
 {"level":"info","message":"✅ Legal entity resolution completed","service":"manager","timestamp":"2025-09-10T19:24:56.105Z"}
 {"level":"info","message":"Legal resolution completed for pipeline 173","service":"manager","timestamp":"2025-09-10T19:24:56.217Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-11T00:52:49.106Z"}

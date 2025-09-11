@@ -1146,3 +1146,5 @@
 {"level":"info","message":"📋 [MANAGER] Getting all saved workflow results","service":"manager","timestamp":"2025-08-15T00:11:10.621Z"}
 {"level":"info","message":"📋 [MANAGER] Found 5 saved workflow results","service":"manager","timestamp":"2025-08-15T00:11:10.659Z"}
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-09T01:22:01.236Z"}
+{"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-10T21:56:23.592Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-10T22:00:18.446Z"}
