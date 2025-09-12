@@ -47,7 +47,7 @@ class Form5500MCPServer {
         // NOTE: form5500_name_test is not used or supported - use form5500_batch_name_test instead
         {
           name: "form5500_batch_name_test",
-          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them. Can search for single companies or multiple companies in one call. More efficient than individual calls for multiple companies.",
+          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them. Can search for single companies or multiple companies in one call. More efficient than individual calls for multiple companies. WARNING: Short/generic search terms (like 'EP', 'Inc', 'Co') WILL return thousands of results and consume many tokens. When using a search term that is two or fewer letters, you MUST also filter by state. Do NOT use the state filter EXCEPT in this case.",
           inputSchema: {
             type: "object",
             properties: {
@@ -65,6 +65,11 @@ class Form5500MCPServer {
                 type: "boolean", 
                 description: "If true, only return exact matches (default: false)",
                 default: false
+              },
+              state: {
+                type: "string",
+                description: "Filter results by state (2-letter state code, e.g., 'CA', 'NY'). Only use this filter when using a search term that is TWO LETTERS OR LESS.",
+                pattern: "^[A-Z]{2}$"
               }
             },
             required: ["companyNames"]
@@ -109,7 +114,7 @@ class Form5500MCPServer {
     return {
       content: [{
         type: "text",
-        text: JSON.stringify(result, null, 2)
+        text: JSON.stringify(result)
       }]
     };
   }
@@ -195,7 +200,7 @@ class Form5500MCPServer {
   }
 
   async handleForm5500BatchNameTest(args) {
-    const { companyNames, limit = 10, exactOnly = false } = args;
+    const { companyNames, limit = 10, exactOnly = false, state = null } = args;
     
     if (!companyNames || !Array.isArray(companyNames) || companyNames.length === 0) {
       throw new Error('Company names array is required and must not be empty');
@@ -210,18 +215,23 @@ class Form5500MCPServer {
       throw new Error('All company names must be non-empty strings');
     }
 
-    const results = await this.batchTestCompanyNames(companyNames, { limit, exactOnly });
+    // Validate state parameter if provided
+    if (state && !/^[A-Z]{2}$/.test(state)) {
+      throw new Error('State must be a 2-letter uppercase code (e.g., "CA", "NY")');
+    }
+
+    const results = await this.batchTestCompanyNames(companyNames, { limit, exactOnly, state });
     
     return {
       content: [{
         type: "text",
-        text: JSON.stringify(results, null, 2)
+        text: JSON.stringify(results)
       }]
     };
   }
 
   async batchTestCompanyNames(companyNames, options = {}) {
-    const { limit = 10, exactOnly = false } = options;
+    const { limit = 10, exactOnly = false, state = null } = options;
     
     // If no database connection, return mock data
     if (!this.databaseManager) {
@@ -235,7 +245,7 @@ class Form5500MCPServer {
           results: [{
             name: `Mock ${name} Corporation`,
             city: 'Mock City',
-            state: 'ST'
+            state: state || 'ST'
           }]
         }))
       };
@@ -256,6 +266,13 @@ class Form5500MCPServer {
       } else {
         whereClause = `LOWER(sponsor_dfe_name) LIKE LOWER($${paramIndex})`;
         params.push(`%${companyName}%`);
+      }
+      
+      // Add state filter if provided
+      if (state) {
+        whereClause += ` AND UPPER(spons_dfe_mail_us_state) = UPPER($${paramIndex + 1})`;
+        params.push(state);
+        paramIndex += 1;
       }
       
       const searchTermParam = `$${paramIndex + 1}`;

@@ -5,30 +5,22 @@
     "tasks": [
       {
         "id": 1,
-        "name": "ResearchCompanyLocations",
-        "outputKey": "companies_with_locations",
+        "name": "ResearchCompanyBasics",
+        "outputKey": "company_basics",
         "inputKeys": ["input"],
         "allowed_tools": ["search_web"],
-        "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after.\n\nFind headquarters location for the portfolio company. Use perplexity_search to find the city and state. Full address is NOT needed. Start by performing this EXACT search with the perplexity web search tool: 'In what city and state is the headquarters for the legal entity DBA <company name>, a portfolio company of <firm name>?' Replace the variables in brackets with the firm name and company name with which you were supplied. This query is necessarry to prevent you accidentally finding the headquarters of the wrong company. Return JSON: {company_name, firm_name, headquarters_location: {city, state, research_confidence}}. If there are two possibilities and it's unclear which is true, INCLUDE BOTH. Include no comments in your response.\n\nStart your response with { and end with }."
+        "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after. LIMIT: Maximum 2 search_web calls.\n\nFind comprehensive information about [company name] AS A PORTFOLIO COMPANY OF [pe firm name], including headquarters location, annual revenue, and corporate identity. Focus on the specific entity invested in by [pe firm name], not other companies with similar names.\n\n1) First search: 'Find information about [company name] portfolio company of [pe firm name], including any variations of the company name (like [company name] + Collective/Group/Partners/etc), headquarters location, annual revenue, and DBA relationships.'\n\n2) ONLY if first search doesn't find the PE connection or is missing critical data, try expanded name variations: 'Search for companies with names like \"[company name] Collective\" or \"[company name] Group\" that are portfolio companies of [pe firm name].'\n\nIMPORTANT: Portfolio company names on PE websites are often shortened versions. Look for name expansions, DBA relationships, or subsidiaries. If multiple companies have similar names, focus on the one with a documented connection to [pe firm name].\n\nReturn JSON: {company_name, firm_name, headquarters_location: {city, state, research_confidence}, revenue_research: {annual_revenue_usd, revenue_year, research_confidence, source_info}}. If revenue shows a range, use the middle value. Include no comments in your response.\n\nStart your response with { and end with }."
       },
       {
         "id": 2,
-        "name": "FindAnnualRevenue",
-        "outputKey": "revenue_research",
-        "inputKeys": ["companies_with_locations"],
-        "allowed_tools": ["search_web"],
-        "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after.\n\nFind the annual revenue for the company using perplexity_search. Search for: 'What is the annual revenue of [legal_entity_name/company_name]?' Do NOT include ranges in your response. If your research indicates a range, use the middle of the range. Return JSON: {company_name, firm_name, headquarters_location, revenue_research: {annual_revenue_usd, revenue_year, research_confidence, source_info}}. Include no comments in your response.\n\nStart your response with { and end with }."
-      },
-      {
-        "id": 3,
         "name": "VerifyPortfolioStatus", 
         "outputKey": "verified_portfolio_companies",
-        "inputKeys": ["revenue_research"],
+        "inputKeys": ["company_basics"],
         "allowed_tools": ["search_web"],
         "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after.\n\nYour task is to check if there is conclusive proof that the company was sold/exited by the firm. Start with the assumption that it was not. Perform a single web search. If you find conclusive evidence that it was sold/exited by the firm, perform a second web search to verify. Only if BOTH searches indicate the company is exited should you indicate as such. Otherwise, assume it is still active. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification: {exited: bool, verification_confidence, investment_details, status_notes}}. Include no comments in your response.\n\nStart your response with { and end with }."
       },
       {
-        "id": 4,
+        "id": 3,
         "name": "ResearchCorporateStructure",
         "outputKey": "legal_entity_research",
         "inputKeys": ["verified_portfolio_companies"],
@@ -36,7 +28,7 @@
         "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after. LIMIT: Maximum 3 search_web calls.\n\n1) First search: 'What is the legal entity name and corporate structure of [company name], portfolio company of [pe firm name]?' \n\n2) ONLY if first search mentions subsidiaries, management contracts, or operations, perform second search: 'What businesses or operations does [company name] manage, operate, or provide services for?' \n\n3) ONLY if employment/benefits context found, perform third search for specific entity names discovered.\n\nFocus ONLY on relationships that could involve shared employees or benefits (management contracts, subsidiaries, joint operations). Skip pure investment relationships. Limit related_entities to top 5 most relevant. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification, legal_entity_research: {legal_entity_name, research_confidence, source_info, related_entities: [max 5], operational_relationships: [max 3]}}. Include no comments in your response.\n\nStart your response with { and end with }."
       },
       {
-        "id": 5,
+        "id": 4,
         "name": "TestForm5500Matches",
         "outputKey": "form5500_test_results", 
         "inputKeys": ["legal_entity_research"],

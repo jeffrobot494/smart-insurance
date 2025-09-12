@@ -9,7 +9,7 @@ class TaskExecution {
     this.claudeManager = new ClaudeManager();
     this.conversationHistory = [];
     this.status = 'pending';
-    this.maxIterations = 21;
+    this.maxIterations = 11;
   }
 
   async run(inputs = {}) {
@@ -41,7 +41,7 @@ class TaskExecution {
         try {
           // Add iteration context before each Claude call (except the first)
           if (iterations > 0) {
-            const remainingIterations = this.maxIterations - iterations;
+            const remainingIterations = this.maxIterations - iterations - 1;
             const iterationContext = `\n[SYSTEM: This is tool call iteration ${iterations + 1} of ${this.maxIterations}. You have ${remainingIterations} more iterations remaining. If you're close to the limit, ensure your next response provides a complete final answer rather than making more tool calls.]`;
             
             // Add as a user message to maintain conversation flow
@@ -207,10 +207,20 @@ class TaskExecution {
         // Execute the tool (we'll need to implement tool execution)
         const result = await this.executeTool(toolCall.name, toolCall.input);
         
+        // Handle MCP response format - extract text content if it's wrapped
+        let content;
+        if (result && result.content && Array.isArray(result.content) && result.content[0] && result.content[0].text) {
+          // MCP response format: extract the text directly
+          content = result.content[0].text;
+        } else {
+          // Regular result: stringify it
+          content = JSON.stringify(result);
+        }
+        
         toolResults.push({
           type: 'tool_result',
           tool_use_id: toolCall.id,
-          content: JSON.stringify(result, null, 2)
+          content: content
         });
         
         logger.info(`  ✓ ${toolCall.name} completed`);
