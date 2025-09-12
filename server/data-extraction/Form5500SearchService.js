@@ -87,7 +87,7 @@ class Form5500SearchService {
    */
   extractEINFromRecord(record) {
     // Common EIN field names in Form 5500 database records
-    const einFields = ['sponsor_ein', 'ein', 'plan_ein', 'SPONSOR_EIN', 'EIN', 'PLAN_EIN'];
+    const einFields = ['spons_dfe_ein', 'SPONS_DFE_EIN', 'sponsor_ein', 'ein', 'plan_ein', 'SPONSOR_EIN', 'EIN', 'PLAN_EIN'];
     
     for (const field of einFields) {
       if (record[field]) {

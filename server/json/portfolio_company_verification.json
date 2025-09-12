@@ -29,11 +29,11 @@
       },
       {
         "id": 4,
-        "name": "FindLegalEntityName",
+        "name": "ResearchCorporateStructure",
         "outputKey": "legal_entity_research",
         "inputKeys": ["verified_portfolio_companies"],
         "allowed_tools": ["search_web"],
-        "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after.\n\nFind legal entity name using perplexity_search query: 'What legal entity is DBA [company name], a portfolio company of [pe firm name]?' Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification, legal_entity_research: {legal_entity_name, research_confidence, source_info}}. Include no comments in your response.\n\nStart your response with { and end with }."
+        "instructions": "CRITICAL: Return ONLY valid JSON with no explanatory text before or after. LIMIT: Maximum 3 search_web calls.\n\n1) First search: 'What is the legal entity name and corporate structure of [company name], portfolio company of [pe firm name]?' \n\n2) ONLY if first search mentions subsidiaries, management contracts, or operations, perform second search: 'What businesses or operations does [company name] manage, operate, or provide services for?' \n\n3) ONLY if employment/benefits context found, perform third search for specific entity names discovered.\n\nFocus ONLY on relationships that could involve shared employees or benefits (management contracts, subsidiaries, joint operations). Skip pure investment relationships. Limit related_entities to top 5 most relevant. Return JSON: {company_name, firm_name, headquarters_location, revenue_research, portfolio_verification, legal_entity_research: {legal_entity_name, research_confidence, source_info, related_entities: [max 5], operational_relationships: [max 3]}}. Include no comments in your response.\n\nStart your response with { and end with }."
       },
       {
         "id": 5,

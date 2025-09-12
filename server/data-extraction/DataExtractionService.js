@@ -36,56 +36,27 @@ class DataExtractionService {
         throw new Error(`Pipeline ${pipelineId} not found or has no companies`);
       }
       
-      // Separate companies with validated Form 5500 matches from those without
-      const companiesWithValidMatches = pipeline.companies.filter(company => 
-        company.form5500_match && 
-        company.form5500_match.match_type !== "no_match" &&
-        company.form5500_match.ein
-      );
+      logger.info(`🔍 Processing ${pipeline.companies.length} companies for Form 5500/Schedule A data`);
       
-      const companiesWithoutMatches = pipeline.companies.filter(company => 
-        !company.form5500_match || 
-        company.form5500_match.match_type === "no_match" ||
-        !company.form5500_match.ein
-      );
-      
-      logger.info(`🔍 Processing ${pipeline.companies.length} companies: ${companiesWithValidMatches.length} with validated matches, ${companiesWithoutMatches.length} without matches`);
-      
-      let form5500Results = [];
-      
-      // Use EIN-based search for companies with validated matches
-      if (companiesWithValidMatches.length > 0) {
-        const companyMatches = companiesWithValidMatches.map(company => ({
-          ein: company.form5500_match.ein,
-          legal_name: company.form5500_match.legal_name,
-          original_company_name: company.name
-        }));
+      // Extract legal entity names for companies that have them
+      const companyNamesToSearch = pipeline.companies
+        .filter(company => company.legal_entity_name) // Skip companies without legal names (includes null from no-match)
+        .map(company => company.legal_entity_name);
         
-        logger.info(`📋 Using EIN-based search for ${companiesWithValidMatches.length} validated companies`);
-        const einResults = await this.form5500SearchService.searchCompaniesByEIN(companyMatches);
-        form5500Results.push(...einResults);
-      }
-      
-      // Use name-based search for companies without validated matches (if any have legal entity names)
-      const companiesWithNamesOnly = companiesWithoutMatches.filter(company => company.legal_entity_name);
-      if (companiesWithNamesOnly.length > 0) {
-        const companyNamesToSearch = companiesWithNamesOnly.map(company => company.legal_entity_name);
-        logger.info(`📋 Using name-based search for ${companiesWithNamesOnly.length} companies without validated matches`);
-        const nameResults = await this.form5500SearchService.searchCompanies(companyNamesToSearch);
-        form5500Results.push(...nameResults);
-      }
-      
-      if (form5500Results.length === 0) {
+      if (companyNamesToSearch.length === 0) {
         return { 
           success: true, 
           companies: pipeline.companies, 
-          message: 'No companies found for Form 5500 search',
+          message: 'No companies with legal entity names found',
           pipelineId: pipelineId,
           extractedAt: new Date().toISOString()
         };
       }
       
-      logger.info(`📋 Found Form 5500 records for ${form5500Results.filter(r => r.recordCount > 0).length} of ${form5500Results.length} searched companies`);
+      // Phase 1: Search companies in Form 5500 using database
+      const form5500Results = await this.form5500SearchService.searchCompanies(companyNamesToSearch);
+      
+      logger.info(`📋 Found Form 5500 records for ${form5500Results.filter(r => r.recordCount > 0).length} companies`);
       
       // Phase 2: Extract EINs from Form 5500 results
       const companiesWithEIN = this.form5500SearchService.extractEINs(form5500Results);

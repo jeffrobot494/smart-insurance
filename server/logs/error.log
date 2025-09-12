@@ -1307,3 +1307,5 @@
 {"level":"error","message":"Data extraction failed for pipeline 163:","service":"manager","timestamp":"2025-09-12T00:35:57.658Z"}
 {"level":"error","message":"Data extraction failed for pipeline 163:","service":"manager","timestamp":"2025-09-12T00:36:00.703Z"}
 {"level":"error","message":"Data extraction failed for pipeline 163:","service":"manager","timestamp":"2025-09-12T00:36:03.656Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T01:04:46.688Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T01:25:31.904Z"}
