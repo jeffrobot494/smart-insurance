@@ -1,0 +1,647 @@
+    "city": null,
+    "name": "ClareMedica Health Partners",
+    "state": null,
+    "exited": false,
+    "revenue_year": 2023,
+    "form5500_data": {
+      "ein": "300955527",
+      "form5500": {
+        "years": [
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "records": {
+          "2022": [
+            {
+              "ein": "300955527",
+              "year": 2022,
+              "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 120
+            }
+          ],
+          "2023": [
+            {
+              "ein": "300955527",
+              "year": 2023,
+              "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 185
+            }
+          ],
+          "2024": [
+            {
+              "ein": "300955527",
+              "year": 2024,
+              "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "sponsor_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+              "has_schedule_a": true,
+              "active_participants": 175
+            }
+          ]
+        },
+        "recordCount": 3
+      },
+      "scheduleA": {
+        "error": null,
+        "details": {
+          "2022": [
+            {
+              "brokers": [
+                {
+                  "zip": "33469",
+                  "city": "TEQUESTA",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "SUE EUSEPI AND ASSOCIATES",
+                  "state": "FL",
+                  "address": "216 RIVER DRIVE",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "33469",
+                      "city": "TEQUESTA",
+                      "state": "FL",
+                      "address1": "216 RIVER DRIVE",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "3192.00"
+                },
+                {
+                  "zip": "45263",
+                  "city": "CINCINNATI",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS.",
+                  "state": "OH",
+                  "address": "PO BOX 632886",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "45263",
+                      "city": "CINCINNATI",
+                      "state": "OH",
+                      "address1": "PO BOX 632886",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "2176.00"
+                }
+              ],
+              "brokerFees": "0.00",
+              "benefitType": "ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "CONTINENTAL AMERICAN INSURANCE COMPANY",
+              "totalCharges": "20659.00",
+              "personsCovered": "72",
+              "brokerCommission": "5367.00"
+            },
+            {
+              "brokers": [
+                {
+                  "zip": "63141",
+                  "city": "SAINT LOUIS",
+                  "code": "3",
+                  "fees": "3332.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS.",
+                  "state": "MO",
+                  "address": "721 EMERSON ROAD, SUITE 400",
+                  "feesText": "FEES",
+                  "addresses": {
+                    "us": {
+                      "zip": "63141",
+                      "city": "SAINT LOUIS",
+                      "state": "MO",
+                      "address1": "721 EMERSON ROAD, SUITE 400",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "6035.00"
+                },
+                {
+                  "zip": "29072",
+                  "city": "LEXINGTON",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "SHEALY BENEFITS SERVICES, INC.",
+                  "state": "SC",
+                  "address": "215 HOGAN WAY",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "29072",
+                      "city": "LEXINGTON",
+                      "state": "SC",
+                      "address1": "215 HOGAN WAY",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "594.00"
+                }
+              ],
+              "brokerFees": "3332.00",
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "74047.00",
+              "personsCovered": "119",
+              "brokerCommission": "6629.00"
+            },
+            {
+              "brokers": [
+                {
+                  "zip": "63141",
+                  "city": "SAINT LOUIS",
+                  "code": "3",
+                  "fees": "63239.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS.",
+                  "state": "MO",
+                  "address": "721 EMERSON ROAD, SUITE 400",
+                  "feesText": "SERVICE FEE AGREEMENT",
+                  "addresses": {
+                    "us": {
+                      "zip": "63141",
+                      "city": "SAINT LOUIS",
+                      "state": "MO",
+                      "address1": "721 EMERSON ROAD, SUITE 400",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "0.00"
+                },
+                {
+                  "zip": "45263",
+                  "city": "CINCINNATI",
+                  "code": "3",
+                  "fees": "4705.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS.",
+                  "state": "OH",
+                  "address": "PO BOX 632886",
+                  "feesText": "BONUS",
+                  "addresses": {
+                    "us": {
+                      "zip": "45263",
+                      "city": "CINCINNATI",
+                      "state": "OH",
+                      "address1": "PO BOX 632886",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "0.00"
+                }
+              ],
+              "brokerFees": "67943.00",
+              "benefitType": "Standard Benefits",
+              "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+              "totalCharges": "918119.00",
+              "personsCovered": "172",
+              "brokerCommission": "0.00"
+            }
+          ],
+          "2023": [
+            {
+              "brokers": [
+                {
+                  "zip": "45263",
+                  "city": "CINCINNATI",
+                  "code": "3",
+                  "fees": "7937.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS",
+                  "state": "OH",
+                  "address": "PO BOX 632886",
+                  "feesText": "BONUS",
+                  "addresses": {
+                    "us": {
+                      "zip": "45263",
+                      "city": "CINCINNATI",
+                      "state": "OH",
+                      "address1": "PO BOX 632886",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "44119.00"
+                },
+                {
+                  "zip": "64112",
+                  "city": "KANSAS CITY",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "LOCKTON COMPANIES, LLC",
+                  "state": "MO",
+                  "address": "444 WEST 47TH STREET, SUITE 900",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "64112",
+                      "city": "KANSAS CITY",
+                      "state": "MO",
+                      "address1": "444 WEST 47TH STREET, SUITE 900",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "28405.00"
+                }
+              ],
+              "brokerFees": "7937.00",
+              "benefitType": "Standard Benefits",
+              "carrierName": "HUMANA MEDICAL PLAN, INC.",
+              "totalCharges": "1382093.00",
+              "personsCovered": "161",
+              "brokerCommission": "72524.00"
+            },
+            {
+              "brokers": [
+                {
+                  "zip": "63141",
+                  "city": "SAINT LOUIS",
+                  "code": "3",
+                  "fees": "740.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SVCS",
+                  "state": "MO",
+                  "address": "721 EMERSON ROAD, SUITE 400",
+                  "feesText": "FEES",
+                  "addresses": {
+                    "us": {
+                      "zip": "63141",
+                      "city": "SAINT LOUIS",
+                      "state": "MO",
+                      "address1": "721 EMERSON ROAD, SUITE 400",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "8376.00"
+                },
+                {
+                  "zip": "64112",
+                  "city": "KANSAS CITY",
+                  "code": "3",
+                  "fees": "644.00",
+                  "name": "LOCKTON COMPANIES, LLC",
+                  "state": "MO",
+                  "address": "444 WEST 47TH STREET, SUITE 900",
+                  "feesText": "FEES",
+                  "addresses": {
+                    "us": {
+                      "zip": "64112",
+                      "city": "KANSAS CITY",
+                      "state": "MO",
+                      "address1": "444 WEST 47TH STREET, SUITE 900",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "6707.00"
+                },
+                {
+                  "zip": "29072",
+                  "city": "LEXINGTON",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "SHEALY BENEFITS SERVICES, INC.",
+                  "state": "SC",
+                  "address": "215 HOGAN WAY",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "29072",
+                      "city": "LEXINGTON",
+                      "state": "SC",
+                      "address1": "215 HOGAN WAY",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "2280.00"
+                }
+              ],
+              "brokerFees": "1384.00",
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "152956.00",
+              "personsCovered": "185",
+              "brokerCommission": "17364.00"
+            }
+          ],
+          "2024": [
+            {
+              "brokers": [
+                {
+                  "zip": "33131",
+                  "city": "MIAMI",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "LOCKTON COMPANIES, LLC",
+                  "state": "FL",
+                  "address": "1111 BRICKELL AVENUE, SUITE 2700",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "33131",
+                      "city": "MIAMI",
+                      "state": "FL",
+                      "address1": "1111 BRICKELL AVENUE, SUITE 2700",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "44949.00"
+                }
+              ],
+              "brokerFees": "0.00",
+              "benefitType": "Standard Benefits",
+              "carrierName": "HEALTH OPTIONS",
+              "totalCharges": "",
+              "personsCovered": "94",
+              "brokerCommission": "44949.00"
+            },
+            {
+              "brokers": [
+                {
+                  "zip": "64112",
+                  "city": "KANSAS CITY",
+                  "code": "3",
+                  "fees": "3999.00",
+                  "name": "LOCKTON COMPANIES, LLC",
+                  "state": "MO",
+                  "address": "444 WEST 47TH STREET, SUITE 900",
+                  "feesText": "FEES",
+                  "addresses": {
+                    "us": {
+                      "zip": "64112",
+                      "city": "KANSAS CITY",
+                      "state": "MO",
+                      "address1": "444 WEST 47TH STREET, SUITE 900",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "17678.00"
+                },
+                {
+                  "zip": "63141",
+                  "city": "SAINT LOUIS",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "CBIZ BENEFITS AND INSURANCE SERVICE",
+                  "state": "MO",
+                  "address": "721 EMERSON ROAD, SUITE 400",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "63141",
+                      "city": "SAINT LOUIS",
+                      "state": "MO",
+                      "address1": "721 EMERSON ROAD, SUITE 400",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "434.00"
+                },
+                {
+                  "zip": "29072",
+                  "city": "LEXINGTON",
+                  "code": "3",
+                  "fees": "0.00",
+                  "name": "SHEALY BENEFITS SERVICES, INC.",
+                  "state": "SC",
+                  "address": "215 HOGAN WAY",
+                  "feesText": "",
+                  "addresses": {
+                    "us": {
+                      "zip": "29072",
+                      "city": "LEXINGTON",
+                      "state": "SC",
+                      "address1": "215 HOGAN WAY",
+                      "address2": ""
+                    },
+                    "foreign": {
+                      "city": "",
+                      "state": "",
+                      "postal": "",
+                      "country": "",
+                      "address1": "",
+                      "address2": ""
+                    }
+                  },
+                  "commission": "-1.00"
+                }
+              ],
+              "brokerFees": "3999.00",
+              "benefitType": "ACCIDENTAL DEATH AND DISMEMBERMENT, ACCIDENT, CRITICAL ILLNESS, HOSPITAL",
+              "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+              "totalCharges": "192577.00",
+              "personsCovered": "175",
+              "brokerCommission": "18111.00"
+            }
+          ]
+        },
+        "recordCounts": {
+          "2022": 3,
+          "2023": 2,
+          "2024": 2
+        }
+      },
+      "self_funded": "insured",
+      "self_funded_analysis": {
+        "summary": {
+          "trend": "insured → insured → insured",
+          "insured_years": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "years_available": [
+            "2022",
+            "2023",
+            "2024"
+          ],
+          "self_funded_years": [],
+          "indeterminate_years": []
+        },
+        "current_classification": "insured",
+        "classifications_by_year": {
+          "2022": {
+            "plans": [
+              {
+                "ein": "300955527",
+                "reasons": [
+                  "Schedule A shows health/medical coverage",
+                  "Header insurance arrangement flags present"
+                ],
+                "metadata": {
+                  "ein": "300955527",
+                  "endYear": "2022",
+                  "planNum": 501,
+                  "beginYear": "2022"
+                },
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "classification": "Insured"
+              }
+            ],
+            "classification": "insured"
+          },
+          "2023": {
+            "plans": [
+              {
+                "ein": "300955527",
+                "reasons": [
+                  "Schedule A shows health/medical coverage",
+                  "Header insurance arrangement flags present"
+                ],
+                "metadata": {
+                  "ein": "300955527",
+                  "endYear": "2023",
+                  "planNum": 501,
+                  "beginYear": "2023"
+                },
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "classification": "Insured"
+              }
+            ],
+            "classification": "insured"
+          },
+          "2024": {
+            "plans": [
+              {
+                "ein": "300955527",
+                "reasons": [
+                  "Schedule A shows health/medical coverage",
+                  "Header insurance arrangement flags present"
+                ],
+                "metadata": {
+                  "ein": "300955527",
+                  "endYear": "2024",
+                  "planNum": 501,
+                  "beginYear": "2024"
+                },
+                "plan_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+                "classification": "Insured"
+              }
+            ],
+            "classification": "insured"
+          }
+        }
+      }
+    },
+    "form5500_match": {
+      "ein": null,
+      "location": "MIAMI LAKES, FL",
+      "legal_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+      "match_type": "Exact name match with perfect location match",
+      "record_count": 1,
+      "variation_used": "ClareMedica Health Partners, LLC"
+    },
+    "legal_entity_name": "CLAREMEDICA HEALTH PARTNERS, LLC",
+    "annual_revenue_usd": 14200000,
+    "revenue_research_confidence": "medium"
+  }

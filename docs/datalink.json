@@ -1,0 +1,633 @@
+[
+    {
+      "city": "Tampa",
+      "name": "DataLink",
+      "state": "Fl",
+      "exited": false,
+      "form5500_data": {
+        "ein": "261991903",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "261991903",
+                "year": 2022,
+                "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "DATALINK SERVICE FUND SOLUTIONS LLC",
+                "has_schedule_a": true,
+                "active_participants": 147
+              }
+            ],
+            "2023": [
+              {
+                "ein": "261991903",
+                "year": 2023,
+                "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                "sponsor_name": "DATALINK SERVICE FUND SOLUTIONS LLC",
+                "has_schedule_a": true,
+                "active_participants": 103
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "3209.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "AD&D, VOLUNTARY LIFE, VOLUNTARY AD&D",
+                "carrierName": "SUNLIFE",
+                "totalCharges": "64176.00",
+                "personsCovered": "143",
+                "brokerCommission": "3209.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "33558",
+                    "city": "LUTZ",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GRP",
+                    "state": "FL",
+                    "address": "17807 HUNTING BOW CIRCLE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "33558",
+                        "city": "LUTZ",
+                        "state": "FL",
+                        "address1": "17807 HUNTING BOW CIRCLE",
+                        "address2": "SUITE 102"
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "2844.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "56877.00",
+                "personsCovered": "132",
+                "brokerCommission": "2844.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "76788.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1520858.00",
+                "personsCovered": "249",
+                "brokerCommission": "76788.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "2453.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "VOLUNTARY LIFE",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "16356.00",
+                "personsCovered": "99",
+                "brokerCommission": "2453.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "1834.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "12226.00",
+                "personsCovered": "91",
+                "brokerCommission": "1834.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "155.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "AD&D, VOLUNTARY AD&D",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "1552.00",
+                "personsCovered": "163",
+                "brokerCommission": "155.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "1533.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITED OF OMAHA LIFE INSURANCE COMPANY",
+                "totalCharges": "10222.00",
+                "personsCovered": "89",
+                "brokerCommission": "1533.00"
+              }
+            ],
+            "2023": [
+              {
+                "brokers": [
+                  {
+                    "zip": "64184",
+                    "city": "KANSAS CITY",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "LOCKTON COMPANIES LLC",
+                    "state": "MO",
+                    "address": "PO BOX 843844",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "64184",
+                        "city": "KANSAS CITY",
+                        "state": "MO",
+                        "address1": "PO BOX 843844",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "3154.00"
+                  },
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHTS LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHTS LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "2920.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "AD&D, VOLUNTARY LIFE, VOLUNTARY AD&D",
+                "carrierName": "SUN LIFE ASSURANCE COMPANY OF CANADA",
+                "totalCharges": "121664.00",
+                "personsCovered": "154",
+                "brokerCommission": "6074.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "64112",
+                    "city": "KANSAS CITY",
+                    "code": "3",
+                    "fees": "563.00",
+                    "name": "LOCKTON COMPANIES LLC",
+                    "state": "MO",
+                    "address": "444 WEST 47TH STREET",
+                    "feesText": "FEES",
+                    "addresses": {
+                      "us": {
+                        "zip": "64112",
+                        "city": "KANSAS CITY",
+                        "state": "MO",
+                        "address1": "444 WEST 47TH STREET",
+                        "address2": "SUITE 900"
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "2252.00"
+                  },
+                  {
+                    "zip": "33558",
+                    "city": "LUTZ",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GRP",
+                    "state": "FL",
+                    "address": "17807 HUNTING BOW CIRCLE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "33558",
+                        "city": "LUTZ",
+                        "state": "FL",
+                        "address1": "17807 HUNTING BOW CIRCLE",
+                        "address2": "SUITE 102"
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "1636.00"
+                  }
+                ],
+                "brokerFees": "563.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "77755.00",
+                "personsCovered": "93",
+                "brokerCommission": "3888.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "64112",
+                    "city": "KANSAS CITY",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "LOCKTON COMPANIES, LLC",
+                    "state": "MO",
+                    "address": "444 WEST 47TH STREET",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "64112",
+                        "city": "KANSAS CITY",
+                        "state": "MO",
+                        "address1": "444 WEST 47TH STREET",
+                        "address2": "SUITE 900"
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "19458.00"
+                  },
+                  {
+                    "zip": "34639",
+                    "city": "LAND O LAKES",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "3737 EAGLEFLIGHT LANE",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "34639",
+                        "city": "LAND O LAKES",
+                        "state": "FL",
+                        "address1": "3737 EAGLEFLIGHT LANE",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "17243.00"
+                  },
+                  {
+                    "zip": "30374",
+                    "city": "ATLANTA",
+                    "code": "3",
+                    "fees": "1173.00",
+                    "name": "LOCKTON COMPANIES LLC",
+                    "state": "GA",
+                    "address": "PO BOX 741738",
+                    "feesText": "FEES",
+                    "addresses": {
+                      "us": {
+                        "zip": "30374",
+                        "city": "ATLANTA",
+                        "state": "GA",
+                        "address1": "PO BOX 741738",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": 0
+                  },
+                  {
+                    "zip": "33558",
+                    "city": "LUTZ",
+                    "code": "3",
+                    "fees": "481.00",
+                    "name": "ADVOCATE CONSULTING GROUP INC",
+                    "state": "FL",
+                    "address": "17807 HUNTING BOW CIRCLE",
+                    "feesText": "FEES",
+                    "addresses": {
+                      "us": {
+                        "zip": "33558",
+                        "city": "LUTZ",
+                        "state": "FL",
+                        "address1": "17807 HUNTING BOW CIRCLE",
+                        "address2": "SUITE 102"
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": 0
+                  }
+                ],
+                "brokerFees": "1654.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "UNITEDHEALTHCARE INSURANCE COMPANY",
+                "totalCharges": "1255166.00",
+                "personsCovered": "180",
+                "brokerCommission": "36701.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 7,
+            "2023": 3
+          }
+        },
+        "self_funded": "insured",
+        "self_funded_analysis": {
+          "summary": {
+            "trend": "insured → insured",
+            "insured_years": [
+              "2022",
+              "2023"
+            ],
+            "years_available": [
+              "2022",
+              "2023"
+            ],
+            "self_funded_years": [],
+            "indeterminate_years": []
+          },
+          "current_classification": "insured",
+          "classifications_by_year": {
+            "2022": {
+              "plans": [
+                {
+                  "ein": "261991903",
+                  "reasons": [
+                    "Schedule A shows health/medical coverage",
+                    "Header insurance arrangement flags present"
+                  ],
+                  "metadata": {
+                    "ein": "261991903",
+                    "endYear": "2023",
+                    "planNum": 501,
+                    "beginYear": "2022"
+                  },
+                  "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                  "classification": "Insured"
+                }
+              ],
+              "classification": "insured"
+            },
+            "2023": {
+              "plans": [
+                {
+                  "ein": "261991903",
+                  "reasons": [
+                    "Schedule A shows health/medical coverage",
+                    "Header insurance arrangement flags present"
+                  ],
+                  "metadata": {
+                    "ein": "261991903",
+                    "endYear": "2024",
+                    "planNum": 501,
+                    "beginYear": "2023"
+                  },
+                  "plan_name": "DATALINK SERVICE FUND SOLUTIONS LLC EMPLOYEE BENEFITS PLAN",
+                  "classification": "Insured"
+                }
+              ],
+              "classification": "insured"
+            }
+          }
+        }
+      },
+      "legal_entity_name": "DATALINK SERVICE FUND SOLUTIONS LLC"
+    }
+  ]
