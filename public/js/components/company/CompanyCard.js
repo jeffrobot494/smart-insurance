@@ -35,10 +35,15 @@ class CompanyCard extends BaseComponent {
         this.element.appendChild(headerElement);
         this.element.appendChild(detailsElement);
         
-        // Add Form 5500 data to details if available
+        // Create a dedicated container for Form 5500 data inside details
+        const form5500Container = this.createElement('div', 'form5500-container');
+        detailsElement.appendChild(form5500Container);
+        
+        // Add Form 5500 data to dedicated container if available
         if (this.company.form5500_data) {
             const form5500Element = this.form5500Card.render();
-            detailsElement.appendChild(form5500Element);
+            form5500Container.appendChild(form5500Element);
+            this.form5500CardInDOM = true;
         }
         
         this.isRendered = true;
@@ -72,14 +77,17 @@ class CompanyCard extends BaseComponent {
             this.form5500Card.update(company.form5500_data);
         }
         
-        // Handle Form 5500 data appearing/disappearing
-        if (company.form5500_data && !this.form5500CardInDOM) {
-            const form5500Element = this.form5500Card.render();
-            this.details.element.appendChild(form5500Element);
-            this.form5500CardInDOM = true;
-        } else if (!company.form5500_data && this.form5500CardInDOM) {
-            this.form5500Card.destroy();
-            this.form5500CardInDOM = false;
+        // Handle Form 5500 data appearing/disappearing using dedicated container
+        const form5500Container = this.element.querySelector('.form5500-container');
+        if (form5500Container) {
+            if (company.form5500_data && !this.form5500CardInDOM) {
+                const form5500Element = this.form5500Card.render();
+                form5500Container.appendChild(form5500Element);
+                this.form5500CardInDOM = true;
+            } else if (!company.form5500_data && this.form5500CardInDOM) {
+                form5500Container.innerHTML = ''; // Clear container instead of destroying
+                this.form5500CardInDOM = false;
+            }
         }
     }
     
