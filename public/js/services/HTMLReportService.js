@@ -138,7 +138,7 @@ class HTMLReportService {
             
             totalCompanies++;
             const classification = company.self_funded_classification || 'unknown';
-            if (classification !== 'insured' && classification !== 'indeterminate' && classification !== 'unknown' && classification !== 'no-data' && classification !== 'error') {
+            if (classification !== 'insured' && classification !== 'indeterminate' && classification !== 'unknown' && classification !== 'no-data' && classification !== 'error' && classification !== 'no-medical-plans') {
                 selfFundedCount++;
             }
             
