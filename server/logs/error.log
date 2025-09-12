@@ -1309,3 +1309,4 @@
 {"level":"error","message":"Data extraction failed for pipeline 163:","service":"manager","timestamp":"2025-09-12T00:36:03.656Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T01:04:46.688Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T01:25:31.904Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T02:00:47.555Z"}

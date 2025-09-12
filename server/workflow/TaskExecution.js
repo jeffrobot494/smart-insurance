@@ -202,7 +202,7 @@ class TaskExecution {
 
     for (const toolCall of toolCalls) {
       try {
-        logger.info(`  🔧 Executing ${toolCall.name}...`);
+        logger.info(`  🔧 Executing ${toolCall.name} with params: ${JSON.stringify(toolCall.input)}`);
         
         // Execute the tool (we'll need to implement tool execution)
         const result = await this.executeTool(toolCall.name, toolCall.input);
