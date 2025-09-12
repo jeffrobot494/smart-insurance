@@ -1154,3 +1154,18 @@
 {"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-11T04:23:15.826Z"}
 {"level":"info","message":"🔍 Searching Form 5500 by EIN: 815000414 (AMERICAN PAIN CONSORTIUM)","service":"database","timestamp":"2025-09-11T04:23:16.184Z"}
 {"level":"info","message":"🔍 Searching Form 5500 by EIN: 204063021 (THE INTERSECT GROUP, LLC)","service":"database","timestamp":"2025-09-11T04:23:16.299Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-11T05:15:27.739Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-11T05:15:27.857Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-11T05:15:27.858Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-11T05:15:27.858Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-11T05:15:27.859Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-11T05:15:27.859Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Failed to get pipeline:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Data extraction failed:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-11T05:15:28.426Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-11T05:23:59.930Z"}
+{"level":"info","message":"🔍 Processing 7 companies: 0 with validated matches, 7 without matches","service":"database","timestamp":"2025-09-11T05:24:00.149Z"}
+{"level":"info","message":"📋 Using name-based search for 7 companies without validated matches","service":"database","timestamp":"2025-09-11T05:24:00.150Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 7 of 7 searched companies","service":"database","timestamp":"2025-09-11T05:24:01.769Z"}
+{"level":"info","message":"📋 Found Schedule A records for 6 EINs","service":"database","timestamp":"2025-09-11T05:24:07.949Z"}

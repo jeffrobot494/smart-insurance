@@ -11,3 +11,12 @@
 {"level":"error","message":"❌ Failed to initialize database:","service":"database","timestamp":"2025-09-11T02:51:53.767Z"}
 {"level":"error","message":"❌ Failed to get all pipelines:","service":"database","timestamp":"2025-09-11T02:51:53.769Z"}
 {"level":"error","message":"Failed to parse legal resolution result:","service":"manager","timestamp":"2025-09-11T03:04:37.879Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-11T05:15:27.857Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-11T05:15:27.858Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-11T05:15:27.858Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-11T05:15:27.859Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-11T05:15:27.859Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Failed to get pipeline:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Data extraction failed:","service":"database","timestamp":"2025-09-11T05:15:27.860Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-11T05:15:28.426Z"}

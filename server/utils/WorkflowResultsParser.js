@@ -164,10 +164,16 @@ class WorkflowResultsParser {
     
     // Extract legal entity data from standardized format
     if (parsed.form5500_match) {
+      logger.info(`📋 Found form5500_match for ${originalCompanyName}:`);
+      logger.info(`   match_type: ${parsed.form5500_match.match_type}`);
+      logger.info(`   legal_name: ${parsed.form5500_match.legal_name}`);
+      logger.info(`   ein: ${parsed.form5500_match.ein}`);
+      
       // ✅ Preserve the entire form5500_match object
       companyObject.form5500_match = parsed.form5500_match;
       
       companyObject.legal_entity_name = parsed.form5500_match.legal_name;
+      logger.info(`   Setting legal_entity_name to: ${companyObject.legal_entity_name}`);
       
       // Handle nested location structure
       if (parsed.form5500_match.location) {
@@ -194,9 +200,16 @@ class WorkflowResultsParser {
     
     // Use original company name as fallback ONLY if no form5500_match data exists
     // Do NOT override null legal_entity_name for companies with explicit no-match results
+    logger.info(`🔧 Fallback logic check for ${originalCompanyName}:`);
+    logger.info(`   legal_entity_name: ${companyObject.legal_entity_name}`);
+    logger.info(`   has form5500_match: ${!!companyObject.form5500_match}`);
+    
     if ((!companyObject.legal_entity_name || companyObject.legal_entity_name.trim().length === 0) && 
         !companyObject.form5500_match) {
+      logger.info(`   Applying fallback: setting legal_entity_name to ${originalCompanyName}`);
       companyObject.legal_entity_name = originalCompanyName;
+    } else {
+      logger.info(`   No fallback applied`);
     }
     
     // Clean up the data

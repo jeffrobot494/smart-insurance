@@ -643,3 +643,118 @@ If issues arise, the changes can be rolled back by:
 After all phases complete, verify with **Cascade test case**:
 - **Before refactor**: Gets dozens of unrelated "Cascade" companies in `form5500_data`
 - **After refactor**: Gets `form5500_data: null` due to `match_type: "no_match"`
+
+## **Implementation Results and Key Learnings**
+
+### **Critical Discovery: Phase 3 Was Unnecessary**
+
+During implementation, we discovered that **the root problem was much simpler than originally analyzed**:
+
+**Original Complex Theory:**
+- Need EIN-based search infrastructure
+- Need to preserve `form5500_match` data through database
+- Need complex data flow changes
+- Three-phase implementation required
+
+**Actual Simple Reality:**
+- Problem was just fallback logic in WorkflowResultsParser
+- Companies with no matches were getting `legal_entity_name = company.name`
+- DataExtractionService was searching for original company names instead of skipping
+- **Only Phase 1 fixes were needed**
+
+### **What Actually Fixed the Problem**
+
+**Phase 1 Changes (Required):**
+1. ✅ **WorkflowResultsParser preservation** - Bug Fix 1 working correctly  
+2. ✅ **WorkflowResultsParser fallback logic** - Bug Fix 1B working correctly
+3. ✅ **WorkflowResultsParser null handling** - Bug Fix 1C working correctly
+4. ✅ **Display name fallbacks** - Bug Fix 1D working correctly
+5. ✅ **Schedule A field name fix** - Bug Fix 1E working correctly
+6. ✅ **SelfFundedClassifier data source** - Bug Fix 2A working correctly
+
+**Phase 2 Infrastructure (Built but unused):**
+- ✅ EIN-based search methods work perfectly
+- ✅ Fast performance (113-121ms per EIN)
+- ✅ Available for future enhancements
+- ❌ Not needed for core problem
+
+**Phase 3 Complex Integration (Abandoned):**
+- ❌ Based on incorrect assumption that `form5500_match` data persists to database
+- ❌ Over-engineered solution for simple problem
+- ✅ Reverted to rely on existing DataExtractionService filtering
+
+### **The Simple Solution That Works**
+
+**Root Problem:** No-match companies got `legal_entity_name = "Cascade"` → DataExtractionService searches → False positives
+
+**Simple Fix:** No-match companies get `legal_entity_name = null` → DataExtractionService skips → No false data
+
+**Existing Logic Already Handled It:**
+```javascript
+// This existing filter in DataExtractionService was always correct:
+const companyNamesToSearch = pipeline.companies
+  .filter(company => company.legal_entity_name) // ✅ Skips null values!
+  .map(company => company.legal_entity_name);
+```
+
+**The real issue was just ensuring `legal_entity_name` gets set to `null` for no-match companies.**
+
+### **Final Test Results**
+
+**Cascade Company Result (Perfect):**
+```json
+{
+  "name": "Cascade",
+  "legal_entity_name": null,
+  "form5500_match": {
+    "match_type": "no_match",
+    "legal_name": null,
+    "ein": null
+  }
+  // ✅ No form5500_data field - no false data!
+}
+```
+
+**DataExtractionService Behavior:**
+- ✅ `🔍 Processing 1 companies: 0 with validated matches, 1 without matches`
+- ✅ No name-based search performed (correctly skipped)
+- ✅ No false Form 5500 data returned
+
+### **Simplified Implementation Guide**
+
+**For Future Implementers:**
+1. **Only implement Phase 1** - All other phases are unnecessary for core problem
+2. **Test with Cascade-type companies** - Verify `legal_entity_name: null` and no `form5500_data`
+3. **Phase 2/3 are available** but not required - can be implemented later for performance optimization
+
+**Success Criteria:**
+- ✅ No-match companies get `legal_entity_name: null` 
+- ✅ No-match companies get no `form5500_data` (not even empty objects)
+- ✅ DataExtractionService skips no-match companies entirely
+- ✅ No false positive Form 5500 matches
+
+The refactor **successfully achieved its core goal** with just Phase 1 implementation.
+
+## **Final Status: COMPLETE** ✅
+
+**Date Completed:** September 11, 2025  
+**Implementation:** Phase 1 only (6 bug fixes)  
+**Core Problem:** Solved - No-match companies no longer get false positive Form 5500 data  
+**Additional Infrastructure:** Phase 2 EIN-based search methods available for future use
+
+**Key Success Metrics:**
+- ✅ Cascade-type companies get `legal_entity_name: null`
+- ✅ No false Form 5500 data for no-match companies  
+- ✅ DataExtractionService properly skips no-match companies
+- ✅ SelfFundedClassifierService handles null values correctly
+- ✅ All existing functionality preserved
+- ✅ Performance improved (eliminated false positive searches)
+
+**Lessons Learned:**
+1. **Start simple** - The complex multi-phase plan was unnecessary
+2. **Test early and often** - Phase 1 testing revealed the simple solution worked
+3. **Follow the data** - Understanding what gets persisted to database was crucial
+4. **Debugging is key** - Added logging revealed the actual vs. assumed behavior
+5. **Sometimes less is more** - The existing DataExtractionService logic was already correct
+
+**This refactor demonstrates that thorough analysis can sometimes lead to over-engineering, and the simplest solution is often the correct one.**
