@@ -4,6 +4,7 @@ const ScheduleASearchService = require('./ScheduleASearchService');
 const ReportGenerator = require('./ReportGenerator');
 const DatabaseManager = require('./DatabaseManager');
 const SelfFundedClassifierService = require('./SelfFundedClassifierService');
+const BrokerDeduplicationService = require('./BrokerDeduplicationService');
 
 /**
  * Main service for orchestrating data extraction from database
@@ -15,6 +16,7 @@ class DataExtractionService {
     this.reportGenerator = new ReportGenerator();
     this.databaseManager = DatabaseManager.getInstance();
     this.selfFundedClassifierService = new SelfFundedClassifierService();
+    this.brokerDeduplicationService = new BrokerDeduplicationService();
     
     // Set up report generator with Schedule A service for key field extraction
     this.reportGenerator.setScheduleASearchService(this.scheduleASearchService);
@@ -68,6 +70,19 @@ class DataExtractionService {
       
       // Phase 4: Generate comprehensive reports (now in classifier-compatible format)
       const reportData = this.reportGenerator.generateFinalReport(finalResults);
+      
+      // Phase 4.5: Deduplicate broker names using Claude API
+      if (reportData.companies && reportData.companies.length > 0) {
+        logger.info('🔍 Deduplicating broker names across all companies...');
+        try {
+          reportData.companies = await this.brokerDeduplicationService.deduplicateBrokers(reportData.companies);
+        } catch (error) {
+          logger.error('❌ Broker deduplication failed, continuing without deduplication:', error.message);
+          // Continue without deduplication rather than failing entire pipeline
+        }
+      } else {
+        logger.info('⏭️  No companies with broker data found, skipping broker deduplication');
+      }
       
       // Phase 5: Classify companies as self-funded/insured (if enabled)
       const enableSelfFundedClassification = options.enableSelfFundedClassification !== false;

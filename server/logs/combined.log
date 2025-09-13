@@ -808,3 +808,42 @@
 {"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-13T01:51:43.296Z"}
 {"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-13T01:51:43.433Z"}
 {"level":"info","message":"Data extraction completed for pipeline 177","service":"manager","timestamp":"2025-09-13T01:51:43.565Z"}
+{"level":"info","message":"Shutting down server","service":"server","timestamp":"2025-09-13T03:11:44.404Z"}
+{"level":"info","message":"Initializing database connection","service":"server","timestamp":"2025-09-13T03:11:48.404Z"}
+{"level":"info","message":"✅ Database connection established successfully","service":"database","timestamp":"2025-09-13T03:11:49.037Z"}
+{"level":"info","message":"Initializing MCP servers","service":"server","timestamp":"2025-09-13T03:11:49.038Z"}
+{"level":"info","message":"🚀 Starting MCP servers...","service":"mcp","timestamp":"2025-09-13T03:11:49.038Z"}
+{"level":"info","message":"  Starting firecrawl MCP...","service":"mcp","timestamp":"2025-09-13T03:11:49.039Z"}
+{"level":"info","message":"  Starting perplexity MCP...","service":"mcp","timestamp":"2025-09-13T03:11:49.044Z"}
+{"level":"info","message":"  Starting form5500 MCP...","service":"mcp","timestamp":"2025-09-13T03:11:49.061Z"}
+{"level":"info","message":"  ✓ firecrawl MCP initialized","service":"mcp","timestamp":"2025-09-13T03:11:49.590Z"}
+{"level":"info","message":"  ✓ firecrawl tools loaded: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt","service":"mcp","timestamp":"2025-09-13T03:11:49.592Z"}
+{"level":"info","message":"✓ All MCP servers ready","service":"mcp","timestamp":"2025-09-13T03:11:49.684Z"}
+{"level":"info","message":"✓ Available tools: firecrawl_scrape, firecrawl_map, firecrawl_crawl, firecrawl_check_crawl_status, firecrawl_search, firecrawl_extract, firecrawl_deep_research, firecrawl_generate_llmstxt\n","service":"mcp","timestamp":"2025-09-13T03:11:49.684Z"}
+{"level":"info","message":"MCP servers ready","service":"server","timestamp":"2025-09-13T03:11:49.684Z"}
+{"level":"info","message":"Server started","port":3000,"service":"server","timestamp":"2025-09-13T03:11:49.688Z"}
+{"level":"info","message":"Health check available","service":"server","timestamp":"2025-09-13T03:11:49.688Z","url":"http://localhost:3000/api/health"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T03:11:50.002Z"}
+{"level":"info","message":"  ✓ form5500 MCP initialized","service":"mcp","timestamp":"2025-09-13T03:11:50.004Z"}
+{"level":"info","message":"  ✓ form5500 tools loaded: form5500_batch_name_test","service":"mcp","timestamp":"2025-09-13T03:11:50.006Z"}
+{"level":"info","message":"  ✓ perplexity MCP initialized","service":"mcp","timestamp":"2025-09-13T03:11:50.523Z"}
+{"level":"info","message":"  ✓ perplexity tools loaded: search_web, search_image, ask_factual_question","service":"mcp","timestamp":"2025-09-13T03:11:50.532Z"}
+{"level":"info","message":"Successful login attempt","service":"server","timestamp":"2025-09-13T03:11:55.783Z"}
+{"level":"info","message":"📊 Starting Form 5500 data extraction for 27 companies","service":"manager","timestamp":"2025-09-13T03:12:09.401Z"}
+{"level":"info","message":"🔍 Processing 27 companies for Form 5500/Schedule A data","service":"database","timestamp":"2025-09-13T03:12:09.646Z"}
+{"level":"info","message":"📋 Found Form 5500 records for 21 companies","service":"database","timestamp":"2025-09-13T03:12:16.207Z"}
+{"level":"info","message":"📋 Found Schedule A records for 20 EINs","service":"database","timestamp":"2025-09-13T03:12:44.774Z"}
+{"level":"info","message":"🔍 Deduplicating broker names across all companies...","service":"database","timestamp":"2025-09-13T03:12:44.776Z"}
+{"level":"info","message":"🔍 Starting broker deduplication process...","service":"database","timestamp":"2025-09-13T03:12:44.777Z"}
+{"level":"info","message":"📋 Found 108 unique broker name variations to analyze","service":"database","timestamp":"2025-09-13T03:12:44.778Z"}
+{"level":"info","message":"🤖 Sending broker list to Claude for deduplication analysis...","service":"database","timestamp":"2025-09-13T03:12:44.778Z"}
+{"level":"info","message":"🤖 Claude response received, parsing...","service":"database","timestamp":"2025-09-13T03:13:10.888Z"}
+{"level":"info","message":"📊 Claude identified 108 broker name mappings","service":"database","timestamp":"2025-09-13T03:13:10.889Z"}
+{"level":"info","message":"🔄 Applying broker deduplication mapping to all companies...","service":"database","timestamp":"2025-09-13T03:13:10.889Z"}
+{"level":"info","message":"✅ Broker deduplication completed: 108 → 71 unique brokers (37 duplicates merged)","service":"database","timestamp":"2025-09-13T03:13:10.896Z"}
+{"level":"info","message":"🔍 Classifying companies as self-funded or insured...","service":"database","timestamp":"2025-09-13T03:13:10.896Z"}
+{"level":"info","message":"🔍 Starting self-funded classification for companies","service":"database","timestamp":"2025-09-13T03:13:10.896Z"}
+{"level":"info","message":"✅ Self-funded classification completed for 21 companies","service":"database","timestamp":"2025-09-13T03:13:18.616Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"database","timestamp":"2025-09-13T03:13:18.616Z"}
+{"level":"info","message":"✅ Data extraction completed","service":"manager","timestamp":"2025-09-13T03:13:19.017Z"}
+{"level":"info","message":"Data extraction completed for pipeline 176","service":"manager","timestamp":"2025-09-13T03:13:19.388Z"}
