@@ -1325,3 +1325,9 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T17:34:43.013Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T21:48:18.040Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T22:16:27.676Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-12T22:48:53.391Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 178","service":"manager","timestamp":"2025-09-12T22:49:18.250Z"}
+{"level":"error","message":"Research failed for pipeline 179:","service":"manager","timestamp":"2025-09-13T01:05:43.539Z"}
+{"level":"error","message":"Research failed for pipeline 179:","service":"manager","timestamp":"2025-09-13T01:05:47.072Z"}
+{"level":"error","message":"Research failed for pipeline 179:","service":"manager","timestamp":"2025-09-13T01:07:06.437Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T01:10:24.031Z"}

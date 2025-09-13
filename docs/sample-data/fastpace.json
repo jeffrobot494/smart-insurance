@@ -1,0 +1,84 @@
+[
+    {
+      "city": null,
+      "name": "Fast Pace",
+      "state": null,
+      "exited": false,
+      "revenue_year": null,
+      "form5500_data": {
+        "ein": "270851352",
+        "form5500": {
+          "years": [
+            "2022",
+            "2023"
+          ],
+          "records": {
+            "2022": [
+              {
+                "ein": "270851352",
+                "year": 2022,
+                "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+                "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+                "has_schedule_a": false,
+                "active_participants": 2608
+              }
+            ],
+            "2023": [
+              {
+                "ein": "270851352",
+                "year": 2023,
+                "plan_name": "FAST PACE MEDICAL CLINIC, PLLC 401(K) PLAN",
+                "sponsor_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+                "has_schedule_a": false,
+                "active_participants": 2558
+              }
+            ]
+          },
+          "recordCount": 2
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {},
+          "recordCounts": {}
+        },
+        "self_funded": "no-medical-plans",
+        "self_funded_analysis": {
+          "summary": {
+            "trend": "no-medical-plans → no-medical-plans",
+            "insured_years": [],
+            "years_available": [
+              "2022",
+              "2023"
+            ],
+            "self_funded_years": [],
+            "indeterminate_years": [
+              "2022",
+              "2023"
+            ]
+          },
+          "current_classification": "no-medical-plans",
+          "classifications_by_year": {
+            "2022": {
+              "plans": [],
+              "classification": "no-medical-plans"
+            },
+            "2023": {
+              "plans": [],
+              "classification": "no-medical-plans"
+            }
+          }
+        }
+      },
+      "form5500_match": {
+        "ein": null,
+        "location": "FRANKLIN, TN",
+        "legal_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+        "match_type": "Close name match with location match in same state",
+        "record_count": 1,
+        "variation_used": "Fast Pace Medical Clinic"
+      },
+      "legal_entity_name": "FAST PACE MEDICAL CLINICAL, PLLC",
+      "annual_revenue_usd": null,
+      "revenue_research_confidence": "low"
+    }
+  ]

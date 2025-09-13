@@ -21,12 +21,14 @@ class PipelineStats extends BaseComponent {
         let companiesWithData = 0;
         let totalParticipants = 0;
         let totalCharges = 0;
+        let totalBrokerageFees = 0;
         
         companies.forEach(company => {
             if (company.form5500_data) {
                 companiesWithData++;
                 totalParticipants += company.form5500_data.active_participants || 0;
                 totalCharges += company.form5500_data.total_charges || 0;
+                totalBrokerageFees += company.total_brokerage_fees || 0;
             }
         });
         
@@ -34,7 +36,8 @@ class PipelineStats extends BaseComponent {
             totalCompanies: companies.length,
             companiesWithData,
             totalParticipants,
-            totalCharges
+            totalCharges,
+            totalBrokerageFees
         };
     }
     
@@ -53,6 +56,10 @@ class PipelineStats extends BaseComponent {
                 
                 if (stats.totalCharges > 0) {
                     statsHtml += `<div class="stat">Total charges: <span class="stat-value">${Utils.formatCurrency(stats.totalCharges)}</span></div>`;
+                }
+                
+                if (stats.totalBrokerageFees > 0) {
+                    statsHtml += `<div class="stat">Total brokerage fees: <span class="stat-value">${Utils.formatCurrency(stats.totalBrokerageFees)}</span></div>`;
                 }
             } else {
                 // Show ready for review message when companies exist but no data yet

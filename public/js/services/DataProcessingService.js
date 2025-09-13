@@ -46,7 +46,9 @@ class DataProcessingService {
         for (const plan of yearData) {
             // Parse monetary values, handling empty strings
             const premiums = parseFloat(plan.totalCharges || "0") || 0;
-            const brokerage = parseFloat(plan.brokerCommission || "0") || 0;
+            const brokerCommission = parseFloat(plan.brokerCommission || "0") || 0;
+            const brokerFees = parseFloat(plan.brokerFees || "0") || 0;
+            const brokerage = brokerCommission + brokerFees; // Combine both commission and fees
             const people = parseInt(plan.personsCovered || "0") || 0;
             
             totalPremiums += premiums;

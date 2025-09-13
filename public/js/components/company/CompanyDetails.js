@@ -178,6 +178,7 @@ class CompanyDetails extends BaseComponent {
             
             let totalCharges = 0;
             let totalBrokerCommission = 0;
+            let totalBrokerFees = 0;
             const carriers = new Set();
             
             scheduleAData.forEach(record => {
@@ -186,6 +187,9 @@ class CompanyDetails extends BaseComponent {
                 }
                 if (record.brokerCommission) {
                     totalBrokerCommission += parseFloat(record.brokerCommission) || 0;
+                }
+                if (record.brokerFees) {
+                    totalBrokerFees += parseFloat(record.brokerFees) || 0;
                 }
                 if (record.carrierName) {
                     carriers.add(record.carrierName);
@@ -201,11 +205,12 @@ class CompanyDetails extends BaseComponent {
                 `;
             }
             
-            if (totalBrokerCommission > 0) {
+            const totalBrokerageCosts = totalBrokerCommission + totalBrokerFees;
+            if (totalBrokerageCosts > 0) {
                 html += `
                     <div class="detail-row">
                         <div class="detail-label">Total Brokerage Fees:</div>
-                        <div class="detail-value">${Utils.formatCurrency(totalBrokerCommission)}</div>
+                        <div class="detail-value">${Utils.formatCurrency(totalBrokerageCosts)}</div>
                     </div>
                 `;
             }
