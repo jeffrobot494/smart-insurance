@@ -12,6 +12,7 @@ class ReportManager {
         this.modal = new window.ReportConfigModal({
             onGenerate: (config) => this.generateReport(config),
             onGenerateExcel: (config) => this.generateExcelReport(config),
+            onGenerateJSON: (config) => this.generateJSONDownload(config),
             onCancel: () => this.handleCancel()
         });
         
@@ -162,11 +163,50 @@ class ReportManager {
     }
 
     /**
+     * Generate JSON download of complete pipeline data
+     */
+    async generateJSONDownload(config) {
+        console.log('ReportManager: Generating JSON download with config:', config);
+
+        try {
+            // Show progress
+            this.handleReportProgress('Preparing JSON download...');
+
+            // Fetch complete pipeline data from server
+            const response = await fetch(`/api/pipeline/${config.pipelineId}`);
+            const result = await response.json();
+
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to fetch pipeline data');
+            }
+
+            // Download the JSON file using JSONDownloadService
+            const downloadResult = await window.JSONDownloadService.downloadJSONWithValidation(
+                result.pipeline,
+                result.pipeline.firm_name
+            );
+
+            console.log(`ReportManager: JSON download completed successfully: ${downloadResult.filename}`);
+
+            // Hide modal
+            this.hideReportConfig();
+
+            // Hide loading
+            Utils.hideLoading();
+
+        } catch (error) {
+            console.error('ReportManager: JSON download failed:', error);
+            Utils.hideLoading();
+            throw error;
+        }
+    }
+
+    /**
      * Generate CSV report (client-side)
      */
     async generateCSVReport(config, pipeline) {
         console.log('ReportManager: CSV generation not yet implemented');
-        
+
         // Placeholder - would generate CSV from pipeline data
         throw new Error('CSV report generation will be implemented in a future phase');
     }

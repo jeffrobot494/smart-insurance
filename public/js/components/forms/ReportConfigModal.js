@@ -100,6 +100,7 @@ class ReportConfigModal extends BaseComponent {
                     <div class="button-row">
                         <button class="btn btn-success" id="download-report-btn">Download Report</button>
                         <button class="btn btn-primary" id="download-excel-btn">Download Spreadsheet</button>
+                        <button class="btn btn-info" id="download-json-btn">Download JSON</button>
                         <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
                     </div>
                     
@@ -137,6 +138,12 @@ class ReportConfigModal extends BaseComponent {
         const downloadExcelBtn = this.modalElement.querySelector('#download-excel-btn');
         if (downloadExcelBtn) {
             downloadExcelBtn.addEventListener('click', () => this.handleExcelSubmit());
+        }
+
+        // Download JSON button
+        const downloadJSONBtn = this.modalElement.querySelector('#download-json-btn');
+        if (downloadJSONBtn) {
+            downloadJSONBtn.addEventListener('click', () => this.handleJSONSubmit());
         }
         
         // Cancel button
@@ -344,23 +351,47 @@ class ReportConfigModal extends BaseComponent {
      */
     handleExcelSubmit() {
         console.log('ReportConfigModal: Excel export submitted');
-        
+
         // Clear any previous errors
         this.hideError();
-        
+
         // Validate form
         const validation = this.validateForm();
         if (!validation.valid) {
             this.showError(validation.error);
             return;
         }
-        
+
         // Get form data
         const config = this.getFormData();
         console.log('ReportConfigModal: Excel export data collected:', config);
-        
+
         // Trigger callback for Excel export
         this.triggerCallback('onGenerateExcel', config);
+    }
+
+    /**
+     * Handle JSON download submission
+     */
+    handleJSONSubmit() {
+        console.log('ReportConfigModal: JSON download submitted');
+
+        // Clear any previous errors
+        this.hideError();
+
+        // For JSON download, we don't need company selection validation
+        // We want the FULL pipeline record for the selected firm
+
+        // Get basic form data for the callback
+        const config = {
+            pipelineId: this.pipeline.pipeline_id,
+            format: 'json'
+        };
+
+        console.log('ReportConfigModal: JSON download data collected:', config);
+
+        // Trigger callback for JSON download
+        this.triggerCallback('onGenerateJSON', config);
     }
 
     /**

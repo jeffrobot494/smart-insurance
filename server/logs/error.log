@@ -1331,3 +1331,5 @@
 {"level":"error","message":"Research failed for pipeline 179:","service":"manager","timestamp":"2025-09-13T01:05:47.072Z"}
 {"level":"error","message":"Research failed for pipeline 179:","service":"manager","timestamp":"2025-09-13T01:07:06.437Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T01:10:24.031Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T03:11:50.002Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-14T03:55:44.615Z"}
