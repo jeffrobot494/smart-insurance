@@ -12,7 +12,7 @@ class ReportManager {
         this.modal = new window.ReportConfigModal({
             onGenerate: (config) => this.generateReport(config),
             onGenerateExcel: (config) => this.generateExcelReport(config),
-            onGenerateJSON: (config) => this.generateJSONDownload(config),
+            onGenerateTXT: (config) => this.generateTXTDownload(config),
             onCancel: () => this.handleCancel()
         });
         
@@ -163,14 +163,14 @@ class ReportManager {
     }
 
     /**
-     * Generate JSON download of complete pipeline data
+     * Generate TXT download of complete pipeline data
      */
-    async generateJSONDownload(config) {
-        console.log('ReportManager: Generating JSON download with config:', config);
+    async generateTXTDownload(config) {
+        console.log('ReportManager: Generating TXT download with config:', config);
 
         try {
             // Show progress
-            this.handleReportProgress('Preparing JSON download...');
+            this.handleReportProgress('Preparing TXT report...');
 
             // Fetch complete pipeline data from server
             const response = await fetch(`/api/pipeline/${config.pipelineId}`);
@@ -180,13 +180,13 @@ class ReportManager {
                 throw new Error(result.error || 'Failed to fetch pipeline data');
             }
 
-            // Download the JSON file using JSONDownloadService
-            const downloadResult = await window.JSONDownloadService.downloadJSONWithValidation(
+            // Download the TXT file using TXTExportService
+            const downloadResult = await window.TXTExportService.downloadTXTWithValidation(
                 result.pipeline,
                 result.pipeline.firm_name
             );
 
-            console.log(`ReportManager: JSON download completed successfully: ${downloadResult.filename}`);
+            console.log(`ReportManager: TXT download completed successfully: ${downloadResult.filename}`);
 
             // Hide modal
             this.hideReportConfig();
@@ -195,7 +195,7 @@ class ReportManager {
             Utils.hideLoading();
 
         } catch (error) {
-            console.error('ReportManager: JSON download failed:', error);
+            console.error('ReportManager: TXT download failed:', error);
             Utils.hideLoading();
             throw error;
         }

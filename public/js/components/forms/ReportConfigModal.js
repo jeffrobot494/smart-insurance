@@ -100,7 +100,7 @@ class ReportConfigModal extends BaseComponent {
                     <div class="button-row">
                         <button class="btn btn-success" id="download-report-btn">Download Report</button>
                         <button class="btn btn-primary" id="download-excel-btn">Download Spreadsheet</button>
-                        <button class="btn btn-info" id="download-json-btn">Download JSON</button>
+                        <button class="btn btn-info" id="download-txt-btn">Download TXT</button>
                         <button class="btn btn-secondary" id="cancel-report-btn">Cancel</button>
                     </div>
                     
@@ -140,10 +140,10 @@ class ReportConfigModal extends BaseComponent {
             downloadExcelBtn.addEventListener('click', () => this.handleExcelSubmit());
         }
 
-        // Download JSON button
-        const downloadJSONBtn = this.modalElement.querySelector('#download-json-btn');
-        if (downloadJSONBtn) {
-            downloadJSONBtn.addEventListener('click', () => this.handleJSONSubmit());
+        // Download TXT button
+        const downloadTXTBtn = this.modalElement.querySelector('#download-txt-btn');
+        if (downloadTXTBtn) {
+            downloadTXTBtn.addEventListener('click', () => this.handleTXTSubmit());
         }
         
         // Cancel button
@@ -371,27 +371,27 @@ class ReportConfigModal extends BaseComponent {
     }
 
     /**
-     * Handle JSON download submission
+     * Handle TXT download submission
      */
-    handleJSONSubmit() {
-        console.log('ReportConfigModal: JSON download submitted');
+    handleTXTSubmit() {
+        console.log('ReportConfigModal: TXT download submitted');
 
         // Clear any previous errors
         this.hideError();
 
-        // For JSON download, we don't need company selection validation
+        // For TXT download, we don't need company selection validation
         // We want the FULL pipeline record for the selected firm
 
         // Get basic form data for the callback
         const config = {
             pipelineId: this.pipeline.pipeline_id,
-            format: 'json'
+            format: 'txt'
         };
 
-        console.log('ReportConfigModal: JSON download data collected:', config);
+        console.log('ReportConfigModal: TXT download data collected:', config);
 
-        // Trigger callback for JSON download
-        this.triggerCallback('onGenerateJSON', config);
+        // Trigger callback for TXT download
+        this.triggerCallback('onGenerateTXT', config);
     }
 
     /**
