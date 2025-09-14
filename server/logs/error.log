@@ -1333,3 +1333,4 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T01:10:24.031Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-13T03:11:50.002Z"}
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-14T03:55:44.615Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-14T05:02:23.375Z"}

@@ -1,0 +1,448 @@
+{
+  "pipeline_id": 180,
+  "firm_name": "revelstoke capital partners",
+  "status": "data_extraction_complete",
+  "companies": [
+    {
+      "city": "Greenville",
+      "name": "Crossroads Treatment Centers",
+      "state": "Sc",
+      "exited": false,
+      "revenue_year": 2023,
+      "form5500_data": {
+        "ein": "261171703",
+        "form5500": {
+          "years": [
+            "2024"
+          ],
+          "records": {
+            "2024": [
+              {
+                "ein": "261171703",
+                "year": 2024,
+                "plan_name": "TREATMENT CENTERS HOLDCO LLC WELFARE BENEFIT PLAN",
+                "sponsor_name": "TREATMENT CENTERS HOLDCO LLC",
+                "has_schedule_a": true,
+                "active_participants": 411
+              }
+            ]
+          },
+          "recordCount": 1
+        },
+        "scheduleA": {
+          "error": null,
+          "details": {
+            "2022": [
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "FORUM BENEFITS INC.",
+                    "state": "SC",
+                    "address": "1122 SOUTH MAIN STREET, SUITE B",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 SOUTH MAIN STREET, SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "138558.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "BLUE CROSS BLUE SHIELD OF SOUTH CAROLINA",
+                "totalCharges": "3690969.00",
+                "personsCovered": "458",
+                "brokerCommission": "138558.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": 0,
+                    "name": "FORUM BENEFITS INC.",
+                    "state": "SC",
+                    "address": "1122 SOUTH MAIN STREET, SUITE B",
+                    "feesText": "",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 SOUTH MAIN STREET, SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "116675.00"
+                  },
+                  {
+                    "zip": "60015",
+                    "city": "DEERFIELD",
+                    "code": "3",
+                    "fees": "22502.00",
+                    "name": "ALERA GROUP, INC.",
+                    "state": "IL",
+                    "address": "3 PARKWAY N BLVD SUITE 500",
+                    "feesText": "FEES PAID",
+                    "addresses": {
+                      "us": {
+                        "zip": "60015",
+                        "city": "DEERFIELD",
+                        "state": "IL",
+                        "address1": "3 PARKWAY N BLVD SUITE 500",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": 0
+                  }
+                ],
+                "brokerFees": "22502.00",
+                "benefitType": "AD&D, ACCIDENT, CANCER, VOLUNTARY CRITICAL ILLNESS",
+                "carrierName": "THE GUARDIAN LIFE INSURANCE COMPANY OF AMERICA",
+                "totalCharges": "883796.00",
+                "personsCovered": "490",
+                "brokerCommission": "116675.00"
+              }
+            ],
+            "2023": [
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": "0.00",
+                    "name": "FORUM BENEFITS INC",
+                    "state": "SC",
+                    "address": "1122 MAIN ST SUITE B",
+                    "feesText": "BROKER COMMISSION",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 MAIN ST SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "124149.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "BLUE CROSS BLUE SHIELD OF SOUTH CAROLINA",
+                "totalCharges": "3657502.00",
+                "personsCovered": "396",
+                "brokerCommission": "124149.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": "0.00",
+                    "name": "FORUM BENEFITS INC",
+                    "state": "SC",
+                    "address": "1122 MAIN ST SUITE B",
+                    "feesText": "BROKER COMMISSION",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 MAIN ST SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "115934.00"
+                  },
+                  {
+                    "zip": "",
+                    "city": "",
+                    "code": "3",
+                    "fees": "30044.00",
+                    "name": "ALERA GROUP, INC",
+                    "state": "",
+                    "address": "",
+                    "feesText": "FEES",
+                    "addresses": {
+                      "us": {
+                        "zip": "",
+                        "city": "",
+                        "state": "",
+                        "address1": "",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "0.00"
+                  }
+                ],
+                "brokerFees": "30044.00",
+                "benefitType": "AD&D, ACCIDENT, CANCER, VOLUNTARY CRITICAL ILLNESS",
+                "carrierName": "GUARDIAN LIFE INSURANCE COMPANY",
+                "totalCharges": "876630.00",
+                "personsCovered": "414",
+                "brokerCommission": "115934.00"
+              }
+            ],
+            "2024": [
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": "0.00",
+                    "name": "FORUM BENEFITS INC",
+                    "state": "SC",
+                    "address": "1122 MAIN ST SUITE B",
+                    "feesText": "BROKER COMMISSION",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 MAIN ST SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "112854.00"
+                  }
+                ],
+                "brokerFees": "0.00",
+                "benefitType": "Standard Benefits",
+                "carrierName": "BLUE CROSS BLUE SHIELD OF SOUTH CAROLINA",
+                "totalCharges": "4069776.00",
+                "personsCovered": "314",
+                "brokerCommission": "112854.00"
+              },
+              {
+                "brokers": [
+                  {
+                    "zip": "29601",
+                    "city": "GREENVILLE",
+                    "code": "3",
+                    "fees": "0.00",
+                    "name": "FORUM BENEFITS INC",
+                    "state": "SC",
+                    "address": "1122 MAIN ST SUITE B",
+                    "feesText": "BROKER COMMISSION",
+                    "addresses": {
+                      "us": {
+                        "zip": "29601",
+                        "city": "GREENVILLE",
+                        "state": "SC",
+                        "address1": "1122 MAIN ST SUITE B",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "108364.00"
+                  },
+                  {
+                    "zip": "",
+                    "city": "",
+                    "code": "3",
+                    "fees": "38531.00",
+                    "name": "ALERA GROUP, INC",
+                    "state": "",
+                    "address": "",
+                    "feesText": "FEES",
+                    "addresses": {
+                      "us": {
+                        "zip": "",
+                        "city": "",
+                        "state": "",
+                        "address1": "",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "0.00"
+                  },
+                  {
+                    "zip": "70809",
+                    "city": "BATON ROUGE",
+                    "code": "3",
+                    "fees": "0.00",
+                    "name": "AGM BENEFITS, AN ALERA GROUP A",
+                    "state": "LA",
+                    "address": "8550 UNITED PLAZA BLVD SUITE 210",
+                    "feesText": "COMMISSION",
+                    "addresses": {
+                      "us": {
+                        "zip": "70809",
+                        "city": "BATON ROUGE",
+                        "state": "LA",
+                        "address1": "8550 UNITED PLAZA BLVD SUITE 210",
+                        "address2": ""
+                      },
+                      "foreign": {
+                        "city": "",
+                        "state": "",
+                        "postal": "",
+                        "country": "",
+                        "address1": "",
+                        "address2": ""
+                      }
+                    },
+                    "commission": "31518.00"
+                  }
+                ],
+                "brokerFees": "38531.00",
+                "benefitType": "AD&D, ACCIDENT, CANCER, VOLUNTARY CRITICAL ILLNESS",
+                "carrierName": "GUARDIAN LIFE INSURANCE COMPANY",
+                "totalCharges": "942009.00",
+                "personsCovered": "411",
+                "brokerCommission": "139881.00"
+              }
+            ]
+          },
+          "recordCounts": {
+            "2022": 2,
+            "2023": 2,
+            "2024": 2
+          }
+        },
+        "self_funded": "insured",
+        "self_funded_analysis": {
+          "summary": {
+            "trend": "insured",
+            "insured_years": [
+              "2024"
+            ],
+            "years_available": [
+              "2024"
+            ],
+            "self_funded_years": [],
+            "indeterminate_years": []
+          },
+          "current_classification": "insured",
+          "classifications_by_year": {
+            "2024": {
+              "plans": [
+                {
+                  "ein": "261171703",
+                  "reasons": [
+                    "Schedule A shows health/medical coverage",
+                    "Header insurance arrangement flags present"
+                  ],
+                  "metadata": {
+                    "ein": "261171703",
+                    "endYear": "2024",
+                    "planNum": 501,
+                    "beginYear": "2024"
+                  },
+                  "plan_name": "TREATMENT CENTERS HOLDCO LLC WELFARE BENEFIT PLAN",
+                  "classification": "Insured"
+                }
+              ],
+              "classification": "insured"
+            }
+          }
+        }
+      },
+      "form5500_match": {
+        "ein": null,
+        "location": {
+          "city": "GREENVILLE",
+          "state": "SC"
+        },
+        "legal_name": "TREATMENT CENTERS HOLDCO LLC",
+        "match_type": "Parent entity match with exact location match",
+        "record_count": 1,
+        "variation_used": "Treatment Centers Holdco LLC"
+      },
+      "legal_entity_name": "TREATMENT CENTERS HOLDCO LLC",
+      "annual_revenue_usd": 146500000,
+      "revenue_research_confidence": "medium"
+    }
+  ],
+  "error": null,
+  "research_completed_at": null,
+  "legal_resolution_completed_at": "2025-09-13T01:26:56.794Z",
+  "data_extraction_completed_at": "2025-09-13T01:26:59.819Z",
+  "created_at": "2025-09-12T15:04:42.000Z",
+  "updated_at": "2025-09-13T01:26:59.819Z"
+}

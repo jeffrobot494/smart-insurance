@@ -83,7 +83,7 @@ class JSONDownloadService {
     }
 
     /**
-     * Download JSON with validation
+     * Download JSON with validation and filtering
      */
     static async downloadJSONWithValidation(pipelineData, firmName) {
         try {
@@ -93,8 +93,23 @@ class JSONDownloadService {
                 throw new Error(validation.error);
             }
 
-            // Proceed with download
-            return this.downloadJSONFile(pipelineData, firmName);
+            // Filter out unused fields for smaller download
+            const filteredData = window.JSONFilterService.filterPipelineForDownload(pipelineData);
+
+            // Log filtering statistics
+            const stats = window.JSONFilterService.getFilteringStats(pipelineData, filteredData);
+            console.log(`JSON filtering reduced size by ${stats.reductionPercent}% (${stats.originalSizeKB}KB → ${stats.filteredSizeKB}KB)`);
+
+            // Validate filtered data preserves essential fields
+            const filterValidation = window.JSONFilterService.validateFilteredData(filteredData);
+            if (!filterValidation.valid) {
+                console.warn('Filtered data validation issues:', filterValidation.issues);
+                // Continue with original data if filtering causes issues
+                return this.downloadJSONFile(pipelineData, firmName);
+            }
+
+            // Proceed with filtered download
+            return this.downloadJSONFile(filteredData, firmName);
 
         } catch (error) {
             console.error('JSON download with validation failed:', error);

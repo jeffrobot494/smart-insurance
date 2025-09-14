@@ -65,36 +65,12 @@ class ReportGenerator {
             benefitType: keyFields.benefitType || '',
             totalCharges: keyFields.totalCharges || '',
             
-            // ✅ NEW: Detailed broker information from Schedule A Part 1
+            // ✅ NEW: Detailed broker information from Schedule A Part 1 (minimal data for reports)
             brokers: (keyFields.brokers || []).map(broker => ({
               name: broker.broker_name || 'Unknown',
-              code: broker.broker_code || '',
               commission: broker.broker_commission || 0,
-              fees: broker.broker_fees || 0,
-              feesText: broker.broker_fees_text || '',
-              // Primary address (US preferred, foreign fallback)
-              address: broker.broker_us_address1 || broker.broker_foreign_address1 || '',
-              city: broker.broker_us_city || broker.broker_foreign_city || '',
-              state: broker.broker_us_state || broker.broker_foreign_state || '',
-              zip: broker.broker_us_zip || broker.broker_foreign_postal || '',
-              // Full address structure available if needed
-              addresses: {
-                us: {
-                  address1: broker.broker_us_address1 || '',
-                  address2: broker.broker_us_address2 || '',
-                  city: broker.broker_us_city || '',
-                  state: broker.broker_us_state || '',
-                  zip: broker.broker_us_zip || ''
-                },
-                foreign: {
-                  address1: broker.broker_foreign_address1 || '',
-                  address2: broker.broker_foreign_address2 || '',
-                  city: broker.broker_foreign_city || '',
-                  state: broker.broker_foreign_state || '',
-                  country: broker.broker_foreign_country || '',
-                  postal: broker.broker_foreign_postal || ''
-                }
-              }
+              fees: broker.broker_fees || 0
+              // REMOVED: code, feesText, address fields, addresses object (never used in reports - 60-80% size reduction)
             }))
           };
         }
