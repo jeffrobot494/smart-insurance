@@ -30,7 +30,8 @@ class DataProcessingService {
                 total_brokerage_fees: 0,
                 total_people_covered: 0,
                 plans: [],
-                all_brokers: [] // ✅ NEW: Empty array when no data
+                all_brokers: [], // ✅ NEW: Empty array when no data
+                primary_broker: null // ✅ NEW: No primary broker when no data
             };
         }
         
@@ -40,9 +41,12 @@ class DataProcessingService {
         let totalPeopleCovered = 0;
         const plans = [];
         
-        // ✅ NEW: Collect all unique broker names
+        // ✅ NEW: Collect all unique broker names for commission calculations (unchanged)
         const allBrokers = new Set();
-        
+        // ✅ NEW: Track primary broker from highest premium plan for display
+        let primaryBroker = null;
+        let highestPremiumAmount = 0;
+
         for (const plan of yearData) {
             // Parse monetary values, handling empty strings
             const premiums = parseFloat(plan.totalCharges || "0") || 0;
@@ -50,11 +54,11 @@ class DataProcessingService {
             const brokerFees = parseFloat(plan.brokerFees || "0") || 0;
             const brokerage = brokerCommission + brokerFees; // Combine both commission and fees
             const people = parseInt(plan.personsCovered || "0") || 0;
-            
+
             totalPremiums += premiums;
             totalBrokerageFees += brokerage;
             totalPeopleCovered += people;
-            
+
             // ✅ NEW: Extract broker names from this plan
             const planBrokers = [];
             if (plan.brokers && Array.isArray(plan.brokers)) {
@@ -62,8 +66,14 @@ class DataProcessingService {
                     const rawBrokerName = broker.name || broker.broker_name || 'Unknown';
                     if (rawBrokerName && rawBrokerName !== 'Unknown') {
                         const properBrokerName = DataProcessingService.toProperCapitalization(rawBrokerName);
-                        allBrokers.add(properBrokerName);
+                        allBrokers.add(properBrokerName); // Keep for commission calculations
                         planBrokers.push(properBrokerName);
+
+                        // ✅ NEW: Check if this plan has the highest premiums and capture primary broker
+                        if (premiums > highestPremiumAmount && properBrokerName) {
+                            highestPremiumAmount = premiums;
+                            primaryBroker = properBrokerName; // First broker from highest premium plan
+                        }
                     }
                 }
             }
@@ -84,10 +94,13 @@ class DataProcessingService {
             total_brokerage_fees: totalBrokerageFees,
             total_people_covered: totalPeopleCovered,
             plans: plans,
-            // ✅ NEW: All unique brokers for this company (sorted)
-            all_brokers: Array.from(allBrokers).sort()
+            // ✅ NEW: All unique brokers for this company (sorted) - kept for commission calculations
+            all_brokers: Array.from(allBrokers).sort(),
+            // ✅ NEW: Primary broker from main healthcare plan for display
+            primary_broker: primaryBroker
         };
     }
+
 
     /**
      * Get total active participants for the preferred year from Form 5500 data
@@ -151,7 +164,8 @@ class DataProcessingService {
                 total_brokerage_fees: 0,
                 total_people_covered: 0,
                 plans: [],
-                all_brokers: [] // ✅ NEW: Empty array when no data
+                all_brokers: [], // ✅ NEW: Empty array when no data
+                primary_broker: null // ✅ NEW: No primary broker when no data
             };
             hasData = false;
         }
@@ -172,8 +186,10 @@ class DataProcessingService {
             annual_revenue_usd: company.annual_revenue_usd,
             revenue_year: company.revenue_year,
             plans: aggregatedData.plans,
-            // ✅ NEW: Include broker information for table display
-            brokers: aggregatedData.all_brokers || []
+            // ✅ UPDATED: Use primary broker from main healthcare plan for display
+            brokers: aggregatedData.primary_broker ? [aggregatedData.primary_broker] : [],
+            // ✅ NEW: Keep all brokers for commission calculations (not displayed)
+            all_brokers: aggregatedData.all_brokers || []
         };
     }
 
