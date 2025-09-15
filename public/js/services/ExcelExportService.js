@@ -230,9 +230,9 @@ class ExcelExportService {
             ? `1 Unique Carrier` 
             : `${totals.uniqueCarrierCount} Unique Carriers`;
             
-        const brokerText = totals.uniqueBrokerCount === 1 
-            ? `1 Unique Broker` 
-            : `${totals.uniqueBrokerCount} Unique Brokers`;
+        const brokerText = totals.uniqueBrokerCount === 1
+            ? `1 Broker`
+            : `${totals.uniqueBrokerCount} Brokers`;
             
         const fundingText = `${totals.selfFundedCount}/${totals.totalCompanies} self-funded`;
         const totalRevenueDisplay = totals.totalRevenue > 0 ? 

@@ -9,7 +9,7 @@ class TaskExecution {
     this.claudeManager = new ClaudeManager();
     this.conversationHistory = [];
     this.status = 'pending';
-    this.maxIterations = 11;
+    this.maxIterations = task.maxIterations || 11;
   }
 
   async run(inputs = {}) {
