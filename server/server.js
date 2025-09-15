@@ -64,6 +64,10 @@ app.get('/js/login.js', (req, res) => {
   const jsPath = path.join(__dirname, '../public/js/login.js');
   res.sendFile(jsPath);
 });
+app.get('/images/header-logo.png', (req, res) => {
+  const logoPath = path.join(__dirname, '../public/images/header-logo.png');
+  res.sendFile(logoPath);
+});
 
 // Default route - check auth and serve appropriate page
 app.get('/', (req, res) => {
