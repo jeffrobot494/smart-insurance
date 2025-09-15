@@ -47,7 +47,7 @@ class Form5500MCPServer {
         // NOTE: form5500_name_test is not used or supported - use form5500_batch_name_test instead
         {
           name: "form5500_batch_name_test",
-          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them. Can search for single companies or multiple companies in one call. More efficient than individual calls for multiple companies. WARNING: Short/generic search terms (like 'EP', 'Inc', 'Co') WILL return thousands of results and consume many tokens. When using a search term that is two or fewer letters, you MUST also filter by state. Do NOT use the state filter EXCEPT in this case.",
+          description: "Performs a search in the database for companies with the search term in their name. Returns full legal entity name, city, and state. The database is the Department of Labor's Form 5500 datasets for years 2022, 2023, and 2024. This tool is only used to check for companies in the database, not extracting information about them. Can search for single companies or multiple companies in one call. More efficient than individual calls for multiple companies. WARNING: Short/generic search terms (like 'EP', 'Inc', 'Co') WILL return thousands of results and consume many tokens. When using a search term that is two or fewer letters, you MUST also filter by state. Do NOT use the state filter EXCEPT in this case. There is a hard limit of 1,000 on the number of companies that can be returned by a single query.",
           inputSchema: {
             type: "object",
             properties: {
@@ -152,7 +152,7 @@ class Form5500MCPServer {
         FROM form_5500_records 
         WHERE LOWER(sponsor_dfe_name) = LOWER($1)
         ORDER BY record_count DESC, year DESC
-        LIMIT $2
+        LIMIT LEAST($2, 1000)
       `;
       params = [companyName, limit];
     } else {
@@ -168,7 +168,7 @@ class Form5500MCPServer {
         FROM form_5500_records 
         WHERE LOWER(sponsor_dfe_name) LIKE LOWER($1)
         ORDER BY record_count DESC, year DESC
-        LIMIT $2
+        LIMIT LEAST($2, 1000)
       `;
       params = [`%${companyName}%`, limit];
     }
@@ -294,7 +294,7 @@ class Form5500MCPServer {
       `;
     });
     
-    query = queryParts.join(' UNION ALL ') + ' ORDER BY record_count DESC, year DESC';
+    query = queryParts.join(' UNION ALL ') + ' ORDER BY record_count DESC, year DESC LIMIT 1000';
     
     let searchResults;
     try {
