@@ -226,9 +226,9 @@ class ExcelExportService {
         dataRows.push(['', '', '', '', '', '', '', '']);
         
         // Add totals row
-        const carrierText = totals.uniqueCarrierCount === 1 
-            ? `1 Unique Carrier` 
-            : `${totals.uniqueCarrierCount} Unique Carriers`;
+        const carrierText = totals.uniqueCarrierCount === 1
+            ? `1 Carrier`
+            : `${totals.uniqueCarrierCount} Carriers`;
             
         const brokerText = totals.uniqueBrokerCount === 1
             ? `1 Broker`
