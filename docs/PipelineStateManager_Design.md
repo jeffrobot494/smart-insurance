@@ -761,21 +761,18 @@ await this.databaseManager.updatePipeline(pipelineId, {
 });
 ```
 
-**Remove Entire resetPipeline Method (Lines 348-408):**
+**Keep resetPipeline Method (Lines 348-408) - INTERNAL USE ONLY:**
 ```javascript
-// REMOVE ENTIRE METHOD - PipelineStateManager handles this
+// KEEP METHOD - StateManager will call this internally
 async resetPipeline(pipelineId) {
-  // ... entire method removed
+  // ... keep entire method as-is for internal use
 }
 ```
 
-**Update Exports (Line 421):**
+**Remove resetPipeline from Exports (Line 421):**
 ```javascript
-// BEFORE:
+// REMOVE - no longer exposed externally:
 const resetPipeline = (pipelineId) => manager.resetPipeline(pipelineId);
-
-// AFTER:
-// Remove this line - resetPipeline no longer exists in Manager
 ```
 
 **Update Module Exports (Line 431):**
@@ -828,7 +825,7 @@ module.exports = {
 
 **HIGH IMPACT:**
 - `/server/routes/pipeline.js` - Remove Manager import/instance + 7 method calls changed + 1 new cancel route
-- `/server/Manager.js` - 3 starting status update removals + 1 method deletion + exports cleanup
+- `/server/Manager.js` - 3 starting status update removals + exports cleanup (keep resetPipeline method as internal)
 
 **MEDIUM IMPACT:**
 - Create `/server/utils/PipelineStateManager.js` - New comprehensive class
