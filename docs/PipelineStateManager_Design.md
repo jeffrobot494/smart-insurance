@@ -884,3 +884,28 @@ This ensures data integrity while preventing race conditions and invalid state t
 - **Clean architecture:** Routes → StateManager → Manager (internal)
 
 This eliminates duplicate Manager instances and ensures all pipeline operations flow through the validation layer.
+
+## Quick Testing Strategy
+
+After implementation, create a test script to validate StateManager edge cases without running full workflows:
+
+### **Test Categories:**
+1. **Global Operation Blocking** - Start workflow, verify other workflows blocked but CRUD operations allowed
+2. **State Validation** - Test invalid transitions (legal resolution on pending pipeline, etc.)
+3. **Button Spam Protection** - Rapid-fire same operation requests
+4. **Pipeline Not Found** - Operations on non-existent pipelines
+5. **Delete Safety** - Try deleting running pipelines
+6. **Reset Restrictions** - Reset attempts on non-failed pipelines
+
+### **Mock Data Setup:**
+- Create test pipelines in various states
+- Manually set pipeline status to failed states for reset testing
+- Use database queries to simulate edge cases quickly
+
+### **Automated Validation:**
+- Fire rapid concurrent requests
+- Validate specific error codes (SYSTEM_BUSY, INVALID_STATE, etc.)
+- Test response timing (should be immediate, not workflow-dependent)
+- Clean up test data automatically
+
+This approach validates all validation logic and edge cases in seconds rather than waiting for full workflow execution.
