@@ -27,6 +27,14 @@ Client Request → Route → PipelineStateManager → Manager (if valid)
 ```javascript
 class PipelineStateManager {
 
+    constructor() {
+        // Initialize dependencies
+        this.databaseManager = DatabaseManager.getInstance();
+        this.manager = new Manager();
+        this.operations = new Map(); // Track in-progress operations
+        this.cancellationManager = WorkflowCancellationManager.getInstance();
+    }
+
     // ============================================
     // CORE STATE VALIDATION & COORDINATION
     // ============================================
@@ -475,81 +483,83 @@ router.post('/:id/cancel', async (req, res) => {
 });
 ```
 
-#### 2. `/server/Manager.js` - REMOVE DIRECT STATUS UPDATES
+#### 2. `/server/Manager.js` - REMOVE ONLY STARTING STATUS UPDATES
 
-**Remove Lines 91-93 (runResearch):**
+**CRITICAL FIX:** Only remove "RUNNING" status updates. Keep SUCCESS/FAILURE status updates and all data updates.
+
+**Remove Lines 91-93 (runResearch starting status):**
 ```javascript
-// REMOVE:
+// REMOVE - StateManager handles starting status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.RESEARCH_RUNNING
 });
 ```
 
-**Remove Lines 109-113 (runResearch success):**
+**KEEP Lines 109-113 (runResearch success) - MODIFIED:**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles success status and data:
 await this.databaseManager.updatePipeline(pipelineId, {
-  companies: JSON.stringify(companyObjects),
-  status: PIPELINE_STATUSES.RESEARCH_COMPLETE,
-  research_completed_at: new Date()
+  companies: JSON.stringify(companyObjects),        // KEEP DATA UPDATE
+  status: PIPELINE_STATUSES.RESEARCH_COMPLETE,      // KEEP SUCCESS STATUS
+  research_completed_at: new Date()                 // KEEP TIMESTAMP
 });
 ```
 
-**Remove Lines 133-135 (runResearch failure):**
+**KEEP Lines 133-135 (runResearch failure):**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles failure status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.RESEARCH_FAILED
 });
 ```
 
-**Remove Lines 161-163 (runLegalResolution):**
+**Remove Lines 161-163 (runLegalResolution starting status):**
 ```javascript
-// REMOVE:
+// REMOVE - StateManager handles starting status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING
 });
 ```
 
-**Remove Lines 200-204 (runLegalResolution success):**
+**KEEP Lines 200-204 (runLegalResolution success) - MODIFIED:**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles success status and data:
 await this.databaseManager.updatePipeline(pipelineId, {
-  companies: JSON.stringify(enrichedCompanies),
-  status: PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE,
-  legal_resolution_completed_at: new Date()
+  companies: JSON.stringify(enrichedCompanies),             // KEEP DATA UPDATE
+  status: PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE,      // KEEP SUCCESS STATUS
+  legal_resolution_completed_at: new Date()                 // KEEP TIMESTAMP
 });
 ```
 
-**Remove Lines 226-228 (runLegalResolution failure):**
+**KEEP Lines 226-228 (runLegalResolution failure):**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles failure status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.LEGAL_RESOLUTION_FAILED
 });
 ```
 
-**Remove Lines 252-254 (runDataExtraction):**
+**Remove Lines 252-254 (runDataExtraction starting status):**
 ```javascript
-// REMOVE:
+// REMOVE - StateManager handles starting status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.DATA_EXTRACTION_RUNNING
 });
 ```
 
-**Remove Lines 263-267 (runDataExtraction success):**
+**KEEP Lines 263-267 (runDataExtraction success) - MODIFIED:**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles success status and data:
 await this.databaseManager.updatePipeline(pipelineId, {
-  companies: JSON.stringify(companiesWithForm5500),
-  status: PIPELINE_STATUSES.DATA_EXTRACTION_COMPLETE,
-  data_extraction_completed_at: new Date()
+  companies: JSON.stringify(companiesWithForm5500),         // KEEP DATA UPDATE
+  status: PIPELINE_STATUSES.DATA_EXTRACTION_COMPLETE,       // KEEP SUCCESS STATUS
+  data_extraction_completed_at: new Date()                  // KEEP TIMESTAMP
 });
 ```
 
-**Remove Lines 276-278 (runDataExtraction failure):**
+**KEEP Lines 276-278 (runDataExtraction failure):**
 ```javascript
-// REMOVE:
+// KEEP - Manager handles failure status:
 await this.databaseManager.updatePipeline(pipelineId, {
   status: PIPELINE_STATUSES.DATA_EXTRACTION_FAILED
 });
@@ -631,3 +641,42 @@ module.exports = {
 - All other files remain unchanged
 
 **Total Changes:** ~25 code modifications across 3 files, with primary complexity in implementing the new PipelineStateManager class and refactoring existing route handlers to use validation-first architecture.
+
+## Critical Issues Fixed
+
+### 🚨 Issue #1: Status Update Responsibility (FIXED)
+**Problem:** Original design removed ALL status updates from Manager, which would break success/failure tracking.
+
+**Solution:** Clear separation of responsibilities:
+- **StateManager:** Sets "RUNNING" status before calling Manager
+- **Manager:** Sets "COMPLETE/FAILED" status after doing work
+- **Data Updates:** Always handled by Manager (companies, timestamps)
+
+### 🚨 Issue #2: Missing Dependencies (FIXED)
+**Problem:** StateManager needs access to DatabaseManager and Manager instances.
+
+**Solution:** Added constructor with proper dependency injection:
+```javascript
+constructor() {
+  this.databaseManager = DatabaseManager.getInstance();
+  this.manager = new Manager();
+  this.operations = new Map();
+  this.cancellationManager = WorkflowCancellationManager.getInstance();
+}
+```
+
+### 🚨 Issue #3: Data Loss Prevention (FIXED)
+**Problem:** Original design would remove essential data updates (companies, timestamps).
+
+**Solution:** Manager methods keep ALL data updates and completion status updates. Only remove starting status updates that StateManager now handles.
+
+## Implementation Flow
+
+1. **StateManager receives request** → validates state and operation
+2. **StateManager sets RUNNING status** → marks operation in progress
+3. **StateManager calls Manager method** → if validation passes
+4. **Manager does business logic** → workflows, data processing
+5. **Manager sets final status** → COMPLETE/FAILED with data updates
+6. **StateManager clears operation tracking** → allows next operation
+
+This ensures data integrity while preventing race conditions and invalid state transitions.
