@@ -41,14 +41,28 @@ class PipelineStateManager {
 
     /**
      * Create a new pipeline
-     * Validates: firm name is valid, not duplicate active pipeline for firm
      */
     async createPipeline(firmName) {
-        // 1. Validate firm name format
-        // 2. Check for existing active pipelines for same firm
-        // 3. Validate system capacity/limits
-        // 4. Call Manager.createPipeline() if valid
-        // 5. Return consistent result format
+        try {
+            // Call Manager.createPipeline() directly
+            const pipeline = await this.manager.createPipeline(firmName);
+
+            // Return consistent result format
+            return {
+                success: true,
+                pipeline: pipeline,
+                operation: 'create',
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+                code: 'SYSTEM_ERROR',
+                timestamp: new Date().toISOString()
+            };
+        }
     }
 
     /**
@@ -56,10 +70,76 @@ class PipelineStateManager {
      * Validates: pipeline exists, status is 'pending', not already running
      */
     async startResearch(pipelineId) {
-        // 1. Validate current state
-        // 2. Check for concurrent operations
-        // 3. Call Manager.runResearch() if valid
-        // 4. Handle errors gracefully
+        try {
+            // 1. Check if ANY operation is in progress (global blocking)
+            if (this.hasAnyOperationInProgress()) {
+                return {
+                    success: false,
+                    error: 'Another pipeline operation is already running. Please wait for it to complete.',
+                    code: 'SYSTEM_BUSY',
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 2. Check if THIS pipeline has operation in progress (button spam protection)
+            if (this.isOperationInProgress(pipelineId)) {
+                return {
+                    success: false,
+                    error: 'Operation already in progress',
+                    code: 'OPERATION_IN_PROGRESS',
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 3. Validate pipeline exists and state
+            const pipeline = await this.databaseManager.getPipeline(pipelineId);
+            if (!pipeline) {
+                return {
+                    success: false,
+                    error: 'Pipeline not found',
+                    code: 'PIPELINE_NOT_FOUND'
+                };
+            }
+
+            if (pipeline.status !== 'pending') {
+                return {
+                    success: false,
+                    error: `Cannot start research. Status: ${pipeline.status}`,
+                    code: 'INVALID_STATE',
+                    current_status: pipeline.status,
+                    allowed_operations: this.getAllowedOperations(pipeline.status)
+                };
+            }
+
+            // 4. Mark operation in progress & set running status
+            this.markOperationStarted(pipelineId, 'research');
+            await this.databaseManager.updatePipeline(pipelineId, {
+                status: 'research_running'
+            });
+
+            // 5. Call Manager method asynchronously
+            this.manager.runResearch(pipelineId)
+                .finally(() => {
+                    this.markOperationCompleted(pipelineId, 'research');
+                });
+
+            // 6. Return immediate success (like current routes)
+            return {
+                success: true,
+                message: 'Research started',
+                pipeline_id: pipelineId,
+                operation: 'start-research',
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            this.markOperationCompleted(pipelineId, 'research');
+            return {
+                success: false,
+                error: error.message,
+                code: 'SYSTEM_ERROR'
+            };
+        }
     }
 
     /**
@@ -67,10 +147,14 @@ class PipelineStateManager {
      * Validates: pipeline exists, status is 'research_complete'
      */
     async startLegalResolution(pipelineId) {
-        // 1. Validate pipeline exists
-        // 2. Validate status is 'research_complete'
-        // 3. Check for concurrent operations
-        // 4. Call Manager.runLegalResolution() if valid
+        // Follows same pattern as startResearch:
+        // 1. Check if ANY operation is in progress (global blocking)
+        // 2. Check if THIS pipeline has operation in progress (button spam protection)
+        // 3. Validate pipeline exists and status is 'research_complete'
+        // 4. Mark operation started & set 'legal_resolution_running' status
+        // 5. Call this.manager.runLegalResolution(pipelineId) asynchronously
+        // 6. Return immediate success response
+        // 7. Handle errors with consistent format
     }
 
     /**
@@ -78,10 +162,14 @@ class PipelineStateManager {
      * Validates: pipeline exists, status is 'legal_resolution_complete'
      */
     async startDataExtraction(pipelineId) {
-        // 1. Validate pipeline exists
-        // 2. Validate status is 'legal_resolution_complete'
-        // 3. Check for concurrent operations
-        // 4. Call Manager.runDataExtraction() if valid
+        // Follows same pattern as startResearch:
+        // 1. Check if ANY operation is in progress (global blocking)
+        // 2. Check if THIS pipeline has operation in progress (button spam protection)
+        // 3. Validate pipeline exists and status is 'legal_resolution_complete'
+        // 4. Mark operation started & set 'data_extraction_running' status
+        // 5. Call this.manager.runDataExtraction(pipelineId) asynchronously
+        // 6. Return immediate success response
+        // 7. Handle errors with consistent format
     }
 
     /**
@@ -97,13 +185,66 @@ class PipelineStateManager {
     }
 
     /**
-     * Reset a failed/cancelled pipeline
-     * Validates: pipeline exists, status allows reset
+     * Reset a failed pipeline
+     * Validates: pipeline exists, status is '*_failed'
      */
     async resetPipeline(pipelineId) {
-        // 1. Validate pipeline exists
-        // 2. Validate status allows reset (failed/cancelled)
-        // 3. Call existing Manager.resetPipeline() if valid
+        try {
+            // 1. Validate pipeline exists
+            const pipeline = await this.databaseManager.getPipeline(pipelineId);
+            if (!pipeline) {
+                return {
+                    success: false,
+                    error: 'Pipeline not found',
+                    code: 'PIPELINE_NOT_FOUND'
+                };
+            }
+
+            // 2. Validate status allows reset (only failed states)
+            const resetableStatuses = ['research_failed', 'legal_resolution_failed', 'data_extraction_failed'];
+            if (!resetableStatuses.includes(pipeline.status)) {
+                return {
+                    success: false,
+                    error: `Cannot reset pipeline with status: ${pipeline.status}. Only failed pipelines can be reset.`,
+                    code: 'INVALID_STATE',
+                    current_status: pipeline.status,
+                    allowed_operations: this.getAllowedOperations(pipeline.status)
+                };
+            }
+
+            // 3. Use existing Manager resetPipeline logic
+            const result = await this.manager.resetPipeline(pipelineId);
+
+            if (!result.success) {
+                return {
+                    success: false,
+                    error: result.error,
+                    code: 'RESET_FAILED',
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 4. Clear any operation tracking
+            this.clearOperationTracking(pipelineId);
+
+            // 5. Return success with updated pipeline
+            return {
+                success: true,
+                message: result.message,
+                pipeline: result.pipeline,
+                pipeline_id: pipelineId,
+                operation: 'reset',
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+                code: 'SYSTEM_ERROR',
+                timestamp: new Date().toISOString()
+            };
+        }
     }
 
     /**
@@ -111,10 +252,52 @@ class PipelineStateManager {
      * Validates: pipeline exists, safe to delete
      */
     async deletePipeline(pipelineId) {
-        // 1. Validate pipeline exists
-        // 2. Cancel if currently running
-        // 3. Call database delete if safe
-        // 4. Clean up any related resources
+        try {
+            // 1. Validate pipeline exists
+            const pipeline = await this.databaseManager.getPipeline(pipelineId);
+            if (!pipeline) {
+                return {
+                    success: false,
+                    error: 'Pipeline not found',
+                    code: 'PIPELINE_NOT_FOUND'
+                };
+            }
+
+            // 2. Check pipeline is not currently running
+            const runningStatuses = ['research_running', 'legal_resolution_running', 'data_extraction_running'];
+            if (runningStatuses.includes(pipeline.status)) {
+                return {
+                    success: false,
+                    error: `Cannot delete pipeline while ${pipeline.status.replace('_', ' ')}`,
+                    code: 'INVALID_STATE',
+                    current_status: pipeline.status,
+                    allowed_operations: this.getAllowedOperations(pipeline.status)
+                };
+            }
+
+            // 3. Call database delete
+            await this.databaseManager.deletePipeline(pipelineId);
+
+            // 4. Clear any operation tracking
+            this.clearOperationTracking(pipelineId);
+
+            // 5. Return success
+            return {
+                success: true,
+                message: 'Pipeline deleted successfully',
+                pipeline_id: pipelineId,
+                operation: 'delete',
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message,
+                code: 'SYSTEM_ERROR',
+                timestamp: new Date().toISOString()
+            };
+        }
     }
 
     // ============================================
@@ -133,11 +316,21 @@ class PipelineStateManager {
     }
 
     /**
-     * Prevent concurrent operations on same pipeline
+     * Check if ANY operation is in progress across all pipelines
+     */
+    hasAnyOperationInProgress() {
+        // Check if this.operations Map has any entries
+        // Return: boolean
+        return this.operations.size > 0;
+    }
+
+    /**
+     * Check if operation is in progress for specific pipeline
      */
     isOperationInProgress(pipelineId) {
         // Track in-flight operations to prevent button spam
         // Return: boolean
+        return this.operations.has(String(pipelineId));
     }
 
     /**
@@ -332,6 +525,7 @@ Standardized error codes for consistent client handling:
 - `DUPLICATE_PIPELINE` - Pipeline already exists for firm
 - `INVALID_FIRM_NAME` - Firm name validation failed
 - `SYSTEM_ERROR` - Internal server error
+- `SYSTEM_BUSY` - Another pipeline operation is already running
 
 ## Success Response Format
 
@@ -371,12 +565,14 @@ This comprehensive design ensures robust pipeline state management while maintai
 
 #### 1. `/server/routes/pipeline.js` - MAJOR REFACTOR
 
-**Add Import and Initialize StateManager:**
+**Remove Manager Import and Add StateManager:**
 ```javascript
-// ADD at top with other imports
-const PipelineStateManager = require('../utils/PipelineStateManager');
+// REMOVE these lines:
+const { Manager } = require('../Manager');
+const manager = new Manager();
 
-// ADD after manager initialization
+// ADD instead:
+const PipelineStateManager = require('../utils/PipelineStateManager');
 const stateManager = new PipelineStateManager();
 ```
 
@@ -631,8 +827,8 @@ module.exports = {
 ### Summary by Impact
 
 **HIGH IMPACT:**
-- `/server/routes/pipeline.js` - 7 method calls changed + 1 new cancel route
-- `/server/Manager.js` - 10 status update removals + 1 method deletion + exports cleanup
+- `/server/routes/pipeline.js` - Remove Manager import/instance + 7 method calls changed + 1 new cancel route
+- `/server/Manager.js` - 3 starting status update removals + 1 method deletion + exports cleanup
 
 **MEDIUM IMPACT:**
 - Create `/server/utils/PipelineStateManager.js` - New comprehensive class
@@ -640,7 +836,7 @@ module.exports = {
 **LOW IMPACT:**
 - All other files remain unchanged
 
-**Total Changes:** ~25 code modifications across 3 files, with primary complexity in implementing the new PipelineStateManager class and refactoring existing route handlers to use validation-first architecture.
+**Total Changes:** ~20 code modifications across 3 files, with primary complexity in implementing the new PipelineStateManager class and refactoring existing route handlers to use validation-first architecture.
 
 ## Critical Issues Fixed
 
@@ -680,3 +876,14 @@ constructor() {
 6. **StateManager clears operation tracking** → allows next operation
 
 This ensures data integrity while preventing race conditions and invalid state transitions.
+
+### 🚨 Issue #4: Manager Instance Duplication (FIXED)
+**Problem:** Having both routes create Manager instances AND StateManager create Manager instances leads to confusion and potential inconsistencies.
+
+**Solution:**
+- **Remove Manager import/instantiation from pipeline.js routes**
+- **StateManager owns and manages its internal Manager instance**
+- **Routes only interact with StateManager**
+- **Clean architecture:** Routes → StateManager → Manager (internal)
+
+This eliminates duplicate Manager instances and ensures all pipeline operations flow through the validation layer.
