@@ -69,7 +69,8 @@ class ActionButtons extends BaseComponent {
             case 'research_running':
             case 'legal_resolution_running':
             case 'data_extraction_running':
-                // For running pipelines, only show delete option
+                // For running pipelines, show cancel and delete options
+                buttons.push(`<button class="btn btn-warning" data-action="cancel">Cancel</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
         }
@@ -130,6 +131,9 @@ class ActionButtons extends BaseComponent {
                 case 'delete':
                     button.innerHTML = '<span class="spinner"></span> Deleting...';
                     break;
+                case 'cancel':
+                    button.innerHTML = '<span class="spinner"></span> Cancelling...';
+                    break;
                 default:
                     button.innerHTML = '<span class="spinner"></span> Processing...';
             }
@@ -155,6 +159,9 @@ class ActionButtons extends BaseComponent {
                 break;
             case 'delete':
                 button.innerHTML = '✓ Deleted';
+                break;
+            case 'cancel':
+                button.innerHTML = '✓ Cancelled';
                 break;
             default:
                 button.innerHTML = '✓ Success';
@@ -200,6 +207,13 @@ class ActionButtons extends BaseComponent {
                 if (confirm('Delete this pipeline? This action cannot be undone.')) {
                     if (window.app && window.app.handleDeletePipeline) {
                         await window.app.handleDeletePipeline(pipelineId);
+                    }
+                }
+                break;
+            case 'cancel':
+                if (confirm('Cancel this running pipeline? The pipeline will be stopped and marked as failed.')) {
+                    if (window.app && window.app.handleCancelPipeline) {
+                        await window.app.handleCancelPipeline(pipelineId);
                     }
                 }
                 break;

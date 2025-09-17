@@ -99,6 +99,11 @@ class PipelineAPI {
         return this.delete(`/api/pipeline/${pipelineId}`);
     }
 
+    async cancelPipeline(pipelineId, reason = 'user_requested') {
+        console.log('Cancelling pipeline:', pipelineId);
+        return this.post(`/api/pipeline/${pipelineId}/cancel`, { reason });
+    }
+
     // Workflow Step Methods
     async runResearch(pipelineId) {
         console.log('Running research for pipeline:', pipelineId);

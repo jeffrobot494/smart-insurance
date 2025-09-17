@@ -381,6 +381,41 @@ class SmartInsuranceApp {
         }
     }
 
+    async handleCancelPipeline(pipelineId) {
+        console.log(`SmartInsuranceApp: Cancel pipeline ${pipelineId}`);
+
+        try {
+            Utils.showLoading('Cancelling pipeline...');
+            const result = await this.api.cancelPipeline(pipelineId, 'user_requested');
+            Utils.hideLoading();
+
+            if (result.success) {
+                window.notificationManager.showSuccess('Pipeline cancelled successfully');
+
+                // Update local state for immediate UI response
+                const pipeline = this.activePipelines.get(pipelineId);
+                if (pipeline) {
+                    pipeline.status = this.getFailedStatusFromRunning(pipeline.status);
+                    this.activePipelines.set(pipelineId, pipeline);
+                }
+
+            } else {
+                window.notificationManager.showError(result.error || 'Failed to cancel pipeline');
+            }
+        } catch (error) {
+            Utils.hideLoading();
+            window.notificationManager.showError('Failed to cancel pipeline: ' + error.message);
+        }
+    }
+
+    getFailedStatusFromRunning(runningStatus) {
+        switch (runningStatus) {
+            case 'research_running': return 'research_failed';
+            case 'legal_resolution_running': return 'legal_resolution_failed';
+            case 'data_extraction_running': return 'data_extraction_failed';
+            default: return 'research_failed';
+        }
+    }
 
     // ✅ Reset pipeline (called by ActionButtons reset button)
     async handleResetPipeline(pipelineId) {

@@ -1386,3 +1386,15 @@
 {"level":"error","message":"❌ Task 3 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T03:48:43.280Z"}
 {"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T03:48:43.281Z"}
 {"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T03:48:43.399Z"}
+{"level":"error","message":"❌ Task 2 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:20:31.770Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:20:31.771Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:20:31.887Z"}
+{"level":"error","message":"❌ Task 2 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:21:44.352Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:21:44.353Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:21:44.463Z"}
+{"level":"error","message":"❌ Task 2 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:25:55.972Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:25:55.973Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:25:56.083Z"}
+{"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:26:34.860Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:26:34.861Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:26:34.975Z"}
