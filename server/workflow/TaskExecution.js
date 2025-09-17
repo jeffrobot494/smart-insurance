@@ -22,7 +22,7 @@ class TaskExecution {
   checkCancellation() {
     if (this.pipelineId && this.cancellationManager.isCancelled(this.pipelineId)) {
       logger.info(`🛑 Workflow cancelled for pipeline ${this.pipelineId} - terminating task execution`);
-      throw new Error(`Workflow cancelled for pipeline ${this.pipelineId}`);
+      throw new WorkflowCancelled(this.pipelineId, 'user_requested');
     }
   }
 
@@ -143,6 +143,12 @@ class TaskExecution {
           });
 
         } catch (error) {
+          // Check if it's a WorkflowCancelled error - these should NOT be retried
+          if (error.isWorkflowCancelled) {
+            logger.info(`WorkflowCancelled detected - no retries, bubbling up: ${error.message}`);
+            throw error; // Bubble up immediately - don't retry cancellation
+          }
+
           // Check if it's a WorkflowAPIError - these should NOT be retried
           if (error.isWorkflowError) {
             logger.info(`WorkflowAPIError detected - no retries, bubbling up: ${error.message}`);
