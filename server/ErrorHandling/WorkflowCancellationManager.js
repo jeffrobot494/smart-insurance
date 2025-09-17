@@ -52,7 +52,11 @@ class WorkflowCancellationManager {
    * @returns {boolean} True if cancelled
    */
   isCancelled(pipelineId) {
-    return this.cancelledPipelines.has(String(pipelineId));
+    const cancelled = this.cancelledPipelines.has(String(pipelineId));
+    if (cancelled) {
+      console.log(`WorkflowCancellationManager: Pipeline ${pipelineId} is CANCELLED - returning true`);
+    }
+    return cancelled;
   }
   
   /**

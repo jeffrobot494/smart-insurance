@@ -1350,3 +1350,24 @@
 {"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T02:26:31.159Z"}
 {"level":"error","message":"❌ Research failed for pipeline 207:","service":"manager","timestamp":"2025-09-17T02:31:48.006Z"}
 {"level":"error","message":"Research failed for pipeline 207:","service":"manager","timestamp":"2025-09-17T02:31:48.287Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T02:41:17.065Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T02:53:14.642Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T02:55:54.427Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T02:58:51.756Z"}
+{"level":"error","message":"❌ Database query failed:","service":"database","timestamp":"2025-09-17T02:59:03.261Z"}
+{"level":"error","message":"   PostgreSQL Error Code:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"   PostgreSQL Error Detail:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"   Query:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"   Params:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"   Full Error Object:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"❌ Failed to update pipeline:","service":"database","timestamp":"2025-09-17T02:59:03.262Z"}
+{"level":"error","message":"❌ Cancel pipeline failed for 273:","service":"manager","timestamp":"2025-09-17T02:59:03.263Z"}
+{"level":"error","message":"❌ Research failed for pipeline 273:","service":"manager","timestamp":"2025-09-17T02:59:30.426Z"}
+{"level":"error","message":"Research failed for pipeline 273:","service":"manager","timestamp":"2025-09-17T02:59:30.534Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T03:03:31.878Z"}
+{"level":"error","message":"❌ Research failed for pipeline 306:","service":"manager","timestamp":"2025-09-17T03:04:13.703Z"}
+{"level":"error","message":"Research failed for pipeline 306:","service":"manager","timestamp":"2025-09-17T03:04:14.130Z"}
+{"level":"error","message":"❌ Research failed for pipeline 295:","service":"manager","timestamp":"2025-09-17T03:04:16.948Z"}
+{"level":"error","message":"Research failed for pipeline 295:","service":"manager","timestamp":"2025-09-17T03:04:17.059Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T03:05:27.600Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T03:27:29.317Z"}

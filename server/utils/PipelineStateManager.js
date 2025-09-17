@@ -294,17 +294,93 @@ class PipelineStateManager {
      * Validates: pipeline exists, status is '*_running', not already cancelled
      */
     async cancelPipeline(pipelineId, reason = 'user_requested') {
-        // TODO: Implement cancellation logic
-        // 1. Validate pipeline exists
-        // 2. Validate pipeline can be cancelled (is running)
-        // 3. Check not already cancelled
-        // 4. Use existing WorkflowCancellationManager
-        // 5. Update status to cancelled
-        return {
-            success: false,
-            error: 'Cancellation not yet implemented',
-            code: 'NOT_IMPLEMENTED'
-        };
+        try {
+            // 1. Validate pipeline exists
+            const pipeline = await this.databaseManager.getPipeline(pipelineId);
+            if (!pipeline) {
+                return {
+                    success: false,
+                    error: 'Pipeline not found',
+                    code: 'PIPELINE_NOT_FOUND',
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 2. Validate pipeline can be cancelled (is running)
+            const cancellableStatuses = ['research_running', 'legal_resolution_running', 'data_extraction_running'];
+            if (!cancellableStatuses.includes(pipeline.status)) {
+                return {
+                    success: false,
+                    error: `Cannot cancel pipeline with status: ${pipeline.status}. Only running pipelines can be cancelled.`,
+                    code: 'INVALID_STATE',
+                    current_status: pipeline.status,
+                    allowed_operations: this.getAllowedOperations(pipeline.status),
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 3. Check not already cancelled
+            if (this.cancellationManager.isCancelled(pipelineId)) {
+                return {
+                    success: false,
+                    error: 'Pipeline is already cancelled',
+                    code: 'ALREADY_CANCELLED',
+                    pipeline_id: pipelineId
+                };
+            }
+
+            // 4. Use existing WorkflowCancellationManager to cancel workflow
+            await this.cancellationManager.cancelPipeline(pipelineId, reason);
+
+            // 5. Update status to failed based on current workflow step
+            let failedStatus;
+            switch (pipeline.status) {
+                case 'research_running':
+                    failedStatus = 'research_failed';
+                    break;
+                case 'legal_resolution_running':
+                    failedStatus = 'legal_resolution_failed';
+                    break;
+                case 'data_extraction_running':
+                    failedStatus = 'data_extraction_failed';
+                    break;
+                default:
+                    // Fallback (shouldn't reach here due to validation above)
+                    failedStatus = 'research_failed';
+            }
+
+            await this.databaseManager.updatePipeline(pipelineId, {
+                status: failedStatus
+            });
+
+            // 6. Clear operation tracking
+            this.markOperationCompleted(pipelineId, 'cancel');
+
+            // 7. Get updated pipeline for response
+            const updatedPipeline = await this.databaseManager.getPipeline(pipelineId);
+
+            logger.info(`🛑 Pipeline ${pipelineId} cancelled by user (reason: ${reason})`);
+
+            return {
+                success: true,
+                message: `Pipeline cancelled: ${reason}`,
+                pipeline: updatedPipeline,
+                pipeline_id: pipelineId,
+                operation: 'cancel',
+                reason: reason,
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            logger.error(`❌ Cancel pipeline failed for ${pipelineId}:`, error.message);
+            return {
+                success: false,
+                error: error.message,
+                code: 'SYSTEM_ERROR',
+                pipeline_id: pipelineId,
+                timestamp: new Date().toISOString()
+            };
+        }
     }
 
     /**
@@ -525,8 +601,8 @@ class PipelineStateManager {
             'start-legal': 'research_complete',
             'start-data': 'legal_resolution_complete',
             'cancel': ['research_running', 'legal_resolution_running', 'data_extraction_running'],
-            'reset': ['research_failed', 'research_cancelled', 'legal_resolution_failed', 'legal_resolution_cancelled', 'data_extraction_failed', 'data_extraction_cancelled'],
-            'delete': ['pending', 'research_complete', 'legal_resolution_complete', 'data_extraction_complete', 'research_failed', 'research_cancelled', 'legal_resolution_failed', 'legal_resolution_cancelled', 'data_extraction_failed', 'data_extraction_cancelled']
+            'reset': ['research_failed', 'legal_resolution_failed', 'data_extraction_failed'],
+            'delete': ['pending', 'research_complete', 'legal_resolution_complete', 'data_extraction_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed']
         };
     }
 }

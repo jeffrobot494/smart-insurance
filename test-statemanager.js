@@ -128,12 +128,12 @@ class StateManagerTester {
             console.log(`🌐 ${method} ${url} ${data ? JSON.stringify(data) : ''}`.gray);
             const response = await axios(config);
             const duration = Date.now() - startTime;
-            console.log(`   ✅ ${response.status} (${duration}ms)`.gray);
+            console.log(`   ➡️ ${response.status} (${duration}ms)`.gray);
             return { success: true, data: response.data, status: response.status, duration };
         } catch (error) {
             const duration = Date.now() - startTime;
             const errorData = error.response?.data || error.message;
-            console.log(`   ❌ ${error.response?.status || 'ERROR'} (${duration}ms): ${typeof errorData === 'object' ? JSON.stringify(errorData) : errorData}`.gray);
+            console.log(`   ⚠️ ${error.response?.status || 'ERROR'} (${duration}ms): ${typeof errorData === 'object' ? JSON.stringify(errorData) : errorData}`.gray);
             return {
                 success: false,
                 error: errorData,
@@ -175,32 +175,28 @@ class StateManagerTester {
     async debugOperationStatus() {
         console.log('🔍 DEBUG: Checking operation status...'.cyan);
         try {
-            // Check if StateManager has any operations in progress
+            // Check if StateManager has any operations in progress by trying a safe operation first
             const testPipeline = await this.createTestPipeline('Debug-Status-Check');
             if (testPipeline) {
-                const result = await this.makeRequest('POST', `/${testPipeline.pipeline_id}/research`);
+                // Try an invalid operation first to check for SYSTEM_BUSY without starting anything
+                const result = await this.makeRequest('POST', `/${testPipeline.pipeline_id}/legal-resolution`);
                 if (!result.success && result.error?.code === 'SYSTEM_BUSY') {
                     console.log('   ⚠️  Global operations are BLOCKED'.yellow);
-                } else if (!result.success && result.error?.code === 'OPERATION_IN_PROGRESS') {
-                    console.log('   ⚠️  Pipeline-specific operation in progress'.yellow);
-                } else if (result.success) {
-                    console.log('   ✅ Operations are available - STARTED research operation!'.yellow);
-                    console.log('   ⚠️  WARNING: This will block all subsequent operations until complete'.red);
-                    // DON'T try to delete - it will fail because pipeline is running
-                    // The operation will complete eventually and unblock the system
+                } else if (!result.success && result.error?.code === 'INVALID_STATE') {
+                    console.log('   🟢 Operations are available (got expected INVALID_STATE)'.green);
                 } else {
-                    console.log(`   ❓ Unexpected response: ${result.error?.error}`.gray);
-                    // Safe to delete since no operation started
-                    await this.makeRequest('DELETE', `/${testPipeline.pipeline_id}`);
-                    this.testPipelines = this.testPipelines.filter(id => id !== testPipeline.pipeline_id);
+                    console.log(`   ❓ Unexpected response: ${result.error?.error || 'Success?'}`.gray);
                 }
+                // Clean up the test pipeline
+                await this.makeRequest('DELETE', `/${testPipeline.pipeline_id}`);
+                this.testPipelines = this.testPipelines.filter(id => id !== testPipeline.pipeline_id);
             }
         } catch (error) {
-            console.log(`   ❌ Debug check failed: ${error.message}`.red);
+            console.log(`   🔴 Debug check failed: ${error.message}`.red);
         }
     }
 
-    async waitForOperationsToComplete(maxWaitMs = 10000) {
+    async waitForOperationsToComplete(maxWaitMs = 5000) {
         console.log('⏳ Waiting for operations to complete...'.yellow);
         const startTime = Date.now();
 
@@ -212,19 +208,72 @@ class StateManagerTester {
                 this.testPipelines = this.testPipelines.filter(id => id !== testPipeline.pipeline_id);
 
                 if (result.success || (result.error?.code !== 'SYSTEM_BUSY' && result.error?.code !== 'OPERATION_IN_PROGRESS')) {
-                    console.log(`✅ Operations completed (waited ${Date.now() - startTime}ms)`.green);
+                    console.log(`🟢 Operations completed (waited ${Date.now() - startTime}ms)`.green);
                     return true;
                 }
             }
-            await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms between checks
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s between checks
         }
 
-        console.log(`⏰ Timeout waiting for operations (${maxWaitMs}ms)`.red);
+        // Timeout reached - try to cancel operations instead of giving up
+        console.log(`⏰ Timeout waiting for operations (${maxWaitMs}ms) - attempting to cancel...`.yellow);
+        const cancelled = await this.cancelAllRunningOperations();
+        if (cancelled) {
+            console.log(`🟢 Successfully cancelled running operations`.green);
+            return true;
+        } else {
+            console.log(`🔴 Failed to cancel operations`.red);
+            return false;
+        }
+    }
+
+    async cancelAllRunningOperations() {
+        console.log('🛑 Attempting to cancel all running operations...'.yellow);
+        try {
+            // Try to find and cancel any running pipelines
+            for (const pipelineId of this.testPipelines) {
+                const cancelResult = await this.makeRequest('POST', `/${pipelineId}/cancel`, { reason: 'test_cleanup' });
+                if (cancelResult.success) {
+                    console.log(`   🟢 Cancelled pipeline ${pipelineId}`.green);
+                } else if (cancelResult.error?.code === 'INVALID_STATE') {
+                    // Pipeline not running, that's fine
+                    console.log(`   ℹ️  Pipeline ${pipelineId} not running`.gray);
+                } else {
+                    console.log(`   🔴 Failed to cancel ${pipelineId}: ${cancelResult.error?.error}`.red);
+                }
+            }
+
+            // Wait a moment for cancellations to take effect
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Check if operations are now available
+            const testPipeline = await this.createTestPipeline('Cancel-Check');
+            if (testPipeline) {
+                const result = await this.makeRequest('POST', `/${testPipeline.pipeline_id}/legal-resolution`);
+                await this.makeRequest('DELETE', `/${testPipeline.pipeline_id}`);
+                this.testPipelines = this.testPipelines.filter(id => id !== testPipeline.pipeline_id);
+
+                if (result.error?.code === 'INVALID_STATE') {
+                    console.log('   🟢 Operations are now available'.green);
+                    return true;
+                } else if (result.error?.code === 'SYSTEM_BUSY') {
+                    console.log('   ⚠️  Operations still blocked'.yellow);
+                    return false;
+                }
+            }
+        } catch (error) {
+            console.log(`   🔴 Cancel operation failed: ${error.message}`.red);
+        }
         return false;
     }
 
     async cleanup() {
         console.log('\n🧹 Cleaning up test pipelines...'.yellow);
+
+        // First, try to cancel any running operations
+        await this.cancelAllRunningOperations();
+
+        // Then delete all test pipelines
         for (const pipelineId of this.testPipelines) {
             try {
                 await this.makeRequest('DELETE', `/${pipelineId}`);
@@ -262,7 +311,7 @@ class StateManagerTester {
             start1.success ? 'Research started successfully' : start1.error?.error);
 
         if (!start1.success) {
-            console.log('   ❌ First pipeline failed, skipping rest of test'.red);
+            console.log('   🔴 First pipeline failed, skipping rest of test'.red);
             return;
         }
 
@@ -353,7 +402,7 @@ class StateManagerTester {
             first.success ? 'First request accepted' : first.error?.error);
 
         if (!first.success) {
-            console.log('   ❌ First request failed, skipping spam test'.red);
+            console.log('   🔴 First request failed, skipping spam test'.red);
             return;
         }
 
@@ -410,7 +459,7 @@ class StateManagerTester {
             startResult.success ? 'Pipeline is now running' : startResult.error?.error);
 
         if (!startResult.success) {
-            console.log('   ❌ Failed to start research, skipping delete test'.red);
+            console.log('   🔴 Failed to start research, skipping delete test'.red);
             return;
         }
 
@@ -453,7 +502,7 @@ class StateManagerTester {
         }
 
         // Test valid reset on failed state
-        console.log('   ✅ Testing valid reset on failed state...'.gray);
+        console.log('   🔧 Testing valid reset on failed state...'.gray);
         await this.setTestPipelineStatus(pipeline.pipeline_id, 'research_failed');
         const validReset = await this.makeRequest('POST', `/${pipeline.pipeline_id}/reset`);
         console.log(`   📊 Reset on failed: ${validReset.success ? 'SUCCESS' : 'FAILED'} ${validReset.error?.code || ''}`.gray);
@@ -464,17 +513,40 @@ class StateManagerTester {
     async testCancelOperation() {
         console.log('\n⏹️  Testing Cancel Operation'.cyan.bold);
 
-        const pipeline = await this.createTestPipeline();
+        await this.debugOperationStatus();
+
+        console.log('   🔧 Creating test pipeline for cancel test...'.gray);
+        const pipeline = await this.createTestPipeline('Cancel-Test');
         if (!pipeline) {
             this.logTest('Setup pipeline for cancel test', false);
             return;
         }
 
-        // Test cancel (should return NOT_IMPLEMENTED for now)
-        const cancelResult = await this.makeRequest('POST', `/${pipeline.pipeline_id}/cancel`, { reason: 'test' });
-        this.logTest('Cancel operation returns not implemented',
-            !cancelResult.success && cancelResult.error?.code === 'NOT_IMPLEMENTED',
-            'Cancel feature is not yet implemented - this is expected');
+        // Test cancel on non-running pipeline (should fail with INVALID_STATE)
+        console.log('   🚫 Testing cancel on non-running pipeline...'.gray);
+        const invalidCancelResult = await this.makeRequest('POST', `/${pipeline.pipeline_id}/cancel`, { reason: 'test' });
+        console.log(`   📊 Cancel on pending result: ${invalidCancelResult.success ? 'SUCCESS' : 'FAILED'} ${invalidCancelResult.error?.code || ''}`.gray);
+        this.logTest('Block cancel on non-running pipeline',
+            !invalidCancelResult.success && invalidCancelResult.error?.code === 'INVALID_STATE',
+            invalidCancelResult.error?.error || 'Expected INVALID_STATE error');
+
+        // Start research to make pipeline cancellable
+        console.log('   🚀 Starting research to make pipeline cancellable...'.gray);
+        const startResult = await this.makeRequest('POST', `/${pipeline.pipeline_id}/research`);
+        console.log(`   📊 Research start result: ${startResult.success ? 'SUCCESS' : 'FAILED'} ${startResult.error?.code || ''}`.gray);
+
+        if (startResult.success) {
+            // Test cancel on running pipeline (should succeed)
+            console.log('   🛑 Testing cancel on running pipeline...'.gray);
+            const validCancelResult = await this.makeRequest('POST', `/${pipeline.pipeline_id}/cancel`, { reason: 'test_cancel' });
+            console.log(`   📊 Cancel on running result: ${validCancelResult.success ? 'SUCCESS' : 'FAILED'} ${validCancelResult.error?.code || ''}`.gray);
+            this.logTest('Cancel running pipeline succeeds',
+                validCancelResult.success,
+                validCancelResult.success ? 'Cancel successful' : validCancelResult.error?.error);
+        } else {
+            console.log('   🔴 Could not start research, skipping running cancel test'.red);
+            this.logTest('Cancel running pipeline succeeds', false, 'Could not create running pipeline to test');
+        }
     }
 
     async testResponseTiming() {
@@ -508,13 +580,25 @@ class StateManagerTester {
         console.log('🔐 Authenticating...'.yellow);
         const authenticated = await this.authenticate();
         if (!authenticated) {
-            console.error('❌ Authentication failed. Please check AUTH_PASSWORD environment variable.'.red);
+            console.error('🔴 Authentication failed. Please check AUTH_PASSWORD environment variable.'.red);
             console.log('💡 Set AUTH_PASSWORD environment variable or update the password in the script.'.gray);
             return;
         }
-        console.log('✅ Authentication successful'.green);
+        console.log('🟢 Authentication successful'.green);
 
         try {
+            // If operations are blocked at start, try to cancel them
+            const testPipeline = await this.createTestPipeline('Initial-Block-Check');
+            if (testPipeline) {
+                const result = await this.makeRequest('POST', `/${testPipeline.pipeline_id}/legal-resolution`);
+                if (result.error?.code === 'SYSTEM_BUSY') {
+                    console.log('🛑 Operations blocked at start - attempting to cancel running operations...'.yellow);
+                    await this.cancelAllRunningOperations();
+                }
+                await this.makeRequest('DELETE', `/${testPipeline.pipeline_id}`);
+                this.testPipelines = this.testPipelines.filter(id => id !== testPipeline.pipeline_id);
+            }
+
             await this.testGlobalOperationBlocking();
             await this.testStateValidation();
             await this.testButtonSpamProtection();
@@ -525,7 +609,7 @@ class StateManagerTester {
             await this.testResponseTiming();
 
         } catch (error) {
-            console.error('❌ Test suite error:'.red, error.message);
+            console.error('🔴 Test suite error:'.red, error.message);
         }
 
         await this.cleanup();
@@ -543,13 +627,13 @@ class StateManagerTester {
         console.log(`⏱️  Execution time: ${executionTime}ms`.gray);
 
         if (!success) {
-            console.log('\n❌ Failed tests:'.red);
+            console.log('\n🔴 Failed tests:'.red);
             this.testResults
                 .filter(r => !r.passed)
                 .forEach(test => console.log(`   • ${test.name}`.red));
         }
 
-        console.log('\n' + (success ? '✅ All tests passed!' : '❌ Some tests failed').bold);
+        console.log('\n' + (success ? '🟢 All tests passed!' : '🔴 Some tests failed').bold);
     }
 }
 
@@ -562,7 +646,7 @@ async function main() {
     try {
         await axios.get('http://localhost:3000/login', { timeout: 3000 });
     } catch (error) {
-        console.error('❌ Server not running or not accessible. Please start the server first.'.red);
+        console.error('🔴 Server not running or not accessible. Please start the server first.'.red);
         console.log('💡 Try: npm start'.gray);
         process.exit(1);
     }

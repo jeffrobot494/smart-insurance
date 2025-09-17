@@ -1,6 +1,8 @@
 const { workflow: logger, temporary: tempLogger } = require('../utils/logger');
 const ClaudeManager = require('../mcp/ClaudeManager');
 const WorkflowAPIError = require('../ErrorHandling/WorkflowAPIError');
+const WorkflowCancellationManager = require('../ErrorHandling/WorkflowCancellationManager');
+const WorkflowCancelled = require('../ErrorHandling/WorkflowCancelled');
 
 class TaskExecution {
   constructor(task) {
@@ -10,11 +12,27 @@ class TaskExecution {
     this.conversationHistory = [];
     this.status = 'pending';
     this.maxIterations = task.maxIterations || 11;
+    this.cancellationManager = WorkflowCancellationManager.getInstance();
+    this.pipelineId = null; // Set during run()
   }
 
-  async run(inputs = {}) {
+  /**
+   * Check if workflow is cancelled and throw error if so
+   */
+  checkCancellation() {
+    if (this.pipelineId && this.cancellationManager.isCancelled(this.pipelineId)) {
+      logger.info(`🛑 Workflow cancelled for pipeline ${this.pipelineId} - terminating task execution`);
+      throw new Error(`Workflow cancelled for pipeline ${this.pipelineId}`);
+    }
+  }
+
+  async run(inputs = {}, pipelineId = null) {
     try {
       this.status = 'running';
+      this.pipelineId = pipelineId; // Store for cancellation checks
+
+      // Check for cancellation before starting
+      this.checkCancellation();
       
       // Build initial prompt
       let initialPrompt = this.task.instructions;
@@ -87,6 +105,9 @@ class TaskExecution {
           // Reset failure counter on success
           consecutiveFailures = 0;
 
+          // Check for cancellation after receiving Claude's response
+          this.checkCancellation();
+
           // Parse Claude's response for text and tool calls
           const { responseText, toolCalls } = this.parseClaudeResponse(response.content);
 
@@ -111,7 +132,10 @@ class TaskExecution {
 
           // Execute tool calls
           const toolResults = await this.executeToolCalls(toolCalls);
-          
+
+          // Check for cancellation after tool execution
+          this.checkCancellation();
+
           // Add tool results back to conversation
           this.conversationHistory.push({
             role: 'user',

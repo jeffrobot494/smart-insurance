@@ -82,7 +82,7 @@ class WorkflowManager {
         const execution = new TaskExecution(task);
         execution.setToolManager(this.toolManager);
         
-        const result = await execution.run(inputs);
+        const result = await execution.run(inputs, pipelineId);
         
         if (result.success) {
           logger.info(`✅ Task ${task.id} completed successfully`);
