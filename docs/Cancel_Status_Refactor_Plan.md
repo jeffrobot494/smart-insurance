@@ -76,6 +76,15 @@ case 'data_extraction_cancelled':
     break;
 ```
 
+- Remove confirmation dialog from cancel button:
+```javascript
+case 'cancel':
+    if (window.app && window.app.handleCancelPipeline) {
+        await window.app.handleCancelPipeline(pipelineId);
+    }
+    break;
+```
+
 **File: `/public/js/services/PipelinePoller.js`**
 - Add cancelled statuses to `stopPollingStatuses`:
 ```javascript
@@ -104,8 +113,7 @@ getFailedStatusFromRunning(runningStatus) {
 ```javascript
 // Don't treat cancelled states as errors - skip error notification
 if (status.endsWith('_cancelled')) {
-    // Show info notification instead of error
-    window.notificationManager.showInfo(`Pipeline cancelled: ${pipeline.firm_name}`);
+    // Silent update - user already got notification from cancel action
     return;
 }
 
@@ -233,6 +241,94 @@ legal_resolution_running → [cancel] → legal_resolution_cancelled → [reset]
 data_extraction_running → [cancel] → data_extraction_cancelled → [reset] → legal_resolution_complete
 ```
 
+## Potential Issues and Fixes
+
+### 1. Reset Validation Update
+**Issue**: PipelineStateManager reset validation only checks for `*_failed` statuses
+**Location**: `/server/utils/PipelineStateManager.js` in `resetPipeline()` method
+**Fix**: Update the resetable statuses array:
+```javascript
+// Change this line:
+const resetableStatuses = ['research_failed', 'legal_resolution_failed', 'data_extraction_failed'];
+
+// To this:
+const resetableStatuses = ['research_failed', 'legal_resolution_failed', 'data_extraction_failed', 'research_cancelled', 'legal_resolution_cancelled', 'data_extraction_cancelled'];
+
+// Also update error message:
+error: `Cannot reset pipeline with status: ${pipeline.status}. Only failed or cancelled pipelines can be reset.`,
+```
+
+### 2. Status Display Handling
+**Issue**: UI may not know how to display cancelled statuses
+**Test First**: Check if cancelled statuses display correctly or show as "Unknown"
+**Fix Only If Needed**: Add to Utils.js if status display breaks:
+```javascript
+// Only add if status badges show as "Unknown" for cancelled states
+getStatusDisplay(status) {
+    const statusMap = {
+        // ... existing statuses ...
+        'research_cancelled': { class: 'status-cancelled', text: 'Research Cancelled' },
+        'legal_resolution_cancelled': { class: 'status-cancelled', text: 'Legal Resolution Cancelled' },
+        'data_extraction_cancelled': { class: 'status-cancelled', text: 'Data Extraction Cancelled' }
+    };
+    return statusMap[status] || { class: 'status-unknown', text: 'Unknown' };
+}
+```
+
+### 3. CSS Status Styling
+**Issue**: Cancelled statuses may not have appropriate styling
+**Test First**: Check if cancelled status badges look reasonable
+**Fix Only If Needed**: Add CSS if styling breaks:
+```css
+.status-cancelled {
+    background-color: #ffc107;
+    color: #212529;
+    border: 1px solid #ffc107;
+}
+```
+
+### 4. Hardcoded Status References
+**Issue**: Other files may have hardcoded `*_failed` status strings
+**Search Strategy**: Check only files being modified:
+```bash
+# Search files we're changing for status references:
+grep -n "_failed\|_cancelled" server/Manager.js server/utils/PipelineStateManager.js public/js/components/pipeline/ActionButtons.js public/js/app.js public/js/services/PipelinePoller.js
+```
+
+### 5. Test File Updates
+**Issue**: Test files expect `*_failed` statuses after cancellation
+**Files to Update**:
+- `/test-statemanager.js` - Update expected status after cancel
+- `/public/test/client-error-handling-tests.js` - Update test expectations
+- `/server/test/error-handling-tests.js` - Update cancellation test cases
+
+## Pre-Implementation Checklist
+
+### Required Changes (Must Do):
+- [ ] Add 3 new status constants to `Manager.js`
+- [ ] Update `PipelineStateManager.js` cancel method to use `*_cancelled`
+- [ ] Update `PipelineStateManager.js` reset validation to include cancelled statuses
+- [ ] Add cancelled status button configs to `ActionButtons.js`
+- [ ] Remove cancel button confirmation dialog
+- [ ] Add cancelled statuses to `PipelinePoller.js` stop conditions
+- [ ] Update `app.js` failed status mapping method
+- [ ] Update `app.js` status change handler for silent cancelled updates
+
+### Test-First Changes (Do If Broken):
+- [ ] Test status display - add Utils method only if needed
+- [ ] Test status styling - add CSS only if needed
+- [ ] Search for hardcoded statuses - update only what breaks
+
+### Post-Implementation:
+- [ ] Update test files to expect `*_cancelled` statuses
+- [ ] Update documentation references
+
 ## Summary
 
 This refactor provides a clean, semantic solution that eliminates the root cause of the duplicate notifications while maintaining all existing functionality. The new `*_cancelled` statuses clearly distinguish user-initiated terminations from actual workflow failures, resulting in a better user experience and cleaner system architecture.
+
+**Key Benefits:**
+- No duplicate error notifications after user cancellation
+- Clear semantic distinction between failures and cancellations
+- Maintains all existing reset/delete functionality
+- Minimal code changes focused only on essential modifications
