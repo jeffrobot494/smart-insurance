@@ -1398,3 +1398,21 @@
 {"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:26:34.860Z"}
 {"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:26:34.861Z"}
 {"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:26:34.975Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T04:55:19.251Z"}
+{"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T04:55:36.048Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:55:36.048Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T04:55:36.165Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T06:17:46.651Z"}
+{"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 329: user_requested","service":"workflow","timestamp":"2025-09-17T06:18:34.057Z"}
+{"level":"error","message":"❌ Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:18:34.058Z"}
+{"level":"error","message":"Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:18:34.148Z"}
+{"level":"error","message":"❌ Task 2 failed: Workflow cancelled for pipeline 329: user_requested","service":"workflow","timestamp":"2025-09-17T06:19:19.150Z"}
+{"level":"error","message":"❌ Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:19:19.151Z"}
+{"level":"error","message":"Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:19:19.255Z"}
+{"level":"error","message":"❌ Task 2 failed: Workflow cancelled for pipeline 329: user_requested","service":"workflow","timestamp":"2025-09-17T06:23:33.824Z"}
+{"level":"error","message":"❌ Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:23:33.825Z"}
+{"level":"error","message":"Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:23:33.911Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T06:29:25.875Z"}
+{"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 329: user_requested","service":"workflow","timestamp":"2025-09-17T06:30:00.302Z"}
+{"level":"error","message":"❌ Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:30:00.304Z"}
+{"level":"error","message":"Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:30:00.403Z"}

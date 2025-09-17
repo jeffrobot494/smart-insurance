@@ -104,7 +104,12 @@ class WorkflowManager {
         if (error.isWorkflowError) {
           throw error; // Let it bubble up to Manager.js
         }
-        
+
+        // Check if it's a WorkflowCancelled error that should bubble up
+        if (error.isWorkflowCancelled) {
+          throw error; // Let it bubble up to Manager.js
+        }
+
         // Only log and break for non-API errors (programming errors, etc.)
         logger.error(`💥 Task ${task.id} threw an error: ${error.message}`);
         break;

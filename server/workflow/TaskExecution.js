@@ -191,8 +191,13 @@ class TaskExecution {
         // Don't set status to 'failed' - this isn't a TaskExecution failure
         throw error; // Let it bubble up to WorkflowManager, then to Manager.js
       }
-      
-      // Only handle non-API errors (programming errors, etc.)
+
+      // Check if it's a WorkflowCancelled error that should bubble up
+      if (error.isWorkflowCancelled) {
+        throw error; // Let it bubble up to WorkflowManager, then to Manager.js
+      }
+
+      // Only handle non-API/non-cancellation errors (programming errors, etc.)
       this.status = 'failed'; // Only set failed status for actual TaskExecution failures
       return {
         success: false,
