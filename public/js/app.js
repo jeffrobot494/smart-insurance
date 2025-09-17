@@ -395,7 +395,7 @@ class SmartInsuranceApp {
                 // Update local state for immediate UI response
                 const pipeline = this.activePipelines.get(pipelineId);
                 if (pipeline) {
-                    pipeline.status = this.getFailedStatusFromRunning(pipeline.status);
+                    pipeline.status = this.getCancelledStatusFromRunning(pipeline.status);
                     this.activePipelines.set(pipelineId, pipeline);
                 }
 
@@ -408,12 +408,12 @@ class SmartInsuranceApp {
         }
     }
 
-    getFailedStatusFromRunning(runningStatus) {
+    getCancelledStatusFromRunning(runningStatus) {
         switch (runningStatus) {
-            case 'research_running': return 'research_failed';
-            case 'legal_resolution_running': return 'legal_resolution_failed';
-            case 'data_extraction_running': return 'data_extraction_failed';
-            default: return 'research_failed';
+            case 'research_running': return 'research_cancelled';
+            case 'legal_resolution_running': return 'legal_resolution_cancelled';
+            case 'data_extraction_running': return 'data_extraction_cancelled';
+            default: return 'research_cancelled';
         }
     }
 
@@ -686,6 +686,12 @@ class SmartInsuranceApp {
         // ✅ Orchestrator handles UI updates (not PipelinePoller)
         this.cards.updatePipelineCard(pipelineId, pipeline);
         
+        // ✅ Handle cancelled statuses - silent update only
+        if (status.endsWith('_cancelled')) {
+            // Silent update - user already got notification from cancel action
+            return;
+        }
+
         // ✅ Handle failed statuses with error responsibilities
         if (status.endsWith('_failed')) {
             this.handlePipelineError(pipelineId, status, pipeline);

@@ -19,11 +19,14 @@ class PipelinePoller {
         this.stopPollingStatuses = [
             'pending',
             'research_complete',
-            'legal_resolution_complete', 
+            'legal_resolution_complete',
             'data_extraction_complete',
             'research_failed',
             'legal_resolution_failed',
-            'data_extraction_failed'
+            'data_extraction_failed',
+            'research_cancelled',
+            'legal_resolution_cancelled',
+            'data_extraction_cancelled'
         ];
     }
     

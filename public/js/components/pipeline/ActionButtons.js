@@ -54,9 +54,19 @@ class ActionButtons extends BaseComponent {
                 buttons.push(`<button class="btn btn-primary" data-action="reset">Reset</button>`);
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
-                
+
+            case 'research_cancelled':
+            case 'legal_resolution_cancelled':
+                buttons.push(`<button class="btn btn-primary" data-action="reset">Reset</button>`);
+                buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
+                break;
+
             case 'data_extraction_failed':
                 // Programming errors need developer intervention, not user reset
+                buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
+                break;
+
+            case 'data_extraction_cancelled':
                 buttons.push(`<button class="btn btn-danger" data-action="delete">Delete</button>`);
                 break;
                 
@@ -211,10 +221,8 @@ class ActionButtons extends BaseComponent {
                 }
                 break;
             case 'cancel':
-                if (confirm('Cancel this running pipeline? The pipeline will be stopped and marked as failed.')) {
-                    if (window.app && window.app.handleCancelPipeline) {
-                        await window.app.handleCancelPipeline(pipelineId);
-                    }
+                if (window.app && window.app.handleCancelPipeline) {
+                    await window.app.handleCancelPipeline(pipelineId);
                 }
                 break;
         }

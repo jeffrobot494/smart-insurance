@@ -332,25 +332,25 @@ class PipelineStateManager {
             // 4. Use existing WorkflowCancellationManager to cancel workflow
             await this.cancellationManager.cancelPipeline(pipelineId, reason);
 
-            // 5. Update status to failed based on current workflow step
-            let failedStatus;
+            // 5. Update status to cancelled based on current workflow step
+            let cancelledStatus;
             switch (pipeline.status) {
                 case 'research_running':
-                    failedStatus = 'research_failed';
+                    cancelledStatus = 'research_cancelled';
                     break;
                 case 'legal_resolution_running':
-                    failedStatus = 'legal_resolution_failed';
+                    cancelledStatus = 'legal_resolution_cancelled';
                     break;
                 case 'data_extraction_running':
-                    failedStatus = 'data_extraction_failed';
+                    cancelledStatus = 'data_extraction_cancelled';
                     break;
                 default:
                     // Fallback (shouldn't reach here due to validation above)
-                    failedStatus = 'research_failed';
+                    cancelledStatus = 'research_cancelled';
             }
 
             await this.databaseManager.updatePipeline(pipelineId, {
-                status: failedStatus
+                status: cancelledStatus
             });
 
             // 6. Clear operation tracking
@@ -399,12 +399,12 @@ class PipelineStateManager {
                 };
             }
 
-            // 2. Validate status allows reset (only failed states)
-            const resetableStatuses = ['research_failed', 'legal_resolution_failed', 'data_extraction_failed'];
+            // 2. Validate status allows reset (only failed or cancelled states)
+            const resetableStatuses = ['research_failed', 'legal_resolution_failed', 'data_extraction_failed', 'research_cancelled', 'legal_resolution_cancelled', 'data_extraction_cancelled'];
             if (!resetableStatuses.includes(pipeline.status)) {
                 return {
                     success: false,
-                    error: `Cannot reset pipeline with status: ${pipeline.status}. Only failed pipelines can be reset.`,
+                    error: `Cannot reset pipeline with status: ${pipeline.status}. Only failed or cancelled pipelines can be reset.`,
                     code: 'INVALID_STATE',
                     current_status: pipeline.status,
                     allowed_operations: this.getAllowedOperations(pipeline.status)
@@ -601,8 +601,8 @@ class PipelineStateManager {
             'start-legal': 'research_complete',
             'start-data': 'legal_resolution_complete',
             'cancel': ['research_running', 'legal_resolution_running', 'data_extraction_running'],
-            'reset': ['research_failed', 'legal_resolution_failed', 'data_extraction_failed'],
-            'delete': ['pending', 'research_complete', 'legal_resolution_complete', 'data_extraction_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed']
+            'reset': ['research_failed', 'legal_resolution_failed', 'data_extraction_failed', 'research_cancelled', 'legal_resolution_cancelled', 'data_extraction_cancelled'],
+            'delete': ['pending', 'research_complete', 'legal_resolution_complete', 'data_extraction_complete', 'research_failed', 'legal_resolution_failed', 'data_extraction_failed', 'research_cancelled', 'legal_resolution_cancelled', 'data_extraction_cancelled']
         };
     }
 }

@@ -18,12 +18,15 @@ const PIPELINE_STATUSES = {
   RESEARCH_RUNNING: 'research_running',
   RESEARCH_COMPLETE: 'research_complete',
   RESEARCH_FAILED: 'research_failed',
+  RESEARCH_CANCELLED: 'research_cancelled',
   LEGAL_RESOLUTION_RUNNING: 'legal_resolution_running',
   LEGAL_RESOLUTION_COMPLETE: 'legal_resolution_complete',
   LEGAL_RESOLUTION_FAILED: 'legal_resolution_failed',
+  LEGAL_RESOLUTION_CANCELLED: 'legal_resolution_cancelled',
   DATA_EXTRACTION_RUNNING: 'data_extraction_running',
   DATA_EXTRACTION_COMPLETE: 'data_extraction_complete',
-  DATA_EXTRACTION_FAILED: 'data_extraction_failed'
+  DATA_EXTRACTION_FAILED: 'data_extraction_failed',
+  DATA_EXTRACTION_CANCELLED: 'data_extraction_cancelled'
 };
 
 class Manager {
