@@ -10,6 +10,7 @@ const DataExtractionService = require('./data-extraction/DataExtractionService')
 const DatabaseManager = require('./data-extraction/DatabaseManager');
 const WorkflowErrorHandler = require('./ErrorHandling/WorkflowErrorHandler');
 const WorkflowCancellationManager = require('./ErrorHandling/WorkflowCancellationManager');
+const WorkflowCancelled = require('./ErrorHandling/WorkflowCancelled');
 
 // Pipeline Status Constants
 const PIPELINE_STATUSES = {
@@ -112,17 +113,23 @@ class Manager {
       return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
+      // Check if it's a cancellation error - PipelineStateManager already handled status update
+      if (error.isWorkflowCancelled) {
+        logger.info(`✅ Research cancelled for pipeline ${pipelineId}: ${error.message}`);
+        return; // Don't throw or update status - PipelineStateManager already handled it
+      }
+
       // Check if it's an API error that should trigger error recording and cancellation
       if (error.isWorkflowError) {
         await this.errorHandler.handleWorkflowFailure(
-          pipelineId, 
-          PIPELINE_STATUSES.RESEARCH_RUNNING, 
-          error, 
+          pipelineId,
+          PIPELINE_STATUSES.RESEARCH_RUNNING,
+          error,
           error.apiName
         );
         return; // Don't throw - error handler has set status and triggered cancellation
       }
-      
+
       // Handle programming/logic errors the same way as before
       logger.error(`❌ Research failed for pipeline ${pipelineId}:`, error.message);
       await this.databaseManager.updatePipeline(pipelineId, {
@@ -198,18 +205,24 @@ class Manager {
       return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
+      // Check if it's a cancellation error - PipelineStateManager already handled status update
+      if (error.isWorkflowCancelled) {
+        logger.info(`✅ Legal resolution cancelled for pipeline ${pipelineId}: ${error.message}`);
+        return; // Don't throw or update status - PipelineStateManager already handled it
+      }
+
       // Check if it's an API error that should trigger error recording and cancellation
       if (error.isWorkflowError) {
         await this.errorHandler.handleWorkflowFailure(
-          pipelineId, 
-          PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING, 
-          error, 
+          pipelineId,
+          PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING,
+          error,
           error.apiName
         );
 
         return; // Don't throw - error handler has set status and triggered cancellation
       }
-      
+
       // Handle programming/logic errors the same way as before
       logger.error(`❌ Legal resolution failed for pipeline ${pipelineId}:`, error.message);
       logger.error('Full error details:', error);
@@ -256,12 +269,18 @@ class Manager {
       return await this.databaseManager.getPipeline(pipelineId);
       
     } catch (error) {
+      // Check if it's a cancellation error - PipelineStateManager already handled status update
+      if (error.isWorkflowCancelled) {
+        logger.info(`✅ Data extraction cancelled for pipeline ${pipelineId}: ${error.message}`);
+        return; // Don't throw or update status - PipelineStateManager already handled it
+      }
+
       logger.error(`❌ Data extraction failed for pipeline ${pipelineId}:`, error.message);
-      
+
       await this.databaseManager.updatePipeline(pipelineId, {
         status: PIPELINE_STATUSES.DATA_EXTRACTION_FAILED
       });
-      
+
       throw error;
     }
   }

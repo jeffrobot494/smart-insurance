@@ -1378,3 +1378,11 @@
 {"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 325: user_requested","service":"workflow","timestamp":"2025-09-17T03:33:59.919Z"}
 {"level":"error","message":"❌ Research failed for pipeline 325:","service":"manager","timestamp":"2025-09-17T03:33:59.919Z"}
 {"level":"error","message":"Research failed for pipeline 325:","service":"manager","timestamp":"2025-09-17T03:34:00.031Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 325","service":"manager","timestamp":"2025-09-17T03:35:43.514Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T03:42:53.292Z"}
+{"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 325: user_requested","service":"workflow","timestamp":"2025-09-17T03:43:24.297Z"}
+{"level":"error","message":"❌ Research failed for pipeline 325:","service":"manager","timestamp":"2025-09-17T03:43:24.298Z"}
+{"level":"error","message":"Research failed for pipeline 325:","service":"manager","timestamp":"2025-09-17T03:43:24.423Z"}
+{"level":"error","message":"❌ Task 3 failed: Workflow cancelled for pipeline 326: user_requested","service":"workflow","timestamp":"2025-09-17T03:48:43.280Z"}
+{"level":"error","message":"❌ Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T03:48:43.281Z"}
+{"level":"error","message":"Research failed for pipeline 326:","service":"manager","timestamp":"2025-09-17T03:48:43.399Z"}
