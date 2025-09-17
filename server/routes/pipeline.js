@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const { manager: logger } = require('../utils/logger');
-const { Manager } = require('../Manager');
+const PipelineStateManager = require('../utils/PipelineStateManager');
 
-const manager = new Manager();
+const stateManager = new PipelineStateManager();
 
 // CREATE new pipeline
 router.post('/', async (req, res) => {
@@ -17,14 +17,14 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const pipeline = await manager.createPipeline(firm_name);
-    
-    logger.info(`📋 Created new pipeline ${pipeline.pipeline_id} for firm: ${firm_name}`);
-    
-    res.status(201).json({
-      success: true,
-      pipeline: pipeline
-    });
+    const result = await stateManager.createPipeline(firm_name);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+
+    logger.info(`📋 Created new pipeline ${result.pipeline.pipeline_id} for firm: ${firm_name}`);
+
+    res.status(201).json(result);
     
   } catch (error) {
     logger.error('Pipeline creation error:', error);
@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    const pipeline = await manager.databaseManager.getPipeline(pipelineId);
+    const pipeline = await stateManager.databaseManager.getPipeline(pipelineId);
     
     if (!pipeline) {
       return res.status(404).json({
@@ -94,7 +94,7 @@ router.get('/', async (req, res) => {
     if (firm_name) filters.firm_name = firm_name;
     
     // Get paginated pipelines
-    const result = await manager.getAllPipelinesPaginated(filters, limitNum, offsetNum);
+    const result = await stateManager.manager.getAllPipelinesPaginated(filters, limitNum, offsetNum);
     
     res.json({
       success: true,
@@ -125,20 +125,13 @@ router.post('/:id/research', async (req, res) => {
       });
     }
 
-    // Send immediate response
-    res.status(202).json({
-      success: true,
-      message: 'Research started',
-      pipeline_id: pipelineId
-    });
-
-    // Run research asynchronously
-    try {
-      const updatedPipeline = await manager.runResearch(pipelineId);
-      logger.info(`Research completed for pipeline ${pipelineId}. Found ${updatedPipeline.companies.length} companies`);
-    } catch (error) {
-      logger.error(`Research failed for pipeline ${pipelineId}:`, error.message);
+    // Start research through StateManager
+    const result = await stateManager.startResearch(pipelineId);
+    if (!result.success) {
+      return res.status(400).json(result);
     }
+
+    res.status(202).json(result);
 
   } catch (error) {
     logger.error('Research startup error:', error);
@@ -160,18 +153,13 @@ router.post('/:id/legal-resolution', async (req, res) => {
       });
     }
 
-    res.status(202).json({
-      success: true,
-      message: 'Legal entity resolution started',
-      pipeline_id: pipelineId
-    });
-
-    try {
-      const updatedPipeline = await manager.runLegalResolution(pipelineId);
-      logger.info(`Legal resolution completed for pipeline ${pipelineId}`);
-    } catch (error) {
-      logger.error(`Legal resolution failed for pipeline ${pipelineId}:`, error.message);
+    // Start legal resolution through StateManager
+    const result = await stateManager.startLegalResolution(pipelineId);
+    if (!result.success) {
+      return res.status(400).json(result);
     }
+
+    res.status(202).json(result);
 
   } catch (error) {
     logger.error('Legal resolution startup error:', error);
@@ -193,18 +181,13 @@ router.post('/:id/data-extraction', async (req, res) => {
       });
     }
 
-    res.status(202).json({
-      success: true,
-      message: 'Data extraction started',
-      pipeline_id: pipelineId
-    });
-
-    try {
-      const updatedPipeline = await manager.runDataExtraction(pipelineId);
-      logger.info(`Data extraction completed for pipeline ${pipelineId}`);
-    } catch (error) {
-      logger.error(`Data extraction failed for pipeline ${pipelineId}:`, error.message);
+    // Start data extraction through StateManager
+    const result = await stateManager.startDataExtraction(pipelineId);
+    if (!result.success) {
+      return res.status(400).json(result);
     }
+
+    res.status(202).json(result);
 
   } catch (error) {
     logger.error('Data extraction startup error:', error);
@@ -233,7 +216,7 @@ router.post('/run-complete', async (req, res) => {
     });
 
     try {
-      const pipeline = await manager.runCompletePipeline(firm_name);
+      const pipeline = await stateManager.manager.runCompletePipeline(firm_name);
       logger.info(`Complete pipeline finished successfully for ${firm_name}`);
     } catch (error) {
       logger.error(`Complete pipeline failed for ${firm_name}:`, error.message);
@@ -284,12 +267,12 @@ router.put('/:id/companies', async (req, res) => {
     }
 
     // Update companies in the pipeline
-    await manager.databaseManager.updatePipeline(pipelineId, {
+    await stateManager.databaseManager.updatePipeline(pipelineId, {
       companies: JSON.stringify(companies) // Convert to JSON string for JSONB storage
     });
 
     // Return updated pipeline
-    const updatedPipeline = await manager.databaseManager.getPipeline(pipelineId);
+    const updatedPipeline = await stateManager.databaseManager.getPipeline(pipelineId);
     
     logger.info(`✅ Updated companies for pipeline ${pipelineId}. Company count: ${companies.length}`);
     
@@ -331,7 +314,7 @@ router.post('/:id/update', async (req, res) => {
       updates.companies = JSON.stringify(updates.companies);
     }
 
-    await manager.databaseManager.updatePipeline(pipelineId, updates);
+    await stateManager.databaseManager.updatePipeline(pipelineId, updates);
     
     res.json({
       success: true,
@@ -359,7 +342,7 @@ router.post('/:id/reset', async (req, res) => {
       });
     }
 
-    const result = await manager.resetPipeline(pipelineId);
+    const result = await stateManager.resetPipeline(pipelineId);
     
     if (result.success) {
       logger.info(`✅ Pipeline ${pipelineId} reset successfully: ${result.message}`);
@@ -395,7 +378,7 @@ router.get('/:id/error', async (req, res) => {
       });
     }
 
-    const pipeline = await manager.databaseManager.getPipeline(pipelineId);
+    const pipeline = await stateManager.databaseManager.getPipeline(pipelineId);
     
     if (!pipeline) {
       return res.status(404).json({ 
@@ -439,15 +422,45 @@ router.delete('/:id', async (req, res) => {
       });
     }
 
-    await manager.databaseManager.deletePipeline(pipelineId);
+    const result = await stateManager.deletePipeline(pipelineId);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
     
-    res.json({
-      success: true,
-      message: 'Pipeline deleted successfully'
-    });
+    res.json(result);
     
   } catch (error) {
     logger.error('Delete pipeline error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// POST cancel pipeline
+router.post('/:id/cancel', async (req, res) => {
+  try {
+    const pipelineId = parseInt(req.params.id);
+    const { reason = 'user_requested' } = req.body;
+
+    if (isNaN(pipelineId)) {
+      return res.status(400).json({
+        error: 'Valid pipeline ID is required'
+      });
+    }
+
+    const result = await stateManager.cancelPipeline(pipelineId, reason);
+
+    if (result.success) {
+      logger.info(`✅ Pipeline ${pipelineId} cancelled: ${result.message}`);
+      res.json(result);
+    } else {
+      res.status(400).json(result);
+    }
+
+  } catch (error) {
+    logger.error('Cancel pipeline error:', error);
     res.status(500).json({
       success: false,
       error: error.message

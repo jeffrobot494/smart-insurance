@@ -8,7 +8,8 @@
     "process": "node process_data.js",
     "generate": "node generate_report.js",
     "dev": "cd server && node Manager.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test-statemanager.js",
+    "test-statemanager": "node test-statemanager.js"
   },
   "bin": {
     "process-data": "./process_data.js",
@@ -18,6 +19,8 @@
     "@anthropic-ai/sdk": "^0.27.0",
     "@mendable/firecrawl-js": "^1.29.3",
     "@modelcontextprotocol/sdk": "^1.15.0",
+    "axios": "^1.6.0",
+    "colors": "^1.4.0",
     "commander": "^11.0.0",
     "cors": "^2.8.5",
     "csv-parser": "^3.2.0",

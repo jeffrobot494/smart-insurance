@@ -761,6 +761,27 @@ await this.databaseManager.updatePipeline(pipelineId, {
 });
 ```
 
+**CRITICAL: Remove Status Validation from Manager Methods**
+```javascript
+// REMOVE - StateManager handles all validation:
+if (pipeline.status !== PIPELINE_STATUSES.PENDING) {
+  throw new Error(`Research can only be run on pending pipelines. Current status: ${pipeline.status}`);
+}
+
+// REMOVE - StateManager handles all validation:
+if (pipeline.status !== PIPELINE_STATUSES.RESEARCH_COMPLETE) {
+  throw new Error(`Legal resolution requires research to be completed first. Current status: ${pipeline.status}`);
+}
+
+// REMOVE - StateManager handles all validation:
+if (pipeline.status !== PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE) {
+  throw new Error(`Data extraction requires legal resolution to be completed first. Current status: ${pipeline.status}`);
+}
+
+// REPLACE with comment:
+// StateManager handles status validation - Manager just executes the work
+```
+
 **Keep resetPipeline Method (Lines 348-408) - INTERNAL USE ONLY:**
 ```javascript
 // KEEP METHOD - StateManager will call this internally
@@ -825,7 +846,7 @@ module.exports = {
 
 **HIGH IMPACT:**
 - `/server/routes/pipeline.js` - Remove Manager import/instance + 7 method calls changed + 1 new cancel route
-- `/server/Manager.js` - 3 starting status update removals + exports cleanup (keep resetPipeline method as internal)
+- `/server/Manager.js` - 3 starting status update removals + 3 status validation removals + exports cleanup (keep resetPipeline method as internal)
 
 **MEDIUM IMPACT:**
 - Create `/server/utils/PipelineStateManager.js` - New comprehensive class
@@ -833,7 +854,7 @@ module.exports = {
 **LOW IMPACT:**
 - All other files remain unchanged
 
-**Total Changes:** ~20 code modifications across 3 files, with primary complexity in implementing the new PipelineStateManager class and refactoring existing route handlers to use validation-first architecture.
+**Total Changes:** ~23 code modifications across 3 files, with primary complexity in implementing the new PipelineStateManager class and refactoring existing route handlers to use validation-first architecture.
 
 ## Critical Issues Fixed
 
@@ -884,6 +905,20 @@ This ensures data integrity while preventing race conditions and invalid state t
 - **Clean architecture:** Routes → StateManager → Manager (internal)
 
 This eliminates duplicate Manager instances and ensures all pipeline operations flow through the validation layer.
+
+### 🚨 Issue #5: Manager Validation Conflicts (FIXED)
+**Problem:** Manager methods had their own status validation that conflicted with StateManager's pre-validation.
+
+**Example Conflict:**
+1. StateManager validates pipeline status is `pending` ✅
+2. StateManager sets status to `research_running` ✅
+3. StateManager calls Manager.runResearch() ✅
+4. Manager tries to validate status is still `pending` ❌ → **CRASH!**
+
+**Solution:**
+- **Remove all status validation from Manager methods** - StateManager handles this
+- **Manager methods trust StateManager** - Focus purely on business logic
+- **Clean separation of concerns** - Validation vs. execution
 
 ## Quick Testing Strategy
 

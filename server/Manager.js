@@ -80,17 +80,12 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== PIPELINE_STATUSES.PENDING) {
-      throw new Error(`Research can only be run on pending pipelines. Current status: ${pipeline.status}`);
-    }
+    // StateManager handles status validation - Manager just executes the work
 
     logger.info(`🔍 Starting research for firm: ${pipeline.firm_name}`);
     
     try {
-      // Update status to indicate research is starting
-      await this.databaseManager.updatePipeline(pipelineId, { 
-        status: PIPELINE_STATUSES.RESEARCH_RUNNING 
-      });
+      // StateManager handles setting RESEARCH_RUNNING status
 
       // Load and execute research workflow
       const workflowData = readWorkflow('pe_firm_research.json');
@@ -150,17 +145,12 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== PIPELINE_STATUSES.RESEARCH_COMPLETE) {
-      throw new Error(`Legal resolution requires research to be completed first. Current status: ${pipeline.status}`);
-    }
+    // StateManager handles status validation - Manager just executes the work
 
     logger.info(`🏢 Starting legal entity resolution for ${pipeline.companies.length} companies`);
     
     try {
-      // Update status to indicate legal resolution is starting
-      await this.databaseManager.updatePipeline(pipelineId, { 
-        status: PIPELINE_STATUSES.LEGAL_RESOLUTION_RUNNING 
-      });
+      // StateManager handles setting LEGAL_RESOLUTION_RUNNING status
 
       // Run legal entity resolution for each company individually
       const enrichedCompanies = [];
@@ -241,17 +231,12 @@ class Manager {
       throw new Error(`Pipeline ${pipelineId} not found`);
     }
     
-    if (pipeline.status !== PIPELINE_STATUSES.LEGAL_RESOLUTION_COMPLETE) {
-      throw new Error(`Data extraction requires legal resolution to be completed first. Current status: ${pipeline.status}`);
-    }
+    // StateManager handles status validation - Manager just executes the work
 
     logger.info(`📊 Starting Form 5500 data extraction for ${pipeline.companies.length} companies`);
     
     try {
-      // Update status to indicate data extraction is starting
-      await this.databaseManager.updatePipeline(pipelineId, { 
-        status: PIPELINE_STATUSES.DATA_EXTRACTION_RUNNING 
-      });
+      // StateManager handles setting DATA_EXTRACTION_RUNNING status
 
       // Extract Form 5500 data using simplified DataExtractionService
       const form5500Data = await this.dataExtractionService.extractData(pipelineId);
@@ -418,20 +403,19 @@ const runLegalResolution = (pipelineId) => manager.runLegalResolution(pipelineId
 const runDataExtraction = (pipelineId) => manager.runDataExtraction(pipelineId);
 const runCompletePipeline = (firmName) => manager.runCompletePipeline(firmName);
 const retryStep = (pipelineId, step) => manager.retryStep(pipelineId, step);
-const resetPipeline = (pipelineId) => manager.resetPipeline(pipelineId);
+// resetPipeline removed - handled by PipelineStateManager
 const getAllPipelines = (filters) => manager.getAllPipelines(filters);
 
-module.exports = { 
-  createPipeline, 
-  runResearch, 
-  runLegalResolution, 
-  runDataExtraction, 
-  runCompletePipeline, 
-  retryStep, 
-  resetPipeline,
-  getAllPipelines, 
+module.exports = {
+  createPipeline,
+  runResearch,
+  runLegalResolution,
+  runDataExtraction,
+  runCompletePipeline,
+  retryStep,
+  getAllPipelines,
   Manager,
-  PIPELINE_STATUSES 
+  PIPELINE_STATUSES
 };
 
 // If called directly from command line, run complete pipeline
