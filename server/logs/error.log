@@ -1416,3 +1416,7 @@
 {"level":"error","message":"❌ Task 1 failed: Workflow cancelled for pipeline 329: user_requested","service":"workflow","timestamp":"2025-09-17T06:30:00.302Z"}
 {"level":"error","message":"❌ Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:30:00.304Z"}
 {"level":"error","message":"Research failed for pipeline 329:","service":"manager","timestamp":"2025-09-17T06:30:00.403Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T06:34:03.971Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-17T06:37:40.507Z"}
+{"level":"error","message":"WorkflowErrorHandler: Handling Claude API failure for pipeline 336","service":"manager","timestamp":"2025-09-17T07:06:55.350Z"}
+{"level":"error","message":"Error parsing form5500 MCP message:","service":"mcp","timestamp":"2025-09-19T17:16:48.339Z"}
